@@ -13,6 +13,7 @@ qt_add_qml_module(appgui_pdf_csp
     VERSION 1.0
     QML_FILES
         views/Main.qml
+        QML_FILES views/TopBarButton.qml
 )
 
 
