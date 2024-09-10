@@ -7,5 +7,15 @@
         <file>icons/wrench.svg</file>
         <file>icons/pencil_line.svg</file>
         <file>icons/bell.svg</file>
+        <file>icons/book.svg</file>
+        <file>icons/pen_tool.svg</file>
+        <file>icons/arrow-circle-up.svg</file>
+        <file>icons/arrow-circle-down.svg</file>
+        <file>icons/arrow_forward_curve.svg</file>
+        <file>icons/arrow_back_curve.svg</file>
+        <file>icons/plus-circle.svg</file>
+        <file>icons/minus-circle.svg</file>
+        <file>icons/search-custom.svg</file>
+        <file>icons/fullscreen-custom.svg</file>
     </qresource>
 </RCC>

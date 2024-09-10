@@ -14,6 +14,9 @@ qt_add_qml_module(appgui_pdf_csp
     QML_FILES
         views/Main.qml
         QML_FILES views/TopBarButton.qml
+        QML_FILES views/Header.qml
+        QML_FILES views/HeaderToolSeparator.qml
+        QML_FILES views/HeaderSubBar.qml
 )
 
 

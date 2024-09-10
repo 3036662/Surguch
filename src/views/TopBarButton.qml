@@ -6,8 +6,8 @@ import QtQuick.Layouts
 ToolButton{
     flat:true
     display:AbstractButton.TextBesideIcon
-    icon.width: 35
-    icon.height: 35
+    icon.width: 30
+    icon.height: 30
     leftPadding: 10
     rightPadding: 10
     topPadding: 10
