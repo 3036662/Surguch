@@ -11,8 +11,10 @@ ApplicationWindow {
 
     header: ToolBar {
         id: toolbar
+        topPadding: 2
         ColumnLayout {
             anchors.fill: parent
+            spacing: 2
             Header {}
             HeaderSubBar {}
         }

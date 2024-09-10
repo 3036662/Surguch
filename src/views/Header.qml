@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import Qt.labs.platform
 
 
 RowLayout {
@@ -9,10 +10,11 @@ RowLayout {
 
     Row {
         Layout.minimumWidth: 600
-        Layout.fillWidth: true
+        Layout.fillWidth: true        
         TopBarButton {
             icon.source: "qrc:/icons/file_plus.svg"
             text: qsTr("Open")
+            onClicked: fileDialog.open()
         }
         TopBarButton {
             icon.source: "qrc:/icons/file_simple.svg"
@@ -52,12 +54,19 @@ RowLayout {
                 implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
                 anchors.verticalCenter:parent.verticalCenter
             }
+            Rectangle{
+               width: 5
+               height: parent.height
+            color: "transparent"
+            }
         }
         TopBarButton {
             icon.source: "qrc:/icons/pencil_line.svg"
             text: qsTr("Sign")
             icon.height: 25
             icon.width:25
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
 
         }
     }
@@ -70,7 +79,17 @@ RowLayout {
         icon.width: 30
         icon.height: 30
         leftPadding: 10
-        rightPadding: 3
+        rightPadding: 10
+    }
+
+    FileDialog {
+        id: fileDialog
+        currentFile: ""
+        fileMode: FileDialog.OpenFile
+        nameFilters: ["Pdf files (*.pdf)"]
+        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
     }
 }
+
+
 

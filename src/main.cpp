@@ -2,10 +2,11 @@
 #include <QQmlApplicationEngine>
 #include <QDirIterator>
 #include <QDebug>
+#include <QApplication>
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,

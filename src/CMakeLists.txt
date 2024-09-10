@@ -1,5 +1,6 @@
 find_package(Qt6 6.5 REQUIRED COMPONENTS Quick REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Svg REQUIRED)
+find_package(Qt6 REQUIRED COMPONENTS Widgets REQUIRED)
 
 set(CMAKE_AUTORCC ON)
 
@@ -22,6 +23,10 @@ qt_add_qml_module(appgui_pdf_csp
 
 target_link_libraries(appgui_pdf_csp
     PRIVATE Qt6::Quick
+)
+
+target_link_libraries(appgui_pdf_csp
+    PRIVATE Qt6::Widgets
 )
 
 target_link_libraries(appgui_pdf_csp

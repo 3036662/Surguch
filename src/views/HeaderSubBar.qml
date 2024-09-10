@@ -143,7 +143,8 @@ ColumnLayout {
                 Button {
                     flat: true
                     icon.source: "qrc:/icons/search-custom.svg"
-                    width: 24
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
                     height: 24
                     smooth: true
                     anchors.right: parent.right
