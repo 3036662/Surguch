@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Pdf
 
 ApplicationWindow {
     id: root
@@ -20,7 +21,20 @@ ApplicationWindow {
         }
     }
 
-    background: Rectangle {
-        color: "darkGrey"
+
+    PdfDocument {
+               id: doc
+               source: ""
     }
+
+    PdfMultiPageView{
+        id: pdf_view
+        anchors.fill: parent
+        document: doc
+
+    }
+
+    // background: Rectangle {
+    //     color: "darkGrey"
+    // }
 }
