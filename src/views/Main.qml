@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Pdf
 
 ApplicationWindow {
     id: root
@@ -10,6 +9,8 @@ ApplicationWindow {
     visible: true
     title: qsTr("Hello World")
 
+
+
     header: ToolBar {
         id: toolbar
         topPadding: 2
@@ -17,22 +18,18 @@ ApplicationWindow {
             anchors.fill: parent
             spacing: 2
             Header {}
-            HeaderSubBar {}
+            HeaderSubBar {id:headerSubBar}
         }
     }
 
+    PdfListView{ id:pdfListView }
 
-    PdfDocument {
-               id: doc
-               source: ""
+
+    Component.onCompleted: {
+          pdfListView.pagesCountChanged.connect(headerSubBar.changePageCount);
+          pdfListView.currPageChanged.connect(headerSubBar.changedCurrPage);
     }
 
-    PdfMultiPageView{
-        id: pdf_view
-        anchors.fill: parent
-        document: doc
-
-    }
 
     // background: Rectangle {
     //     color: "darkGrey"

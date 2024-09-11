@@ -3,7 +3,16 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 ColumnLayout {
+
+    function changePageCount(newCount){
+        page_number.pageCount=newCount
+    }
+    function changedCurrPage(newIndex){
+        page_number.currPage=newIndex
+    }
+
     spacing: 1
+
     Rectangle {
         height: 1
         color: "grey"
@@ -68,9 +77,11 @@ ColumnLayout {
         }
 
         Text {
-            text: "1" + qsTr(" of ") + "10"
-            leftPadding: 10
-            rightPadding: 10
+            id:page_number
+            property int pageCount: 1
+            property int currPage: 1
+            text: currPage + qsTr(" of ") + pageCount
+            anchors.margins: 10
         }
 
         HeaderToolSeparator {}
@@ -117,8 +128,11 @@ ColumnLayout {
             rightPadding: 5
         }
         Row {
-            leftPadding: 10
-            rightPadding: 10
+            Rectangle {
+                width: 10
+                height: parent.height
+                color: "transparent"
+            }
             ComboBox {
                 Layout.alignment: Qt.AlignVCenter
                 id: comboBox
@@ -127,13 +141,21 @@ ColumnLayout {
                 implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
                 anchors.verticalCenter: parent.verticalCenter
             }
+            Rectangle {
+                width: 10
+                height: parent.height
+                color: "transparent"
+            }
         }
 
         HeaderToolSeparator {}
 
         Row {
-            leftPadding: 10
-
+            Rectangle {
+                width: 10
+                height: parent.height
+                color: "transparent"
+            }
             TextField {
                 placeholderText: qsTr("Search")
                 maximumLength: 100

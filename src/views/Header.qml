@@ -3,14 +3,13 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Qt.labs.platform
 
-
 RowLayout {
     id: toolbar_layout
     spacing: 5
 
     Row {
         Layout.minimumWidth: 600
-        Layout.fillWidth: true        
+        Layout.fillWidth: true
         TopBarButton {
             icon.source: "qrc:/icons/file_plus.svg"
             text: qsTr("Open")
@@ -31,20 +30,23 @@ RowLayout {
         Row {
             spacing: 2
             id: comboBox_row
-            leftPadding: 10
             height: parent.height
-
-            Image{
+            Rectangle {
+                width: 5
+                height: parent.height
+                color: "transparent"
+            }
+            Image {
                 Layout.alignment: Qt.AlignVCenter
-                id:wrench_icon
-                source:"qrc:/icons/wrench.svg"
+                id: wrench_icon
+                source: "qrc:/icons/wrench.svg"
                 height: parent.height
                 fillMode: Image.PreserveAspectFit
             }
-            Rectangle{
-               width: 5
-               height: parent.height
-            color: "transparent"
+            Rectangle {
+                width: 5
+                height: parent.height
+                color: "transparent"
             }
             ComboBox {
                 Layout.alignment: Qt.AlignVCenter
@@ -52,29 +54,27 @@ RowLayout {
                 model: ["Option 1", "Option 2", "Option 3", "Option 4"]
                 displayText: qsTr("Profile")
                 implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
-                anchors.verticalCenter:parent.verticalCenter
+                anchors.verticalCenter: parent.verticalCenter
             }
-            Rectangle{
-               width: 5
-               height: parent.height
-            color: "transparent"
+            Rectangle {
+                width: 5
+                height: parent.height
+                color: "transparent"
             }
         }
         TopBarButton {
             icon.source: "qrc:/icons/pencil_line.svg"
             text: qsTr("Sign")
             icon.height: 25
-            icon.width:25
+            icon.width: 25
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-
         }
     }
 
-
-    ToolButton{
-        flat:true
-        display:AbstractButton.IconOnly
+    ToolButton {
+        flat: true
+        display: AbstractButton.IconOnly
         icon.source: "qrc:/icons/bell.svg"
         icon.width: 30
         icon.height: 30
@@ -88,9 +88,6 @@ RowLayout {
         fileMode: FileDialog.OpenFile
         nameFilters: ["Pdf files (*.pdf)"]
         folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
-        onAccepted: doc.source = currentFile
+        onAccepted: pdfListView.source = currentFile
     }
 }
-
-
-

@@ -3,10 +3,13 @@
 #include <QDirIterator>
 #include <QDebug>
 #include <QApplication>
+#include "models/pdf_page_model.hpp"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+
+    qmlRegisterType<PdfPageModel>("alt.pdfcsp.pdfModel",0,1,"MuPdfModel");
 
     QQmlApplicationEngine engine;
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,

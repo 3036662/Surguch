@@ -1,7 +1,7 @@
 find_package(Qt6 6.5 REQUIRED COMPONENTS Quick REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Svg REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Widgets REQUIRED)
-find_package(Qt6 REQUIRED COMPONENTS Pdf REQUIRED)
+#find_package(Qt6 REQUIRED COMPONENTS Pdf REQUIRED)
 
 set(CMAKE_AUTORCC ON)
 
@@ -19,6 +19,9 @@ qt_add_qml_module(appgui_pdf_csp
         QML_FILES views/Header.qml
         QML_FILES views/HeaderToolSeparator.qml
         QML_FILES views/HeaderSubBar.qml
+        QML_FILES views/PdfListView.qml
+        QML_FILES views/PdfPage.qml
+        SOURCES models/pdf_page_model.hpp models/pdf_page_model.cpp
 )
 
 
@@ -34,7 +37,15 @@ target_link_libraries(appgui_pdf_csp
      PRIVATE Qt6::Svg
 )
 
-target_link_libraries(appgui_pdf_csp PRIVATE Qt6::Pdf)
+#target_link_libraries(appgui_pdf_csp PRIVATE Qt6::Pdf)
+
+
+# harcoded mupdf linkage
+target_link_libraries(appgui_pdf_csp
+     PRIVATE /home/oleg/dev/mupdf/build/shared-release/libmupdf.so.25.0
+)
+target_include_directories(appgui_pdf_csp PRIVATE /home/oleg/dev/mupdf/include/)
+
 
 
 include(GNUInstallDirs)
