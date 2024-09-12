@@ -51,7 +51,7 @@ QVariant PdfPageModel::data(const QModelIndex &index, int role) const
 
     switch(role){
         case Qt::DisplayRole:
-            return file_source_+QString::number(index.row());
+            return index.row();
     }
     return QVariant();
 }
@@ -84,4 +84,12 @@ void PdfPageModel::setSource(const QString& path){
         fz_caught(fzctx_);
     }
     qWarning() << file_path;
+}
+
+fz_document* PdfPageModel::getDoc() const{
+    return fzdoc_;
+}
+
+fz_context* PdfPageModel::getCtx() const{
+    return fzctx_;
 }

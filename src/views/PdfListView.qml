@@ -1,12 +1,12 @@
 import QtQuick
 import QtQuick.Controls
 import alt.pdfcsp.pdfModel
+import alt.pdfcsp.pdfRender
 
 ListView {
+    id:root
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.fill: parent
-    leftMargin: 30
-    rightMargin: 30
     spacing: 30
 
     signal pagesCountChanged(int count)
@@ -21,10 +21,21 @@ ListView {
         id: pdfModel
     }
 
-    delegate: PdfPage{
-        text: model.display
-        width: pdfListView.width-rightMargin-leftMargin
-        height:500
+    // delegate: PdfPage{
+    //     text: model.display
+    //     width: pdfListView.width-rightMargin-leftMargin
+    //     height:500
+    // }
+
+    delegate: PdfPageRender{
+        width:root.width;
+        height: width*1.42;
+
+        Component.onCompleted: {
+            setCtx(pdfModel.getCtx())
+            setDoc(pdfModel.getDoc())
+            setPageNumber(model.display)
+        }
     }
 
     ScrollBar.vertical: ScrollBar {

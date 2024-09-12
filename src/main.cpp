@@ -4,11 +4,13 @@
 #include <QDebug>
 #include <QApplication>
 #include "models/pdf_page_model.hpp"
+#include "cpp_views/pdf_page_render.hpp"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
+    qmlRegisterType<PdfPageRender>("alt.pdfcsp.pdfRender",0,1,"PdfPageRender");
     qmlRegisterType<PdfPageModel>("alt.pdfcsp.pdfModel",0,1,"MuPdfModel");
 
     QQmlApplicationEngine engine;

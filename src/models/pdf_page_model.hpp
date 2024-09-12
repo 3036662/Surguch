@@ -21,11 +21,15 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
     Q_INVOKABLE void setSource(const QString& path);
+
+    Q_INVOKABLE fz_document* getDoc() const;
+
+    Q_INVOKABLE fz_context* getCtx() const;
 private:
     fz_context* fzctx_=nullptr;
     QString file_source_;
     fz_document* fzdoc_=nullptr;
-    int page_count_=3;
+    int page_count_=0;
 
 };
 

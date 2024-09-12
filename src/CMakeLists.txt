@@ -13,15 +13,16 @@ qt_add_executable(appgui_pdf_csp
 qt_add_qml_module(appgui_pdf_csp
     URI gui_pdf_csp
     VERSION 1.0
-    QML_FILES
-        views/Main.qml
-        QML_FILES views/TopBarButton.qml
-        QML_FILES views/Header.qml
-        QML_FILES views/HeaderToolSeparator.qml
-        QML_FILES views/HeaderSubBar.qml
-        QML_FILES views/PdfListView.qml
-        QML_FILES views/PdfPage.qml
-        SOURCES models/pdf_page_model.hpp models/pdf_page_model.cpp
+    QML_FILES views/Main.qml
+    QML_FILES views/TopBarButton.qml
+    QML_FILES views/Header.qml
+    QML_FILES views/HeaderToolSeparator.qml
+    QML_FILES views/HeaderSubBar.qml
+    QML_FILES views/PdfListView.qml
+    QML_FILES views/PdfPage.qml
+    SOURCES models/pdf_page_model.hpp models/pdf_page_model.cpp
+    SOURCES cpp_views/pdf_page_render.hpp cpp_views/pdf_page_render.cpp
+
 )
 
 
