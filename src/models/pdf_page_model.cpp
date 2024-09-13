@@ -8,7 +8,8 @@ PdfPageModel::PdfPageModel(QObject *parent)
         return;
     }
     fz_try(fzctx_){
-        fz_register_document_handlers(fzctx_);
+        fz_set_aa_level(fzctx_, 8);
+        fz_register_document_handlers(fzctx_);        
     } fz_catch(fzctx_){
         fz_report_error(fzctx_);
 

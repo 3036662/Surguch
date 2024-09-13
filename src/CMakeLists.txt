@@ -3,12 +3,21 @@ find_package(Qt6 REQUIRED COMPONENTS Svg REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Widgets REQUIRED)
 #find_package(Qt6 REQUIRED COMPONENTS Pdf REQUIRED)
 
+
+
+
 set(CMAKE_AUTORCC ON)
 
 qt_add_executable(appgui_pdf_csp
     main.cpp
     ${CMAKE_SOURCE_DIR}/resources/resources.qrc
 )
+
+#target_compile_options(appgui_pdf_csp PRIVATE -fsanitize=address)
+#target_link_libraries(appgui_pdf_csp PRIVATE -fsanitize=address)
+#target_compile_options(appgui_pdf_csp PRIVATE -fsanitize=memory)
+#target_link_libraries(appgui_pdf_csp PRIVATE -fsanitize=memory)
+
 
 qt_add_qml_module(appgui_pdf_csp
     URI gui_pdf_csp
@@ -44,6 +53,7 @@ target_link_libraries(appgui_pdf_csp
 # harcoded mupdf linkage
 target_link_libraries(appgui_pdf_csp
      PRIVATE /home/oleg/dev/mupdf/build/shared-release/libmupdf.so.25.0
+     #PRIVATE /home/oleg/dev/mupdf/build/shared-debug/libmupdf.so.25.0
 )
 target_include_directories(appgui_pdf_csp PRIVATE /home/oleg/dev/mupdf/include/)
 
