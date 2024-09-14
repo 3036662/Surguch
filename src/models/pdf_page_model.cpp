@@ -1,7 +1,7 @@
 #include "pdf_page_model.hpp"
 
 PdfPageModel::PdfPageModel(QObject *parent)
-    : QAbstractListModel(parent),fzctx_{fz_new_context(nullptr,nullptr,FZ_STORE_UNLIMITED)}
+    : QAbstractListModel(parent),fzctx_{fz_new_context(nullptr,nullptr,500000000)}
 {
     if (fzctx_==nullptr){
         qWarning("Error creating muPDF context");
@@ -59,8 +59,14 @@ QVariant PdfPageModel::data(const QModelIndex &index, int role) const
 
 
 void PdfPageModel::setSource(const QString& path){
-    if (fzdoc_!=nullptr){
-        fz_drop_document(fzctx_,fzdoc_);
+    fz_drop_document(fzctx_,fzdoc_);
+    fz_drop_context(fzctx_);
+    fzctx_=fz_new_context(nullptr,nullptr,500000000);
+    fz_try(fzctx_){
+        fz_set_aa_level(fzctx_, 8);
+        fz_register_document_handlers(fzctx_);
+    } fz_catch(fzctx_){
+        fz_report_error(fzctx_);
     }
     const QString prefix="file://";
     QString file_path;
