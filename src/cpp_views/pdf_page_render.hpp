@@ -29,7 +29,7 @@ private:
    fz_document* fzdoc_=nullptr;
    int page_number_=0;
    QScopedPointer<QImage> image_;
-   QList<unsigned char> buff_;
+   //QList<unsigned char> buff_;
    float zoom_dpi_last_=1;
    float pwidth_=0;
 
