@@ -42,29 +42,34 @@ void PdfPageRender::geometryChange(const QRectF &newGeometry,
 QSGNode *PdfPageRender::updatePaintNode(
     QSGNode *node, QQuickItem::UpdatePaintNodeData *updatePaintNodeData) {
   QSGSimpleTextureNode *rectNode = nullptr;
+
   if (node != nullptr) {
     rectNode = static_cast<QSGSimpleTextureNode *>(node);
-    rectNode->setOwnsTexture(true);
+    //delete rectNode->texture();
   } else {
     if (!size().isValid()) {
       return node;
     }
     rectNode = new QSGSimpleTextureNode();
     rectNode->setFiltering(QSGTexture::Linear);
+    rectNode->setOwnsTexture(true);
   }
 
   fz_device *draw_device = nullptr;
   fz_pixmap *pixmap = nullptr;
-  fz_pixmap *pixmap2 = nullptr;
   fz_separations *separation = nullptr;
   fz_page *page = nullptr;
   int page_width = 0;
   int page_height = 0;
 
+  fz_var(draw_device);
+  fz_var(pixmap);
+  fz_var(separation);
+  fz_var(page);
   if (!image_.isNull()) {
     qWarning() << "return same image for page" << page_number_;
   }
-  if (fzctx_ != nullptr && fzdoc_ != nullptr && image_.isNull()) {
+  if ( fzctx_ != nullptr && fzdoc_ != nullptr && image_.isNull()) {
     fz_try(fzctx_) {
       page = fz_load_page(fzctx_, fzdoc_, page_number_);
       separation = fz_page_separations(fzctx_, page);
@@ -129,25 +134,20 @@ QSGNode *PdfPageRender::updatePaintNode(
                      pix_stride, QImage::Format_RGB888, [](void *vbuf) {
                        unsigned char *buff = static_cast<unsigned char *>(vbuf);
                        delete[] buff;
-                     }));
+                       //qWarning()<<"free buffer"<<vbuf;
+                     },buff));
+
 
       zoom_dpi_last_ = zoom_dpi;
     }
     fz_always(fzctx_) {
       // clean up
-      if (draw_device != nullptr) {
         fz_close_device(fzctx_, draw_device);
         fz_drop_device(fzctx_, draw_device);
-      }
-      if (pixmap != nullptr) {
         fz_drop_pixmap(fzctx_, pixmap);
-      }
-      if (separation != nullptr) {
         fz_drop_separations(fzctx_, separation);
-      }
-      if (page != nullptr) {
         fz_drop_page(fzctx_, page);
-      }
+
     }
     fz_catch(fzctx_) { qWarning() << fz_caught_message(fzctx_); }
   } else if (image_.isNull()) {
@@ -161,6 +161,7 @@ QSGNode *PdfPageRender::updatePaintNode(
   qWarning() << "texture height" << texture->textureSize().width();
   rectNode->setTexture(texture);
   rectNode->setRect(QRectF(0, 0, width(), height()));
+  //rectNode->setOwnsTexture(true);
 
   // Set the size of the rectangle to match the item's size
   return rectNode; // Return the updated node
