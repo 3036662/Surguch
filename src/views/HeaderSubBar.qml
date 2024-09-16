@@ -4,11 +4,14 @@ import QtQuick.Layouts
 
 ColumnLayout {
 
-    function changePageCount(newCount){
-        page_number.pageCount=newCount
+    signal zoomInClicked
+    signal zoomOutClicked
+
+    function changePageCount(newCount) {
+        page_number.pageCount = newCount
     }
-    function changedCurrPage(newIndex){
-        page_number.currPage=newIndex
+    function changedCurrPage(newIndex) {
+        page_number.currPage = newIndex
     }
 
     spacing: 1
@@ -77,7 +80,7 @@ ColumnLayout {
         }
 
         Text {
-            id:page_number
+            id: page_number
             property int pageCount: 1
             property int currPage: 1
             text: currPage + qsTr(" of ") + pageCount
@@ -109,6 +112,9 @@ ColumnLayout {
         HeaderToolSeparator {}
 
         ToolButton {
+            onClicked: {
+                zoomOutClicked()
+            }
             flat: true
             display: AbstractButton.IconOnly
             icon.source: "qrc:/icons/minus-circle.svg"
@@ -119,6 +125,9 @@ ColumnLayout {
         }
 
         ToolButton {
+            onClicked: {
+                zoomInClicked()
+            }
             flat: true
             display: AbstractButton.IconOnly
             icon.source: "qrc:/icons/plus-circle.svg"

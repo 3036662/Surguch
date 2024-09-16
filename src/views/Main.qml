@@ -9,8 +9,6 @@ ApplicationWindow {
     visible: true
     title: qsTr("Hello World")
 
-
-
     header: ToolBar {
         id: toolbar
         topPadding: 2
@@ -18,20 +16,52 @@ ApplicationWindow {
             anchors.fill: parent
             spacing: 2
             Header {}
-            HeaderSubBar {id:headerSubBar}
+            HeaderSubBar {
+                id: headerSubBar
+            }
         }
     }
 
-    PdfListView{ id:pdfListView }
-
-
-    Component.onCompleted: {
-          pdfListView.pagesCountChanged.connect(headerSubBar.changePageCount);
-          pdfListView.currPageChanged.connect(headerSubBar.changedCurrPage);
+    PdfListView {
+        id: pdfListView
     }
 
+    Component.onCompleted: {
+        pdfListView.pagesCountChanged.connect(headerSubBar.changePageCount)
+        pdfListView.currPageChanged.connect(headerSubBar.changedCurrPage)
+        pdfListView.pageWidthUpdate.connect(horizontalScroll.setContentWidth)
+        pdfListView.pageWidthUpdate.connect(horizontalScroll.setContentWidth)
+        pdfListView.flickEnded.connect(horizontalScroll.setPosition)
+        headerSubBar.zoomInClicked.connect(pdfListView.zoomIn)
+        headerSubBar.zoomOutClicked.connect(pdfListView.zoomOut)
+    }
 
-    // background: Rectangle {
-    //     color: "darkGrey"
-    // }
+    footer: Pane {
+        id: footer_frame
+        width: parent.width
+        height: 30
+        ScrollBar {
+            id: horizontalScroll
+            hoverEnabled: true
+            active: hovered || pressed
+            orientation: Qt.Horizontal
+            size: contWidth > 0 ? footer_frame.width / contWidth : 0
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            visible: contWidth > width
+            property int contWidth: 0
+
+            onPositionChanged: {
+                pdfListView.contentX = position * contWidth
+                pdfListView.hScrollPos = position
+            }
+
+            // called when page width was changed
+            function setContentWidth(w) {
+                size = footer_frame.width / (w > 0 ? w : 1)
+                contWidth = w
+            }
+        }
+    }
 }
