@@ -32,8 +32,10 @@ ApplicationWindow {
         pdfListView.pageWidthUpdate.connect(horizontalScroll.setContentWidth)
         pdfListView.pageWidthUpdate.connect(horizontalScroll.setContentWidth)
         pdfListView.flickEnded.connect(horizontalScroll.setPosition)
+        pdfListView.zoomFactorUpdate.connect(headerSubBar.updateZoomValue)
         headerSubBar.zoomInClicked.connect(pdfListView.zoomIn)
         headerSubBar.zoomOutClicked.connect(pdfListView.zoomOut)
+        headerSubBar.zoomSelected.connect(pdfListView.setZoom)
     }
 
     footer: Pane {

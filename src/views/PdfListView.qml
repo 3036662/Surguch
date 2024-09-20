@@ -14,6 +14,7 @@ ListView {
     signal pagesCountChanged(int count)
     signal currPageChanged(int index)
     signal pageWidthUpdate(int width)
+    signal zoomFactorUpdate(double zoom)
 
     function zoomIn() {
         if (zoomPageFact < 4) {
@@ -24,8 +25,16 @@ ListView {
     function zoomOut() {
         if (zoomPageFact > 0.4) {
             zoomPageFact -= 0.2
-            console.warn(zoomPageFact)
         }
+    }
+
+    function setZoom(newZoom) {
+        if (!newZoom > 0) {
+            zoomPageFact = 1
+            return
+        }
+        zoomPageFact = newZoom / 100
+        console.warn("new zoom " + zoomPageFact)
     }
 
     onPageWidthChanged: {
@@ -34,6 +43,10 @@ ListView {
 
     onSourceChanged: {
         pdfModel.setSource(source)
+    }
+
+    onZoomPageFactChanged: {
+        zoomFactorUpdate(zoomPageFact)
     }
 
     anchors.horizontalCenter: parent.horizontalCenter

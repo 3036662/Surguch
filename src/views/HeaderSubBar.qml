@@ -6,6 +6,7 @@ ColumnLayout {
 
     signal zoomInClicked
     signal zoomOutClicked
+    signal zoomSelected(int newZoom)
 
     function changePageCount(newCount) {
         page_number.pageCount = newCount
@@ -14,6 +15,10 @@ ColumnLayout {
         page_number.currPage = newIndex
     }
 
+    function updateZoomValue(zoom) {
+        comboBoxZoom.displayText = Math.round(zoom * 100) + "%"
+        comboBoxZoom.currentIndex = -1
+    }
     spacing: 1
 
     Rectangle {
@@ -143,10 +148,35 @@ ColumnLayout {
                 color: "transparent"
             }
             ComboBox {
+                id: comboBoxZoom
+
+                onCurrentIndexChanged: {
+                    let newZoom = 0
+                    switch (currentIndex) {
+                    case 0:
+                        newZoom = 100
+                        break
+                    case 1:
+                        newZoom = 75
+                        break
+                    case 2:
+                        newZoom = 100
+                        break
+                    case 3:
+                        newZoom = 125
+                        break
+                    case 4:
+                        newZoom = 150
+                        break
+                    }
+                    if (newZoom != 0) {
+                        zoomSelected(newZoom)
+                    }
+                }
+
                 Layout.alignment: Qt.AlignVCenter
-                id: comboBox
-                model: ["Option 1", "Option 2", "Option 3", "Option 4"]
-                displayText: qsTr("Automatic")
+                model: [qsTr("Automatic"), "75%", "100%", "125%", "150%"]
+                currentIndex: 0
                 implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
                 anchors.verticalCenter: parent.verticalCenter
             }
