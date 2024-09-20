@@ -19,6 +19,24 @@ ColumnLayout {
         comboBoxZoom.displayText = Math.round(zoom * 100) + "%"
         comboBoxZoom.currentIndex = -1
     }
+
+    function disableZoom(){
+        zoomButton.enabled=false
+    }
+
+    function enableZoom(){
+        zoomButton.enabled=true
+    }
+
+    function enableZoomOut(){
+        zoomOutButton.enabled=true
+    }
+
+    function disableZoomOut(){
+        zoomOutButton.enabled=false
+    }
+
+
     spacing: 1
 
     Rectangle {
@@ -117,6 +135,7 @@ ColumnLayout {
         HeaderToolSeparator {}
 
         ToolButton {
+            id:zoomOutButton
             onClicked: {
                 zoomOutClicked()
             }
@@ -130,6 +149,7 @@ ColumnLayout {
         }
 
         ToolButton {
+            id:zoomButton
             onClicked: {
                 zoomInClicked()
             }

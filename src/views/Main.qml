@@ -22,20 +22,31 @@ ApplicationWindow {
         }
     }
 
-    PdfListView {
-        id: pdfListView
-    }
+     PdfListView {
+         id: pdfListView
+     }
 
     Component.onCompleted: {
+        // update page count in header
         pdfListView.pagesCountChanged.connect(headerSubBar.changePageCount)
+        // update curr page in header
         pdfListView.currPageChanged.connect(headerSubBar.changedCurrPage)
         pdfListView.pageWidthUpdate.connect(horizontalScroll.setContentWidth)
-        pdfListView.pageWidthUpdate.connect(horizontalScroll.setContentWidth)
-        pdfListView.flickEnded.connect(horizontalScroll.setPosition)
+        // update zoom value in header
         pdfListView.zoomFactorUpdate.connect(headerSubBar.updateZoomValue)
+        // update horizontal scroll position after flick
+        pdfListView.hScrollUpdate.connect(horizontalScroll.updateScrollPosition)
+        // zoomIn render
         headerSubBar.zoomInClicked.connect(pdfListView.zoomIn)
+        // zoomOut render
         headerSubBar.zoomOutClicked.connect(pdfListView.zoomOut)
+        // zoom dropbox preset value was selected
         headerSubBar.zoomSelected.connect(pdfListView.setZoom)
+        // enable/disable zoom
+        pdfListView.maxZoomReached.connect(headerSubBar.disableZoom)
+        pdfListView.canZoom.connect(headerSubBar.enableZoom)
+        pdfListView.minZoomReached.connect(headerSubBar.disableZoomOut)
+        pdfListView.canZoomOut.connect(headerSubBar.enableZoomOut)
     }
 
     footer: Pane {
@@ -54,15 +65,24 @@ ApplicationWindow {
             visible: contWidth > width
             property int contWidth: 0
 
+            // move the listview when the scroll was moved
             onPositionChanged: {
                 pdfListView.contentX = position * contWidth
                 pdfListView.hScrollPos = position
+                 console.warn(position+size)
             }
 
-            // called when page width was changed
+            // page width changed
             function setContentWidth(w) {
                 size = footer_frame.width / (w > 0 ? w : 1)
                 contWidth = w
+            }
+
+            // listview flicked
+            function updateScrollPosition(newPosition){
+                if (visible){
+                    position=newPosition/contWidth;
+                }
             }
         }
     }
