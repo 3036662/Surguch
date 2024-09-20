@@ -18,6 +18,7 @@ ApplicationWindow {
             Header {}
             HeaderSubBar {
                 id: headerSubBar
+                visible: pdfListView.source!=""
             }
         }
     }
