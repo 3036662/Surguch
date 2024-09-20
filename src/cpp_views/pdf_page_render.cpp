@@ -84,7 +84,9 @@ QSGNode *PdfPageRender::updatePaintNode(
       }
       page_width = width();
       page_height = (page_rect.y1 - page_rect.y0) * zoom_dpi;
-      setHeight(page_height); // set qml item ratio
+      if (page_height>0){
+        setHeight(page_height); // set qml item ratio
+      }
       // create a new pixmap
       qreal pixmap_width = width() * dev_pix_ratio_;
       qreal pixmap_height = height() * dev_pix_ratio_;
@@ -129,8 +131,10 @@ QSGNode *PdfPageRender::updatePaintNode(
   }
   // Create a texture from the image
   QSGTexture *texture = window()->createTextureFromImage(*image_);
+  if (texture){
   rectNode->setTexture(texture);
   rectNode->setRect(QRectF(0, 0, width(), height()));
+  }
   return rectNode;
 }
 
