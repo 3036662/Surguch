@@ -75,6 +75,9 @@ QSGNode *PdfPageRender::updatePaintNode(
       page = fz_load_page(fzctx_, fzdoc_, page_number_);
       separation = fz_page_separations(fzctx_, page);
       fz_rect page_rect = fz_bound_page(fzctx_, page);
+      int custom_rot_value = property("customRotation").toInt();
+      fz_matrix custom_rotation_matrix=fz_rotate(custom_rot_value);
+      page_rect=fz_transform_rect(page_rect,custom_rotation_matrix);
       fz_colorspace *color_space = fz_device_rgb(fzctx_);
       // a dpi multiplier to render the pdf page with good quality
       float zoom_dpi = 1; // 72 dpi x multiplier
@@ -82,7 +85,7 @@ QSGNode *PdfPageRender::updatePaintNode(
       if (pwidth_ > 1) {
         zoom_dpi = width() / pwidth_;
       }
-      page_width = width();
+      //page_width = width();
       page_height = (page_rect.y1 - page_rect.y0) * zoom_dpi;
       if (page_height>0){
         setHeight(page_height); // set qml item ratio
@@ -96,6 +99,24 @@ QSGNode *PdfPageRender::updatePaintNode(
       // draw pdf content to pixmap
       fz_matrix transform_run_page = fz_scale(zoom_dpi, zoom_dpi);
       fz_matrix transform_device = fz_scale(dev_pix_ratio_, dev_pix_ratio_);
+      if (custom_rot_value!=0){
+          // rotate
+          if (custom_rot_value==90 || custom_rot_value==270){
+              //move the center to the origin
+              transform_device=fz_concat(transform_device,fz_translate(-pixmap_height/2,-pixmap_width/2));
+              // rotate
+              transform_device=fz_concat(transform_device,custom_rotation_matrix);
+              // move the center to the view center
+              transform_device=fz_concat(transform_device,fz_translate(pixmap_width/2,pixmap_height/2));
+          } else{
+               //move the center to the origin
+              transform_device=fz_concat(transform_device,fz_translate(-pixmap_width/2,-pixmap_height/2));
+               // rotate
+              transform_device=fz_concat(transform_device,custom_rotation_matrix);
+               // move the center to the view center
+              transform_device=fz_concat(transform_device,fz_translate(pixmap_width/2,pixmap_height/2));
+          }
+      }
       draw_device =
           fz_new_draw_device(fzctx_, transform_device, pixmap); // fz_identity
       fz_run_page(fzctx_, page, draw_device, transform_run_page, nullptr);
@@ -145,3 +166,7 @@ void PdfPageRender::setCtx(fz_context *fzctx) { fzctx_ = fzctx; }
 void PdfPageRender::setPageNumber(int page_number) {
   page_number_ = page_number;
 }
+
+//void PdfPageRender::setCustomRotation(int rotation_val){ custom_rotation_=rotation_val;}
+
+

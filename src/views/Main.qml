@@ -45,6 +45,9 @@ ApplicationWindow {
         headerSubBar.zoomOutClicked.connect(pdfListView.zoomOut)
         // zoom dropbox preset value was selected
         headerSubBar.zoomSelected.connect(pdfListView.setZoom)
+        // rotate
+        headerSubBar.rotateClockwise.connect(pdfListView.rotateClockWise)
+        headerSubBar.rotateCounterClockWise.connect(pdfListView.rotateCounterClockWise)
         // enable/disable zoom
         pdfListView.maxZoomReached.connect(headerSubBar.disableZoom)
         pdfListView.canZoom.connect(headerSubBar.enableZoom)

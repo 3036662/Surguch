@@ -25,6 +25,9 @@ public:
     Q_INVOKABLE fz_document* getDoc() const;
 
     Q_INVOKABLE fz_context* getCtx() const;
+
+    Q_INVOKABLE void redrawAll();
+
 private:
     fz_context* fzctx_=nullptr;
     QString file_source_;

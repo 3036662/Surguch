@@ -23,6 +23,7 @@ public:
   Q_INVOKABLE void setCtx(fz_context *fzctx);
   Q_INVOKABLE void setPageNumber(int page_number);
 
+
 signals:
 
 private:
@@ -30,7 +31,6 @@ private:
   fz_document *fzdoc_ = nullptr;
   int page_number_ = 0;
   QScopedPointer<QImage> image_;
-  // QList<unsigned char> buff_;
   float zoom_dpi_last_ = 1;
   float pwidth_ = 0;
   float dev_pix_ratio_ = 2;

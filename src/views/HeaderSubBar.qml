@@ -8,6 +8,8 @@ ColumnLayout {
     signal zoomOutClicked
     signal zoomSelected(int newZoom)
     signal scrollToPage(int pageNumber)
+    signal rotateClockwise()
+    signal rotateCounterClockWise()
 
     function changePageCount(newCount) {
         page_number.pageCount = newCount
@@ -145,6 +147,10 @@ ColumnLayout {
             icon.height: 20
             leftPadding: 5
             rightPadding: 5
+
+            onClicked: {
+                rotateCounterClockWise();
+            }
         }
 
         ToolButton {
@@ -155,6 +161,10 @@ ColumnLayout {
             icon.height: 20
             leftPadding: 5
             rightPadding: 5
+
+            onClicked: {
+                rotateClockwise();
+            }
         }
 
         HeaderToolSeparator {}

@@ -100,3 +100,8 @@ fz_document* PdfPageModel::getDoc() const{
 fz_context* PdfPageModel::getCtx() const{
     return fzctx_;
 }
+
+void PdfPageModel::redrawAll() {
+    beginResetModel();
+    endResetModel();
+}
