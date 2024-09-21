@@ -33,6 +33,8 @@ ApplicationWindow {
         // update curr page in header
         pdfListView.currPageChanged.connect(headerSubBar.changedCurrPage)
         pdfListView.pageWidthUpdate.connect(horizontalScroll.setContentWidth)
+        // scroll to page
+        headerSubBar.scrollToPage.connect(pdfListView.scrollToPage)
         // update zoom value in header
         pdfListView.zoomFactorUpdate.connect(headerSubBar.updateZoomValue)
         // update horizontal scroll position after flick
@@ -48,6 +50,7 @@ ApplicationWindow {
         pdfListView.canZoom.connect(headerSubBar.enableZoom)
         pdfListView.minZoomReached.connect(headerSubBar.disableZoomOut)
         pdfListView.canZoomOut.connect(headerSubBar.enableZoomOut)
+
     }
 
     footer: Pane {

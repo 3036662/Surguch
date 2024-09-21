@@ -7,12 +7,15 @@ ColumnLayout {
     signal zoomInClicked
     signal zoomOutClicked
     signal zoomSelected(int newZoom)
+    signal scrollToPage(int pageNumber)
 
     function changePageCount(newCount) {
         page_number.pageCount = newCount
+        pageNumberInputValidator.top = newCount+1
     }
     function changedCurrPage(newIndex) {
         page_number.currPage = newIndex
+        pageNumberInput.text = newIndex
     }
 
     function updateZoomValue(zoom) {
@@ -79,6 +82,12 @@ ColumnLayout {
             icon.height: 20
             leftPadding: 5
             rightPadding: 5
+
+            onClicked: {
+                if (page_number.currPage<pageNumberInputValidator.top){
+                    scrollToPage(page_number.currPage+1)
+                }
+            }
         }
 
         ToolButton {
@@ -89,17 +98,33 @@ ColumnLayout {
             icon.height: 20
             leftPadding: 5
             rightPadding: 5
+
+            onClicked: {
+                if (page_number.currPage>pageNumberInputValidator.bottom){
+                    scrollToPage(page_number.currPage-1)
+                }
+            }
         }
 
         TextField {
+            id: pageNumberInput
             text: "1"
             maximumLength: 100
+            Layout.preferredWidth: 50
+            horizontalAlignment: TextInput.AlignHCenter
+
             validator: IntValidator {
+                id: pageNumberInputValidator
                 bottom: 1
                 top: 10000
             }
-            Layout.preferredWidth: 30
-            horizontalAlignment: TextInput.AlignHCenter
+
+            onAccepted: {
+                let newIndex=Number(text)
+                if (newIndex>0){
+                    scrollToPage(newIndex)
+                }
+            }
         }
 
         Text {

@@ -58,6 +58,10 @@ ListView {
         console.warn("new zoom " + zoomPageFact)
     }
 
+    function scrollToPage(newIndex){
+        positionViewAtIndex(newIndex-1,ListView.Beginning)
+    }
+
     onPageWidthChanged: {
         pageWidthUpdate(pageWidth)
         contentWidth=pageWidth
@@ -79,8 +83,11 @@ ListView {
         pagesCountChanged(count)
     }
 
-    onCurrentIndexChanged: {
-        currPageChanged(currentIndex)
+    onContentYChanged: {
+     var currentIndexAtTop = indexAt(50, contentY);
+     if (currentIndexAtTop>-1){
+         currPageChanged(currentIndexAtTop+1);
+     }
     }
 
     anchors.horizontalCenter: parent.horizontalCenter
