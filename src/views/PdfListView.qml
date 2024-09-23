@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 import alt.pdfcsp.pdfModel
 import alt.pdfcsp.pdfRender
 
@@ -24,6 +25,16 @@ ListView {
     signal minZoomReached
     signal canZoomOut
 
+    Layout.fillHeight: true
+    Layout.fillWidth: true
+    Layout.leftMargin: 20
+    Layout.rightMargin: 20
+    Layout.alignment: Qt.AlignHCenter
+    spacing: 30
+    flickableDirection: Flickable.HorizontalAndVerticalFlick
+    Layout.verticalStretchFactor: 4
+    clip: true
+
     function zoomIn() {
         if (zoomPageFact < maxZoom) {
             if (zoomPageFact <= minZoom) {
@@ -34,6 +45,7 @@ ListView {
                 maxZoomReached()
             }
         }
+        console.warn("X=" + contentX)
     }
 
     function zoomOut() {
@@ -82,7 +94,7 @@ ListView {
     onSourceChanged: {
         pdfModel.setSource(source)
         setZoom(100)
-        delegateRotation=0
+        delegateRotation = 0
     }
 
     onZoomPageFactChanged: {
@@ -104,13 +116,6 @@ ListView {
         }
     }
 
-    anchors.horizontalCenter: parent.horizontalCenter
-    anchors.fill: parent
-    anchors.leftMargin: 20
-    spacing: 30
-    anchors.rightMargin: 20
-    flickableDirection: Flickable.HorizontalAndVerticalFlick
-
     model: MuPdfModel {
         id: pdfModel
     }
@@ -121,7 +126,7 @@ ListView {
             id: pdfPage
             width: root.width * zoomPageFact
             height: width * 1.42
-            anchors.horizontalCenter: parent.horizontalCenter
+            //anchors.horizontalCenter: parent.horizontalCenter
             property int customRotation: root.delegateRotation
 
             onWidthChanged: {

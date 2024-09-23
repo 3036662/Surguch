@@ -1,4 +1,5 @@
 #include "pdf_page_model.hpp"
+#include <QThread>
 
 PdfPageModel::PdfPageModel(QObject *parent)
     : QAbstractListModel(parent),fzctx_{fz_new_context(nullptr,nullptr,500000000)}
@@ -12,8 +13,8 @@ PdfPageModel::PdfPageModel(QObject *parent)
         fz_register_document_handlers(fzctx_);        
     } fz_catch(fzctx_){
         fz_report_error(fzctx_);
-
     }
+    //qWarning()<<"Model created"<< QThread::currentThreadId();
 }
 
 PdfPageModel::~PdfPageModel(){

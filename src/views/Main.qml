@@ -7,7 +7,7 @@ ApplicationWindow {
     width: 1000
     height: 480
     visible: true
-    title: qsTr("Hello World")
+    title: qsTr("PDF CSP")
 
     header: ToolBar {
         id: toolbar
@@ -18,23 +18,73 @@ ApplicationWindow {
             Header {}
             HeaderSubBar {
                 id: headerSubBar
-                visible: pdfListView.source!=""
+                visible: pdfListView.source != ""
             }
         }
     }
 
-     PdfListView {
-         id: pdfListView
-     }
+    RowLayout {
+        anchors.fill: parent
+
+        LeftSideBar {
+            id: leftSideBar
+        }
+        PdfListView {
+            id: pdfListView
+        }
+    }
+
+    footer: Pane {
+        id: footer_frame
+        width: parent.width
+        height: 30
+        ScrollBar {
+            id: horizontalScroll
+            hoverEnabled: true
+            active: hovered || pressed
+            orientation: Qt.Horizontal
+            size: contWidth > 0 ? pdfListView.width / contWidth : 0
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            visible: contWidth > pdfListView.width
+            width: pdfListView.width
+            property int contWidth: 0
+
+            // move the listview when the scroll was moved
+            onPositionChanged: {
+                pdfListView.contentX = position * contWidth
+                pdfListView.hScrollPos = position
+                console.warn(position + size)
+            }
+
+            // page width changed
+            function setContentWidth(w) {
+                size = pdfListView.width / (w > 0 ? w : 1)
+                contWidth = w
+                console.warn("contWidth = " + contWidth)
+                console.warn("listview width =" + pdfListView.width)
+                console.warn("size = " + size)
+            }
+
+            // listview flicked
+            function updateScrollPosition(newPosition) {
+                if (visible) {
+                    position = newPosition / contWidth
+                }
+            }
+        }
+    }
 
     Component.onCompleted: {
         // update page count in header
         pdfListView.pagesCountChanged.connect(headerSubBar.changePageCount)
         // update curr page in header
         pdfListView.currPageChanged.connect(headerSubBar.changedCurrPage)
+        pdfListView.currPageChanged.connect(leftSideBar.scrollToPage)
         pdfListView.pageWidthUpdate.connect(horizontalScroll.setContentWidth)
         // scroll to page
         headerSubBar.scrollToPage.connect(pdfListView.scrollToPage)
+        leftSideBar.pageClick.connect(pdfListView.scrollToPage)
         // update zoom value in header
         pdfListView.zoomFactorUpdate.connect(headerSubBar.updateZoomValue)
         // update horizontal scroll position after flick
@@ -47,50 +97,12 @@ ApplicationWindow {
         headerSubBar.zoomSelected.connect(pdfListView.setZoom)
         // rotate
         headerSubBar.rotateClockwise.connect(pdfListView.rotateClockWise)
-        headerSubBar.rotateCounterClockWise.connect(pdfListView.rotateCounterClockWise)
+        headerSubBar.rotateCounterClockWise.connect(
+                    pdfListView.rotateCounterClockWise)
         // enable/disable zoom
         pdfListView.maxZoomReached.connect(headerSubBar.disableZoom)
         pdfListView.canZoom.connect(headerSubBar.enableZoom)
         pdfListView.minZoomReached.connect(headerSubBar.disableZoomOut)
         pdfListView.canZoomOut.connect(headerSubBar.enableZoomOut)
-
-    }
-
-    footer: Pane {
-        id: footer_frame
-        width: parent.width
-        height: 30
-        ScrollBar {
-            id: horizontalScroll
-            hoverEnabled: true
-            active: hovered || pressed
-            orientation: Qt.Horizontal
-            size: contWidth > 0 ? footer_frame.width / contWidth : 0
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            visible: contWidth > width
-            property int contWidth: 0
-
-            // move the listview when the scroll was moved
-            onPositionChanged: {
-                pdfListView.contentX = position * contWidth
-                pdfListView.hScrollPos = position
-                 console.warn(position+size)
-            }
-
-            // page width changed
-            function setContentWidth(w) {
-                size = footer_frame.width / (w > 0 ? w : 1)
-                contWidth = w
-            }
-
-            // listview flicked
-            function updateScrollPosition(newPosition){
-                if (visible){
-                    position=newPosition/contWidth;
-                }
-            }
-        }
     }
 }

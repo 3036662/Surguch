@@ -88,6 +88,9 @@ RowLayout {
         fileMode: FileDialog.OpenFile
         nameFilters: ["Pdf files (*.pdf)"]
         folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
-        onAccepted: pdfListView.source = currentFile
+        onAccepted: {
+            pdfListView.source = currentFile;
+            leftSideBar.source = currentFile;
+        }
     }
 }
