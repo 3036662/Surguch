@@ -71,6 +71,12 @@ ListView {
             return
         }
         zoomPageFact = newZoom / 100
+        if (zoomPageFact<maxZoom){
+            canZoom()
+        }
+        if (zoomPageFact>minZoom){
+            canZoomOut()
+        }
         //console.warn("new zoom " + zoomPageFact)
     }
 
