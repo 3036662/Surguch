@@ -4,71 +4,68 @@ import QtQuick.Layouts
 import alt.pdfcsp.pdfModel
 import alt.pdfcsp.pdfRender
 
-ColumnLayout {
+Item {
     id: root
+
+    enum ShowState{
+        Preview,
+        Certs
+    }
+
     property string source: ""
+    property int showState : LeftSideBar.ShowState.Preview
+
     Layout.maximumWidth: 400
+    Layout.preferredWidth:  200
+    Layout.minimumWidth:  200
     Layout.fillHeight: true
-    Layout.verticalStretchFactor: 1
+    Layout.fillWidth: true
+    Layout.horizontalStretchFactor: 1
 
     signal pageClick(int index)
 
-    ListView {
-        id: previewListView
-        Layout.leftMargin: 10
-        //Layout.rightMargin: 10
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-        Layout.alignment: Qt.AlignHCenter
-        spacing: 10
-        flickableDirection: Flickable.VerticalFlick
 
-        property int delegateRotation: 0
-        property double zoomPageFact: 1
 
-        property alias source: root.source
+    Item{
+        anchors.fill: parent
 
-        model: MuPdfModel {
-            id: pdfPreviewModel
+        PreviewListView{
+            id:previewListView
+            source: root.source
+            visible: showState == LeftSideBar.ShowState.Preview
         }
 
-        delegate: Column {
-            width: previewListView.width
+        Column{
+            id: certsInfo
+            visible: showState == LeftSideBar.ShowState.Certs
+            Layout.maximumWidth: 100
+            Layout.fillHeight: true
+            clip:true
 
-            PdfPageRender {
-                id: pdfPreviewPage
-                width: previewListView.width - verticalScroll.width * 2
-                height: width * 1.42
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.rightMargin: verticalScroll.width
-
-                Component.onCompleted: {
-                    setCtx(pdfPreviewModel.getCtx())
-                    setDoc(pdfPreviewModel.getDoc())
-                    setPageNumber(model.display)
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        pageClick(index + 1)
-                    }
+            Rectangle{
+                width:200
+                height:200
+                color:"white"
+                border.color: "black"
+                border.width:2
+                Text{
+                    text: "TODO Certificates info"
                 }
             }
         }
 
-        onSourceChanged: {
-            pdfPreviewModel.setSource(source)
-        }
-
-        ScrollBar.vertical: ScrollBar {
-            id: verticalScroll
-            width: 30
-            policy: ScrollBar.AlwaysOn // Show scrollbar always
-        }
     }
+
 
     function scrollToPage(newIndex) {
         previewListView.positionViewAtIndex(newIndex - 1, ListView.Beginning)
+    }
+
+    function showPreviews(){
+        showState=LeftSideBar.ShowState.Preview
+    }
+
+    function showCerts(){
+        showState=LeftSideBar.ShowState.Certs
     }
 }

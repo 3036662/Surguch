@@ -10,6 +10,8 @@ ColumnLayout {
     signal scrollToPage(int pageNumber)
     signal rotateClockwise()
     signal rotateCounterClockWise()
+    signal showPreviews()
+    signal showCerts()
 
     function changePageCount(newCount) {
         page_number.pageCount = newCount
@@ -60,6 +62,10 @@ ColumnLayout {
             icon.height: 20
             leftPadding: 40
             rightPadding: 40
+
+            onClicked: {
+                showPreviews();
+            }
         }
 
         HeaderToolSeparator {}
@@ -72,6 +78,10 @@ ColumnLayout {
             icon.height: 20
             leftPadding: 40
             rightPadding: 40
+
+            onClicked: {
+                showCerts();
+            }
         }
 
         HeaderToolSeparator {}

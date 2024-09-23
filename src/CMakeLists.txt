@@ -31,6 +31,7 @@ qt_add_qml_module(appgui_pdf_csp
     SOURCES models/pdf_page_model.hpp models/pdf_page_model.cpp
     SOURCES cpp_views/pdf_page_render.hpp cpp_views/pdf_page_render.cpp
     QML_FILES views/LeftSideBar.qml
+    QML_FILES views/PreviewListView.qml
 
 )
 

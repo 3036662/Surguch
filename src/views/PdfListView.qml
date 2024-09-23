@@ -29,10 +29,12 @@ ListView {
     Layout.fillWidth: true
     Layout.leftMargin: 20
     Layout.rightMargin: 20
+    Layout.minimumWidth:  200
     Layout.alignment: Qt.AlignHCenter
+
     spacing: 30
     flickableDirection: Flickable.HorizontalAndVerticalFlick
-    Layout.verticalStretchFactor: 4
+    Layout.horizontalStretchFactor: 4
     clip: true
 
     function zoomIn() {

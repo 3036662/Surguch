@@ -61,9 +61,6 @@ ApplicationWindow {
             function setContentWidth(w) {
                 size = pdfListView.width / (w > 0 ? w : 1)
                 contWidth = w
-                console.warn("contWidth = " + contWidth)
-                console.warn("listview width =" + pdfListView.width)
-                console.warn("size = " + size)
             }
 
             // listview flicked
@@ -104,5 +101,8 @@ ApplicationWindow {
         pdfListView.canZoom.connect(headerSubBar.enableZoom)
         pdfListView.minZoomReached.connect(headerSubBar.disableZoomOut)
         pdfListView.canZoomOut.connect(headerSubBar.enableZoomOut)
+        // toggle from preview to certs in left sidebat
+        headerSubBar.showPreviews.connect(leftSideBar.showPreviews)
+        headerSubBar.showCerts.connect(leftSideBar.showCerts)
     }
 }
