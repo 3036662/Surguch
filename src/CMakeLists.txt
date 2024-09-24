@@ -19,6 +19,8 @@ qt_add_executable(appgui_pdf_csp
 #target_link_libraries(appgui_pdf_csp PRIVATE -fsanitize=memory)
 
 
+
+
 qt_add_qml_module(appgui_pdf_csp
     URI gui_pdf_csp
     VERSION 1.0
@@ -32,8 +34,12 @@ qt_add_qml_module(appgui_pdf_csp
     SOURCES cpp_views/pdf_page_render.hpp cpp_views/pdf_page_render.cpp
     QML_FILES views/LeftSideBar.qml
     QML_FILES views/PreviewListView.qml
-    SOURCES core/mu_page_render.hpp core/mu_page_render.cpp
+)
 
+add_subdirectory(core)
+
+target_link_libraries(appgui_pdf_csp PRIVATE
+    appcore
 )
 
 
@@ -49,6 +55,8 @@ target_link_libraries(appgui_pdf_csp
      PRIVATE Qt6::Svg
 )
 
+target_link_libraries(appgui_pdf_csp PRIVATE Qt6::Core)
+
 target_include_directories(appgui_pdf_csp PUBLIC ${CMAKE_SOURCE_DIR}/src/)
 
 #target_link_libraries(appgui_pdf_csp PRIVATE Qt6::Pdf)
@@ -61,7 +69,10 @@ target_link_libraries(appgui_pdf_csp
 )
 target_include_directories(appgui_pdf_csp PRIVATE /home/oleg/dev/mupdf/include/)
 
-
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    message("Building tests")
+    add_subdirectory(test)
+endif()
 
 include(GNUInstallDirs)
 
