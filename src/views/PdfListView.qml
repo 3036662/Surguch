@@ -85,13 +85,18 @@ ListView {
     }
 
     function rotateClockWise() {
-        delegateRotation = delegateRotation == 270 ? 0 : delegateRotation + 90
+        let currentPage = indexAt(100, contentY+100)+1
+        delegateRotation = delegateRotation == 270 ? 0 : delegateRotation + 90     
         model.redrawAll()
+        console.warn(currentPage)
+        scrollToPage(currentPage)
     }
 
     function rotateCounterClockWise() {
-        delegateRotation = delegateRotation == 0 ? 270 : delegateRotation - 90
+        let currentPage = indexAt(100, contentY+100)+1
+        delegateRotation = delegateRotation == 0 ? 270 : delegateRotation - 90        
         model.redrawAll()
+        scrollToPage(currentPage)
     }
 
     onPageWidthChanged: {
