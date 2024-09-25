@@ -2,23 +2,46 @@
 #define SIGNATURE_PROCESSOR_HPP
 
 #include "mupdf/pdf.h"
+#include "pdf_obj_keeper.hpp"
+#include <bitset>
+#include <vector>
 
-namespace core{
+namespace core {
 
 /*!
  * \brief The SignatureProcessor class
  * \throws runtime_error on construct
  */
-class SignatureProcessor
-{
+class SignatureProcessor {
 public:
-    SignatureProcessor(pdf_document* pdfdoc);
+  SignatureProcessor(fz_context *fzctx, pdf_document *pdfdoc);
+
+  SignatureProcessor(const SignatureProcessor &) = delete;
+  SignatureProcessor(SignatureProcessor &&) = delete;
+  SignatureProcessor &operator=(const SignatureProcessor &) = delete;
+  SignatureProcessor &operator=(SignatureProcessor &&) = delete;
+  ~SignatureProcessor() = default;
+
+  [[nodiscard]] bool findSignatures() noexcept;
+
+  [[nodiscard]] pdf_obj *findAcroForm() const noexcept;
+
+  [[nodiscard]] std::bitset<32> getFormSigFlags() const noexcept;
+
+  [[nodiscard]] size_t getSignaturesCount() const noexcept {
+    return signarures_ptrs_.size();
+  }
 
 private:
-    pdf_document* pdfdoc_=nullptr;
+  fz_context *fzctx_ = nullptr;
+  pdf_document *pdfdoc_ = nullptr;
+  pdf_obj *trailer_ = nullptr;
+  pdf_obj *pdf_root_ = nullptr;
+  pdf_obj *pdf_acro_ = nullptr;
+  std::bitset<32> sig_flags_;
+  std::vector<PdfObjKeeper> signarures_ptrs_;
 };
 
-
-}//namespace core
+} // namespace core
 
 #endif // SIGNATURE_PROCESSOR_HPP
