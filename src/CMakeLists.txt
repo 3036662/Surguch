@@ -19,7 +19,9 @@ qt_add_executable(appgui_pdf_csp
 #target_link_libraries(appgui_pdf_csp PRIVATE -fsanitize=memory)
 
 
-
+SET (MUPDF_INCLUDE_DIR /home/oleg/dev/mupdf/include/)
+SET (MUPDF_LINK_PATH /home/oleg/dev/mupdf/build/shared-release/libmupdf.so.25.0)
+#SET (MUPDF_LINK_PATH /home/oleg/dev/mupdf/build/shared-debug/libmupdf.so.25.0)
 
 qt_add_qml_module(appgui_pdf_csp
     URI gui_pdf_csp
@@ -30,7 +32,6 @@ qt_add_qml_module(appgui_pdf_csp
     QML_FILES views/HeaderToolSeparator.qml
     QML_FILES views/HeaderSubBar.qml
     QML_FILES views/PdfListView.qml
-    SOURCES models/pdf_page_model.hpp models/pdf_page_model.cpp
     SOURCES cpp_views/pdf_page_render.hpp cpp_views/pdf_page_render.cpp
     QML_FILES views/LeftSideBar.qml
     QML_FILES views/PreviewListView.qml
@@ -38,8 +39,14 @@ qt_add_qml_module(appgui_pdf_csp
 
 add_subdirectory(core)
 
+add_subdirectory(models)
+
 target_link_libraries(appgui_pdf_csp PRIVATE
     appcore
+)
+
+target_link_libraries(appgui_pdf_csp PRIVATE
+    models
 )
 
 
@@ -64,10 +71,9 @@ target_include_directories(appgui_pdf_csp PUBLIC ${CMAKE_SOURCE_DIR}/src/)
 
 # harcoded mupdf linkage
 target_link_libraries(appgui_pdf_csp
-     PRIVATE /home/oleg/dev/mupdf/build/shared-release/libmupdf.so.25.0
-     #PRIVATE /home/oleg/dev/mupdf/build/shared-debug/libmupdf.so.25.0
+     PRIVATE ${MUPDF_LINK_PATH}
 )
-target_include_directories(appgui_pdf_csp PRIVATE /home/oleg/dev/mupdf/include/)
+target_include_directories(appgui_pdf_csp PRIVATE ${MUPDF_INCLUDE_DIR})
 
 if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     message("Building tests")
