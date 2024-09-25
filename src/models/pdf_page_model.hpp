@@ -34,6 +34,8 @@ public:
 
   [[nodiscard]] Q_INVOKABLE fz_context *getCtx() const;
 
+  [[nodiscard]] Q_INVOKABLE pdf_document* getPdfDoc() const;
+
   Q_INVOKABLE void redrawAll();
 
 private:

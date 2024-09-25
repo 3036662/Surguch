@@ -93,12 +93,14 @@ void PdfPageModel::setSource(const QString &path) {
     qWarning() << fz_caught_message(fzctx_);
     fz_caught(fzctx_);
   }
-  qWarning() << file_path;
+  //qWarning() << file_path;
 }
 
 fz_document *PdfPageModel::getDoc() const { return fzdoc_; }
 
 fz_context *PdfPageModel::getCtx() const { return fzctx_; }
+
+pdf_document* PdfPageModel::getPdfDoc() const {return pdfdoc_;}
 
 void PdfPageModel::redrawAll() {
   beginResetModel();
