@@ -1,6 +1,7 @@
 #include "signature_processor.hpp"
+#include "raw_signature.hpp"
 #include <QDebug>
-// #include <iostream>
+#include <iostream>
 #include <stdexcept>
 
 namespace core {
@@ -60,7 +61,7 @@ bool SignatureProcessor::findSignatures() noexcept {
           pdf_obj *ft_val = pdf_dict_getp(fzctx_, curr, "FT");
           if (ft_val != nullptr && pdf_is_name(fzctx_, ft_val) &&
               QString(pdf_to_name(fzctx_, ft_val)) == "Sig") {
-            signarures_ptrs_.emplace_back(fzctx_, ft_val);
+            signarures_ptrs_.emplace_back(fzctx_, curr);
             // pdf_debug_obj(fzctx_, curr);
           }
         }
@@ -124,6 +125,25 @@ std::bitset<32> SignatureProcessor::getFormSigFlags() const noexcept {
   fz_catch(fzctx_) {
     qWarning() << fz_caught_message(fzctx_);
     fz_caught(fzctx_);
+  }
+  return res;
+}
+
+std::vector<RawSignature> SignatureProcessor::ParseSignatures() noexcept {
+  if (signarures_ptrs_.empty()) {
+    return {};
+  }
+  if (fzctx_ == nullptr) {
+    qWarning() << "[ParseSignatures] nullptr context, can not proceed";
+    return {};
+  }
+  std::vector<RawSignature> res;
+  for (const auto &sig : signarures_ptrs_) {
+    try {
+      res.emplace_back(fzctx_, sig);
+    } catch (const std::exception &ex) {
+      qWarning() << "Error parsing the signature " << ex.what();
+    }
   }
   return res;
 }

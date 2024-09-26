@@ -3,6 +3,7 @@
 
 #include "mupdf/pdf.h"
 #include "pdf_obj_keeper.hpp"
+#include "raw_signature.hpp"
 #include <bitset>
 #include <vector>
 
@@ -23,6 +24,8 @@ public:
   ~SignatureProcessor() = default;
 
   [[nodiscard]] bool findSignatures() noexcept;
+
+  std::vector<RawSignature> ParseSignatures() noexcept;
 
   [[nodiscard]] pdf_obj *findAcroForm() const noexcept;
 
