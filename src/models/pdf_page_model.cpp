@@ -1,5 +1,6 @@
 #include "pdf_page_model.hpp"
 #include <QThread>
+#include "core/signature_processor.hpp"
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
 
@@ -93,7 +94,9 @@ void PdfPageModel::setSource(const QString &path) {
     qWarning() << fz_caught_message(fzctx_);
     fz_caught(fzctx_);
   }
-  //qWarning() << file_path;
+  if (process_signatures_){
+  processSignatures();
+  }
 }
 
 fz_document *PdfPageModel::getDoc() const { return fzdoc_; }
@@ -105,6 +108,26 @@ pdf_document* PdfPageModel::getPdfDoc() const {return pdfdoc_;}
 void PdfPageModel::redrawAll() {
   beginResetModel();
   endResetModel();
+}
+
+void PdfPageModel::processSignatures() const{
+    std::unique_ptr<core::SignatureProcessor> prc;
+    const QString err_str="[PdfPageModel] Error processing signatures ";
+    try{
+        prc=std::make_unique<core::SignatureProcessor>(fzctx_,pdfdoc_);
+    } catch (const std::exception& ex){
+        qWarning()<<err_str<<ex.what();
+        return;
+    }
+    if (!prc->findSignatures()){
+        qWarning()<<err_str;
+        return;
+    }
+    if (prc->getSignaturesCount()==0){
+        return;
+    }
+    std::vector<core::RawSignature> signatures=prc->ParseSignatures();
+    qWarning()<< "signatures found "<<signatures.size();
 }
 
 // NOLINTEND(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)

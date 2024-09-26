@@ -131,6 +131,7 @@ ListView {
 
     model: MuPdfModel {
         id: pdfModel
+        mustProcessSignatures: true
     }
 
     delegate: Column {

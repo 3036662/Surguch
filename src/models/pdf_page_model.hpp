@@ -38,12 +38,20 @@ public:
 
   Q_INVOKABLE void redrawAll();
 
+  Q_PROPERTY(bool mustProcessSignatures READ mustProcessSignatures WRITE setMustProcessSignatures);
+  bool mustProcessSignatures() const {return process_signatures_;}
+  void setMustProcessSignatures(bool val) {process_signatures_=val;}
+
+
 private:
+  void processSignatures() const;
+
   fz_context *fzctx_ = nullptr;
   QString file_source_;
   fz_document *fzdoc_ = nullptr;
   pdf_document *pdfdoc_ = nullptr;
   int page_count_ = 0;
+  bool process_signatures_=false;
 };
 
 #endif // PDF_PAGE_MODEL_HPP
