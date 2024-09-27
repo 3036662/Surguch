@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import alt.pdfcsp.pdfModel
 import alt.pdfcsp.pdfRender
+import alt.pdfcsp.signaturesListModel
 
 Item {
     id: root
@@ -34,24 +35,26 @@ Item {
             visible: showState == LeftSideBar.ShowState.Preview
         }
 
-        SignaturesList{
-            id: sigListView
-            visible: showState == LeftSideBar.ShowState.Certs
+        SignaturesListModel {
+            id: siglistModel
         }
 
-        // Item{
-        //     id: certsInfo
-        //     visible: showState == LeftSideBar.ShowState.Certs
-        //     Layout.maximumWidth: 100
-        //     Layout.fillHeight: true
-        //     clip:true
+        SignaturesList{
+            id: sigListView
+            visible: showState == LeftSideBar.ShowState.Certs && siglistModel.rowCount()>0
+        }
 
-        //     Rectangle{
-        //         width:50
-        //         height:50
-        //         color:"white"
-        //     }
-        // }
+        Item{
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.fill:parent
+            visible: showState == LeftSideBar.ShowState.Certs && siglistModel.rowCount()===0
+            Text{
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: parent.top
+                topPadding: 20
+                text: qsTr("No signatures")
+            }
+        }
 
     }
 

@@ -17,5 +17,8 @@
         <file>icons/minus-circle.svg</file>
         <file>icons/search-custom.svg</file>
         <file>icons/fullscreen-custom.svg</file>
+        <file>icons/medal-ribbon-pink.svg</file>
+        <file>icons/medal-ribbon-green.svg</file>
+        <file>icons/medal-ribbon.svg</file>
     </qresource>
 </RCC>

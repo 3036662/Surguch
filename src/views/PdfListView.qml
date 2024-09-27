@@ -108,6 +108,7 @@ ListView {
         pdfModel.setSource(source)
         setZoom(100)
         delegateRotation = 0
+        leftSideBar.showPreviews()
     }
 
     onZoomPageFactChanged: {

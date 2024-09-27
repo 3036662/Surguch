@@ -46,7 +46,6 @@ QVariant SignaturesListModel::data(const QModelIndex &index, int role) const
 void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs){
    beginResetModel();
    raw_signatures_=std::move(sigs);
-   qWarning()<<"Signatures list updated"<<raw_signatures_.size();
    endResetModel();
 }
 
