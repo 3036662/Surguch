@@ -4,6 +4,8 @@
 #include "core/raw_signature.hpp"
 
 #include <QAbstractListModel>
+#include <memory>
+#include <QThread>
 
 class SignaturesListModel : public QAbstractListModel
 {
@@ -38,6 +40,7 @@ public slots:
 private:
     QHash<int, QByteArray> role_names_;
     std::vector<core::RawSignature> raw_signatures_;
+    std::unique_ptr<QThread> worker_thread_;
 };
 
 #endif // SIGNATURES_LIST_MODEL_HPP

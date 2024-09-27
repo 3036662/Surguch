@@ -5,6 +5,7 @@ add_library(appcore OBJECT
     raw_signature.hpp raw_signature.cpp
     utils.hpp
     utils.cpp
+    signatures_validator.hpp signatures_validator.cpp
 )
 
 target_include_directories(appcore PRIVATE ${MUPDF_INCLUDE_DIR})

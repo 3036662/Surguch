@@ -1,4 +1,5 @@
 #include "signatures_list_model.hpp"
+#include "core/signatures_validator.hpp"
 
 SignaturesListModel::SignaturesListModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -49,6 +50,31 @@ QVariant SignaturesListModel::data(const QModelIndex &index, int role) const
 void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs){
    beginResetModel();
    raw_signatures_=std::move(sigs);
+   if (worker_thread_ && worker_thread_->isRunning()){
+       worker_thread_->requestInterruption();
+       worker_thread_->wait();
+   }
+   worker_thread_=std::make_unique<QThread>();
+   core::SignaturesValidator* validator=new core::SignaturesValidator();
+   validator->moveToThread(worker_thread_.get());
+   QObject::connect(worker_thread_.get(), &QThread::started, [this,validator]() {
+          emit validator->validateSignatures(raw_signatures_);
+   });
+   QObject::connect(worker_thread_.get(),
+                    &QThread::finished, []{
+       qWarning()<<"Finish recieved";
+   });;
+   QObject::connect(validator,&core::SignaturesValidator::validationFinished,[this]{
+       qWarning()<<"Finished validation";
+        worker_thread_->quit();
+   });
+
+   QObject::connect(worker_thread_.get(),
+                    &QThread::finished, validator, &core::SignaturesValidator::deleteLater);
+
+   worker_thread_->start();
+   //TODO(Oleg) check if everything is deleted
+
    endResetModel();
 }
 
