@@ -22,6 +22,10 @@ ListView {
             Layout.fillWidth: true
             Layout.preferredHeight: 30
 
+            BusyIndicator{
+                leftPadding: 10
+                running: true
+            }
             Column {
                 width: parent.width
                 anchors.verticalCenter: parent.verticalCenter
