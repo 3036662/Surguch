@@ -25,7 +25,9 @@ ListView {
             BusyIndicator{
                 leftPadding: 10
                 running: true
+                visible: !model.empty
             }
+
             Column {
                 width: parent.width
                 anchors.verticalCenter: parent.verticalCenter
@@ -38,7 +40,6 @@ ListView {
                 Text {
                     visible: model.empty
                     anchors.horizontalCenter: parent.horizontalCenter
-                    //anchors.verticalCenter: parent.verticalCenter
                     text: qsTr("Unsigned (empty)")
                     topPadding: 5
                     font.pointSize: sigTitle.font.pointSize / 1.5
