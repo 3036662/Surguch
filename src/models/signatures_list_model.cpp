@@ -6,6 +6,7 @@ SignaturesListModel::SignaturesListModel(QObject *parent)
     role_names_[SigInfoRole]="sigInfo";
     role_names_[CheckStatusRole]="checkStatus";
     role_names_[ValidRole]="valid";
+    role_names_[EmptyRole]="empty";
 }
 
 QVariant SignaturesListModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -26,7 +27,7 @@ int SignaturesListModel::rowCount(const QModelIndex &parent) const
 
 QVariant SignaturesListModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid()){
+    if (!index.isValid() || index.row()>raw_signatures_.size()-1){
         return {};
     }
     switch(role){
@@ -39,6 +40,8 @@ QVariant SignaturesListModel::data(const QModelIndex &index, int role) const
         case ValidRole:
             return false;
             break;
+        case EmptyRole:
+            return raw_signatures_.at(index.row()).getSigData().empty();
     }
     return {};
 }

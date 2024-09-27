@@ -12,7 +12,8 @@ class SignaturesListModel : public QAbstractListModel
     enum RoleNames{
         SigInfoRole = Qt::UserRole,
         CheckStatusRole =Qt::UserRole+1,
-        ValidRole= Qt::UserRole+2
+        ValidRole= Qt::UserRole+2,
+        EmptyRole = Qt::UserRole+3
     };
 
 
