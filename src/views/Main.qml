@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import alt.pdfcsp.pdfModel
 
 ApplicationWindow {
     id: root
@@ -70,6 +71,11 @@ ApplicationWindow {
                 }
             }
         }
+    }
+
+    MuPdfModel {
+           id: pdfModel
+           mustProcessSignatures: true
     }
 
     Component.onCompleted: {

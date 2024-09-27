@@ -129,10 +129,7 @@ ListView {
         }
     }
 
-    model: MuPdfModel {
-        id: pdfModel
-        mustProcessSignatures: true
-    }
+    model:pdfModel
 
     delegate: Column {
         width: root.width

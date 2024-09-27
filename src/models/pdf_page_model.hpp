@@ -3,6 +3,7 @@
 
 #include "mupdf/fitz.h"
 #include "mupdf/pdf.h"
+#include "core/raw_signature.hpp"
 #include <QAbstractListModel>
 
 class PdfPageModel : public QAbstractListModel {
@@ -42,9 +43,11 @@ public:
   bool mustProcessSignatures() const {return process_signatures_;}
   void setMustProcessSignatures(bool val) {process_signatures_=val;}
 
+signals:
+  void signaturesFound(std::vector<core::RawSignature> sigs);
 
 private:
-  void processSignatures() const;
+  void processSignatures() ;
 
   fz_context *fzctx_ = nullptr;
   QString file_source_;

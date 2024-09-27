@@ -110,7 +110,7 @@ void PdfPageModel::redrawAll() {
   endResetModel();
 }
 
-void PdfPageModel::processSignatures() const{
+void PdfPageModel::processSignatures() {
     std::unique_ptr<core::SignatureProcessor> prc;
     const QString err_str="[PdfPageModel] Error processing signatures ";
     try{
@@ -127,6 +127,7 @@ void PdfPageModel::processSignatures() const{
         return;
     }
     std::vector<core::RawSignature> signatures=prc->ParseSignatures();
+    emit signaturesFound(signatures);
     qWarning()<< "signatures found "<<signatures.size();
 }
 

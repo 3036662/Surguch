@@ -6,7 +6,6 @@ import alt.pdfcsp.pdfRender
 
 Item {
     id: root
-
     enum ShowState{
         Preview,
         Certs
@@ -35,24 +34,24 @@ Item {
             visible: showState == LeftSideBar.ShowState.Preview
         }
 
-        Column{
-            id: certsInfo
+        SignaturesList{
+            id: sigListView
             visible: showState == LeftSideBar.ShowState.Certs
-            Layout.maximumWidth: 100
-            Layout.fillHeight: true
-            clip:true
-
-            Rectangle{
-                width:200
-                height:200
-                color:"white"
-                border.color: "black"
-                border.width:2
-                Text{
-                    text: "TODO Certificates info"
-                }
-            }
         }
+
+        // Item{
+        //     id: certsInfo
+        //     visible: showState == LeftSideBar.ShowState.Certs
+        //     Layout.maximumWidth: 100
+        //     Layout.fillHeight: true
+        //     clip:true
+
+        //     Rectangle{
+        //         width:50
+        //         height:50
+        //         color:"white"
+        //     }
+        // }
 
     }
 

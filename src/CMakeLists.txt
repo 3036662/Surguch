@@ -35,6 +35,7 @@ qt_add_qml_module(appgui_pdf_csp
     SOURCES cpp_views/pdf_page_render.hpp cpp_views/pdf_page_render.cpp
     QML_FILES views/LeftSideBar.qml
     QML_FILES views/PreviewListView.qml
+    QML_FILES views/SignaturesList.qml
 )
 
 add_subdirectory(core)
