@@ -15,11 +15,16 @@ public:
 
     ~SignaturesValidator() override;
 
+    void abort(){abort_recieved_=true;};
+
 public slots:
     void validateSignatures(std::vector<core::RawSignature> raw_signatures_);
 
 signals:
     void validationFinished();
+
+private:
+    bool abort_recieved_=false;
 };
 
 }// namespace core

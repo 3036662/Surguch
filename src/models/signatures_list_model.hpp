@@ -2,6 +2,7 @@
 #define SIGNATURES_LIST_MODEL_HPP
 
 #include "core/raw_signature.hpp"
+#include "core/signatures_validator.hpp"
 
 #include <QAbstractListModel>
 #include <memory>
@@ -40,7 +41,8 @@ public slots:
 private:
     QHash<int, QByteArray> role_names_;
     std::vector<core::RawSignature> raw_signatures_;
-    std::unique_ptr<QThread> worker_thread_;
+    QThread* worker_thread_=nullptr;
+    core::SignaturesValidator* validator_=nullptr;
 };
 
 #endif // SIGNATURES_LIST_MODEL_HPP

@@ -1,5 +1,6 @@
 #include "signatures_list_model.hpp"
 #include "core/signatures_validator.hpp"
+#include <QCoreApplication>
 
 SignaturesListModel::SignaturesListModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -51,26 +52,38 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs){
    beginResetModel();
    raw_signatures_=std::move(sigs);
    if (worker_thread_ && worker_thread_->isRunning()){
+       validator_->abort();
        worker_thread_->requestInterruption();
-       worker_thread_->wait();
+       //worker_thread_->wait();
    }
-   worker_thread_=std::make_unique<QThread>();
-   core::SignaturesValidator* validator=new core::SignaturesValidator();
-   validator->moveToThread(worker_thread_.get());
-   QObject::connect(worker_thread_.get(), &QThread::started, [this,validator]() {
-          emit validator->validateSignatures(raw_signatures_);
+   worker_thread_=new QThread();
+   validator_=new core::SignaturesValidator();
+   validator_->moveToThread(worker_thread_);
+
+   QObject::connect(QCoreApplication::instance(),&QCoreApplication::aboutToQuit,[this]{
+      validator_->abort();
+      worker_thread_->requestInterruption();
+      worker_thread_->wait();
    });
-   QObject::connect(worker_thread_.get(),
-                    &QThread::finished, []{
-       qWarning()<<"Finish recieved";
-   });;
-   QObject::connect(validator,&core::SignaturesValidator::validationFinished,[this]{
+
+   QObject::connect(worker_thread_, &QThread::started, [this]() {
+          emit validator_->validateSignatures(raw_signatures_);
+   });
+   QObject::connect(validator_,&core::SignaturesValidator::validationFinished,[this]{
        qWarning()<<"Finished validation";
         worker_thread_->quit();
    });
+   QObject::connect(worker_thread_,
+                    &QThread::finished, validator_, &core::SignaturesValidator::deleteLater);
 
-   QObject::connect(worker_thread_.get(),
-                    &QThread::finished, validator, &core::SignaturesValidator::deleteLater);
+   QObject::connect(worker_thread_,
+                    &QThread::finished, worker_thread_, &QThread::deleteLater);
+
+   QObject::connect(worker_thread_,
+                    &QThread::finished, [this]{
+       worker_thread_=nullptr;
+       qWarning()<<"Thread finish recieved";
+   });;
 
    worker_thread_->start();
    //TODO(Oleg) check if everything is deleted
