@@ -118,5 +118,4 @@ RenderRes MuPageRender::RenderPage(int page_number, float custom_rot_value,
 // NOLINTEND(bugprone-multi-level-implicit-pointer-conversion,bugprone-integer-division,
 // cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 
-
 } // namespace core

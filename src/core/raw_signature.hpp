@@ -18,9 +18,13 @@ class RawSignature {
 public:
   explicit RawSignature(fz_context *fzctx, const PdfObjKeeper &sig_obj);
 
-  [[nodiscard]] const BytesVector &getSigData() const noexcept { return sigdata_; }
+  [[nodiscard]] const BytesVector &getSigData() const noexcept {
+    return sigdata_;
+  }
 
-  [[nodiscard]] const RangesVector &getByteRanges() const noexcept { return byteranges_; }
+  [[nodiscard]] const RangesVector &getByteRanges() const noexcept {
+    return byteranges_;
+  }
 
 private:
   bool readContent(fz_context *fzctx, pdf_obj *sig_val) noexcept;

@@ -6,9 +6,8 @@
 
 namespace core {
 
-
 // NOLINTBEGIN(bugprone-multi-level-implicit-pointer-conversion,
-//cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+// cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 
 RawSignature::RawSignature(fz_context *fzctx, const PdfObjKeeper &sig_obj) {
   if (fzctx == nullptr) {
@@ -85,9 +84,7 @@ bool RawSignature::readByteRanges(fz_context *fzctx,
   return true;
 }
 
-
 // NOLINTEND(bugprone-multi-level-implicit-pointer-conversion,
-//cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-
+// cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 
 } // namespace core

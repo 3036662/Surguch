@@ -5,47 +5,49 @@
 #include "core/signatures_validator.hpp"
 
 #include <QAbstractListModel>
-#include <memory>
 #include <QThread>
+#include <memory>
 
-class SignaturesListModel : public QAbstractListModel
-{
-    Q_OBJECT
+class SignaturesListModel : public QAbstractListModel {
+  Q_OBJECT
 
-    enum RoleNames{
-        SigInfoRole = Qt::UserRole,
-        CheckStatusRole =Qt::UserRole+1,
-        ValidRole= Qt::UserRole+2,
-        EmptyRole = Qt::UserRole+3
-    };
-
+  enum RoleNames {
+    SigInfoRole = Qt::UserRole,
+    CheckStatusRole = Qt::UserRole + 1,
+    ValidRole = Qt::UserRole + 2,
+    EmptyRole = Qt::UserRole + 3
+  };
 
 public:
-    explicit SignaturesListModel(QObject *parent = nullptr);
+  explicit SignaturesListModel(QObject *parent = nullptr);
 
-    // Header:
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+  // Header:
+  QVariant headerData(int section, Qt::Orientation orientation,
+                      int role = Qt::DisplayRole) const override;
 
-    // Basic functionality:
-    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+  // Basic functionality:
+  [[nodiscard]] int
+  rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+  [[nodiscard]] QVariant data(const QModelIndex &index,
+                              int role = Qt::DisplayRole) const override;
 
-    QHash<int, QByteArray> roleNames() const override;
+  QHash<int, QByteArray> roleNames() const override;
 
 public slots:
 
-    void updateSigList(std::vector<core::RawSignature> sigs,QString file_source);
+  void updateSigList(std::vector<core::RawSignature> sigs, QString file_source);
 
-    void saveValidationResult(std::shared_ptr<core::CSPResponse> validation_result,size_t ind);
-
+  void
+  saveValidationResult(std::shared_ptr<core::CSPResponse> validation_result,
+                       size_t ind);
 
 private:
-    QHash<int, QByteArray> role_names_;
-    std::vector<core::RawSignature> raw_signatures_;
-    QThread* worker_thread_=nullptr;
-    core::SignaturesValidator* validator_=nullptr;
-    std::map<size_t,std::shared_ptr<core::CSPResponse>> validation_results_;
+  QHash<int, QByteArray> role_names_;
+  std::vector<core::RawSignature> raw_signatures_;
+  QThread *worker_thread_ = nullptr;
+  core::SignaturesValidator *validator_ = nullptr;
+  std::map<size_t, std::shared_ptr<core::CSPResponse>> validation_results_;
 };
 
 #endif // SIGNATURES_LIST_MODEL_HPP

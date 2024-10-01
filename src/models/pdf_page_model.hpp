@@ -1,9 +1,9 @@
 #ifndef PDF_PAGE_MODEL_HPP
 #define PDF_PAGE_MODEL_HPP
 
+#include "core/raw_signature.hpp"
 #include "mupdf/fitz.h"
 #include "mupdf/pdf.h"
-#include "core/raw_signature.hpp"
 #include <QAbstractListModel>
 
 class PdfPageModel : public QAbstractListModel {
@@ -35,26 +35,27 @@ public:
 
   [[nodiscard]] Q_INVOKABLE fz_context *getCtx() const;
 
-  [[nodiscard]] Q_INVOKABLE pdf_document* getPdfDoc() const;
+  [[nodiscard]] Q_INVOKABLE pdf_document *getPdfDoc() const;
 
   Q_INVOKABLE void redrawAll();
 
-  Q_PROPERTY(bool mustProcessSignatures READ mustProcessSignatures WRITE setMustProcessSignatures);
-  bool mustProcessSignatures() const {return process_signatures_;}
-  void setMustProcessSignatures(bool val) {process_signatures_=val;}
+  Q_PROPERTY(bool mustProcessSignatures READ mustProcessSignatures WRITE
+                 setMustProcessSignatures);
+  bool mustProcessSignatures() const { return process_signatures_; }
+  void setMustProcessSignatures(bool val) { process_signatures_ = val; }
 
 signals:
-  void signaturesFound(std::vector<core::RawSignature> sigs,QString file_path);
+  void signaturesFound(std::vector<core::RawSignature> sigs, QString file_path);
 
 private:
-  void processSignatures() ;
+  void processSignatures();
 
   fz_context *fzctx_ = nullptr;
   QString file_source_;
   fz_document *fzdoc_ = nullptr;
   pdf_document *pdfdoc_ = nullptr;
   int page_count_ = 0;
-  bool process_signatures_=false;
+  bool process_signatures_ = false;
 };
 
 #endif // PDF_PAGE_MODEL_HPP

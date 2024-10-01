@@ -11,7 +11,7 @@ class PdfPageRender : public QQuickItem {
   Q_OBJECT
 public:
   PdfPageRender();
-  ~PdfPageRender() override=default;
+  ~PdfPageRender() override = default;
   PdfPageRender(const PdfPageRender &) = delete;
   PdfPageRender(PdfPageRender &&) = delete;
   PdfPageRender &operator=(const PdfPageRender &) = delete;

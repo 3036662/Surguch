@@ -26,7 +26,7 @@ void PdfPageRender::geometryChange(const QRectF &newGeometry,
         qFabs(new_zoom_dpi_ - zoom_dpi_last_) / zoom_dpi_last_;
     if (zoom_change > 0.1) {
       needs_new_rendering = true;
-      //qWarning() << "zoom change" << zoom_change * 100 << "%";
+      // qWarning() << "zoom change" << zoom_change * 100 << "%";
     }
   }
   if (needs_new_rendering && isVisible()) {
