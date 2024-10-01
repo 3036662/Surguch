@@ -85,7 +85,7 @@ void PdfPageModel::setSource(const QString &path) {
       qWarning("Not a pdf document");
     }
     emit beginResetModel();
-    file_source_ = path;
+    file_source_ = file_path;
     // get the number of pages
     page_count_ = fz_count_pages(fzctx_, fzdoc_);
     emit endResetModel();

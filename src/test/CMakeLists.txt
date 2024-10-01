@@ -12,6 +12,20 @@ add_test(NAME test1 COMMAND mytest)
 target_include_directories(test1 PUBLIC ${CMAKE_SOURCE_DIR}/src/)
 target_include_directories(test1 PRIVATE ${MUPDF_INCLUDE_DIR})
 
+target_include_directories(test1 PUBLIC ${CMAKE_SOURCE_DIR}/src/core/csp_c_bridge)
+
+target_include_directories(test1 PUBLIC
+    ${PDFCSP_INCLUDE_DIR}
+)
+
+target_include_directories(test1 PUBLIC
+    ${PDFCSP_INCLUDE_DIR}csp/checks
+)
+
+target_include_directories(test1 PUBLIC
+    ${PDFCSP_INCLUDE_DIR}csp
+)
+
 target_link_libraries(test1 PRIVATE Qt::Test)
 target_link_libraries(test1  PRIVATE appcore)
 target_link_libraries(test1  PRIVATE models)

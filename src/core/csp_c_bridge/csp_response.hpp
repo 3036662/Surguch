@@ -6,6 +6,7 @@
 #include <string>
 #include <QString>
 #include <vector>
+namespace core{
 
 class CSPResponse
 {
@@ -29,4 +30,5 @@ public:
     time_t cert_not_after = 0;
 };
 
+} // namespace core
 #endif // CSP_RESPONSE_HPP

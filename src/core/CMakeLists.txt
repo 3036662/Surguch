@@ -12,8 +12,10 @@ add_subdirectory(csp_c_bridge)
 
 
 target_include_directories(appcore PRIVATE ${MUPDF_INCLUDE_DIR})
-target_include_directories(appcore PRIVATE csp_c_bridge)
+target_include_directories(appcore PUBLIC csp_c_bridge)
 target_include_directories(appcore PRIVATE .)
+
+
 
 target_link_libraries(appcore PUBLIC csp_c_bridge)
 target_link_libraries(appcore PRIVATE Qt6::Core)

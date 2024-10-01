@@ -1,7 +1,6 @@
 #include "signatures_validator.hpp"
 #include <QDebug>
 #include <QThread>
-#include "csp_response.hpp"
 
 namespace core{
 
@@ -18,7 +17,8 @@ SignaturesValidator::~SignaturesValidator(){
 
 void SignaturesValidator::validateSignatures(std::vector<core::RawSignature> raw_signatures_,QString file_source){
     bool aborted=false;
-    for (const auto& sig:raw_signatures_){
+    for (size_t i=0;i<raw_signatures_.size();++i){
+        const auto& sig=raw_signatures_[i];
         if (abort_recieved_ || QThread::currentThread()->isInterruptionRequested()){
             qWarning()<<"Validation abort";
             aborted=true;
@@ -26,8 +26,16 @@ void SignaturesValidator::validateSignatures(std::vector<core::RawSignature> raw
         }
         qWarning() << "validating signatures "<<raw_signatures_.size();
         //QThread::sleep(5);
-        auto result=std::make_unique<CSPResponse>(sig,file_source.toStdString());
-
+        std::shared_ptr<CSPResponse> result;
+        try{
+         result=std::make_shared<CSPResponse>(sig,file_source.toStdString());
+        }
+        catch (const std::exception ex){
+            qWarning() <<ex.what();
+        }
+        if (result){
+            emit validatationResult(result,i);
+        }
     }
     if (aborted){
         qWarning() << "quit without sending results";

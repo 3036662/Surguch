@@ -4,6 +4,8 @@
 #include "raw_signature.hpp"
 #include <algorithm>
 
+namespace core{
+
 CSPResponse::CSPResponse(const core::RawSignature& raw_signature,const std::string& path)
 {
     // create CPodParams
@@ -25,6 +27,9 @@ CSPResponse::CSPResponse(const core::RawSignature& raw_signature,const std::stri
     params.file_path_size=path.size()+1;
     // call the library get CPodResult
     pdfcsp::c_bridge::CPodResult * const pod=CGetCheckResult(params);
+    if (pod==nullptr){
+        throw std::runtime_error("[CSPResponse] error getting pod result");
+    }
     // create CSPResponse
     bres=pod->bres;
     cades_t_str=QString(pod->cades_t_str);
@@ -42,3 +47,5 @@ CSPResponse::CSPResponse(const core::RawSignature& raw_signature,const std::stri
     // Free CPodResult
     pdfcsp::c_bridge::CFreeResult(pod);
 }
+
+} // namespace core

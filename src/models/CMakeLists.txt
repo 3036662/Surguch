@@ -6,4 +6,18 @@ add_library(models OBJECT
 target_include_directories(models PRIVATE ${MUPDF_INCLUDE_DIR})
 target_include_directories(models PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
+target_include_directories(models PRIVATE ${CMAKE_SOURCE_DIR}/src/core/csp_c_bridge)
+target_include_directories(models PRIVATE ${CMAKE_SOURCE_DIR}/src/core)
+
+target_include_directories(models PUBLIC
+    ${PDFCSP_INCLUDE_DIR}
+)
+target_include_directories(models PUBLIC
+    ${PDFCSP_INCLUDE_DIR}csp/checks
+)
+target_include_directories(models PUBLIC
+    ${PDFCSP_INCLUDE_DIR}csp
+)
+
 target_link_libraries(models PRIVATE Qt6::Core)
+

@@ -2,7 +2,9 @@
 #define SIGNATUES_VALIDATOR_HPP
 
 #include <QObject>
+#include <memory>
 #include "raw_signature.hpp"
+#include "csp_response.hpp"
 
 
 namespace core{
@@ -22,6 +24,8 @@ public slots:
 
 signals:
     void validationFinished();
+
+    void validatationResult(std::shared_ptr<CSPResponse> validation_result,size_t index);
 
 private:
     bool abort_recieved_=false;

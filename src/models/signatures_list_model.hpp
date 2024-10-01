@@ -37,12 +37,15 @@ public slots:
 
     void updateSigList(std::vector<core::RawSignature> sigs,QString file_source);
 
+    void saveValidationResult(std::shared_ptr<core::CSPResponse> validation_result,size_t ind);
+
 
 private:
     QHash<int, QByteArray> role_names_;
     std::vector<core::RawSignature> raw_signatures_;
     QThread* worker_thread_=nullptr;
     core::SignaturesValidator* validator_=nullptr;
+    std::map<size_t,std::shared_ptr<core::CSPResponse>> validation_results_;
 };
 
 #endif // SIGNATURES_LIST_MODEL_HPP
