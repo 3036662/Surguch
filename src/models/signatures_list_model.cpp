@@ -48,10 +48,10 @@ QVariant SignaturesListModel::data(const QModelIndex &index, int role) const
     return {};
 }
 
-void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs){
+void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,QString file_source){
    beginResetModel();
    raw_signatures_=std::move(sigs);
-   if (worker_thread_ && worker_thread_->isRunning()){
+   if (worker_thread_!=nullptr && worker_thread_->isRunning()){
        validator_->abort();
        worker_thread_->requestInterruption();
        //worker_thread_->wait();
@@ -66,8 +66,8 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs){
       worker_thread_->wait();
    });
 
-   QObject::connect(worker_thread_, &QThread::started, [this]() {
-          emit validator_->validateSignatures(raw_signatures_);
+   QObject::connect(worker_thread_, &QThread::started, [this,file_source]() {
+          emit validator_->validateSignatures(raw_signatures_,file_source);
    });
    QObject::connect(validator_,&core::SignaturesValidator::validationFinished,[this]{
        qWarning()<<"Finished validation";

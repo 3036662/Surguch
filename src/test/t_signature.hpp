@@ -27,6 +27,8 @@ private slots:
 
     void parseHexString();
 
+    void cBridge();
+
 private:
 
     bool sigNumb(const QString& file,int sig_expected) const;
@@ -36,5 +38,7 @@ private:
     const QString file2_=test_files_dir_+"14_acrob_CADES-XLT1.pdf";
     const QString file3_=test_files_dir_+"21_cam_CADES-XLT1_5signs.pdf";
 };
+
+
 
 #endif // T_SIGNATURE_HPP

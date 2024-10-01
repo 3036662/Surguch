@@ -44,7 +44,7 @@ public:
   void setMustProcessSignatures(bool val) {process_signatures_=val;}
 
 signals:
-  void signaturesFound(std::vector<core::RawSignature> sigs);
+  void signaturesFound(std::vector<core::RawSignature> sigs,QString file_path);
 
 private:
   void processSignatures() ;

@@ -1,6 +1,7 @@
 #include "t_signature.hpp"
 #include "models/pdf_page_model.hpp"
 #include "core/signature_processor.hpp"
+#include "core/signatures_validator.hpp"
 #include "core/utils.hpp"
 #include <QTest>
 #include <iostream>
@@ -88,6 +89,21 @@ bool TSignature::sigNumb(const QString& file,int sig_expected) const{
     model.setSource(file);
     core::SignatureProcessor prc(model.getCtx(),model.getPdfDoc());
     return prc.findSignatures() && (prc.getSignaturesCount()==sig_expected);
+}
+
+void TSignature::cBridge(){
+    PdfPageModel model;
+    model.setSource(file1_);
+    std::unique_ptr<core::SignatureProcessor> processor=nullptr;
+    QVERIFY_THROWS_NO_EXCEPTION(processor=std::make_unique<core::SignatureProcessor>(model.getCtx(),model.getPdfDoc()));
+    QVERIFY(processor);
+    QVERIFY(processor->findSignatures());
+    std::vector<core::RawSignature> signatures=processor->ParseSignatures();
+    QVERIFY(!signatures.empty());
+    core::SignaturesValidator validator;
+    validator.validateSignatures(signatures,file1_);
+
+
 }
 
 

@@ -124,7 +124,7 @@ void PdfPageModel::processSignatures() {
         return;
     }
     std::vector<core::RawSignature> signatures=prc->ParseSignatures();
-    emit signaturesFound(signatures);
+    emit signaturesFound(signatures,file_source_);
     qWarning()<< "signatures found "<<signatures.size();
 }
 

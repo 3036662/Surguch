@@ -35,7 +35,7 @@ public:
 
 public slots:
 
-    void updateSigList(std::vector<core::RawSignature> sigs);
+    void updateSigList(std::vector<core::RawSignature> sigs,QString file_source);
 
 
 private:

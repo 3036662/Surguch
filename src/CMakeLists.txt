@@ -23,6 +23,10 @@ SET (MUPDF_INCLUDE_DIR /home/oleg/dev/mupdf/include/)
 SET (MUPDF_LINK_PATH /home/oleg/dev/mupdf/build/shared-release/libmupdf.so.25.0)
 #SET (MUPDF_LINK_PATH /home/oleg/dev/mupdf/build/shared-debug/libmupdf.so.25.0)
 
+SET (PDFCSP_LINK_PATH /home/oleg/dev/eSign/csp_pdf/build/c_brigde/libc_brigde.so)
+SET (PDFCSP_INCLUDE_DIR /home/oleg/dev/eSign/csp_pdf/)
+
+
 qt_add_qml_module(appgui_pdf_csp
     URI gui_pdf_csp
     VERSION 1.0
@@ -48,6 +52,10 @@ target_link_libraries(appgui_pdf_csp PRIVATE
 
 target_link_libraries(appgui_pdf_csp PRIVATE
     models
+)
+
+target_link_libraries(appgui_pdf_csp PRIVATE
+    csp_c_bridge
 )
 
 
@@ -80,6 +88,13 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     message("Building tests")
     add_subdirectory(test)
 endif()
+
+# alt csp lib linkage
+# harcoded mupdf linkage
+target_link_libraries(appgui_pdf_csp
+     PRIVATE ${PDFCSP_LINK_PATH}
+)
+
 
 include(GNUInstallDirs)
 

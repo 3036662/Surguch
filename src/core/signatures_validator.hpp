@@ -18,7 +18,7 @@ public:
     void abort(){abort_recieved_=true;};
 
 public slots:
-    void validateSignatures(std::vector<core::RawSignature> raw_signatures_);
+    void validateSignatures(std::vector<core::RawSignature> raw_signatures_,QString file_source);
 
 signals:
     void validationFinished();
