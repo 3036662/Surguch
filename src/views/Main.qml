@@ -33,6 +33,10 @@ ApplicationWindow {
         PdfListView {
             id: pdfListView
         }
+
+        RightSideBar{
+            id: rightSideBar
+        }
     }
 
     footer: Pane {

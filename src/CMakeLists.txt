@@ -40,6 +40,13 @@ qt_add_qml_module(appgui_pdf_csp
     QML_FILES views/LeftSideBar.qml
     QML_FILES views/PreviewListView.qml
     QML_FILES views/SignaturesList.qml
+    QML_FILES views/RightSideBar.qml
+    QML_FILES views/TextPairBool.qml
+    SOURCES
+    QML_FILES views/RightSBHorizontalDelimiter.qml
+    QML_FILES views/TextPair.qml
+    QML_FILES views/RSideBarStatusMedal.qml
+    QML_FILES views/RightSideBarCertChain.qml
 )
 
 add_subdirectory(core)
