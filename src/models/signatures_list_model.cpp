@@ -29,12 +29,21 @@ QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
   }
   switch (role) {
   case SigInfoRole:
+    if (validation_results_.count(index.row())>0){
+        return validation_results_.at(index.row())->subj_common_name;
+    }
     return "Signature " + QString::number(index.row());
     break;
   case CheckStatusRole:
+    if (validation_results_.count(index.row())>0){
+          return true;
+    }
     return false;
     break;
   case ValidRole:
+    if (validation_results_.count(index.row())>0){
+            return validation_results_.at(index.row())->bres.check_summary;
+    }
     return false;
     break;
   case EmptyRole:

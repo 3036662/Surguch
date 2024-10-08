@@ -10,6 +10,9 @@ add_library(appcore OBJECT
 
 add_subdirectory(csp_c_bridge)
 
+target_include_directories(appcore PUBLIC
+    ${PDFCSP_INCLUDE_DIR}/c_bridge
+)
 
 target_include_directories(appcore PRIVATE ${MUPDF_INCLUDE_DIR})
 target_include_directories(appcore PUBLIC csp_c_bridge)

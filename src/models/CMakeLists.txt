@@ -19,5 +19,9 @@ target_include_directories(models PUBLIC
     ${PDFCSP_INCLUDE_DIR}csp
 )
 
+target_include_directories(models PUBLIC
+    ${PDFCSP_INCLUDE_DIR}/c_bridge
+)
+
 target_link_libraries(models PRIVATE Qt6::Core)
 

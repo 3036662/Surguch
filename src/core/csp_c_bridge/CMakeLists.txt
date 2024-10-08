@@ -15,6 +15,10 @@ target_include_directories(csp_c_bridge PUBLIC
 )
 
 target_include_directories(csp_c_bridge PUBLIC
+    ${PDFCSP_INCLUDE_DIR}c_bridge
+)
+
+target_include_directories(csp_c_bridge PUBLIC
     ${CMAKE_SOURCE_DIR}/src/core/
 )
 

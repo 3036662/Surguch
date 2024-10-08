@@ -28,7 +28,7 @@ void SignaturesValidator::validateSignatures(
     std::shared_ptr<CSPResponse> result;
     try {
       result = std::make_shared<CSPResponse>(sig, file_source.toStdString());
-    } catch (const std::exception ex) {
+    } catch (const std::exception& ex) {
       qWarning() << ex.what();
     }
     if (result) {

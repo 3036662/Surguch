@@ -1,6 +1,5 @@
 #include "csp_response.hpp"
 
-#include "c_brigde/c_bridge.hpp"
 #include "raw_signature.hpp"
 #include <algorithm>
 
@@ -35,22 +34,54 @@ CSPResponse::CSPResponse(const core::RawSignature &raw_signature,
   bres = pod->bres;
   cades_t_str = QString(pod->cades_t_str);
   hashing_oid = QString(pod->hashing_oid);
-  std::copy(pod->encrypted_digest,
-            pod->encrypted_digest + pod->encrypted_digest_size,
-            std::back_inserter(encrypted_digest));
-  std::copy(pod->times_collection,
-            pod->times_collection + pod->times_collection_size,
-            std::back_inserter(times_collection));
-  std::copy(pod->x_times_collection,
-            pod->x_times_collection + pod->times_collection_size,
-            std::back_inserter(x_times_collection));
-  cert_issuer_dname = QString(pod->cert_issuer_dname);
-  cert_subject_dname = QString(pod->cert_subject_dname);
-  std::copy(pod->cert_public_key,
-            pod->cert_public_key + pod->cert_public_key_size,
-            std::back_inserter(cert_public_key));
-  std::copy(pod->cert_serial, pod->cert_serial + pod->cert_serial_size,
-            std::back_inserter(cert_serial));
+  if (pod->encrypted_digest != nullptr && pod->encrypted_digest_size > 0) {
+    std::copy(pod->encrypted_digest,
+              pod->encrypted_digest + pod->encrypted_digest_size,
+              std::back_inserter(encrypted_digest));
+  }
+  if (pod->times_collection != nullptr && pod->times_collection_size > 0) {
+    std::copy(pod->times_collection,
+              pod->times_collection + pod->times_collection_size,
+              std::back_inserter(times_collection));
+  }
+  if (pod->x_times_collection != nullptr && pod->x_times_collection_size > 0) {
+    std::copy(pod->x_times_collection,
+              pod->x_times_collection + pod->times_collection_size,
+              std::back_inserter(x_times_collection));
+  }
+  if (pod->cert_issuer_dname != nullptr) {
+    cert_issuer_dname = QString(pod->cert_issuer_dname);
+  }
+  if (pod->cert_subject_dname != nullptr) {
+    cert_subject_dname = QString(pod->cert_subject_dname);
+  }
+  if (pod->issuer_common_name != nullptr) {
+    issuer_common_name = QString(pod->issuer_common_name);
+  }
+  if (pod->issuer_email != nullptr) {
+    issuer_email = QString(pod->issuer_email);
+  }
+  if (pod->issuer_organization != nullptr) {
+    issuer_organization = QString(pod->issuer_organization);
+  }
+  if (pod->subj_common_name != nullptr) {
+    subj_common_name = QString(pod->subj_common_name);
+  }
+  if (pod->subj_email != nullptr) {
+    subj_email = QString(pod->subj_email);
+  }
+  if (pod->subj_organization != nullptr) {
+    subj_organization = QString(pod->subj_organization);
+  }
+  if (pod->cert_public_key != nullptr && pod->cert_public_key_size > 0) {
+    std::copy(pod->cert_public_key,
+              pod->cert_public_key + pod->cert_public_key_size,
+              std::back_inserter(cert_public_key));
+  }
+  if (pod->cert_serial != nullptr && pod->cert_serial_size > 0) {
+    std::copy(pod->cert_serial, pod->cert_serial + pod->cert_serial_size,
+              std::back_inserter(cert_serial));
+  }
   signers_time = pod->signers_time;
   cert_not_before = pod->cert_not_before;
   cert_not_after = pod->cert_not_after;

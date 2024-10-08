@@ -1,7 +1,7 @@
 #ifndef CSP_RESPONSE_HPP
 #define CSP_RESPONSE_HPP
 
-#include "c_brigde/c_bridge.hpp"
+#include "c_bridge.hpp"
 #include "raw_signature.hpp"
 #include <QString>
 #include <string>
@@ -21,6 +21,14 @@ public:
   std::vector<time_t> x_times_collection;
   QString cert_issuer_dname;
   QString cert_subject_dname;
+
+  QString issuer_common_name;
+  QString issuer_email;
+  QString issuer_organization;
+  QString subj_common_name;
+  QString subj_email;
+  QString subj_organization;
+
   std::vector<unsigned char> cert_public_key;
   std::vector<unsigned char> cert_serial;
 

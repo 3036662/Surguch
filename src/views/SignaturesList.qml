@@ -23,9 +23,10 @@ ListView {
             Layout.preferredHeight: 30
 
             BusyIndicator{
+                id: busy_indicator
                 leftPadding: 10
                 running: true
-                visible: !model.empty
+                visible: !model.empty && !model.checkStatus
             }
 
             Column {
@@ -33,9 +34,14 @@ ListView {
                 anchors.verticalCenter: parent.verticalCenter
 
                 Text {
+                    width:parent.width-medal_icon.width-busy_indicator.width-50
                     id: sigTitle
                     text: model.sigInfo
                     anchors.horizontalCenter: parent.horizontalCenter
+                    elide: Text.ElideRight
+                    wrapMode:Text.WordWrap
+                    maximumLineCount:3
+                    font.pointSize: text.length > 40 ? 5 : 10
                 }
                 Text {
                     visible: model.empty
@@ -46,6 +52,7 @@ ListView {
                 }
             }
             Item {
+                id: medal_icon
                 width: 20
                 height: 20
                 anchors.right: parent.right

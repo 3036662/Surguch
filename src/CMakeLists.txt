@@ -23,7 +23,7 @@ SET (MUPDF_INCLUDE_DIR /home/oleg/dev/mupdf/include/)
 SET (MUPDF_LINK_PATH /home/oleg/dev/mupdf/build/shared-release/libmupdf.so.25.0)
 #SET (MUPDF_LINK_PATH /home/oleg/dev/mupdf/build/shared-debug/libmupdf.so.25.0)
 
-SET (PDFCSP_LINK_PATH /home/oleg/dev/eSign/csp_pdf/build/c_brigde/libc_brigde.so)
+SET (PDFCSP_LINK_PATH /home/oleg/dev/eSign/csp_pdf/build/c_bridge/libcsp_c_bridge.so)
 SET (PDFCSP_INCLUDE_DIR /home/oleg/dev/eSign/csp_pdf/)
 
 
