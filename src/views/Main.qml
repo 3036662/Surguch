@@ -34,7 +34,7 @@ ApplicationWindow {
             id: pdfListView
         }
 
-        RightSideBar{
+        RightSideBar {
             id: rightSideBar
         }
     }
@@ -78,8 +78,8 @@ ApplicationWindow {
     }
 
     MuPdfModel {
-           id: pdfModel
-           mustProcessSignatures: true
+        id: pdfModel
+        mustProcessSignatures: true
     }
 
     Component.onCompleted: {
@@ -92,6 +92,8 @@ ApplicationWindow {
         // scroll to page
         headerSubBar.scrollToPage.connect(pdfListView.scrollToPage)
         leftSideBar.pageClick.connect(pdfListView.scrollToPage)
+        // show signature info
+        leftSideBar.showSigData.connect(rightSideBar.showData)
         // update zoom value in header
         pdfListView.zoomFactorUpdate.connect(headerSubBar.updateZoomValue)
         // update horizontal scroll position after flick

@@ -22,7 +22,7 @@ ListView {
             Layout.fillWidth: true
             Layout.preferredHeight: 30
 
-            BusyIndicator{
+            BusyIndicator {
                 id: busy_indicator
                 leftPadding: 10
                 running: true
@@ -34,13 +34,13 @@ ListView {
                 anchors.verticalCenter: parent.verticalCenter
 
                 Text {
-                    width:parent.width-medal_icon.width-busy_indicator.width-50
+                    width: parent.width - medal_icon.width - busy_indicator.width - 50
                     id: sigTitle
                     text: model.sigInfo
                     anchors.horizontalCenter: parent.horizontalCenter
                     elide: Text.ElideRight
-                    wrapMode:Text.WordWrap
-                    maximumLineCount:3
+                    wrapMode: Text.WordWrap
+                    maximumLineCount: 3
                     font.pointSize: text.length > 40 ? 5 : 10
                 }
                 Text {
@@ -61,6 +61,14 @@ ListView {
                     width: 20
                     height: 20
                     source: model.checkStatus === false ? "qrc:/icons/medal-ribbon.svg" : (model.valid === true ? "qrc:/icons/medal-ribbon-green.svg" : "qrc:/icons/medal-ribbon-pink.svg")
+                }
+            }
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: {
+                    console.warn("Sig clicked")
+                    showSigData(JSON.stringify(model.sigData))
                 }
             }
         }

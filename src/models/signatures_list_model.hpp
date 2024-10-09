@@ -15,7 +15,8 @@ class SignaturesListModel : public QAbstractListModel {
     SigInfoRole = Qt::UserRole,
     CheckStatusRole = Qt::UserRole + 1,
     ValidRole = Qt::UserRole + 2,
-    EmptyRole = Qt::UserRole + 3
+    EmptyRole = Qt::UserRole + 3,
+    SigData =Qt::UserRole + 4
   };
 
 public:
@@ -49,5 +50,6 @@ private:
   core::SignaturesValidator *validator_ = nullptr;
   std::map<size_t, std::shared_ptr<core::CSPResponse>> validation_results_;
 };
+
 
 #endif // SIGNATURES_LIST_MODEL_HPP

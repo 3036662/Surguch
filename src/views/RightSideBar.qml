@@ -11,9 +11,10 @@ Item {
         ProfileInfo
     }
 
-    property int showState: RightSideBar.ShowState.SigInfo
+    property int showState: RightSideBar.ShowState.Invisible
+    property var jsonData
 
-    visible: root.showState = !RightSideBar.ShowState.Invisible
+    visible: showState != RightSideBar.ShowState.Invisible
     Layout.maximumWidth: 400
     Layout.preferredWidth: 200
     Layout.minimumWidth: 200
@@ -21,19 +22,31 @@ Item {
     Layout.fillWidth: true
     Layout.horizontalStretchFactor: 1
 
+    function showData(data) {
+        try {
+            console.warn(data)
+            if (!data) {
+                jsonData = undefined
+                return
+            }
+            jsonData = JSON.parse(data)
+            showState = RightSideBar.ShowState.SigInfo
+        } catch (e) {
+            console.error("Error parsing JSON" + e.message)
+        }
+    }
+
     Rectangle {
-         anchors.fill: parent
-         color: "white"
+        anchors.fill: parent
+        color: "white"
     }
 
     Flickable {
         width: parent.width
         height: parent.height
         contentHeight: 1500
-        leftMargin:10
-        rightMargin:10
-
-
+        leftMargin: 10
+        rightMargin: 10
 
         ToolButton {
             flat: true
@@ -49,18 +62,12 @@ Item {
 
             onClicked: {
                 root.showState = RightSideBar.ShowState.Invisible
-                root.visible = false
             }
         }
 
         Column {
             width: parent.width
 
-            // Text {
-            //     text: qsTr("Information")
-            //     font.weight: Font.DemiBold
-            //     topPadding: 10
-            // }
             Text {
                 text: qsTr("Signature")
                 font.weight: Font.DemiBold
@@ -71,32 +78,32 @@ Item {
             // signature
             RSideBarStatusMedal {
                 title: qsTr("Status")
-                value: false
+                value: jsonData !== undefined && jsonData.signature.status
             }
 
             Column {
                 anchors.left: parent.left
                 anchors.leftMargin: 20
 
-                TextPairBool {
+                TextPairStatus {
                     keyText: qsTr("Document integrity")
-                    value: false
+                    value: jsonData ? jsonData.signature.integrity : "no_check"
                 }
-                TextPairBool {
+                TextPairStatus {
                     keyText: qsTr("Mathematical correctness")
-                    value: false
+                    value: jsonData !== undefined ? jsonData.signature.math_correct : "no_check"
                 }
-                TextPairBool {
+                TextPairStatus {
                     keyText: qsTr("Certificate")
-                    value: false
+                    value: jsonData !== undefined ? jsonData.signature.certificate_ok : "no_check"
                 }
-                TextPairBool {
+                TextPairStatus {
                     keyText: qsTr("Time stamp (TSP)")
-                    value: false
+                    value: jsonData !== undefined ? jsonData.signature.timestamp_ok : "no_check"
                 }
-                TextPairBool {
+                TextPairStatus {
                     keyText: qsTr("OCSP status")
-                    value: false
+                    value: jsonData !== undefined ? jsonData.signature.ocsp_ok : "no_check"
                 }
             }
             RightSBHorizontalDelimiter {
@@ -225,7 +232,6 @@ Item {
                         "value": false
                     }]
             }
-
         }
     }
 }

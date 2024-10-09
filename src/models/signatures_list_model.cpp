@@ -8,6 +8,7 @@ SignaturesListModel::SignaturesListModel(QObject *parent)
   role_names_[CheckStatusRole] = "checkStatus";
   role_names_[ValidRole] = "valid";
   role_names_[EmptyRole] = "empty";
+  role_names_[SigData]="sigData";
 }
 
 QVariant SignaturesListModel::headerData(int section,
@@ -48,6 +49,12 @@ QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
     break;
   case EmptyRole:
     return raw_signatures_.at(index.row()).getSigData().empty();
+    break;
+  case SigData:
+    if (validation_results_.count(index.row())>0){
+        return validation_results_.at(index.row())->toJson();
+    }
+    break;
   }
   return {};
 }

@@ -23,6 +23,7 @@ Item {
     Layout.horizontalStretchFactor: 1
 
     signal pageClick(int index)
+    signal showSigData(string data)
 
 
 

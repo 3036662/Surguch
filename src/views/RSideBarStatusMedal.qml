@@ -7,12 +7,12 @@ RowLayout {
     Layout.preferredHeight: 30
 
     property string title
-    property bool value:false
+    property bool value: false
 
-    TextPairBool{
-         Layout.alignment: Qt.AlignLeft
-         keyText: title
-         value:value
+    TextPairBool {
+        Layout.alignment: Qt.AlignLeft
+        keyText: title
+        value: parent.value
     }
 
     Image {
@@ -21,6 +21,6 @@ RowLayout {
         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
         Layout.rightMargin: 40
         Layout.topMargin: 5
-        source:  value ? "qrc:/icons/medal-ribbon-green.svg" : "qrc:/icons/medal-ribbon-pink.svg"
+        source: value ? "qrc:/icons/medal-ribbon-green.svg" : "qrc:/icons/medal-ribbon-pink.svg"
     }
 }

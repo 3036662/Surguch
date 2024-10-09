@@ -32,6 +32,7 @@ CSPResponse::CSPResponse(const core::RawSignature &raw_signature,
   }
   // create CSPResponse
   bres = pod->bres;
+  cades_type = pod->cades_type;
   cades_t_str = QString(pod->cades_t_str);
   hashing_oid = QString(pod->hashing_oid);
   if (pod->encrypted_digest != nullptr && pod->encrypted_digest_size > 0) {
@@ -87,6 +88,39 @@ CSPResponse::CSPResponse(const core::RawSignature &raw_signature,
   cert_not_after = pod->cert_not_after;
   // Free CPodResult
   pdfcsp::c_bridge::CFreeResult(pod);
+}
+
+QJsonObject CSPResponse::toJson() const {
+    // signature
+    const char* ok="ok";
+    const char* bad="bad";
+    const char* no_field="no_field";
+    const char* no_check="no_check";
+    const char* failed="failed";
+
+    QJsonObject signature;
+     signature["status"]=bres.check_summary;
+     signature["integrity"]=(bres.data_hash_ok&& bres.computed_hash_ok && bres.certificate_hash_ok) ? "ok":"bad";
+     signature["math_correct"]=bres.msg_signature_ok ? ok : bad;
+     signature["certificate_ok"]=bres.certificate_ok ? ok : bad;
+     if (cades_type==pdfcsp::csp::CadesType::kCadesT){
+         signature["timestamp_ok"]=bres.t_all_ok ? ok :bad;
+     }
+     else if (cades_type>=pdfcsp::csp::CadesType::kCadesXLong1){
+         signature["timestamp_ok"]=bres.t_all_ok && bres.x_esc_tsp_ok ? ok :bad;
+     }
+     else{
+         signature["timestamp_ok"]=no_field;
+     }
+     if (bres.certificate_ocsp_check_failed && !bres.certificate_ocsp_ok){
+         signature["ocsp_ok"]=failed;
+     } else{
+         signature["ocsp_ok"]=bres.certificate_ocsp_ok ? ok :bad;
+     }
+    // result struct
+    QJsonObject res;
+    res["signature"]=signature;
+    return res;
 }
 
 } // namespace core

@@ -6,11 +6,15 @@
 #include <QString>
 #include <string>
 #include <vector>
+#include <QJsonObject>
+
 namespace core {
 
-class CSPResponse {
+struct CSPResponse {
 public:
   CSPResponse(const core::RawSignature &raw_signature, const std::string &path);
+
+  QJsonObject toJson() const;
 
   pdfcsp::csp::checks::BoolResults bres;
   pdfcsp::csp::CadesType cades_type = pdfcsp::csp::CadesType::kUnknown;
@@ -35,7 +39,13 @@ public:
   time_t signers_time = 0;
   time_t cert_not_before = 0;
   time_t cert_not_after = 0;
+
+
 };
 
 } // namespace core
+
+
+
+
 #endif // CSP_RESPONSE_HPP
