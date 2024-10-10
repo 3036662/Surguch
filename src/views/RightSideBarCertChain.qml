@@ -4,6 +4,7 @@ Column {
     id: root
     property string title
     property var items
+    property bool status
 
 
     RightSBHorizontalDelimiter {
@@ -12,7 +13,7 @@ Column {
 
     TextPairBool {
         keyText: qsTr("Certificate chain")
-        value: false
+        value: root.status
     }
 
     Column {
@@ -24,8 +25,8 @@ Column {
 
             TextPairBool {
                 required property var modelData
-                keyText: modelData.key
-                value: modelData.value
+                keyText: modelData.subject!==undefined ? modelData.subject_common_name : "";
+                value: modelData.trust_status!==undefined ? modelData.trust_status :"";
             }
         }
     }

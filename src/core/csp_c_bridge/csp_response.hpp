@@ -32,6 +32,7 @@ public:
   QString subj_common_name;
   QString subj_email;
   QString subj_organization;
+  QString cert_chain_json;
 
   std::vector<unsigned char> cert_public_key;
   std::vector<unsigned char> cert_serial;

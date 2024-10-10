@@ -111,29 +111,26 @@ Item {
             }
             TextPair {
                 keyText: qsTr("Date of creation")
-                value: "00/00/0000 00:00:00 UTC"
+                value: jsonData !== undefined ? jsonData.signature.signing_time : "";
             }
             RightSBHorizontalDelimiter {
                 width: parent.width
             }
             TextPair {
                 keyText: qsTr("CADES standart")
-                value: "CADEX XXXXXXXX"
+                value: jsonData !== undefined ? jsonData.signature.cades_type : "";
             }
 
+            // in case number of chains > 1
+            Repeater{
+                model: jsonData !== undefined ? jsonData.signers_chain : [];
             RightSideBarCertChain {
                 width: parent.width
                 title: qsTr("Certificate chain")
-                items: [{
-                        "key": "cert1",
-                        "value": false
-                    }, {
-                        "key": "cert2",
-                        "value": false
-                    }, {
-                        "key": "cert3",
-                        "value": false
-                    }]
+                items: modelData.certs;
+                status: modelData.trust_status
+            }
+
             }
 
             //////////////////////////////////////

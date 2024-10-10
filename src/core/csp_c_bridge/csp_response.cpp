@@ -1,7 +1,10 @@
 #include "csp_response.hpp"
-
 #include "raw_signature.hpp"
 #include <algorithm>
+#include <QDateTime>
+#include <QTimeZone>
+#include <QJsonDocument>
+#include <QJsonArray>
 
 namespace core {
 
@@ -74,6 +77,10 @@ CSPResponse::CSPResponse(const core::RawSignature &raw_signature,
   if (pod->subj_organization != nullptr) {
     subj_organization = QString(pod->subj_organization);
   }
+  if (pod->cert_chain_json !=nullptr){
+    cert_chain_json=QString(pod->cert_chain_json);
+  }
+
   if (pod->cert_public_key != nullptr && pod->cert_public_key_size > 0) {
     std::copy(pod->cert_public_key,
               pod->cert_public_key + pod->cert_public_key_size,
@@ -100,7 +107,10 @@ QJsonObject CSPResponse::toJson() const {
 
     QJsonObject signature;
      signature["status"]=bres.check_summary;
-     signature["integrity"]=(bres.data_hash_ok&& bres.computed_hash_ok && bres.certificate_hash_ok) ? "ok":"bad";
+     signature["integrity"]=(bres.data_hash_ok&& bres.computed_hash_ok && bres.certificate_hash_ok) ? ok:bad;
+     if (cades_type==pdfcsp::csp::CadesType::kPkcs7){
+          signature["integrity"]=bres.msg_signature_ok ? ok :bad;
+     }
      signature["math_correct"]=bres.msg_signature_ok ? ok : bad;
      signature["certificate_ok"]=bres.certificate_ok ? ok : bad;
      if (cades_type==pdfcsp::csp::CadesType::kCadesT){
@@ -117,9 +127,44 @@ QJsonObject CSPResponse::toJson() const {
      } else{
          signature["ocsp_ok"]=bres.certificate_ocsp_ok ? ok :bad;
      }
+     // signing time
+     {
+       time_t signing_time=0;
+       std::vector<time_t> tmp;
+       std::copy(times_collection.cbegin(),
+                 times_collection.cend(),
+                 std::back_inserter(tmp));
+       std::copy(x_times_collection.cbegin(),
+                 x_times_collection.cend(),
+                 std::back_inserter(tmp));
+       auto max_el = std::max_element(tmp.cbegin(), tmp.cend());
+       if (max_el != tmp.cend()) {
+         signing_time = *max_el;
+       } else {
+         signing_time = signers_time;
+       }
+       if (signing_time!=0){
+       QDateTime date_time = QDateTime::fromSecsSinceEpoch(signing_time,QTimeZone(0));
+        signature["signing_time"]=date_time.toString("dd.MM.yyyy hh:mm:ss UTC");
+       }
+       else{
+           signature["signing_time"]="?";
+       }
+     }
+     // cades type
+    signature["cades_type"]=cades_t_str;
     // result struct
     QJsonObject res;
     res["signature"]=signature;
+    // signers sertificate chain
+    QJsonDocument json_chain = QJsonDocument::fromJson(cert_chain_json.toUtf8());
+    if (json_chain.isNull()) {
+            qDebug() << "Failed to create JSON doc.";
+    }else{
+        res["signers_chain"]=json_chain.array();
+    }
+
+
     return res;
 }
 
