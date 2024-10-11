@@ -111,75 +111,83 @@ Item {
             }
             TextPair {
                 keyText: qsTr("Date of creation")
-                value: jsonData !== undefined ? jsonData.signature.signing_time : "";
+                value: jsonData !== undefined ? jsonData.signature.signing_time : ""
             }
             RightSBHorizontalDelimiter {
                 width: parent.width
             }
             TextPair {
                 keyText: qsTr("CADES standart")
-                value: jsonData !== undefined ? jsonData.signature.cades_type : "";
+                value: jsonData !== undefined ? jsonData.signature.cades_type : ""
             }
 
             // in case number of chains > 1
-            Repeater{
-                model: jsonData !== undefined ? jsonData.signers_chain : [];
-            RightSideBarCertChain {
-                width: parent.width
-                title: qsTr("Certificate chain")
-                items: modelData.certs;
-                status: modelData.trust_status
-            }
-
+            Repeater {
+                model: jsonData !== undefined ? jsonData.signers_chain : []
+                RightSideBarCertChain {
+                    width: parent.width
+                    title: qsTr("Certificate chain")
+                    items: modelData.certs
+                    status: modelData.trust_status
+                }
             }
 
             //////////////////////////////////////
             // time stamp
-            Text {
-                text: qsTr("Time stamp (TSP)")
-                font.weight: Font.DemiBold
-                topPadding: 10
-                bottomPadding: 10
-            }
+            Repeater {
+                model: root.jsonData !== undefined ? root.jsonData.tsp_info : []
+                Column {
+                    width: root.width
+                    required property var modelData
+                    Text {
+                        text: qsTr("Time stamp (TSP)")
+                        font.weight: Font.DemiBold
+                        topPadding: 10
+                        bottomPadding: 10
+                    }
+                    RSideBarStatusMedal {
+                        title: qsTr("Status")
+                        value: modelData.result ? "ok" : "bad"
+                    }
 
-            RSideBarStatusMedal {
-                title: qsTr("Status")
-                value: false
-            }
-            RightSBHorizontalDelimiter {
-                width: parent.width
-            }
-            TextPair {
-                keyText: qsTr("Date of creation")
-                value: "00/00/0000 00:00:00 UTC"
-            }
-            RightSBHorizontalDelimiter {
-                width: parent.width
-            }
-            TextPair {
-                keyText: qsTr("Serial number")
-                value: "0000000000000000000000000000"
-            }
-            RightSBHorizontalDelimiter {
-                width: parent.width
-            }
-            TextPair {
-                keyText: qsTr("Policy id")
-                value: "0.0.0.0.0"
-            }
-            RightSideBarCertChain {
-                width: parent.width
-                title: qsTr("Certificate chain")
-                items: [{
-                        "key": "cert1",
-                        "value": false
-                    }, {
-                        "key": "cert2",
-                        "value": false
-                    }, {
-                        "key": "cert3",
-                        "value": false
-                    }]
+                    RightSBHorizontalDelimiter {
+                        width: parent.width
+                    }
+                    TextPair {
+                        keyText: qsTr("Date of creation")
+                        value: modelData.tst_content.gen_time_readable
+                    }
+                    RightSBHorizontalDelimiter {
+                        width: parent.width
+                    }
+                    TextPair {
+                        keyText: qsTr("Serial number")
+                        value: modelData.tst_content.serial
+                    }
+                    RightSBHorizontalDelimiter {
+                        width: parent.width
+                    }
+                    TextPair {
+                        keyText: qsTr("Policy id")
+                        value: modelData.tst_content.policy
+                    }
+
+                    Repeater {
+                        model: modelData.chains
+                               !== undefined ? modelData.chains : []
+                        Repeater{
+                            required property var modelData
+                            model:modelData
+                            RightSideBarCertChain {
+                                required property var modelData
+                                width: parent.width
+                                title: qsTr("TSP Certificate chain")
+                                items: modelData.certs
+                                status: modelData.trust_status
+                            }
+                        }
+                     }
+                }
             }
 
             //////////////////////////////////////
