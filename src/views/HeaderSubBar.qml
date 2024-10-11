@@ -252,31 +252,34 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
 
-        Row {
-            Rectangle {
-                width: 10
-                height: parent.height
-                color: "transparent"
-            }
-            TextField {
-                placeholderText: qsTr("Search")
-                maximumLength: 100
-                Layout.preferredWidth: 150
-                horizontalAlignment: TextInput.AlignLeft
-                rightPadding: 30
-                Button {
-                    flat: true
-                    icon.source: "qrc:/icons/search-custom.svg"
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    height: 24
-                    smooth: true
-                    anchors.right: parent.right
-                }
-            }
-        }
+
+        // search
+
+        //HeaderToolSeparator {}
+        // Row {
+        //     Rectangle {
+        //         width: 10
+        //         height: parent.height
+        //         color: "transparent"
+        //     }
+        //     TextField {
+        //         placeholderText: qsTr("Search")
+        //         maximumLength: 100
+        //         Layout.preferredWidth: 150
+        //         horizontalAlignment: TextInput.AlignLeft
+        //         rightPadding: 30
+        //         Button {
+        //             flat: true
+        //             icon.source: "qrc:/icons/search-custom.svg"
+        //             anchors.top: parent.top
+        //             anchors.bottom: parent.bottom
+        //             height: 24
+        //             smooth: true
+        //             anchors.right: parent.right
+        //         }
+        //     }
+        // }
         Rectangle {
             color: "transparent"
             Layout.fillHeight: true
