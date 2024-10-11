@@ -1,5 +1,6 @@
 add_library (csp_c_bridge OBJECT
     csp_response.cpp
+    bridge_utils.cpp
 )
 
 target_include_directories(csp_c_bridge PUBLIC
