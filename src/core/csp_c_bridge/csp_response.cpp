@@ -1,8 +1,7 @@
 #include "csp_response.hpp"
+#include "bridge_utils.hpp"
 #include "raw_signature.hpp"
 #include <algorithm>
-#include <QDateTime>
-#include <QTimeZone>
 #include <QJsonDocument>
 #include <QJsonArray>
 
@@ -80,6 +79,9 @@ CSPResponse::CSPResponse(const core::RawSignature &raw_signature,
   if (pod->cert_chain_json !=nullptr){
     cert_chain_json=QString(pod->cert_chain_json);
   }
+  if (pod->tsp_json_info !=nullptr){
+      tsp_info_json=QString(pod->tsp_json_info);
+  }
 
   if (pod->cert_public_key != nullptr && pod->cert_public_key_size > 0) {
     std::copy(pod->cert_public_key,
@@ -144,8 +146,7 @@ QJsonObject CSPResponse::toJson() const {
          signing_time = signers_time;
        }
        if (signing_time!=0){
-       QDateTime date_time = QDateTime::fromSecsSinceEpoch(signing_time,QTimeZone(0));
-        signature["signing_time"]=date_time.toString("dd.MM.yyyy hh:mm:ss UTC");
+        signature["signing_time"]=bridge_utils::timeToString(signing_time);
        }
        else{
            signature["signing_time"]="?";
@@ -162,6 +163,15 @@ QJsonObject CSPResponse::toJson() const {
             qDebug() << "Failed to create JSON doc.";
     }else{
         res["signers_chain"]=json_chain.array();
+    }
+    // TSP stamp
+    if (cades_type>=pdfcsp::csp::CadesType::kCadesT){
+        QJsonDocument tsp_info= QJsonDocument::fromJson(tsp_info_json.toUtf8());
+        if (!tsp_info.isArray()) {
+                qDebug() << "Failed to parse JSON TSP info";
+        }else{
+            res["tsp_info"]=tsp_info.array();
+        }
     }
 
 
