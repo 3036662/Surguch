@@ -1,9 +1,9 @@
 #include "csp_response.hpp"
 #include "bridge_utils.hpp"
 #include "raw_signature.hpp"
-#include <algorithm>
-#include <QJsonDocument>
 #include <QJsonArray>
+#include <QJsonDocument>
+#include <algorithm>
 
 namespace core {
 
@@ -76,11 +76,14 @@ CSPResponse::CSPResponse(const core::RawSignature &raw_signature,
   if (pod->subj_organization != nullptr) {
     subj_organization = QString(pod->subj_organization);
   }
-  if (pod->cert_chain_json !=nullptr){
-    cert_chain_json=QString(pod->cert_chain_json);
+  if (pod->cert_chain_json != nullptr) {
+    cert_chain_json = QString(pod->cert_chain_json);
   }
-  if (pod->tsp_json_info !=nullptr){
-      tsp_info_json=QString(pod->tsp_json_info);
+  if (pod->tsp_json_info != nullptr) {
+    tsp_info_json = QString(pod->tsp_json_info);
+  }
+  if (pod->signers_cert_ocsp_json_info != nullptr) {
+    signers_cert_ocsp_json_info = QString(pod->signers_cert_ocsp_json_info);
   }
 
   if (pod->cert_public_key != nullptr && pod->cert_public_key_size > 0) {
@@ -100,82 +103,88 @@ CSPResponse::CSPResponse(const core::RawSignature &raw_signature,
 }
 
 QJsonObject CSPResponse::toJson() const {
-    // signature
-    const char* ok="ok";
-    const char* bad="bad";
-    const char* no_field="no_field";
-    const char* no_check="no_check";
-    const char* failed="failed";
+  // signature
+  const char *ok = "ok";
+  const char *bad = "bad";
+  const char *no_field = "no_field";
+  const char *no_check = "no_check";
+  const char *failed = "failed";
 
-    QJsonObject signature;
-     signature["status"]=bres.check_summary;
-     signature["integrity"]=(bres.data_hash_ok&& bres.computed_hash_ok && bres.certificate_hash_ok) ? ok:bad;
-     if (cades_type==pdfcsp::csp::CadesType::kPkcs7){
-          signature["integrity"]=bres.msg_signature_ok ? ok :bad;
-     }
-     signature["math_correct"]=bres.msg_signature_ok ? ok : bad;
-     signature["certificate_ok"]=bres.certificate_ok ? ok : bad;
-     if (cades_type==pdfcsp::csp::CadesType::kCadesT){
-         signature["timestamp_ok"]=bres.t_all_ok ? ok :bad;
-     }
-     else if (cades_type>=pdfcsp::csp::CadesType::kCadesXLong1){
-         signature["timestamp_ok"]=bres.t_all_ok && bres.x_esc_tsp_ok ? ok :bad;
-     }
-     else{
-         signature["timestamp_ok"]=no_field;
-     }
-     if (bres.certificate_ocsp_check_failed && !bres.certificate_ocsp_ok){
-         signature["ocsp_ok"]=failed;
-     } else{
-         signature["ocsp_ok"]=bres.certificate_ocsp_ok ? ok :bad;
-     }
-     // signing time
-     {
-       time_t signing_time=0;
-       std::vector<time_t> tmp;
-       std::copy(times_collection.cbegin(),
-                 times_collection.cend(),
-                 std::back_inserter(tmp));
-       std::copy(x_times_collection.cbegin(),
-                 x_times_collection.cend(),
-                 std::back_inserter(tmp));
-       auto max_el = std::max_element(tmp.cbegin(), tmp.cend());
-       if (max_el != tmp.cend()) {
-         signing_time = *max_el;
-       } else {
-         signing_time = signers_time;
-       }
-       if (signing_time!=0){
-        signature["signing_time"]=bridge_utils::timeToString(signing_time);
-       }
-       else{
-           signature["signing_time"]="?";
-       }
-     }
-     // cades type
-    signature["cades_type"]=cades_t_str;
-    // result struct
-    QJsonObject res;
-    res["signature"]=signature;
-    // signers sertificate chain
-    QJsonDocument json_chain = QJsonDocument::fromJson(cert_chain_json.toUtf8());
-    if (json_chain.isNull()) {
-            qDebug() << "Failed to create JSON doc.";
-    }else{
-        res["signers_chain"]=json_chain.array();
+  QJsonObject signature;
+  signature["status"] = bres.check_summary;
+  signature["integrity"] =
+      (bres.data_hash_ok && bres.computed_hash_ok && bres.certificate_hash_ok)
+          ? ok
+          : bad;
+  if (cades_type == pdfcsp::csp::CadesType::kPkcs7) {
+    signature["integrity"] = bres.msg_signature_ok ? ok : bad;
+  }
+  signature["math_correct"] = bres.msg_signature_ok ? ok : bad;
+  signature["certificate_ok"] = bres.certificate_ok ? ok : bad;
+  if (cades_type == pdfcsp::csp::CadesType::kCadesT) {
+    signature["timestamp_ok"] = bres.t_all_ok ? ok : bad;
+  } else if (cades_type >= pdfcsp::csp::CadesType::kCadesXLong1) {
+    signature["timestamp_ok"] = bres.t_all_ok && bres.x_esc_tsp_ok ? ok : bad;
+  } else {
+    signature["timestamp_ok"] = no_field;
+  }
+  if (bres.certificate_ocsp_check_failed && !bres.certificate_ocsp_ok) {
+    signature["ocsp_ok"] = failed;
+  } else {
+    signature["ocsp_ok"] = bres.certificate_ocsp_ok ? ok : bad;
+  }
+  // signing time
+  {
+    time_t signing_time = 0;
+    std::vector<time_t> tmp;
+    std::copy(times_collection.cbegin(), times_collection.cend(),
+              std::back_inserter(tmp));
+    std::copy(x_times_collection.cbegin(), x_times_collection.cend(),
+              std::back_inserter(tmp));
+    auto max_el = std::max_element(tmp.cbegin(), tmp.cend());
+    if (max_el != tmp.cend()) {
+      signing_time = *max_el;
+    } else {
+      signing_time = signers_time;
     }
-    // TSP stamp
-    if (cades_type>=pdfcsp::csp::CadesType::kCadesT){
-        QJsonDocument tsp_info= QJsonDocument::fromJson(tsp_info_json.toUtf8());
-        if (!tsp_info.isArray()) {
-                qDebug() << "Failed to parse JSON TSP info";
-        }else{
-            res["tsp_info"]=tsp_info.array();
-        }
+    if (signing_time != 0) {
+      signature["signing_time"] = bridge_utils::timeToString(signing_time);
+    } else {
+      signature["signing_time"] = "?";
     }
+  }
+  // cades type
+  signature["cades_type"] = cades_t_str;
+  // result struct
+  QJsonObject res;
+  res["signature"] = signature;
+  // signers sertificate chain
+  const QJsonDocument json_chain = QJsonDocument::fromJson(cert_chain_json.toUtf8());
+  if (json_chain.isNull()) {
+    qDebug() << "Failed to create JSON doc.";
+  } else {
+    res["signers_chain"] = json_chain.array();
+  }
+  // TSP stamp
+  if (cades_type >= pdfcsp::csp::CadesType::kCadesT) {
+    const QJsonDocument tsp_info = QJsonDocument::fromJson(tsp_info_json.toUtf8());
+    if (!tsp_info.isArray()) {
+      qDebug() << "Failed to parse JSON TSP info";
+    } else {
+      res["tsp_info"] = tsp_info.array();
+    }
+  }
+  if (!signers_cert_ocsp_json_info.isEmpty()) {
+    const QJsonDocument ocsp_info =
+        QJsonDocument::fromJson(signers_cert_ocsp_json_info.toUtf8());
+    if (!ocsp_info.isArray()) {
+      qDebug() << "Failed to parse JSON OCSP info";
+    } else {
+      res["ocsp_info"] = ocsp_info.array();
+    }
+  }
 
-
-    return res;
+  return res;
 }
 
 } // namespace core

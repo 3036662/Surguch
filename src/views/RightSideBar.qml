@@ -173,11 +173,10 @@ Item {
                     }
 
                     Repeater {
-                        model: modelData.chains
-                               !== undefined ? modelData.chains : []
-                        Repeater{
+                        model: modelData.chains !== undefined ? modelData.chains : []
+                        Repeater {
                             required property var modelData
-                            model:modelData
+                            model: modelData
                             RightSideBarCertChain {
                                 required property var modelData
                                 width: parent.width
@@ -186,56 +185,58 @@ Item {
                                 status: modelData.trust_status
                             }
                         }
-                     }
+                    }
                 }
             }
 
             //////////////////////////////////////
             // OCSP Status
-            Text {
-                text: qsTr("OCSP status")
-                font.weight: Font.DemiBold
-                topPadding: 10
-                bottomPadding: 10
-            }
-            RSideBarStatusMedal {
-                title: qsTr("Status")
-                value: false
-            }
-            RightSBHorizontalDelimiter {
-                width: parent.width
-            }
-            TextPair {
-                keyText: qsTr("Issue date")
-                value: "00/00/0000 00:00:00 UTC"
-            }
-            RightSBHorizontalDelimiter {
-                width: parent.width
-            }
-            TextPair {
-                keyText: qsTr("Serial number")
-                value: "000000000000000000"
-            }
-            RightSBHorizontalDelimiter {
-                width: parent.width
-            }
-            TextPair {
-                keyText: qsTr("Policy id")
-                value: "0.0.0.0.0"
-            }
-            RightSideBarCertChain {
-                width: parent.width
-                title: qsTr("Certificate chain")
-                items: [{
-                        "key": "cert1",
-                        "value": false
-                    }, {
-                        "key": "cert2",
-                        "value": false
-                    }, {
-                        "key": "cert3",
-                        "value": false
-                    }]
+            Repeater {
+                model: root.jsonData !== undefined ? root.jsonData.ocsp_info : []
+                Column {
+                    width: root.width
+                    Text {
+                        text: qsTr("OCSP status")
+                        font.weight: Font.DemiBold
+                        topPadding: 10
+                        bottomPadding: 10
+                    }
+                    Repeater {
+                        model: modelData.tbs_response_data.responses
+                               !== undefined ? modelData.tbs_response_data.responses : []
+                        Column {
+                            width: root.width
+                            RSideBarStatusMedal {
+                                title: qsTr("Certificate status")
+                                value: modelData.cert_status === "good"
+                            }
+                            RightSBHorizontalDelimiter {
+                                width: parent.width
+                            }
+                            TextPair {
+                                keyText: qsTr("Issue date")
+                                value: modelData.this_update_readable
+                            }
+
+                            RightSBHorizontalDelimiter {
+                                width: parent.width
+                            }
+                            TextPair {
+                                keyText: qsTr("Certificate serial number")
+                                value: modelData.cert_serial
+                            }
+                        }
+                    }
+                    Repeater {
+                        model: modelData.ocsp_chains
+                        RightSideBarCertChain {
+                            width: parent.width
+                            title: qsTr("Certificate chain")
+                            items: modelData.certs
+                            status: modelData.trust_status
+                        }
+                    }
+                }
             }
         }
     }

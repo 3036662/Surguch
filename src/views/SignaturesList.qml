@@ -67,7 +67,7 @@ ListView {
                 anchors.fill: parent
 
                 onClicked: {
-                    console.warn("Sig clicked")
+                    //console.warn("Sig clicked")
                     showSigData(JSON.stringify(model.sigData))
                 }
             }

@@ -8,12 +8,8 @@ SignaturesValidator::SignaturesValidator(QObject *parent) : QObject{parent} {
   qWarning() << "Validator constructed";
 }
 
-SignaturesValidator::~SignaturesValidator() {
-  qWarning() << "Validator's destructor";
-}
-
 void SignaturesValidator::validateSignatures(
-    std::vector<core::RawSignature> raw_signatures_, QString file_source) {
+    std::vector<core::RawSignature> raw_signatures_,QString file_source) {
   bool aborted = false;
   for (size_t i = 0; i < raw_signatures_.size(); ++i) {
     const auto &sig = raw_signatures_[i];
@@ -28,7 +24,7 @@ void SignaturesValidator::validateSignatures(
     std::shared_ptr<CSPResponse> result;
     try {
       result = std::make_shared<CSPResponse>(sig, file_source.toStdString());
-    } catch (const std::exception& ex) {
+    } catch (const std::exception &ex) {
       qWarning() << ex.what();
     }
     if (result) {

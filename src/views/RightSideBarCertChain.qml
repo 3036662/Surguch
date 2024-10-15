@@ -1,11 +1,11 @@
 import QtQuick
+import QtQuick.Controls
 
 Column {
     id: root
     property string title
     property var items
     property bool status
-
 
     RightSBHorizontalDelimiter {
         width: parent.width
@@ -23,10 +23,24 @@ Column {
         Repeater {
             model: root.items
 
-            TextPairBool {
+            MouseArea {
+                id: cert_clickable_area
                 required property var modelData
-                keyText: modelData.subject!==undefined ? modelData.subject_common_name : "";
-                value: modelData.trust_status!==undefined ? modelData.trust_status :"";
+                width: childrenRect.width
+                height: childrenRect.height
+                onClicked: {
+                    infoDialogContentContainer.source = "CertInfo.qml"
+                    if (infoDialogContentContainer.item) {
+                        infoDialogContentContainer.item.cert = cert_clickable_area.modelData
+                    }
+                    infoDialog.open()
+                }
+
+                TextPairBool {
+
+                    keyText: modelData.subject !== undefined ? modelData.subject_common_name : ""
+                    value: modelData.trust_status !== undefined ? modelData.trust_status : ""
+                }
             }
         }
     }

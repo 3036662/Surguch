@@ -4,7 +4,7 @@ import QtQuick.Layouts
 import alt.pdfcsp.pdfModel
 
 ApplicationWindow {
-    id: root
+    id: root_window
     width: 1000
     height: 480
     visible: true
@@ -116,5 +116,28 @@ ApplicationWindow {
         // toggle from preview to certs in left sidebat
         headerSubBar.showPreviews.connect(leftSideBar.showPreviews)
         headerSubBar.showCerts.connect(leftSideBar.showCerts)
+    }
+
+    // Info dialog in center of window
+    Dialog {
+        id: infoDialog
+        width: root_window.width - 200
+        height: root_window.height - 100
+        modal: true
+        standardButtons: Dialog.Ok
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
+
+        Loader {
+            id: infoDialogContentContainer
+            width: parent.width
+            height: parent.height
+        }
+
+        // Handle dialog closing
+        onAccepted: {
+            console.log("Dialog closed")
+        }
     }
 }

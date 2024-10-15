@@ -8,14 +8,14 @@ ColumnLayout {
     signal zoomOutClicked
     signal zoomSelected(int newZoom)
     signal scrollToPage(int pageNumber)
-    signal rotateClockwise()
-    signal rotateCounterClockWise()
-    signal showPreviews()
-    signal showCerts()
+    signal rotateClockwise
+    signal rotateCounterClockWise
+    signal showPreviews
+    signal showCerts
 
     function changePageCount(newCount) {
         page_number.pageCount = newCount
-        pageNumberInputValidator.top = newCount+1
+        pageNumberInputValidator.top = newCount + 1
     }
     function changedCurrPage(newIndex) {
         page_number.currPage = newIndex
@@ -27,22 +27,21 @@ ColumnLayout {
         comboBoxZoom.currentIndex = -1
     }
 
-    function disableZoom(){
-        zoomButton.enabled=false
+    function disableZoom() {
+        zoomButton.enabled = false
     }
 
-    function enableZoom(){
-        zoomButton.enabled=true
+    function enableZoom() {
+        zoomButton.enabled = true
     }
 
-    function enableZoomOut(){
-        zoomOutButton.enabled=true
+    function enableZoomOut() {
+        zoomOutButton.enabled = true
     }
 
-    function disableZoomOut(){
-        zoomOutButton.enabled=false
+    function disableZoomOut() {
+        zoomOutButton.enabled = false
     }
-
 
     spacing: 1
 
@@ -64,7 +63,7 @@ ColumnLayout {
             rightPadding: 40
 
             onClicked: {
-                showPreviews();
+                showPreviews()
             }
         }
 
@@ -80,7 +79,7 @@ ColumnLayout {
             rightPadding: 40
 
             onClicked: {
-                showCerts();
+                showCerts()
             }
         }
 
@@ -96,8 +95,8 @@ ColumnLayout {
             rightPadding: 5
 
             onClicked: {
-                if (page_number.currPage<pageNumberInputValidator.top){
-                    scrollToPage(page_number.currPage+1)
+                if (page_number.currPage < pageNumberInputValidator.top) {
+                    scrollToPage(page_number.currPage + 1)
                 }
             }
         }
@@ -112,8 +111,8 @@ ColumnLayout {
             rightPadding: 5
 
             onClicked: {
-                if (page_number.currPage>pageNumberInputValidator.bottom){
-                    scrollToPage(page_number.currPage-1)
+                if (page_number.currPage > pageNumberInputValidator.bottom) {
+                    scrollToPage(page_number.currPage - 1)
                 }
             }
         }
@@ -132,8 +131,8 @@ ColumnLayout {
             }
 
             onAccepted: {
-                let newIndex=Number(text)
-                if (newIndex>0){
+                let newIndex = Number(text)
+                if (newIndex > 0) {
                     scrollToPage(newIndex)
                 }
             }
@@ -159,7 +158,7 @@ ColumnLayout {
             rightPadding: 5
 
             onClicked: {
-                rotateCounterClockWise();
+                rotateCounterClockWise()
             }
         }
 
@@ -173,14 +172,14 @@ ColumnLayout {
             rightPadding: 5
 
             onClicked: {
-                rotateClockwise();
+                rotateClockwise()
             }
         }
 
         HeaderToolSeparator {}
 
         ToolButton {
-            id:zoomOutButton
+            id: zoomOutButton
             onClicked: {
                 zoomOutClicked()
             }
@@ -194,7 +193,7 @@ ColumnLayout {
         }
 
         ToolButton {
-            id:zoomButton
+            id: zoomButton
             onClicked: {
                 zoomInClicked()
             }
@@ -251,8 +250,6 @@ ColumnLayout {
                 color: "transparent"
             }
         }
-
-
 
         // search
 

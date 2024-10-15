@@ -13,7 +13,7 @@ class SignaturesValidator : public QObject {
 public:
   explicit SignaturesValidator(QObject *parent = nullptr);
 
-  ~SignaturesValidator() override;
+  ~SignaturesValidator() =default;
 
   void abort() { abort_recieved_ = true; };
 

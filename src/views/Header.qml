@@ -89,8 +89,9 @@ RowLayout {
         nameFilters: ["Pdf files (*.pdf)"]
         folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
         onAccepted: {
-            pdfListView.source = currentFile;
-            leftSideBar.source = currentFile;
+            pdfListView.source = currentFile
+            leftSideBar.source = currentFile
+            rightSideBar.showState = RightSideBar.ShowState.Invisible
         }
     }
 }

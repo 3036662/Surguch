@@ -3,10 +3,10 @@
 
 #include "c_bridge.hpp"
 #include "raw_signature.hpp"
+#include <QJsonObject>
 #include <QString>
 #include <string>
 #include <vector>
-#include <QJsonObject>
 
 namespace core {
 
@@ -34,6 +34,7 @@ public:
   QString subj_organization;
   QString cert_chain_json;
   QString tsp_info_json;
+  QString signers_cert_ocsp_json_info;
 
   std::vector<unsigned char> cert_public_key;
   std::vector<unsigned char> cert_serial;
@@ -41,13 +42,8 @@ public:
   time_t signers_time = 0;
   time_t cert_not_before = 0;
   time_t cert_not_after = 0;
-
-
 };
 
 } // namespace core
-
-
-
 
 #endif // CSP_RESPONSE_HPP

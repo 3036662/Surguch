@@ -48,6 +48,7 @@ qt_add_qml_module(appgui_pdf_csp
     QML_FILES views/RSideBarStatusMedal.qml
     QML_FILES views/RightSideBarCertChain.qml
     QML_FILES views/TextPairStatus.qml
+    QML_FILES views/CertInfo.qml
 )
 
 add_subdirectory(core)
