@@ -1,4 +1,5 @@
 #include "t_signature.hpp"
+#include "core/csp_c_bridge/bridge_utils.hpp"
 #include "core/signature_processor.hpp"
 #include "core/signatures_validator.hpp"
 #include "core/utils.hpp"
@@ -104,4 +105,11 @@ void TSignature::cBridge() {
   QVERIFY(!signatures.empty());
   core::SignaturesValidator validator;
   validator.validateSignatures(signatures, file1_);
+}
+
+
+void TSignature::cBridgeCertList() {
+   QString res= core::bridge_utils::getCertListJSON();
+   QVERIFY(!res.isEmpty());
+   qWarning()<<res;
 }

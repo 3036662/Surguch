@@ -28,6 +28,8 @@ private slots:
 
   void cBridge();
 
+  void cBridgeCertList();
+
 private:
   bool sigNumb(const QString &file, int sig_expected) const;
 

@@ -7,6 +7,8 @@ namespace core::bridge_utils {
 
 QString timeToString(time_t val) noexcept;
 
+QString getCertListJSON() noexcept;
+
 } // namespace core::bridge_utils
 
 #endif // BRIGED_UTILS_HPP
