@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Qt.labs.platform
+import QtCore
+import alt.pdfcsp.profilesModel
 
 RowLayout {
     id: toolbar_layout
@@ -50,11 +52,21 @@ RowLayout {
             }
             ComboBox {
                 Layout.alignment: Qt.AlignVCenter
-                id: comboBox
-                model: ["Option 1", "Option 2", "Option 3", "Option 4"]
+                id: profileComboBox
+                model: ProfilesModel {}
+                textRole: "title"
+                valueRole: "value"
                 displayText: qsTr("Profile")
                 implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
                 anchors.verticalCenter: parent.verticalCenter
+                onActivated: {
+                    if (currentValue === "new") {
+                        rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
+                        rightSideBar.certs = profileComboBox.model.getUserCertsJSON()
+                        rightSideBar.profile_data = ""
+                        rightSideBar.profile_model = profileComboBox.model
+                    }
+                }
             }
             Rectangle {
                 width: 5

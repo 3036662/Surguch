@@ -49,6 +49,12 @@ qt_add_qml_module(appgui_pdf_csp
     QML_FILES views/RightSideBarCertChain.qml
     QML_FILES views/TextPairStatus.qml
     QML_FILES views/CertInfo.qml
+    QML_FILES views/EditProfile.qml
+    QML_FILES views/RSBSigInfo.qml
+    QML_FILES views/RSBCloseButton.qml
+    QML_FILES views/RSBSwitch.qml
+    QML_FILES views/RSBComboSelect.qml
+    QML_FILES views/RSBTextArea.qml
 )
 
 add_subdirectory(core)

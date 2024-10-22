@@ -8,7 +8,7 @@ SignaturesListModel::SignaturesListModel(QObject *parent)
   role_names_[CheckStatusRole] = "checkStatus";
   role_names_[ValidRole] = "valid";
   role_names_[EmptyRole] = "empty";
-  role_names_[SigData]="sigData";
+  role_names_[SigData] = "sigData";
 }
 
 QVariant SignaturesListModel::headerData(int section,
@@ -30,20 +30,20 @@ QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
   }
   switch (role) {
   case SigInfoRole:
-    if (validation_results_.count(index.row())>0){
-        return validation_results_.at(index.row())->subj_common_name;
+    if (validation_results_.count(index.row()) > 0) {
+      return validation_results_.at(index.row())->subj_common_name;
     }
     return "Signature " + QString::number(index.row());
     break;
   case CheckStatusRole:
-    if (validation_results_.count(index.row())>0){
-          return true;
+    if (validation_results_.count(index.row()) > 0) {
+      return true;
     }
     return false;
     break;
   case ValidRole:
-    if (validation_results_.count(index.row())>0){
-            return validation_results_.at(index.row())->bres.check_summary;
+    if (validation_results_.count(index.row()) > 0) {
+      return validation_results_.at(index.row())->bres.check_summary;
     }
     return false;
     break;
@@ -51,8 +51,8 @@ QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
     return raw_signatures_.at(index.row()).getSigData().empty();
     break;
   case SigData:
-    if (validation_results_.count(index.row())>0){
-        return validation_results_.at(index.row())->toJson();
+    if (validation_results_.count(index.row()) > 0) {
+      return validation_results_.at(index.row())->toJson();
     }
     break;
   }

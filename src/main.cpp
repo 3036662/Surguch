@@ -1,6 +1,7 @@
 #include "cpp_views/pdf_page_render.hpp"
 #include "models/pdf_page_model.hpp"
 #include "models/signatures_list_model.hpp"
+#include "models/profiles_model.hpp"
 #include <QApplication>
 #include <QDebug>
 #include <QDirIterator>
@@ -14,6 +15,7 @@ int main(int argc, char *argv[]) {
   qmlRegisterType<PdfPageModel>("alt.pdfcsp.pdfModel", 0, 1, "MuPdfModel");
   qmlRegisterType<SignaturesListModel>("alt.pdfcsp.signaturesListModel", 0, 1,
                                        "SignaturesListModel");
+  qmlRegisterType<ProfilesModel>("alt.pdfcsp.profilesModel",0,1,"ProfilesModel");
 
   QQmlApplicationEngine engine;
 
