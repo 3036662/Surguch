@@ -27,6 +27,11 @@ public:
 
   Q_INVOKABLE QString getUserCertsJSON() const;
 
+  Q_INVOKABLE bool saveProfile(QString profile_json);
+
+signals:
+  void profileSaved(QString);
+
 private:
   /// @brief readProfiles from JSON file in
   /// /HOME/USER/.config/pdfcsp/profiles.json
@@ -35,9 +40,13 @@ private:
   /// @brief readUserCerts, read certificates for current uset from CryptoApi
   void readUserCerts();
 
+  QString saveLogoImage(const QString &path, const QString &dest_name);
+
   QHash<int, QByteArray> role_names_;
   QJsonArray profiles_;
   QJsonArray user_certs_;
+  QString config_path_;
+  QString profiles_file_name_;
 };
 
 #endif // PROFILES_MODEL_HPP

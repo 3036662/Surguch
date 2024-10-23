@@ -50,24 +50,47 @@ RowLayout {
                 height: parent.height
                 color: "transparent"
             }
+
+            ProfilesModel {
+                id: profilesModel
+            }
+
             ComboBox {
                 Layout.alignment: Qt.AlignVCenter
                 id: profileComboBox
-                model: ProfilesModel {}
+                model: profilesModel
                 textRole: "title"
                 valueRole: "value"
                 displayText: qsTr("Profile")
                 implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
                 anchors.verticalCenter: parent.verticalCenter
                 onActivated: {
+                    rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
+                    rightSideBar.edit_profile.cert_data_raw
+                            = profileComboBox.model.getUserCertsJSON()
+                    rightSideBar.edit_profile.profiles_model = profileComboBox.model
                     if (currentValue === "new") {
-                        rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
-                        rightSideBar.certs = profileComboBox.model.getUserCertsJSON()
-                        rightSideBar.profile_data = ""
-                        rightSideBar.profile_model = profileComboBox.model
+                        rightSideBar.edit_profile.profile_data = ""
+                        rightSideBar.edit_profile.profile_id = -1
+                    } else {
+                        rightSideBar.edit_profile.profile_data = currentValue
                     }
                 }
             }
+
+            Connections {
+                target: profilesModel
+                function onProfileSaved(val) {
+                    console.warn("profile save " + val)
+                    const indx = profileComboBox.indexOfValue(val)
+                    profileComboBox.displayText = profileComboBox.textAt(indx)
+                    profileComboBox.currentIndex = indx
+                    rightSideBar.edit_profile.profile_data = profileComboBox.currentValue
+                    rightSideBar.edit_profile.updateProfileForm()
+                    rightSideBar.showState = RightSideBar.ShowState.Invisible
+                }
+            }
+
             Rectangle {
                 width: 5
                 height: parent.height

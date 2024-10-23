@@ -18,6 +18,7 @@ Flickable {
     property var cert_array
     property var cert_combo_model
     property var profiles_model
+    property int profile_id: -1
 
     RSBCloseButton {}
 
@@ -31,6 +32,11 @@ Flickable {
             bottomPadding: 10
         }
 
+        TextPair {
+            id: profileIdTextPair
+            keyText: qsTr("Profile id")
+        }
+
         // profile name
         Text {
             text: qsTr("Profile name")
@@ -41,6 +47,7 @@ Flickable {
             id: profileName
             placeholderText: qsTr("Enter profile name")
 
+            //text: (profile_json !== undefined && profile_json.title!==undefined) ? profile_json.title:"";
             onTextChanged: {
                 let validInput = profileName.text.match(/^[a-zA-Z0-9]*$/)
                 if (!validInput) {
@@ -57,10 +64,11 @@ Flickable {
 
         // use by default switch
         RSBSwitch {
+            id: useAsDefaultProfileSwitch
             topPadding: 5
             bottomPadding: 5
-            id: useAsDefaultProfileSwitch
             text: qsTr("Use this profile by default")
+            // checked: (profile_json !== undefined &&profile_json.use_as_default !== undefined)  ? profile_json.use_as_default:false;
         }
 
         RightSBHorizontalDelimiter {
@@ -85,7 +93,8 @@ Flickable {
             model: root.cert_combo_model
             textRole: "title"
             valueRole: "serial"
-            displayText: qsTr("Select the certificate")
+            displayText: displayTextDefault
+            property string displayTextDefault: qsTr("Select the certificate")
         }
 
         // Cades format
@@ -106,7 +115,8 @@ Flickable {
                 }]
             textRole: "title"
             valueRole: "title"
-            displayText: qsTr("Select Cades format")
+            displayText: displayTextDefault
+            property string displayTextDefault: qsTr("Select Cades format")
         }
 
         // stamp settings
@@ -123,7 +133,8 @@ Flickable {
                 }]
             textRole: "title"
             valueRole: "title"
-            displayText: qsTr("Select stamp type")
+            displayText: displayTextDefault
+            property string displayTextDefault: qsTr("Select stamp type")
         }
 
         // select a logo
@@ -136,11 +147,6 @@ Flickable {
         RSBTextArea {
             id: logoPath
             placeholderText: qsTr("Select a logo")
-
-            onTextChanged: {
-
-                //copy an image
-            }
 
             MouseArea {
                 anchors.fill: parent
@@ -168,13 +174,16 @@ Flickable {
                 id: tspUrlEdit
                 placeholderText: qsTr("Enter TSP service url")
                 inputMethodHints: Qt.ImhUrlCharactersOnly
+                property bool valid_url: false
 
                 onTextChanged: {
                     try {
                         new URL(tspUrlEdit.text)
                         tspUrlEdit.color = "green"
+                        tspUrlEdit.valid_url = true
                     } catch (err) {
                         tspUrlEdit.color = "red"
+                        tspUrlEdit.valid_url = false
                     }
                 }
             }
@@ -186,6 +195,7 @@ Flickable {
             height: 50
 
             Button {
+                width: deleteProfileButton.width
                 text: qsTr("Save profile")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
@@ -210,16 +220,41 @@ Flickable {
                     if (!selectStampTypeCombo.item_selected) {
                         selectStampTypeCombo.forceActiveFocus()
                         root.contentY = 200
+                        return
                     }
 
                     // no check for logo
-                    if (tspUrlWrapper.visible && tspUrlEdit.color === "red") {
+                    if (tspUrlWrapper.visible && !tspUrlEdit.valid_url) {
                         tspUrlEdit.forceActiveFocus()
                         root.contentY = 300
+                        return
                     }
+                    profile_json = {}
+                    profile_json["id"] = profile_id
+                    profile_json["title"] = profileName.text
+                    profile_json["use_as_default"] = useAsDefaultProfileSwitch.checked
+                    profile_json["cert_serial"] = selectCertificateCombo.currentValue
+                    profile_json["CADES_format"] = selectCadesFormatCombo.currentValue
+                    profile_json["stamp_type"] = selectStampTypeCombo.currentValue
+                    profile_json["logo_path"] = logoPath.text
+                    profile_json["tsp_url"] = tspUrlEdit.text
+                    const new_profile_data = JSON.stringify(profile_json)
+                    console.warn(profiles_model.saveProfile(new_profile_data))
                 }
             }
-        }
+        } // save profile end
+
+        // delete profile
+        Item {
+            width: parent.width
+            height: 50
+            Button {
+                id: deleteProfileButton
+                text: qsTr("Delete profile")
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom
+            }
+        } // delete profile end
     }
 
     FileDialog {
@@ -234,13 +269,7 @@ Flickable {
     }
 
     onProfile_dataChanged: {
-        if (profile_data) {
-            try {
-                profile_json = JSON.parse(profile_data)
-            } catch (e) {
-                console.error("Error parsing JSON" + e.message)
-            }
-        }
+        updateProfileForm()
     }
 
     onCert_data_rawChanged: {
@@ -252,12 +281,67 @@ Flickable {
                                                       let res = {}
                                                       res.title = item.subject_common_name
                                                       + " " + item.serial
-                                                      res.value = item.serial
+                                                      res.serial = item.serial
                                                       return res
                                                   })
             } catch (e) {
                 console.error("Error " + e.message)
             }
+        }
+    }
+
+    function updateProfileForm() {
+        if (profile_data) {
+            try {
+                profile_json = JSON.parse(profile_data)
+                profile_id = profile_json.id
+                profileIdTextPair.value = profile_json.id
+                profileName.text = profile_json.title
+                useAsDefaultProfileSwitch.checked = profile_json.use_as_default
+                const cert_indx = selectCertificateCombo.indexOfValue(
+                                    profile_json.cert_serial)
+                selectCertificateCombo.currentIndex = cert_indx
+                selectCertificateCombo.item_selected = true
+                if (cert_indx !== -1) {
+                    selectCertificateCombo.displayText = cert_combo_model[cert_indx].title
+                }
+                const cades_format_indx = selectCadesFormatCombo.indexOfValue(
+                                            profile_json.CADES_format)
+                selectCadesFormatCombo.currentIndex = cades_format_indx
+                selectCadesFormatCombo.item_selected = true
+                if (cades_format_indx !== -1) {
+                    selectCadesFormatCombo.displayText
+                            = selectCadesFormatCombo.model[cades_format_indx].title
+                }
+                const stamp_type_indx = selectStampTypeCombo.indexOfValue(
+                                          profile_json.stamp_type)
+                selectStampTypeCombo.currentIndex = stamp_type_indx
+                selectStampTypeCombo.item_selected = true
+                if (stamp_type_indx !== -1) {
+                    selectStampTypeCombo.displayText
+                            = selectStampTypeCombo.model[stamp_type_indx].title
+                }
+                logoPath.text = profile_json.logo_path
+                tspUrlEdit.text = profile_json.tsp_url
+            } catch (e) {
+                console.error("Error parsing JSON" + e.message)
+            }
+        } else {
+            profile_id = -1
+            profileIdTextPair.value = profile_id
+            profileName.text = ""
+            useAsDefaultProfileSwitch.checked = false
+            selectCertificateCombo.currentIndex = 0
+            selectCertificateCombo.item_selected = false
+            selectCertificateCombo.displayText = selectCertificateCombo.displayTextDefault
+            selectCadesFormatCombo.currentIndex = 0
+            selectCadesFormatCombo.item_selected = false
+            selectCadesFormatCombo.displayText = selectCadesFormatCombo.displayTextDefault
+            selectStampTypeCombo.currentIndex = 0
+            selectStampTypeCombo.item_selected = false
+            selectStampTypeCombo.displayText = selectStampTypeCombo.displayTextDefault
+            logoPath.text = ""
+            tspUrlEdit.text = ""
         }
     }
 }

@@ -10,6 +10,5 @@ TextArea {
     selectByMouse: true
     wrapMode: Text.WordWrap
     placeholderText: qsTr("Placeholder text")
-    text: profile_json !== undefined ? profile_json.title : ""
     placeholderTextColor: "grey"
 }

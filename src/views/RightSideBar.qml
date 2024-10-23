@@ -4,9 +4,7 @@ import QtQuick.Layouts
 
 Item {
     id: root
-    property alias certs: edit_profile_panel.cert_data_raw
-    property alias profile_data: edit_profile_panel.profile_data
-    property alias profile_model: edit_profile_panel.profiles_model
+    property alias edit_profile: edit_profile_panel
 
     enum ShowState {
         Invisible,

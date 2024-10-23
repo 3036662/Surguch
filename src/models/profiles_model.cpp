@@ -1,6 +1,7 @@
 #include "profiles_model.hpp"
 #include "bridge_utils.hpp"
 #include <QDir>
+#include <QFileInfo>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QStandardPaths>
@@ -38,47 +39,54 @@ QVariant ProfilesModel::data(const QModelIndex &index, int role) const {
     return res;
   }
   case ValueRole:
-    return "new";
+    if (profiles_.at(index.row()).toObject().value("title").toString() ==
+        "CreateProfile") {
+      return "new";
+    }
+    // profiles_.at(index.row()).toObject().value("id").toInt();
+    const QString res =
+        QJsonDocument(profiles_.at(index.row()).toObject()).toJson();
+    return res;
   }
   return {};
 }
 
 void ProfilesModel::readProfiles() {
-  QString config_path =
+  config_path_ =
       QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
-  if (config_path.isEmpty()) {
+  if (config_path_.isEmpty()) {
     qWarning() << tr(
         "Standart config location cannot be determined, using home");
-    config_path = QDir::homePath();
+    config_path_ = QDir::homePath();
   }
-  if (config_path.isEmpty()) {
+  if (config_path_.isEmpty()) {
     const QStringList config_path_list =
         QStandardPaths::standardLocations(QStandardPaths::ConfigLocation);
     qWarning() << tr("Cannot determine the user's home folder");
     if (!config_path_list.empty()) {
-      config_path = config_path_list.at(0);
-      qWarning() << tr("using the path ") << config_path;
+      config_path_ = config_path_list.at(0);
+      qWarning() << tr("using the path ") << config_path_;
     }
   }
-  if (!config_path.isEmpty()) {
-    config_path += "/csppdf";
-    const QDir config_dir(config_path);
+  if (!config_path_.isEmpty()) {
+    config_path_ += "/csppdf";
+    const QDir config_dir(config_path_);
     if (!config_dir.exists()) {
       if (!config_dir.mkpath(".")) {
-        qWarning() << tr("Con not create folder ") << config_path;
+        qWarning() << tr("Con not create folder ") << config_path_;
       }
     }
   }
-  if (config_path.isEmpty()) {
+  if (config_path_.isEmpty()) {
     return;
   }
-  const QString profiles_file_name = config_path + "/profiles.json";
-  QFile profile_file(profiles_file_name);
+  profiles_file_name_ = config_path_ + "/profiles.json";
+  QFile profile_file(profiles_file_name_);
   // create empty json array if not exists
   if (!profile_file.exists()) {
     if (!profile_file.open(QIODeviceBase::WriteOnly,
                            QFileDevice::ReadOwner | QFileDevice::WriteOwner)) {
-      qWarning() << tr("Can not create file ") << profiles_file_name;
+      qWarning() << tr("Can not create file ") << profiles_file_name_;
       return;
     }
     QTextStream out(&profile_file);
@@ -90,14 +98,14 @@ void ProfilesModel::readProfiles() {
   }
   // read the file
   if (!profile_file.open(QIODevice::ReadOnly)) {
-    qWarning() << tr("Can not open file ") << profiles_file_name;
+    qWarning() << tr("Can not open file ") << profiles_file_name_;
     return;
   }
   const QByteArray file_data = profile_file.readAll();
   profile_file.close();
   const QJsonDocument json_doc = QJsonDocument::fromJson(file_data);
   if (json_doc.isNull() || !json_doc.isArray()) {
-    qWarning() << tr("Error parsing JSON from file ") << profiles_file_name;
+    qWarning() << tr("Error parsing JSON from file ") << profiles_file_name_;
   }
   profiles_ = json_doc.array();
   const QJsonObject create_profile_field{{"title", "CreateProfile"}};
@@ -123,4 +131,123 @@ void ProfilesModel::readUserCerts() {
 QString ProfilesModel::getUserCertsJSON() const {
   const QJsonDocument json_doc(user_certs_);
   return json_doc.toJson();
+}
+
+Q_INVOKABLE bool ProfilesModel::saveProfile(QString profile_json) {
+  if (profile_json.isEmpty()) {
+    return false;
+  }
+  const QByteArray profile_data = profile_json.toUtf8();
+  const QJsonDocument json_doc = QJsonDocument::fromJson(profile_data);
+  if (json_doc.isNull() || !json_doc.isObject()) {
+    qWarning() << "[ProfilesModel] error parsing JSON,can not save the profile";
+  }
+  QJsonObject profile_object = json_doc.object();
+  // if new profile - create a new id
+  if (profile_object.value("id").toInt() == -1) {
+    auto it_max_current =
+        std::max_element(profiles_.cbegin(), profiles_.cend(),
+                         [](const QJsonValue &left, const QJsonValue &right) {
+                           return left.toObject().value("id").toInt() <
+                                  right.toObject().value("id").toInt();
+                         });
+    const int new_id = it_max_current == profiles_.cend()
+                           ? 0
+                           : it_max_current->toObject().value("id").toInt() + 1;
+    profile_object.insert("id", new_id);
+  }
+  // existing profile
+  else {
+    auto it_old_value = std::find_if(profiles_.begin(), profiles_.end(),
+                                     [&profile_object](const QJsonValue &val) {
+                                       return val.toObject().value("id") ==
+                                              profile_object.value("id");
+                                     });
+    if (it_old_value != profiles_.cend()) {
+      profiles_.erase(it_old_value);
+    }
+  }
+  // copy the image
+  const QString img_path = profile_object.value("logo_path").toString();
+  const QString dest_name =
+      "profile_" + QString::number(profile_object.value("id").toInt()) +
+      "_logo";
+  const QString copy_result_name = saveLogoImage(img_path, dest_name);
+  profile_object.insert("logo_path", copy_result_name);
+  profiles_.push_back(profile_object);
+  // save profiles
+  QJsonArray profiles;
+  std::copy_if(profiles_.cbegin(), profiles_.cend(),
+               std::back_inserter(profiles), [](const QJsonValue &val) {
+                 return val.toObject().value("title").toString() !=
+                        "CreateProfile";
+               });
+  QFile file(profiles_file_name_);
+  const QString profiles_data = QJsonDocument(profiles).toJson();
+  if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    QTextStream out(&file);
+    out << profiles_data;
+    file.close();
+    beginResetModel();
+    readProfiles();
+    endResetModel();
+    const QJsonDocument saved_val(profile_object);
+    profileSaved(saved_val.toJson());
+    return true;
+  }
+  endResetModel();
+  qWarning() << "[ProfilesModel] failed to save profiles";
+  return false;
+}
+
+QString ProfilesModel::saveLogoImage(const QString &path,
+                                     const QString &dest_name) {
+  if (path.isEmpty()) {
+    return {};
+  }
+  const QString prefix = "file://";
+  QString file_path;
+  if (path.startsWith(prefix)) {
+    file_path = path.mid(prefix.length());
+  } else {
+    file_path = path;
+  }
+  const QFileInfo src_file_info(file_path);
+  // if file is already saved
+  if (!src_file_info.exists() || !src_file_info.isFile()) {
+    qWarning()
+        << "[ProfilesModel] can not save the image, file does not exist: "
+        << path;
+    return {};
+  }
+  if (!src_file_info.isReadable()) {
+    qWarning() << "[ProfilesModel] the file is not readable :" << path;
+    return {};
+  }
+  if (src_file_info.isExecutable()) {
+    qWarning() << "[ProfilesModel] the file is executable, will not copy :"
+               << path;
+    return {};
+  }
+  if (src_file_info.size() > 100000000) {
+    qWarning() << "[ProfilesModel] file size >100 MB , will not copy :" << path;
+    return {};
+  }
+
+  const QString dest =
+      config_path_ + "/" + dest_name + "." + src_file_info.completeSuffix();
+  QFile dest_file(dest);
+  if (dest_file.exists()) {
+    if (dest != file_path) {
+      dest_file.remove();
+    } else {
+      return dest;
+    }
+  }
+  if (!QFile::copy(file_path, dest)) {
+    qWarning() << "[ProfilesModel] Failed to copy file from " << path << " to "
+               << dest;
+    return {};
+  }
+  return dest;
 }
