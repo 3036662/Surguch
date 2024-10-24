@@ -9,6 +9,8 @@ RowLayout {
     id: toolbar_layout
     spacing: 5
 
+
+
     Row {
         Layout.minimumWidth: 600
         Layout.fillWidth: true
@@ -124,12 +126,18 @@ RowLayout {
             }
         }
         TopBarButton {
+            id: signModeButton
             icon.source: "qrc:/icons/pencil_line.svg"
             text: qsTr("Sign")
             icon.height: 25
             icon.width: 25
             anchors.top: parent.top
             anchors.bottom: parent.bottom
+
+            onClicked: {
+                pdfListView.signMode=!pdfListView.signMode;
+                down=!down;
+            }
         }
     }
 
@@ -154,5 +162,12 @@ RowLayout {
             leftSideBar.source = currentFile
             rightSideBar.showState = RightSideBar.ShowState.Invisible
         }
+    }
+
+    Keys.onPressed:(event)=> {
+       if (event.key === Qt.Key_Escape && pdfListView.signMode) {
+           pdfListView.signMode=false;
+           signModeButton.down=false;
+       }
     }
 }

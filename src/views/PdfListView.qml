@@ -11,6 +11,7 @@ ListView {
     property string source: ""
     property double zoomPageFact: 1
     property int delegateRotation: 0
+    property bool signMode: false
 
     readonly property double maxZoom: 4
     readonly property double minZoom: 0.2
@@ -47,7 +48,6 @@ ListView {
                 maxZoomReached()
             }
         }
-        console.warn("X=" + contentX)
     }
 
     function zoomOut() {
@@ -88,7 +88,6 @@ ListView {
         let currentPage = indexAt(100, contentY+100)+1
         delegateRotation = delegateRotation == 270 ? 0 : delegateRotation + 90     
         model.redrawAll()
-        console.warn(currentPage)
         scrollToPage(currentPage)
     }
 
@@ -143,6 +142,7 @@ ListView {
 
             onWidthChanged: {
                 root.pageWidth = width
+                updateCrossSize();
             }
 
             Component.onCompleted: {
@@ -151,6 +151,63 @@ ListView {
                 setPageNumber(model.display)
                 if (width > 0 && root.hScrollPos > 0 && root.hScrollPos < 1) {
                     root.contentX = width * root.hScrollPos
+                }
+            } 
+
+            function updateCrossSize(){
+                cross.width=pdfPage.width<pdfPage.height ? pdfPage.width*0.41 : pdfPage.width/3;
+                if (pdfPage.height!=0){
+                    cross.height= pdfPage.width<pdfPage.height ? pdfPage.height/9 : pdfPage.height/7;
+                }
+            }
+
+            MouseArea{
+                enabled: root.signMode;
+                anchors.fill:parent
+                hoverEnabled:true
+
+                onEntered: {
+                        cross.visible = true;
+                        pdfPage.updateCrossSize();
+                        cursorShape=Qt.CrossCursor;
+                }
+                onExited: {
+                    cross.visible = false;
+                    cursorShape=Qt.ArrowCursor;
+                }
+                onClicked: {
+                    console.warn("Item " + (index + 1) + " clicked at:",cross.x, cross.y);
+                    console.warn("Width: "+width," Height: "+height);
+                }
+                onPositionChanged: {
+                               cross.x = mouseX - cross.width / 2;
+                               cross.y = mouseY - cross.height / 2;
+                              if (cross.x<0 || cross.x+cross.width>pdfPage.width
+                                 || cross.y<0 || cross.y+cross.height>pdfPage.height){
+                                cross.valid_position=false;
+                              } else{
+                                  cross.valid_position=true;
+                              }
+                }
+
+                Rectangle{
+                    id:cross
+                    width: 0
+                    height: 0;
+                    color: "transparent";
+                    border.color: valid_position? "blue" : "red";
+                    border.width: 2
+                    visible: false
+                    property string defaultText: qsTr("Stamp position");
+                    property string invalidPositionText: qsTr("Invalid position");
+                    property bool valid_position:true
+
+                    Text{
+                        topPadding: 10
+                        anchors.horizontalCenter: parent.horizontalCenter;
+                        text:cross.valid_position ? cross.defaultText : cross.invalidPositionText;
+                        color: cross.valid_position ? "blue" : "red";
+                    }
                 }
             }
         }

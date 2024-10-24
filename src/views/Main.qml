@@ -16,7 +16,9 @@ ApplicationWindow {
         ColumnLayout {
             anchors.fill: parent
             spacing: 2
-            Header {}
+            Header {
+                id:header
+            }
             HeaderSubBar {
                 id: headerSubBar
                 visible: pdfListView.source != ""
@@ -37,6 +39,7 @@ ApplicationWindow {
         RightSideBar {
             id: rightSideBar
         }
+
     }
 
     footer: Pane {
@@ -81,6 +84,7 @@ ApplicationWindow {
         id: pdfModel
         mustProcessSignatures: true
     }
+
 
     Component.onCompleted: {
         // update page count in header
