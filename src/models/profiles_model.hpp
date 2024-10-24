@@ -13,11 +13,9 @@ class ProfilesModel : public QAbstractListModel {
 public:
   explicit ProfilesModel(QObject *parent = nullptr);
 
-  // Header:
   [[nodiscard]] QVariant headerData(int section, Qt::Orientation orientation,
                                     int role) const override;
 
-  // Basic functionality:
   [[nodiscard]] int rowCount(const QModelIndex &parent) const override;
 
   [[nodiscard]] QVariant data(const QModelIndex &index,
@@ -25,12 +23,18 @@ public:
 
   [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
+  ///@brief get a json array with user certificates
   Q_INVOKABLE QString getUserCertsJSON() const;
 
   Q_INVOKABLE bool saveProfile(QString profile_json);
 
+  Q_INVOKABLE QString getDetDefaultProfileVal();
+
+  Q_INVOKABLE bool deleteProfile(int id_profile);
+
 signals:
-  void profileSaved(QString);
+  void profileSaved(QString);   // value of saved profile
+  void profileDeleted(QString); // title of deleted profile
 
 private:
   /// @brief readProfiles from JSON file in
@@ -41,6 +45,8 @@ private:
   void readUserCerts();
 
   QString saveLogoImage(const QString &path, const QString &dest_name);
+
+  bool deleteLogoImage(const QString &path);
 
   QHash<int, QByteArray> role_names_;
   QJsonArray profiles_;

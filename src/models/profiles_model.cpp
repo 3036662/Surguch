@@ -174,6 +174,15 @@ Q_INVOKABLE bool ProfilesModel::saveProfile(QString profile_json) {
       "_logo";
   const QString copy_result_name = saveLogoImage(img_path, dest_name);
   profile_object.insert("logo_path", copy_result_name);
+  // if new profile will be used as default, disable default use for other
+  // profiles
+  if (profile_object.value("use_as_default").toBool()) {
+    for (qsizetype i = 0; i < profiles_.count(); ++i) {
+      QJsonObject tmp = profiles_[i].toObject();
+      tmp.insert("use_as_default", false);
+      profiles_.replace(i, tmp);
+    }
+  }
   profiles_.push_back(profile_object);
   // save profiles
   QJsonArray profiles;
@@ -234,7 +243,7 @@ QString ProfilesModel::saveLogoImage(const QString &path,
     return {};
   }
 
-  const QString dest =
+  QString dest =
       config_path_ + "/" + dest_name + "." + src_file_info.completeSuffix();
   QFile dest_file(dest);
   if (dest_file.exists()) {
@@ -250,4 +259,58 @@ QString ProfilesModel::saveLogoImage(const QString &path,
     return {};
   }
   return dest;
+}
+
+QString ProfilesModel::getDetDefaultProfileVal() {
+  for (const auto &profile : profiles_) {
+    if (profile.toObject().value("use_as_default").toBool()) {
+      const QJsonDocument tmp_doc(profile.toObject());
+      return tmp_doc.toJson();
+    }
+  }
+  return {};
+}
+
+bool ProfilesModel::deleteProfile(int id_profile) {
+
+  QString profile_title;
+  QJsonArray profiles_new;
+  for (qsizetype i = 0; i < profiles_.count(); ++i) {
+    if (!profiles_[i].isObject()) {
+      continue;
+    }
+    if (profiles_[i].toObject().value("id").toInt() == id_profile) {
+      profile_title = profiles_[i].toObject().value("title").toString();
+      deleteLogoImage(profiles_[i].toObject().value("logo_path").toString());
+    } else if (profiles_[i].toObject().value("title").toString() !=
+               "CreateProfile") {
+      profiles_new.append(profiles_[i]);
+    }
+  }
+  QFile file(profiles_file_name_);
+  const QString profiles_data = QJsonDocument(profiles_new).toJson();
+  if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    QTextStream out(&file);
+    out << profiles_data;
+    file.close();
+    beginResetModel();
+    readProfiles();
+    endResetModel();
+    profileDeleted(profile_title);
+    return true;
+  }
+  endResetModel();
+  qWarning() << "[ProfilesModel] failed to save profiles";
+  return false;
+}
+
+bool ProfilesModel::deleteLogoImage(const QString &path) {
+  const QFileInfo finfo_tmp(path);
+  // use only filename and extension
+  const QString path_to_delete = config_path_ + "/" + finfo_tmp.fileName();
+  const QFileInfo finfo(path_to_delete);
+  if (finfo.exists() && finfo.isFile() && !QFile(path_to_delete).remove()) {
+    qWarning() << "[ProfilesModel] can't delete file: " << path_to_delete;
+  }
+  return true;
 }

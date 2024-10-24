@@ -47,7 +47,6 @@ Flickable {
             id: profileName
             placeholderText: qsTr("Enter profile name")
 
-            //text: (profile_json !== undefined && profile_json.title!==undefined) ? profile_json.title:"";
             onTextChanged: {
                 let validInput = profileName.text.match(/^[a-zA-Z0-9]*$/)
                 if (!validInput) {
@@ -68,7 +67,6 @@ Flickable {
             topPadding: 5
             bottomPadding: 5
             text: qsTr("Use this profile by default")
-            // checked: (profile_json !== undefined &&profile_json.use_as_default !== undefined)  ? profile_json.use_as_default:false;
         }
 
         RightSBHorizontalDelimiter {
@@ -195,6 +193,7 @@ Flickable {
             height: 50
 
             Button {
+                id: saveButton
                 width: deleteProfileButton.width
                 text: qsTr("Save profile")
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -223,12 +222,12 @@ Flickable {
                         return
                     }
 
-                    // no check for logo
                     if (tspUrlWrapper.visible && !tspUrlEdit.valid_url) {
                         tspUrlEdit.forceActiveFocus()
                         root.contentY = 300
                         return
                     }
+                    saveButton.enabled=false;
                     profile_json = {}
                     profile_json["id"] = profile_id
                     profile_json["title"] = profileName.text
@@ -253,6 +252,13 @@ Flickable {
                 text: qsTr("Delete profile")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
+
+                onClicked: {
+                      deleteProfileButton.enabled=false;
+                      if (profiles_model.deleteProfile(root.profile_id)){
+                            rightSideBar.showState = RightSideBar.ShowState.Invisible
+                      }
+                }
             }
         } // delete profile end
     }
@@ -290,6 +296,14 @@ Flickable {
         }
     }
 
+    onVisibleChanged: {
+        if (visible){
+            saveButton.enabled=true;
+            deleteProfileButton.enabled=true;
+        }
+    }
+
+    // fill the form from profile_data JSON string
     function updateProfileForm() {
         if (profile_data) {
             try {
@@ -325,8 +339,9 @@ Flickable {
                 tspUrlEdit.text = profile_json.tsp_url
             } catch (e) {
                 console.error("Error parsing JSON" + e.message)
-            }
+            }   
         } else {
+            // fill with empty/default values
             profile_id = -1
             profileIdTextPair.value = profile_id
             profileName.text = ""

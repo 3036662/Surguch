@@ -61,33 +61,59 @@ RowLayout {
                 model: profilesModel
                 textRole: "title"
                 valueRole: "value"
-                displayText: qsTr("Profile")
+                displayText: defaultText
+                property string defaultText: qsTr("Profile")
                 implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
                 anchors.verticalCenter: parent.verticalCenter
                 onActivated: {
+                    profileComboBox.displayText = profileComboBox.textAt(currentIndex)
+                    //open profile info panel
                     rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
+                    // set the certificates for select
                     rightSideBar.edit_profile.cert_data_raw
                             = profileComboBox.model.getUserCertsJSON()
+                    // set a reference to this model
                     rightSideBar.edit_profile.profiles_model = profileComboBox.model
+                    // if create a new profile, set an empty data
                     if (currentValue === "new") {
                         rightSideBar.edit_profile.profile_data = ""
                         rightSideBar.edit_profile.profile_id = -1
+                    // ele set current profile data
                     } else {
                         rightSideBar.edit_profile.profile_data = currentValue
                     }
+                }
+
+                Component.onCompleted: {
+                    let def_profile=profilesModel.getDetDefaultProfileVal();
+                    if (def_profile!==""){
+                        const indx=profileComboBox.indexOfValue(def_profile);
+                        profileComboBox.displayText = profileComboBox.textAt(indx)
+                        profileComboBox.currentIndex = indx
+                    }
+
                 }
             }
 
             Connections {
                 target: profilesModel
+                // when model has successfully saved the profile
                 function onProfileSaved(val) {
-                    console.warn("profile save " + val)
+                    // select saved profile in the header combo
                     const indx = profileComboBox.indexOfValue(val)
                     profileComboBox.displayText = profileComboBox.textAt(indx)
                     profileComboBox.currentIndex = indx
+                    // update profile in right side bar
                     rightSideBar.edit_profile.profile_data = profileComboBox.currentValue
                     rightSideBar.edit_profile.updateProfileForm()
                     rightSideBar.showState = RightSideBar.ShowState.Invisible
+                }
+
+                function onProfileDeleted(title){
+                    if (title!==""){
+                        profileComboBox.currentIndex=0;
+                        profileComboBox.displayText=profileComboBox.defaultText;
+                    }
                 }
             }
 
