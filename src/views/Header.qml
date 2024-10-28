@@ -136,6 +136,9 @@ RowLayout {
 
             onClicked: {
                 pdfListView.signMode=!pdfListView.signMode;
+                if (!down){
+                    pdfListView.reserRotation();
+                }
                 down=!down;
             }
         }

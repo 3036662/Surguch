@@ -84,6 +84,14 @@ ListView {
         positionViewAtIndex(newIndex - 1, ListView.Beginning)
     }
 
+    function reserRotation(){
+       if(delegateRotation!==0){
+         delegateRotation=0;
+         model.redrawAll();
+         scrollToPage(indexAt(100, contentY+100)+1);
+       }
+    }
+
     function rotateClockWise() {
         let currentPage = indexAt(100, contentY+100)+1
         delegateRotation = delegateRotation == 270 ? 0 : delegateRotation + 90     
