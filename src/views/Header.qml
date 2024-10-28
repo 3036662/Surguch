@@ -3,13 +3,11 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Qt.labs.platform
 import QtCore
-import alt.pdfcsp.profilesModel
+
 
 RowLayout {
     id: toolbar_layout
     spacing: 5
-
-
 
     Row {
         Layout.minimumWidth: 600
@@ -51,10 +49,6 @@ RowLayout {
                 width: 5
                 height: parent.height
                 color: "transparent"
-            }
-
-            ProfilesModel {
-                id: profilesModel
             }
 
             ComboBox {
@@ -135,11 +129,15 @@ RowLayout {
             anchors.bottom: parent.bottom
 
             onClicked: {
-                pdfListView.signMode=!pdfListView.signMode;
-                if (!down){
-                    pdfListView.reserRotation();
+                if (profileComboBox.currentValue==="new"){
+                    profileComboBox.popup.open();
+                } else{
+                    pdfListView.signMode=!pdfListView.signMode;
+                    if (!down){
+                        pdfListView.reserRotation();
+                    }
+                    down=!down;
                 }
-                down=!down;
             }
         }
     }
@@ -172,5 +170,9 @@ RowLayout {
            pdfListView.signMode=false;
            signModeButton.down=false;
        }
+    }
+
+    function getCurrentProfileValue(){
+        return profileComboBox.currentValue;
     }
 }

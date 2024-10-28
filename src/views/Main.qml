@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import alt.pdfcsp.pdfModel
+import alt.pdfcsp.signatureCreator
+import alt.pdfcsp.profilesModel
 
 ApplicationWindow {
     id: root_window
@@ -85,6 +87,38 @@ ApplicationWindow {
         mustProcessSignatures: true
     }
 
+    ProfilesModel {
+        id: profilesModel
+    }
+
+    SignatureCreator{
+        id: sigCreator;
+        function signDoc(location_data){
+            try{
+                let curr_profile=JSON.parse(header.getCurrentProfileValue());
+                let params={
+                    page_index: location_data.page_index,
+                    page_width: location_data.page_width,
+                    page_height: location_data.page_height,
+                    stamp_x:location_data.stamp_x,
+                    stamp_y:location_data.stamp_y,
+                    stamp_width:location_data.stamp_width,
+                    stamp_height:location_data.stamp_height,
+                    logo_path: curr_profile.logo_path,
+                    cert_serial: curr_profile.cert_serial,
+                    stamp_type: curr_profile.stamp_type,
+                    cades_type: curr_profile.CADES_format,
+                    file_to_sign_path:pdfModel.getSource()                }
+
+               //console.warn(JSON.stringify(params));
+               sigCreator.createSignature(params);
+            } catch (e){
+                console.warn(e);
+            }
+
+        }
+    }
+
 
     Component.onCompleted: {
         // update page count in header
@@ -120,7 +154,10 @@ ApplicationWindow {
         // toggle from preview to certs in left sidebat
         headerSubBar.showPreviews.connect(leftSideBar.showPreviews)
         headerSubBar.showCerts.connect(leftSideBar.showCerts)
+        // sign the document
+        pdfListView.stampLocationSelected.connect(sigCreator.signDoc)
     }
+
 
     // Info dialog in center of window
     Dialog {
@@ -145,3 +182,4 @@ ApplicationWindow {
         }
     }
 }
+

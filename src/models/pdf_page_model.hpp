@@ -31,6 +31,8 @@ public:
 
   Q_INVOKABLE void setSource(const QString &path);
 
+  Q_INVOKABLE QString getSource() const;
+
   [[nodiscard]] Q_INVOKABLE fz_document *getDoc() const;
 
   [[nodiscard]] Q_INVOKABLE fz_context *getCtx() const;

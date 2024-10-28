@@ -4,9 +4,9 @@
 
 namespace core {
 
-SignaturesValidator::SignaturesValidator(QObject *parent) : QObject{parent} {
-  qWarning() << "Validator constructed";
-}
+// SignaturesValidator::SignaturesValidator(QObject *parent) : QObject{parent} {
+//   qWarning() << "Validator constructed";
+// }
 
 void SignaturesValidator::validateSignatures(
     std::vector<core::RawSignature> raw_signatures_,QString file_source) {

@@ -42,7 +42,6 @@ qt_add_qml_module(appgui_pdf_csp
     QML_FILES views/SignaturesList.qml
     QML_FILES views/RightSideBar.qml
     QML_FILES views/TextPairBool.qml
-    SOURCES
     QML_FILES views/RightSBHorizontalDelimiter.qml
     QML_FILES views/TextPair.qml
     QML_FILES views/RSideBarStatusMedal.qml
@@ -58,6 +57,8 @@ qt_add_qml_module(appgui_pdf_csp
 )
 
 add_subdirectory(core)
+
+#add_subdirectory(dto)
 
 add_subdirectory(models)
 

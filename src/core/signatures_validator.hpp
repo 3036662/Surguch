@@ -11,9 +11,9 @@ namespace core {
 class SignaturesValidator : public QObject {
   Q_OBJECT
 public:
-  explicit SignaturesValidator(QObject *parent = nullptr);
+  // explicit SignaturesValidator(QObject *parent = nullptr);
 
-  ~SignaturesValidator() =default;
+  ~SignaturesValidator() override = default;
 
   void abort() { abort_recieved_ = true; };
 

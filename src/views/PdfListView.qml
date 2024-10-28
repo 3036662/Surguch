@@ -25,12 +25,13 @@ ListView {
     signal canZoom
     signal minZoomReached
     signal canZoomOut
+    signal stampLocationSelected(var stamp_location_info)
 
     Layout.fillHeight: true
     Layout.fillWidth: true
     Layout.leftMargin: 20
     Layout.rightMargin: 20
-    Layout.minimumWidth:  200
+    Layout.minimumWidth: 200
     Layout.alignment: Qt.AlignHCenter
 
     spacing: 30
@@ -71,10 +72,10 @@ ListView {
             return
         }
         zoomPageFact = newZoom / 100
-        if (zoomPageFact<maxZoom){
+        if (zoomPageFact < maxZoom) {
             canZoom()
         }
-        if (zoomPageFact>minZoom){
+        if (zoomPageFact > minZoom) {
             canZoomOut()
         }
         //console.warn("new zoom " + zoomPageFact)
@@ -84,24 +85,24 @@ ListView {
         positionViewAtIndex(newIndex - 1, ListView.Beginning)
     }
 
-    function reserRotation(){
-       if(delegateRotation!==0){
-         delegateRotation=0;
-         model.redrawAll();
-         scrollToPage(indexAt(100, contentY+100)+1);
-       }
+    function reserRotation() {
+        if (delegateRotation !== 0) {
+            delegateRotation = 0
+            model.redrawAll()
+            scrollToPage(indexAt(100, contentY + 100) + 1)
+        }
     }
 
     function rotateClockWise() {
-        let currentPage = indexAt(100, contentY+100)+1
-        delegateRotation = delegateRotation == 270 ? 0 : delegateRotation + 90     
+        let currentPage = indexAt(100, contentY + 100) + 1
+        delegateRotation = delegateRotation == 270 ? 0 : delegateRotation + 90
         model.redrawAll()
         scrollToPage(currentPage)
     }
 
     function rotateCounterClockWise() {
-        let currentPage = indexAt(100, contentY+100)+1
-        delegateRotation = delegateRotation == 0 ? 270 : delegateRotation - 90        
+        let currentPage = indexAt(100, contentY + 100) + 1
+        delegateRotation = delegateRotation == 0 ? 270 : delegateRotation - 90
         model.redrawAll()
         scrollToPage(currentPage)
     }
@@ -137,7 +138,7 @@ ListView {
         }
     }
 
-    model:pdfModel
+    model: pdfModel
 
     delegate: Column {
         width: root.width
@@ -150,7 +151,7 @@ ListView {
 
             onWidthChanged: {
                 root.pageWidth = width
-                updateCrossSize();
+                updateCrossSize()
             }
 
             Component.onCompleted: {
@@ -160,61 +161,75 @@ ListView {
                 if (width > 0 && root.hScrollPos > 0 && root.hScrollPos < 1) {
                     root.contentX = width * root.hScrollPos
                 }
-            } 
+            }
 
-            function updateCrossSize(){
-                cross.width=pdfPage.width<pdfPage.height ? pdfPage.width*0.41 : pdfPage.width/3;
-                if (pdfPage.height!=0){
-                    cross.height= pdfPage.width<pdfPage.height ? pdfPage.height/9 : pdfPage.height/7;
+            function updateCrossSize() {
+                cross.width = pdfPage.width
+                        < pdfPage.height ? pdfPage.width * 0.41 : pdfPage.width / 3
+                if (pdfPage.height != 0) {
+                    cross.height = pdfPage.width
+                            < pdfPage.height ? pdfPage.height / 9 : pdfPage.height / 7
                 }
             }
 
-            MouseArea{
-                enabled: root.signMode;
-                anchors.fill:parent
-                hoverEnabled:true
+            MouseArea {
+                enabled: root.signMode
+                anchors.fill: parent
+                hoverEnabled: true
 
                 onEntered: {
-                        cross.visible = true;
-                        pdfPage.updateCrossSize();
-                        cursorShape=Qt.CrossCursor;
+                    cross.visible = true
+                    pdfPage.updateCrossSize()
+                    cursorShape = Qt.CrossCursor
                 }
                 onExited: {
-                    cross.visible = false;
-                    cursorShape=Qt.ArrowCursor;
+                    cross.visible = false
+                    cursorShape = Qt.ArrowCursor
                 }
                 onClicked: {
-                    console.warn("Item " + (index + 1) + " clicked at:",cross.x, cross.y);
-                    console.warn("Width: "+width," Height: "+height);
+                    if (cross.valid_position) {
+                        let location_data = {
+                            page_index: index,
+                            page_width: width,
+                            page_height: height,
+                            stmap_x: cross.x,
+                            stamp_y: cross.y,
+                            stamp_width: cross.width,
+                            stamp_heigth: cross.height
+                        }
+                        stampLocationSelected(location_data)
+                    }
                 }
                 onPositionChanged: {
-                               cross.x = mouseX - cross.width / 2;
-                               cross.y = mouseY - cross.height / 2;
-                              if (cross.x<0 || cross.x+cross.width>pdfPage.width
-                                 || cross.y<0 || cross.y+cross.height>pdfPage.height){
-                                cross.valid_position=false;
-                              } else{
-                                  cross.valid_position=true;
-                              }
+                    cross.x = mouseX - cross.width / 2
+                    cross.y = mouseY - cross.height / 2
+                    if (cross.x < 0 || cross.x + cross.width > pdfPage.width
+                            || cross.y < 0
+                            || cross.y + cross.height > pdfPage.height) {
+                        cross.valid_position = false
+                    } else {
+                        cross.valid_position = true
+                    }
                 }
 
-                Rectangle{
-                    id:cross
+                Rectangle {
+                    id: cross
                     width: 0
-                    height: 0;
-                    color: "transparent";
-                    border.color: valid_position? "blue" : "red";
+                    height: 0
+                    color: "transparent"
+                    border.color: valid_position ? "blue" : "red"
                     border.width: 2
                     visible: false
-                    property string defaultText: qsTr("Stamp position");
-                    property string invalidPositionText: qsTr("Invalid position");
-                    property bool valid_position:true
+                    property string defaultText: qsTr("Stamp position")
+                    property string invalidPositionText: qsTr(
+                                                             "Invalid position")
+                    property bool valid_position: true
 
-                    Text{
+                    Text {
                         topPadding: 10
-                        anchors.horizontalCenter: parent.horizontalCenter;
-                        text:cross.valid_position ? cross.defaultText : cross.invalidPositionText;
-                        color: cross.valid_position ? "blue" : "red";
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: cross.valid_position ? cross.defaultText : cross.invalidPositionText
+                        color: cross.valid_position ? "blue" : "red"
                     }
                 }
             }

@@ -1,3 +1,4 @@
+#include "core/signature_creator.hpp"
 #include "cpp_views/pdf_page_render.hpp"
 #include "models/pdf_page_model.hpp"
 #include "models/signatures_list_model.hpp"
@@ -16,6 +17,8 @@ int main(int argc, char *argv[]) {
   qmlRegisterType<SignaturesListModel>("alt.pdfcsp.signaturesListModel", 0, 1,
                                        "SignaturesListModel");
   qmlRegisterType<ProfilesModel>("alt.pdfcsp.profilesModel",0,1,"ProfilesModel");
+  qmlRegisterType<core::SignatureCreator>("alt.pdfcsp.signatureCreator",0,1,"SignatureCreator");
+
 
   QQmlApplicationEngine engine;
 

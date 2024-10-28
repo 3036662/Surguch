@@ -6,6 +6,7 @@ add_library(appcore OBJECT
     utils.hpp
     utils.cpp
     signatures_validator.hpp signatures_validator.cpp
+    signature_creator.hpp signature_creator.cpp
 )
 
 add_subdirectory(csp_c_bridge)

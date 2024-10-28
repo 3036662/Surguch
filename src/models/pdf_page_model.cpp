@@ -99,6 +99,10 @@ void PdfPageModel::setSource(const QString &path) {
   }
 }
 
+Q_INVOKABLE QString PdfPageModel::getSource() const{
+    return file_source_;
+};
+
 fz_document *PdfPageModel::getDoc() const { return fzdoc_; }
 
 fz_context *PdfPageModel::getCtx() const { return fzctx_; }
