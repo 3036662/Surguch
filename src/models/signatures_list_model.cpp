@@ -75,9 +75,11 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
 
   QObject::connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit,
                    [this] {
-                     validator_->abort();
+                    if (worker_thread_!=nullptr && worker_thread_->isRunning()){
                      worker_thread_->requestInterruption();
+                     validator_->abort();                     
                      worker_thread_->wait();
+                    }
                    });
 
   QObject::connect(worker_thread_, &QThread::started, [this, file_source]() {
@@ -92,17 +94,13 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
   QObject::connect(validator_, &core::SignaturesValidator::validatationResult,
                    this, &SignaturesListModel::saveValidationResult);
 
-  QObject::connect(worker_thread_, &QThread::finished, validator_,
-                   &core::SignaturesValidator::deleteLater);
 
-  QObject::connect(worker_thread_, &QThread::finished, worker_thread_,
-                   &QThread::deleteLater);
-
-  QObject::connect(worker_thread_, &QThread::finished, [this] {
-    worker_thread_ = nullptr;
-    qWarning() << "Thread finish recieved";
+  QObject::connect(worker_thread_, &QThread::finished, [this](){
+      validator_->deleteLater();
+      worker_thread_->deleteLater();
+      worker_thread_ = nullptr;
+      validator_= nullptr;
   });
-  ;
 
   worker_thread_->start();
   // TODO(Oleg) check if everything is deleted

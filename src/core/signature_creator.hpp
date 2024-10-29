@@ -22,6 +22,10 @@ public:
     Q_INVOKABLE bool createSignature(const QVariantMap& qvparams);
 signals:
 
+private:
+    SignWorker* p_worker_=nullptr;
+    QThread* p_sign_thread_=nullptr;
+
 };
 
 } // namespace core

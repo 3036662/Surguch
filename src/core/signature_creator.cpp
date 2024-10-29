@@ -61,29 +61,33 @@ bool SignatureCreator::createSignature(const QVariantMap& qvparams){
     if (qvparams.contains("file_to_sign_path")){
         params.file_to_sign_path=qvparams.value("file_to_sign_path").toString();
     }
-    SignWorker* p_worker=new SignWorker();
-    QThread* p_sign_thread=new QThread();
-    p_worker->moveToThread(p_sign_thread);
+    p_worker_=new SignWorker();
+    p_sign_thread_=new QThread();
+    p_worker_->moveToThread(p_sign_thread_);
     // start job
-    QObject::connect(p_sign_thread,&QThread::started,[params = std::move(params),p_worker]() mutable{
-        p_worker->launchSign(std::move(params));
+    QObject::connect(p_sign_thread_,&QThread::started,[params = std::move(params),this]() mutable{
+        p_worker_->launchSign(std::move(params));
     });
     // app closed
-    QObject::connect(QCoreApplication::instance(),&QCoreApplication::aboutToQuit,[p_sign_thread](){
-        p_sign_thread->requestInterruption();
-        p_sign_thread->wait();
+    QObject::connect(QCoreApplication::instance(),&QCoreApplication::aboutToQuit,[this](){
+        if (p_sign_thread_!=nullptr && p_sign_thread_->isRunning()){
+            p_sign_thread_->requestInterruption();
+            p_sign_thread_->wait();
+        }
     });
     // job is completed
-    QObject::connect(p_worker,&SignWorker::signCompleted,[this,p_sign_thread](SignWorker::SignResult res){
+    QObject::connect(p_worker_,&SignWorker::signCompleted,[this](SignWorker::SignResult res){
         handleResult(std::move(res));
-        p_sign_thread->quit();
+        p_sign_thread_->quit();
     });
     // thread is finished
-    QObject::connect(p_sign_thread,&QThread::finished,[p_worker,p_sign_thread](){
-        p_worker->deleteLater();
-        p_sign_thread->deleteLater();
+    QObject::connect(p_sign_thread_,&QThread::finished,[this](){
+        p_worker_->deleteLater();
+        p_sign_thread_->deleteLater();
+        p_worker_=nullptr;
+        p_sign_thread_=nullptr;
     });
-    p_sign_thread->start();;
+    p_sign_thread_->start();;
     return true;
 }
 
