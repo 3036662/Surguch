@@ -81,7 +81,7 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
                    });
 
   QObject::connect(worker_thread_, &QThread::started, [this, file_source]() {
-    emit validator_->validateSignatures(raw_signatures_, file_source);
+     validator_->validateSignatures(raw_signatures_, file_source);
   });
   QObject::connect(validator_, &core::SignaturesValidator::validationFinished,
                    [this] {

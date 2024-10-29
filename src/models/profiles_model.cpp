@@ -314,3 +314,7 @@ bool ProfilesModel::deleteLogoImage(const QString &path) {
   }
   return true;
 }
+
+QString ProfilesModel::getConfigPath() const{
+    return config_path_;
+}

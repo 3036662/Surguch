@@ -32,6 +32,8 @@ public:
 
   Q_INVOKABLE bool deleteProfile(int id_profile);
 
+  Q_INVOKABLE QString getConfigPath() const;
+
 signals:
   void profileSaved(QString);   // value of saved profile
   void profileDeleted(QString); // title of deleted profile

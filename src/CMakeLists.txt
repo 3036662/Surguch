@@ -24,7 +24,9 @@ SET (MUPDF_LINK_PATH /home/oleg/dev/mupdf/build/shared-release/libmupdf.so.25.0)
 #SET (MUPDF_LINK_PATH /home/oleg/dev/mupdf/build/shared-debug/libmupdf.so.25.0)
 
 SET (PDFCSP_LINK_PATH /home/oleg/dev/eSign/csp_pdf/build/c_bridge/libcsp_c_bridge.so)
+SET (PDFCSP_PDF_LINK_PATH /home/oleg/dev/eSign/csp_pdf/build/pdf/libcsppdf.so)
 SET (PDFCSP_INCLUDE_DIR /home/oleg/dev/eSign/csp_pdf/)
+SET (PDFCSP_PDF_INCLUDE_DIR /home/oleg/dev/eSign/csp_pdf/pdf)
 
 
 qt_add_qml_module(appgui_pdf_csp
@@ -111,6 +113,9 @@ target_link_libraries(appgui_pdf_csp
      PRIVATE ${PDFCSP_LINK_PATH}
 )
 
+target_link_libraries(appgui_pdf_csp
+    PRIVATE ${PDFCSP_PDF_LINK_PATH}
+)
 
 include(GNUInstallDirs)
 

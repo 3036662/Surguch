@@ -1,7 +1,9 @@
 #ifndef SIGNATURE_CREATOR_HPP
 #define SIGNATURE_CREATOR_HPP
 
+#include "sign_worker.hpp"
 #include <QObject>
+
 
 namespace core{
 
@@ -11,7 +13,9 @@ class SignatureCreator : public QObject
 public:
     explicit SignatureCreator(QObject *parent = nullptr);
 
-    Q_INVOKABLE bool createSignature(const QVariantMap& params);
+    void handleResult(SignWorker::SignResult res);
+
+    Q_INVOKABLE bool createSignature(const QVariantMap& qvparams);
 signals:
 
 };

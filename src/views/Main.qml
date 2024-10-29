@@ -96,6 +96,14 @@ ApplicationWindow {
         function signDoc(location_data){
             try{
                 let curr_profile=JSON.parse(header.getCurrentProfileValue());
+               // console.warn(JSON.stringify(rightSideBar.edit_profile.cert_array));
+                let cert_index=rightSideBar.edit_profile.cert_array.findIndex((cert) =>{
+                                                                return curr_profile.cert_serial===cert.serial;
+                                                                });
+                if (cert_index===-1){
+                    throw new Error('Certificate data not found');
+                }
+                // gather all information needed to create a signature visual representation
                 let params={
                     page_index: location_data.page_index,
                     page_width: location_data.page_width,
@@ -105,11 +113,16 @@ ApplicationWindow {
                     stamp_width:location_data.stamp_width,
                     stamp_height:location_data.stamp_height,
                     logo_path: curr_profile.logo_path,
+                    config_path: profilesModel.getConfigPath(),
                     cert_serial: curr_profile.cert_serial,
+                    cert_subject: rightSideBar.edit_profile.cert_array[cert_index].subject_common_name,
+                    cert_time_validity:
+                        rightSideBar.edit_profile.cert_array[cert_index].not_before_readable+qsTr(" till ")+
+                        rightSideBar.edit_profile.cert_array[cert_index].not_after_readable,
                     stamp_type: curr_profile.stamp_type,
                     cades_type: curr_profile.CADES_format,
-                    file_to_sign_path:pdfModel.getSource()                }
-
+                    file_to_sign_path:pdfModel.getSource()
+                }
                //console.warn(JSON.stringify(params));
                sigCreator.createSignature(params);
             } catch (e){

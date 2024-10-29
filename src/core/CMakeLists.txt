@@ -7,6 +7,7 @@ add_library(appcore OBJECT
     utils.cpp
     signatures_validator.hpp signatures_validator.cpp
     signature_creator.hpp signature_creator.cpp
+    sign_worker.hpp sign_worker.cpp
 )
 
 add_subdirectory(csp_c_bridge)
@@ -15,11 +16,18 @@ target_include_directories(appcore PUBLIC
     ${PDFCSP_INCLUDE_DIR}/c_bridge
 )
 
+target_include_directories(appcore PUBLIC
+    ${PDFCSP_INCLUDE_DIR}/pdf
+)
+
 target_include_directories(appcore PRIVATE ${MUPDF_INCLUDE_DIR})
 target_include_directories(appcore PUBLIC csp_c_bridge)
 target_include_directories(appcore PRIVATE .)
 
 
+target_link_libraries(appcore
+     PRIVATE ${PDFCSP_PDF_LINK_PATH}
+)
 
 target_link_libraries(appcore PUBLIC csp_c_bridge)
 target_link_libraries(appcore PRIVATE Qt6::Core)
