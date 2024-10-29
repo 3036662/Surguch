@@ -61,12 +61,9 @@ bool SignatureCreator::createSignature(const QVariantMap& qvparams){
     if (qvparams.contains("file_to_sign_path")){
         params.file_to_sign_path=qvparams.value("file_to_sign_path").toString();
     }
-
-
     SignWorker* p_worker=new SignWorker();
     QThread* p_sign_thread=new QThread();
     p_worker->moveToThread(p_sign_thread);
-
     // start job
     QObject::connect(p_sign_thread,&QThread::started,[params = std::move(params),p_worker]() mutable{
         p_worker->launchSign(std::move(params));
@@ -86,7 +83,6 @@ bool SignatureCreator::createSignature(const QVariantMap& qvparams){
         p_worker->deleteLater();
         p_sign_thread->deleteLater();
     });
-
     p_sign_thread->start();;
     return true;
 }

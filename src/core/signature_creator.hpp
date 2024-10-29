@@ -15,6 +15,10 @@ public:
 
     void handleResult(SignWorker::SignResult res);
 
+    /**
+     * @brief Create a signature (nonblocking)
+     * @param QVariantMap, suitable for filling SignWorker::SignParams
+    */
     Q_INVOKABLE bool createSignature(const QVariantMap& qvparams);
 signals:
 
