@@ -23,7 +23,7 @@ bool SignatureCreator::createSignature(const QVariantMap& qvparams){
         params.page_width=qvparams.value("page_width").toReal();
     }
     if (qvparams.contains("page_height")){
-        params.page_width=qvparams.value("page_height").toReal();
+        params.page_height=qvparams.value("page_height").toReal();
     }
     if (qvparams.contains("stamp_x")){
         params.stamp_x=qvparams.value("stamp_x").toReal();

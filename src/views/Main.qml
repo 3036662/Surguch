@@ -95,12 +95,12 @@ ApplicationWindow {
         function signDoc(location_data) {
             try {
                 let curr_profile = JSON.parse(header.getCurrentProfileValue())
-                let cert_array=JSON.parse(profilesModel.getUserCertsJSON());
+                let cert_array = JSON.parse(profilesModel.getUserCertsJSON())
                 // console.warn(JSON.stringify(rightSideBar.edit_profile.cert_array));
-                let cert_index =cert_array.findIndex(
-                        cert => {
-                            return curr_profile.cert_serial === cert.serial
-                        })
+                let cert_index = cert_array.findIndex(cert => {
+                                                          return curr_profile.cert_serial
+                                                          === cert.serial
+                                                      })
                 if (cert_index === -1) {
                     throw new Error('Certificate data not found')
                 }
@@ -118,12 +118,12 @@ ApplicationWindow {
                     "cert_serial": curr_profile.cert_serial,
                     "cert_subject": cert_array[cert_index].subject_common_name,
                     "cert_time_validity": cert_array[cert_index].not_before_readable + qsTr(
-                        " till ")+ cert_array[cert_index].not_after_readable,
+                        " till ") + cert_array[cert_index].not_after_readable,
                     "stamp_type": curr_profile.stamp_type,
                     "cades_type": curr_profile.CADES_format,
                     "file_to_sign_path": pdfModel.getSource()
                 }
-                //console.warn(JSON.stringify(params));
+                console.warn(JSON.stringify(params))
                 sigCreator.createSignature(params)
             } catch (e) {
                 console.warn(e)

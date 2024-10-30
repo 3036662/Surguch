@@ -2,6 +2,7 @@
 
 #include "pdf_csp_c.hpp"
 #include <QDebug>
+#include <QStandardPaths>
 #include <QThread>
 
 namespace core{
@@ -16,7 +17,7 @@ void SignWorker::launchSign(SignParams sign_params){
     params_=std::move(sign_params);
     preparePdf();
     qWarning()<<"Starting sign (Implement me)...";
-    QThread::currentThread()->sleep(5);
+    //QThread::currentThread()->sleep(5);
     emit signCompleted({});
 }
 
@@ -45,9 +46,16 @@ FlatByteRange SignWorker::preparePdf(){
     pod_params.cades_type=qb_cades_type.data();
     QByteArray qb_file_to_sign_path=params_.file_to_sign_path.toUtf8();
     pod_params.file_to_sign_path=qb_file_to_sign_path.data();
+    QString temp_dir = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
+    QByteArray qb_temp_dir=temp_dir.toUtf8();
+    if (!temp_dir.isEmpty()){
+        pod_params.temp_dir_path=qb_temp_dir.data();
+    } else{
+        qWarning("Can not determine the user's temporary location");
+    }
     auto* result=pdfcsp::pdf::PrepareDoc(pod_params);
-    pdfcsp::pdf::FreePrepareDocResult(result);
     //TODO(Oleg) get the result, and free the result
+    pdfcsp::pdf::FreePrepareDocResult(result);
     return {};
 }
 

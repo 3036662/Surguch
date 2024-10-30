@@ -165,10 +165,10 @@ ListView {
 
             function updateCrossSize() {
                 cross.width = pdfPage.width
-                        < pdfPage.height ? pdfPage.width * 0.41 : pdfPage.width / 3
+                        < pdfPage.height ? Math.round(pdfPage.width * 0.41) : Math.round(pdfPage.width / 3)
                 if (pdfPage.height != 0) {
                     cross.height = pdfPage.width
-                            < pdfPage.height ? pdfPage.height / 9 : pdfPage.height / 7
+                            < pdfPage.height ? Math.round(pdfPage.height / 9 ): Math.round(pdfPage.height / 7)
                 }
             }
 
@@ -192,11 +192,12 @@ ListView {
                             page_index: index,
                             page_width: width,
                             page_height: height,
-                            stmap_x: cross.x,
+                            stamp_x: cross.x,
                             stamp_y: cross.y,
                             stamp_width: cross.width,
-                            stamp_heigth: cross.height
+                            stamp_height: cross.height
                         }
+                        //console.warn(JSON.stringify(location_data));
                         stampLocationSelected(location_data)
                     }
                 }
