@@ -30,9 +30,13 @@ public:
         QString stamp_type;
         QString cades_type;
         QString file_to_sign_path;
+        QString tsp_url;
     };
 
     struct SignResult{
+        bool status=false;
+        QString tmp_result_file;
+        QString err_string;
 
     };
 
@@ -45,7 +49,7 @@ signals:
 
 private:
     SignParams params_;
-    FlatByteRange preparePdf();
+    SignResult preparePdf();
 };
 
 } // namespace core

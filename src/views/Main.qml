@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Dialogs
 import QtQuick.Layouts
 import alt.pdfcsp.pdfModel
 import alt.pdfcsp.signatureCreator
@@ -92,9 +93,10 @@ ApplicationWindow {
 
     SignatureCreator {
         id: sigCreator
+
         function signDoc(location_data) {
             try {
-                let curr_profile = JSON.parse(header.getCurrentProfileValue())
+                let curr_profile = JSON.parse(header.getCurrentProfileValue());
                 let cert_array = JSON.parse(profilesModel.getUserCertsJSON())
                 // console.warn(JSON.stringify(rightSideBar.edit_profile.cert_array));
                 let cert_index = cert_array.findIndex(cert => {
@@ -106,22 +108,23 @@ ApplicationWindow {
                 }
                 // gather all information needed to create a signature visual representation
                 let params = {
-                    "page_index": location_data.page_index,
-                    "page_width": location_data.page_width,
-                    "page_height": location_data.page_height,
-                    "stamp_x": location_data.stamp_x,
-                    "stamp_y": location_data.stamp_y,
-                    "stamp_width": location_data.stamp_width,
-                    "stamp_height": location_data.stamp_height,
-                    "logo_path": curr_profile.logo_path,
-                    "config_path": profilesModel.getConfigPath(),
-                    "cert_serial": curr_profile.cert_serial,
-                    "cert_subject": cert_array[cert_index].subject_common_name,
-                    "cert_time_validity": cert_array[cert_index].not_before_readable + qsTr(
+                    page_index: location_data.page_index,
+                    page_width: location_data.page_width,
+                    page_height: location_data.page_height,
+                    stamp_x: location_data.stamp_x,
+                    stamp_y: location_data.stamp_y,
+                    stamp_width: location_data.stamp_width,
+                    stamp_height: location_data.stamp_height,
+                    logo_path: curr_profile.logo_path,
+                    config_path: profilesModel.getConfigPath(),
+                    cert_serial: curr_profile.cert_serial,
+                    cert_subject: cert_array[cert_index].subject_common_name,
+                    cert_time_validity: cert_array[cert_index].not_before_readable + qsTr(
                         " till ") + cert_array[cert_index].not_after_readable,
-                    "stamp_type": curr_profile.stamp_type,
-                    "cades_type": curr_profile.CADES_format,
-                    "file_to_sign_path": pdfModel.getSource()
+                    stamp_type: curr_profile.stamp_type,
+                    cades_type: curr_profile.CADES_format,
+                    tsp_url:curr_profile.tsp_url,
+                    file_to_sign_path: pdfModel.getSource()
                 }
                 console.warn(JSON.stringify(params))
                 sigCreator.createSignature(params)
@@ -129,6 +132,19 @@ ApplicationWindow {
                 console.warn(e)
             }
         }
+
+        function handleSigResult(result){
+            console.warn(result.status);
+            if (!result.status){
+              if (result.err_string==="CERT_EXPIRED"){
+                errorMessageDialog.text=qsTr("Your certificate is expired.");
+              } else if (result.err_string==="MAYBE_TSP_URL_INVALID"){
+                errorMessageDialog.text=qsTr("Common error. It looks like the TSP URL is not valid.");
+              }
+              errorMessageDialog.open();
+            }
+        }
+
     }
 
     Component.onCompleted: {
@@ -167,6 +183,8 @@ ApplicationWindow {
         headerSubBar.showCerts.connect(leftSideBar.showCerts)
         // sign the document
         pdfListView.stampLocationSelected.connect(sigCreator.signDoc)
+        // sign creation finished
+        sigCreator.signCompleted.connect(sigCreator.handleSigResult)
     }
 
     // Info dialog in center of window
@@ -191,4 +209,13 @@ ApplicationWindow {
             console.log("Dialog closed")
         }
     }
+
+    MessageDialog {
+            id: errorMessageDialog
+            buttons: MessageDialog.Ok
+            title: "Error"
+            onAccepted: {
+                console.log("Error message dialog closed.")
+            }
+        }
 }

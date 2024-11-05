@@ -14,7 +14,6 @@ SignatureCreator::SignatureCreator(QObject *parent)
 
 bool SignatureCreator::createSignature(const QVariantMap& qvparams){
     qWarning()<<"[SignatureCreator::CreateSignature]";
-    qWarning()<<qvparams["logo_path"].toString();
     SignWorker::SignParams params{};
     if (qvparams.contains("page_index")){
         params.page_index=qvparams.value("page_index").toInt();
@@ -61,6 +60,10 @@ bool SignatureCreator::createSignature(const QVariantMap& qvparams){
     if (qvparams.contains("file_to_sign_path")){
         params.file_to_sign_path=qvparams.value("file_to_sign_path").toString();
     }
+    if (qvparams.contains("tsp_url")){
+        params.tsp_url=qvparams.value("tsp_url").toString();
+    }
+
     p_worker_=new SignWorker();
     p_sign_thread_=new QThread();
     p_worker_->moveToThread(p_sign_thread_);
@@ -77,7 +80,7 @@ bool SignatureCreator::createSignature(const QVariantMap& qvparams){
     });
     // job is completed
     QObject::connect(p_worker_,&SignWorker::signCompleted,[this](SignWorker::SignResult res){
-        handleResult(std::move(res));
+        handleResult(res);
         p_sign_thread_->quit();
     });
     // thread is finished
@@ -93,7 +96,11 @@ bool SignatureCreator::createSignature(const QVariantMap& qvparams){
 
 
 void SignatureCreator::handleResult(SignWorker::SignResult res){
-    qWarning()<<"Implement ME, result handling";
+    QVariantMap js_result;
+    js_result["status"]=res.status;
+    js_result["tmp_file_path"]=res.tmp_result_file;
+    js_result["err_string"]=res.err_string;
+    emit signCompleted(js_result);
 }
 
 } //namespace core

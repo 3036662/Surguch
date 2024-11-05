@@ -15,13 +15,11 @@ SignWorker::SignWorker(QObject *parent)
 
 void SignWorker::launchSign(SignParams sign_params){
     params_=std::move(sign_params);
-    preparePdf();
-    qWarning()<<"Starting sign (Implement me)...";
-    //QThread::currentThread()->sleep(5);
-    emit signCompleted({});
+    SignResult res=preparePdf();
+    emit signCompleted(res);
 }
 
-FlatByteRange SignWorker::preparePdf(){
+SignWorker::SignResult SignWorker::preparePdf(){
     pdfcsp::pdf::CSignParams pod_params{};
     pod_params.page_index=params_.page_index;
     pod_params.page_width=params_.page_width;
@@ -53,10 +51,21 @@ FlatByteRange SignWorker::preparePdf(){
     } else{
         qWarning("Can not determine the user's temporary location");
     }
+    QByteArray qb_tsp_url=params_.tsp_url.toUtf8();
+    pod_params.tsp_link=qb_tsp_url.data();
     auto* result=pdfcsp::pdf::PrepareDoc(pod_params);
-    //TODO(Oleg) get the result, and free the result
+    SignResult res{};
+    if (result!=nullptr){
+        res.status=result->status;
+        if (result->tmp_file_path!=nullptr){
+            res.tmp_result_file=result->tmp_file_path;
+        }
+        if (result->err_string!=nullptr){
+            res.err_string=result->err_string;
+        }
+    }
     pdfcsp::pdf::FreePrepareDocResult(result);
-    return {};
+    return res;
 }
 
 } //namespace core

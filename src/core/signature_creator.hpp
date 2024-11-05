@@ -21,6 +21,7 @@ public:
     */
     Q_INVOKABLE bool createSignature(const QVariantMap& qvparams);
 signals:
+    void signCompleted(QVariantMap res);
 
 private:
     SignWorker* p_worker_=nullptr;
