@@ -103,8 +103,10 @@ ApplicationWindow {
                                                           return curr_profile.cert_serial
                                                           === cert.serial
                                                       })
-                if (cert_index === -1) {
-                    throw new Error('Certificate data not found')
+                if (cert_index === -1) {                    
+                    errorMessageDialog.text=qsTr("Certificate not found, looks like it was deleted.﻿");
+                    errorMessageDialog.open();
+                    throw new Error('Certificate data not found');
                 }
                 // gather all information needed to create a signature visual representation
                 let params = {
