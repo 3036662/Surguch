@@ -25,13 +25,14 @@ Item {
 
     function showData(data) {
         try {
-            //console.warn(data)
             if (!data) {
                 jsonData = undefined
                 return
             }
             jsonData = JSON.parse(data)
             showState = RightSideBar.ShowState.SigInfo
+            sigInfoPanel.contentY=10;
+
         } catch (e) {
             console.error("Error parsing JSON" + e.message)
         }
@@ -43,6 +44,7 @@ Item {
     }
 
     RSBSigInfo {
+        id: sigInfoPanel
         visible: showState == RightSideBar.ShowState.SigInfo
     }
 
