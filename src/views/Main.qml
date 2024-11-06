@@ -145,6 +145,15 @@ ApplicationWindow {
               }
               errorMessageDialog.open();
             }
+            // if successfully signed
+            else{
+             if (result.tmp_file_path!==undefined){
+                 pdfListView.source = result.tmp_file_path
+                 leftSideBar.source = result.tmp_file_path
+                 rightSideBar.showState = RightSideBar.ShowState.Invisible
+             }
+            }
+            header.enableSignMode();
         }
 
     }
@@ -184,7 +193,9 @@ ApplicationWindow {
         headerSubBar.showPreviews.connect(leftSideBar.showPreviews)
         headerSubBar.showCerts.connect(leftSideBar.showCerts)
         // sign the document
+        pdfListView.stampLocationSelected.connect(header.disableSignMode);
         pdfListView.stampLocationSelected.connect(sigCreator.signDoc)
+
         // sign creation finished
         sigCreator.signCompleted.connect(sigCreator.handleSigResult)
     }

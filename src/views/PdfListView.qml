@@ -12,6 +12,7 @@ ListView {
     property double zoomPageFact: 1
     property int delegateRotation: 0
     property bool signMode: false
+    property bool signInProgress: false
 
     readonly property double maxZoom: 4
     readonly property double minZoom: 0.2
@@ -165,42 +166,52 @@ ListView {
 
             function updateCrossSize() {
                 cross.width = pdfPage.width
-                        < pdfPage.height ? Math.round(pdfPage.width * 0.41) : Math.round(pdfPage.width / 3)
+                        < pdfPage.height ? Math.round(
+                                               pdfPage.width * 0.41) : Math.round(
+                                               pdfPage.width / 3)
                 if (pdfPage.height != 0) {
                     cross.height = pdfPage.width
-                            < pdfPage.height ? Math.round(pdfPage.height / 9 ): Math.round(pdfPage.height / 7)
+                            < pdfPage.height ? Math.round(
+                                                   pdfPage.height / 9) : Math.round(
+                                                   pdfPage.height / 7)
                 }
             }
 
             MouseArea {
-                enabled: root.signMode
+                id: aimMouseArea
+                enabled: root.signMode || root.signInProgress
                 anchors.fill: parent
                 hoverEnabled: true
 
                 onEntered: {
-                    cross.visible = true
+                    cross.visible = root.signInProgress ? false : true
                     pdfPage.updateCrossSize()
-                    cursorShape = Qt.CrossCursor
+                    cursorShape = root.signInProgress ? Qt.BusyCursor : Qt.CrossCursor
                 }
                 onExited: {
                     cross.visible = false
                     cursorShape = Qt.ArrowCursor
                 }
                 onClicked: {
-                    if (cross.valid_position) {
+                    if (root.signMode && !root.signInProgress
+                            && cross.valid_position) {
                         let location_data = {
-                            page_index: index,
-                            page_width: width,
-                            page_height: height,
-                            stamp_x: cross.x,
-                            stamp_y: cross.y,
-                            stamp_width: cross.width,
-                            stamp_height: cross.height
+                            "page_index": index,
+                            "page_width": width,
+                            "page_height": height,
+                            "stamp_x": cross.x,
+                            "stamp_y": cross.y,
+                            "stamp_width": cross.width,
+                            "stamp_height": cross.height
                         }
-                        //console.warn(JSON.stringify(location_data));
+                        cross.visible=false;
+                        cursorShape = Qt.BusyCursor
+                        root.signMode=false;
+                        root.signInProgress = true
                         stampLocationSelected(location_data)
                     }
                 }
+
                 onPositionChanged: {
                     cross.x = mouseX - cross.width / 2
                     cross.y = mouseY - cross.height / 2

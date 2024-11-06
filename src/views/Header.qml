@@ -9,6 +9,7 @@ RowLayout {
     id: toolbar_layout
     spacing: 5
 
+
     Row {
         Layout.minimumWidth: 600
         Layout.fillWidth: true
@@ -175,4 +176,20 @@ RowLayout {
     function getCurrentProfileValue(){
         return profileComboBox.currentValue;
     }
+
+    function disableSignMode(){
+        console.warn("disable sign mode");
+        signModeButton.down=false;
+        signModeButton.enabled=false;
+        pdfListView.signMode=false;
+    }
+
+    function enableSignMode(){
+        signModeButton.down=false;
+        signModeButton.enabled=true;
+        pdfListView.signMode=false;
+        pdfListView.signInProgress=false;
+    }
+
+
 }

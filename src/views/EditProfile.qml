@@ -266,7 +266,7 @@ Flickable {
     FileDialog {
         id: imgFileDialog
         fileMode: FileDialog.OpenFile
-        nameFilters: ["Img files (*.png)"]
+        nameFilters: ["Png files (*.png)","jpg files (*.jpg *.jpeg)"]
         options: FileDialog.ReadOnly
         folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
         onAccepted: {
