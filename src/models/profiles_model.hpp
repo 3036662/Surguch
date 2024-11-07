@@ -46,7 +46,7 @@ private:
   /// @brief readUserCerts, read certificates for current uset from CryptoApi
   void readUserCerts();
 
-  QString saveLogoImage(const QString &path, const QString &dest_name);
+  QString saveLogoImage(const QString &path, const QString &dest_name,const QString& old_logo_path);
 
   bool deleteLogoImage(const QString &path);
 

@@ -143,6 +143,7 @@ Q_INVOKABLE bool ProfilesModel::saveProfile(QString profile_json) {
     qWarning() << "[ProfilesModel] error parsing JSON,can not save the profile";
   }
   QJsonObject profile_object = json_doc.object();
+  QString old_logo_path;
   // if new profile - create a new id
   if (profile_object.value("id").toInt() == -1) {
     auto it_max_current =
@@ -163,8 +164,12 @@ Q_INVOKABLE bool ProfilesModel::saveProfile(QString profile_json) {
                                        return val.toObject().value("id") ==
                                               profile_object.value("id");
                                      });
-    if (it_old_value != profiles_.cend()) {
-      profiles_.erase(it_old_value);
+    if (it_old_value != profiles_.cend()) {  
+      QJsonObject old_profile=it_old_value->toObject();
+      if (old_profile.contains("logo_path")){
+          old_logo_path=old_profile.value("logo_path").toString();
+      }
+      profiles_.erase(it_old_value);        
     }
   }
   // copy the image
@@ -172,7 +177,7 @@ Q_INVOKABLE bool ProfilesModel::saveProfile(QString profile_json) {
   const QString dest_name =
       "profile_" + QString::number(profile_object.value("id").toInt()) +
       "_logo";
-  const QString copy_result_name = saveLogoImage(img_path, dest_name);
+  const QString copy_result_name = saveLogoImage(img_path, dest_name,old_logo_path);
   profile_object.insert("logo_path", copy_result_name);
   // if new profile will be used as default, disable default use for other
   // profiles
@@ -210,7 +215,7 @@ Q_INVOKABLE bool ProfilesModel::saveProfile(QString profile_json) {
 }
 
 QString ProfilesModel::saveLogoImage(const QString &path,
-                                     const QString &dest_name) {
+                                     const QString &dest_name,const QString& old_logo_path) {
   if (path.isEmpty()) {
     return {};
   }
@@ -222,7 +227,6 @@ QString ProfilesModel::saveLogoImage(const QString &path,
     file_path = path;
   }
   const QFileInfo src_file_info(file_path);
-  // if file is already saved
   if (!src_file_info.exists() || !src_file_info.isFile()) {
     qWarning()
         << "[ProfilesModel] can not save the image, file does not exist: "
@@ -245,6 +249,13 @@ QString ProfilesModel::saveLogoImage(const QString &path,
 
   QString dest =
       config_path_ + "/" + dest_name + "." + src_file_info.completeSuffix();
+  // delete old logo
+  if (dest!=old_logo_path && old_logo_path!=file_path){
+    QFile old_logo_file(old_logo_path);
+    if (old_logo_file.exists()){
+        old_logo_file.remove();
+    }
+  }
   QFile dest_file(dest);
   if (dest_file.exists()) {
     if (dest != file_path) {
