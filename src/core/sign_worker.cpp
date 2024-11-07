@@ -34,8 +34,12 @@ SignWorker::SignResult SignWorker::preparePdf(){
     pod_params.config_path=qb_config_path.data();
     QByteArray qb_cert_serial=params_.cert_serial.toUtf8();
     pod_params.cert_serial=qb_cert_serial.data();
+    QByteArray qb_cert_serial_prefix=params_.cert_serial_prefix.toUtf8();
+    pod_params.cert_serial_prefix=qb_cert_serial_prefix.data();
     QByteArray qb_cert_subject=params_.cert_subject.toUtf8();
     pod_params.cert_subject=qb_cert_subject.data();
+    QByteArray qb_cert_subject_prefix=params_.cert_subject_prefix.toUtf8();
+    pod_params.cert_subject_prefix=qb_cert_subject_prefix.data();
     QByteArray qb_cert_time_validity=params_.cert_time_validity.toUtf8();
     pod_params.cert_time_validity=qb_cert_time_validity.data();
     QByteArray qb_stamp_type=params_.stamp_type.toUtf8();
@@ -46,6 +50,9 @@ SignWorker::SignResult SignWorker::preparePdf(){
     pod_params.file_to_sign_path=qb_file_to_sign_path.data();
     QString temp_dir = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
     QByteArray qb_temp_dir=temp_dir.toUtf8();
+    QByteArray qb_stamp_title=params_.stamp_title.toUtf8();
+    pod_params.stamp_title=qb_stamp_title.data();
+
     if (!temp_dir.isEmpty()){
         pod_params.temp_dir_path=qb_temp_dir.data();
     } else{

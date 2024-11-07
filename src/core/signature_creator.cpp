@@ -63,6 +63,15 @@ bool SignatureCreator::createSignature(const QVariantMap& qvparams){
     if (qvparams.contains("tsp_url")){
         params.tsp_url=qvparams.value("tsp_url").toString();
     }
+    if (qvparams.contains("cert_serial_prefix")){
+        params.cert_serial_prefix=qvparams.value("cert_serial_prefix").toString();
+    }
+    if (qvparams.contains("cert_subject_prefix")){
+        params.cert_subject_prefix=qvparams.value("cert_subject_prefix").toString();
+    }
+    if (qvparams.contains("stamp_title")){
+        params.stamp_title=qvparams.value("stamp_title").toString();
+    }
 
     p_worker_=new SignWorker();
     p_sign_thread_=new QThread();

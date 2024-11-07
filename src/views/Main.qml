@@ -120,9 +120,12 @@ ApplicationWindow {
                     logo_path: curr_profile.logo_path,
                     config_path: profilesModel.getConfigPath(),
                     cert_serial: curr_profile.cert_serial,
+                    cert_serial_prefix: qsTr("Certificate: "),
                     cert_subject: cert_array[cert_index].subject_common_name,
-                    cert_time_validity: cert_array[cert_index].not_before_readable + qsTr(
-                        " till ") + cert_array[cert_index].not_after_readable,
+                    cert_subject_prefix: qsTr("Subject: "),
+                    cert_time_validity: qsTr("Vaildity: ")+cert_array[cert_index].not_before_readable + qsTr(
+                        " till ") + cert_array[cert_index].not_after_readable,                    
+                    stamp_title:qsTr("THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE"),
                     stamp_type: curr_profile.stamp_type,
                     cades_type: curr_profile.CADES_format,
                     tsp_url:curr_profile.tsp_url,

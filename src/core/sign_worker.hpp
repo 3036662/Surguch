@@ -31,6 +31,9 @@ public:
         QString cades_type;
         QString file_to_sign_path;
         QString tsp_url;
+        QString cert_serial_prefix;
+        QString cert_subject_prefix;
+        QString stamp_title;
     };
 
     struct SignResult{
