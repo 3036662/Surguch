@@ -29,7 +29,7 @@ CSPResponse::CSPResponse(const core::RawSignature &raw_signature,
   params.file_path_size = path.size() + 1;
   // call the library get CPodResult
   pdfcsp::c_bridge::CPodResult *const pod = CGetCheckResult(params);
-  if (pod == nullptr) {
+  if (pod == nullptr || !pod->common_execution_status) {
     throw std::runtime_error("[CSPResponse] error getting pod result");
   }
   // create CSPResponse
