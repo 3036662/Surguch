@@ -384,7 +384,12 @@
 <context>
     <name>ProfilesModel</name>
     <message>
-        <location filename="../../src/models/profiles_model.cpp" line="+58"/>
+        <location filename="../../src/models/profiles_model.cpp" line="+10"/>
+        <source>CreateProfile</source>
+        <translation>Создать Профиль</translation>
+    </message>
+    <message>
+        <location line="+50"/>
         <source>Standart config location cannot be determined, using home</source>
         <translation>Не удалось определить расположение конфигурационных файлов пользователя, будет использована домашняя директория</translation>
     </message>

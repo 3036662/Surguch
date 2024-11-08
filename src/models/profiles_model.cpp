@@ -6,7 +6,9 @@
 #include <QJsonObject>
 #include <QStandardPaths>
 
-ProfilesModel::ProfilesModel(QObject *parent) : QAbstractListModel(parent) {
+ProfilesModel::ProfilesModel(QObject *parent)
+    : QAbstractListModel(parent),create_profile_title_{tr("CreateProfile")}
+{
   role_names_[TitleRole] = "title";
   role_names_[ValueRole] = "value";
   readProfiles();
@@ -40,7 +42,7 @@ QVariant ProfilesModel::data(const QModelIndex &index, int role) const {
   }
   case ValueRole:
     if (profiles_.at(index.row()).toObject().value("title").toString() ==
-        "CreateProfile") {
+        create_profile_title_) {
       return "new";
     }
     // profiles_.at(index.row()).toObject().value("id").toInt();
@@ -108,7 +110,7 @@ void ProfilesModel::readProfiles() {
     qWarning() << tr("Error parsing JSON from file ") << profiles_file_name_;
   }
   profiles_ = json_doc.array();
-  const QJsonObject create_profile_field{{"title", "CreateProfile"}};
+  const QJsonObject create_profile_field{{"title", create_profile_title_}};
   profiles_.append(create_profile_field);
 }
 
@@ -192,9 +194,9 @@ Q_INVOKABLE bool ProfilesModel::saveProfile(QString profile_json) {
   // save profiles
   QJsonArray profiles;
   std::copy_if(profiles_.cbegin(), profiles_.cend(),
-               std::back_inserter(profiles), [](const QJsonValue &val) {
+               std::back_inserter(profiles), [this](const QJsonValue &val) {
                  return val.toObject().value("title").toString() !=
-                        "CreateProfile";
+                        create_profile_title_;
                });
   QFile file(profiles_file_name_);
   const QString profiles_data = QJsonDocument(profiles).toJson();
@@ -294,7 +296,7 @@ bool ProfilesModel::deleteProfile(int id_profile) {
       profile_title = profiles_[i].toObject().value("title").toString();
       deleteLogoImage(profiles_[i].toObject().value("logo_path").toString());
     } else if (profiles_[i].toObject().value("title").toString() !=
-               "CreateProfile") {
+              create_profile_title_) {
       profiles_new.append(profiles_[i]);
     }
   }

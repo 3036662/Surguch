@@ -50,11 +50,13 @@ private:
 
   bool deleteLogoImage(const QString &path);
 
+  const QString create_profile_title_;
   QHash<int, QByteArray> role_names_;
   QJsonArray profiles_;
   QJsonArray user_certs_;
   QString config_path_;
   QString profiles_file_name_;
+
 };
 
 #endif // PROFILES_MODEL_HPP
