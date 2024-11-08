@@ -7,10 +7,22 @@
 #include <QDebug>
 #include <QDirIterator>
 #include <QGuiApplication>
+#include <QLocale>
+#include <QTranslator>
 #include <QQmlApplicationEngine>
 
 int main(int argc, char *argv[]) {
+
+  QTranslator translator;
+  QString locale = QLocale::system().name();
   QApplication app(argc, argv);
+  const QString translation_path=QString(TRANSLATION_DIR)+locale+".qm";
+  if (!translator.load(translation_path)){
+      qWarning("Load translations failed");
+  }
+  else{
+      app.installTranslator(&translator);
+  }
 
   qmlRegisterType<PdfPageRender>("alt.pdfcsp.pdfRender", 0, 1, "PdfPageRender");
   qmlRegisterType<PdfPageModel>("alt.pdfcsp.pdfModel", 0, 1, "MuPdfModel");

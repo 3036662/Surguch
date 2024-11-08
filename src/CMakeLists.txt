@@ -4,7 +4,10 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets REQUIRED)
 #find_package(Qt6 REQUIRED COMPONENTS Pdf REQUIRED)
 
 
-
+if (NOT DEFINED TRANSLATION_DIR)
+    set(TRANSLATION_DIR ${CMAKE_BINARY_DIR}/src/)
+endif()
+message(TRANSLATION_DIR=${TRANSLATION_DIR})
 
 set(CMAKE_AUTORCC ON)
 
@@ -12,6 +15,8 @@ qt_add_executable(appgui_pdf_csp
     main.cpp
     ${CMAKE_SOURCE_DIR}/resources/resources.qrc
 )
+
+add_compile_definitions(TRANSLATION_DIR="${TRANSLATION_DIR}")
 
 #target_compile_options(appgui_pdf_csp PRIVATE -fsanitize=address)
 #target_link_libraries(appgui_pdf_csp PRIVATE -fsanitize=address)

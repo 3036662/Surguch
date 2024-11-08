@@ -73,7 +73,7 @@ void ProfilesModel::readProfiles() {
     const QDir config_dir(config_path_);
     if (!config_dir.exists()) {
       if (!config_dir.mkpath(".")) {
-        qWarning() << tr("Con not create folder ") << config_path_;
+        qWarning() << tr("Can not create folder ") << config_path_;
       }
     }
   }
