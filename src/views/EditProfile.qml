@@ -194,7 +194,7 @@ Flickable {
 
             Button {
                 id: saveButton
-                width: deleteProfileButton.width
+                width: text.length<deleteProfileButton.text.length ? deleteProfileButton.width :150;
                 text: qsTr("Save profile")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
