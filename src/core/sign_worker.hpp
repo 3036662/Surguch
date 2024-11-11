@@ -1,6 +1,7 @@
 #ifndef SIGNWORKER_HPP
 #define SIGNWORKER_HPP
 
+#include "pdf_csp_c.hpp"
 #include <vector>
 #include <QObject>
 #include <QDebug>
@@ -13,6 +14,26 @@ class SignWorker : public QObject
 {
     Q_OBJECT
 public:
+    // utility structure for storing parameters for library
+    struct CSignParamsWrapper{
+        QByteArray qb_logo_path;
+        QByteArray qb_config_path;
+        QByteArray qb_cert_serial;
+        QByteArray qb_cert_serial_prefix;
+        QByteArray qb_cert_subject;
+        QByteArray qb_cert_subject_prefix;
+        QByteArray qb_cert_time_validity;
+        QByteArray qb_stamp_type;
+        QByteArray qb_cades_type;
+        QByteArray qb_file_to_sign_path;
+        QString temp_dir;
+        QByteArray qb_temp_dir;
+        QByteArray qb_stamp_title;
+        QByteArray qb_tsp_url;
+        pdfcsp::pdf::CSignParams pod_params;
+    };
+
+    using SharedParamWrapper=std::shared_ptr<CSignParamsWrapper>;
 
     struct SignParams{
         int page_index=0;
@@ -43,16 +64,27 @@ public:
 
     };
 
+    struct AimResizeFactor{
+        double x=1;
+        double y=1;
+    };
+
     explicit SignWorker(QObject *parent = nullptr);
 
     void launchSign(SignParams sign_params);
 
+    void estimateStampSize(SignParams sign_params);
+
 signals:
     void signCompleted(SignResult res);
+    void resizeStampCompleted(AimResizeFactor res);
 
 private:
     SignParams params_;
     SignResult preparePdf();
+
+    SharedParamWrapper createParams();
+
 };
 
 } // namespace core

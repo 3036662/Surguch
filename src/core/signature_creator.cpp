@@ -12,8 +12,7 @@ SignatureCreator::SignatureCreator(QObject *parent)
 {
 }
 
-bool SignatureCreator::createSignature(const QVariantMap& qvparams){
-    qWarning()<<"[SignatureCreator::CreateSignature]";
+SignWorker::SignParams SignatureCreator::createWorkerParams(const QVariantMap& qvparams){
     SignWorker::SignParams params{};
     if (qvparams.contains("page_index")){
         params.page_index=qvparams.value("page_index").toInt();
@@ -72,7 +71,12 @@ bool SignatureCreator::createSignature(const QVariantMap& qvparams){
     if (qvparams.contains("stamp_title")){
         params.stamp_title=qvparams.value("stamp_title").toString();
     }
+    return params;
+}
 
+bool SignatureCreator::createSignature(const QVariantMap& qvparams){
+    qWarning()<<"[SignatureCreator::CreateSignature]";
+    auto params=createWorkerParams(qvparams);
     p_worker_=new SignWorker();
     p_sign_thread_=new QThread();
     p_worker_->moveToThread(p_sign_thread_);
@@ -104,12 +108,51 @@ bool SignatureCreator::createSignature(const QVariantMap& qvparams){
 }
 
 
+void SignatureCreator::estimateStampResizeFactor(const QVariantMap& qvparams){
+    qWarning()<<"[SignatureCreator::estimateStampResizeFactor]";
+    auto params=createWorkerParams(qvparams);
+    p_worker_resize_img_=new SignWorker();
+    p_resize_img_thread_=new QThread();
+    p_worker_resize_img_->moveToThread(p_resize_img_thread_);
+    // start job
+    QObject::connect(p_resize_img_thread_,&QThread::started,[params = std::move(params),this]() mutable{
+        p_worker_resize_img_->estimateStampSize(std::move(params));
+    });
+    // app closed
+    QObject::connect(QCoreApplication::instance(),&QCoreApplication::aboutToQuit,[this](){
+        if (p_resize_img_thread_!=nullptr && p_resize_img_thread_->isRunning()){
+            p_resize_img_thread_->requestInterruption();
+            p_resize_img_thread_->wait();
+        }
+    });
+    // job is completed
+    QObject::connect(p_worker_resize_img_,&SignWorker::resizeStampCompleted,[this](SignWorker::AimResizeFactor res){
+        handleStampResize(res);
+        p_resize_img_thread_->quit();
+    });
+    // thread is finished
+    QObject::connect(p_resize_img_thread_,&QThread::finished,[this](){
+        p_worker_resize_img_->deleteLater();
+        p_resize_img_thread_->deleteLater();
+        p_worker_resize_img_=nullptr;
+        p_resize_img_thread_=nullptr;
+    });
+    p_resize_img_thread_->start();
+}
+
 void SignatureCreator::handleResult(SignWorker::SignResult res){
     QVariantMap js_result;
     js_result["status"]=res.status;
     js_result["tmp_file_path"]=res.tmp_result_file;
     js_result["err_string"]=res.err_string;
     emit signCompleted(js_result);
+}
+
+void SignatureCreator::handleStampResize(SignWorker::AimResizeFactor res){
+    QVariantMap js_result;
+    js_result["x_resize"]=res.x;
+    js_result["y_resize"]=res.y;
+    emit stampSizeEstimated(js_result);
 }
 
 } //namespace core

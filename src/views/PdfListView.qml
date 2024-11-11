@@ -14,6 +14,11 @@ ListView {
     property bool signMode: false
     property bool signInProgress: false
 
+    property double aimResizeX: 1
+    property double aimResizeY: 1
+    property bool aimIsAlreadyResized: false
+    property bool aimResizeInProgress: false
+
     readonly property double maxZoom: 4
     readonly property double minZoom: 0.2
 
@@ -108,6 +113,14 @@ ListView {
         scrollToPage(currentPage)
     }
 
+    function updateStampResizeFactor(data) {
+        aimResizeX = data.x_resize !== undefined ? data.x_resize : 1
+        aimResizeY = data.y_resize !== undefined ? data.y_resize : 1
+        aimIsAlreadyResized = true
+        aimResizeInProgress = false
+        console.warn("Finished stamp size calculation")
+    }
+
     onPageWidthChanged: {
         pageWidthUpdate(pageWidth)
         contentWidth = pageWidth
@@ -118,6 +131,10 @@ ListView {
         setZoom(100)
         delegateRotation = 0
         leftSideBar.showPreviews()
+        aimResizeX = 1
+        aimResizeY = 1
+        aimIsAlreadyResized = false
+        signInProgress = false
     }
 
     onZoomPageFactChanged: {
@@ -147,11 +164,22 @@ ListView {
             id: pdfPage
             width: root.width * zoomPageFact
             height: width * 1.42
+
             //anchors.horizontalCenter: parent.horizontalCenter
             property int customRotation: root.delegateRotation
 
+            property int aimResizeStatus: root.aimIsAlreadyResized
+
             onWidthChanged: {
                 root.pageWidth = width
+                updateCrossSize()
+            }
+
+            onHeightChanged: {
+                updateCrossSize()
+            }
+
+            onAimResizeStatusChanged: {
                 updateCrossSize()
             }
 
@@ -165,15 +193,43 @@ ListView {
             }
 
             function updateCrossSize() {
-                cross.width = pdfPage.width
-                        < pdfPage.height ? Math.round(
-                                               pdfPage.width * 0.41) : Math.round(
-                                               pdfPage.width / 3)
-                if (pdfPage.height != 0) {
+                if (!root.aimIsAlreadyResized && pdfPage.width > 0
+                        && pdfPage.height > 0) {
+                    cross.width = pdfPage.width
+                            < pdfPage.height ? Math.round(
+                                                   pdfPage.width * 0.41) : Math.round(
+                                                   pdfPage.width / 3)
+                    if (pdfPage.height != 0) {
+                        cross.height = pdfPage.width
+                                < pdfPage.height ? Math.round(
+                                                       pdfPage.height / 9) : Math.round(
+                                                       pdfPage.height / 7)
+                    }
+                    // run background estimate of stamp size
+                    if (!aimResizeInProgress) {
+                        let location_data = {
+                            "page_index": index,
+                            "page_width": width,
+                            "page_height": height,
+                            "stamp_x": cross.x,
+                            "stamp_y": cross.y,
+                            "stamp_width": cross.width,
+                            "stamp_height": cross.height
+                        }
+                        console.warn("Call stamp size calculation")
+                        aimResizeInProgress = true
+                        sigCreator.resizeAim(location_data)
+                    }
+                } else {
+                    // if the aim is already resized - update with resize factor
+                    cross.width = pdfPage.width
+                            < pdfPage.height ? Math.round(
+                                                   pdfPage.width * 0.41 * aimResizeX) : Math.round(
+                                                   pdfPage.width / 3 * aimResizeX)
                     cross.height = pdfPage.width
                             < pdfPage.height ? Math.round(
-                                                   pdfPage.height / 9) : Math.round(
-                                                   pdfPage.height / 7)
+                                                   pdfPage.height / 9 * aimResizeY) : Math.round(
+                                                   pdfPage.height / 7 * aimResizeY)
                 }
             }
 
@@ -185,7 +241,6 @@ ListView {
 
                 onEntered: {
                     cross.visible = root.signInProgress ? false : true
-                    pdfPage.updateCrossSize()
                     cursorShape = root.signInProgress ? Qt.BusyCursor : Qt.CrossCursor
                 }
                 onExited: {
@@ -204,9 +259,9 @@ ListView {
                             "stamp_width": cross.width,
                             "stamp_height": cross.height
                         }
-                        cross.visible=false;
+                        cross.visible = false
                         cursorShape = Qt.BusyCursor
-                        root.signMode=false;
+                        root.signMode = false
                         root.signInProgress = true
                         stampLocationSelected(location_data)
                     }
