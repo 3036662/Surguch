@@ -5,13 +5,19 @@ import QtQuick.Layouts
 import alt.pdfcsp.pdfModel
 import alt.pdfcsp.signatureCreator
 import alt.pdfcsp.profilesModel
+import alt.pdfcsp.signaturesListModel
 
 ApplicationWindow {
     id: root_window
+
     width: 1000
     height: 480
     visible: true
-    title: qsTr("PDF CSP")
+    title: qsTr("Surguch")
+
+
+    // --------------------------------------
+    // header
 
     header: ToolBar {
         id: toolbar
@@ -29,6 +35,10 @@ ApplicationWindow {
         }
     }
 
+
+    // --------------------------------------
+    // body
+
     RowLayout {
         anchors.fill: parent
 
@@ -43,6 +53,9 @@ ApplicationWindow {
             id: rightSideBar
         }
     }
+
+    // --------------------------------------
+    // footer
 
     footer: Pane {
         id: footer_frame
@@ -82,6 +95,9 @@ ApplicationWindow {
         }
     }
 
+    // --------------------------------------
+    // instantinate cpp models
+
     MuPdfModel {
         id: pdfModel
         mustProcessSignatures: true
@@ -91,10 +107,14 @@ ApplicationWindow {
         id: profilesModel
     }
 
+    SignaturesListModel {
+        id: siglistModel
+    }
+
     SignatureCreator {
         id: sigCreator
 
-
+        // common function to gather parameters used in resizeAim and signDoc
         function gatherParams(location_data){
             let curr_profile = JSON.parse(header.getCurrentProfileValue());
             let cert_array = JSON.parse(profilesModel.getUserCertsJSON())
@@ -135,8 +155,7 @@ ApplicationWindow {
             return params;
         }
 
-
-
+        // estimate the resulting stamp size
         function resizeAim(location_data){
             try{
                 let params=gatherParams(location_data);
@@ -146,7 +165,7 @@ ApplicationWindow {
             }
         }
 
-
+        // sign the document
         function signDoc(location_data) {
             try {
                 let params=gatherParams(location_data);
@@ -154,9 +173,9 @@ ApplicationWindow {
             } catch (e) {
                 console.warn(e)
             }
-
         }
 
+        // handle the result of signDoc function
         function handleSigResult(result){
             console.warn(result.status);
             if (!result.status){
@@ -179,8 +198,11 @@ ApplicationWindow {
             }
             header.enableSignMode();
         }
-
     }
+
+
+    // --------------------------------------
+    //  connect the events
 
     Component.onCompleted: {
         // update page count in header
@@ -223,7 +245,15 @@ ApplicationWindow {
         sigCreator.stampSizeEstimated.connect(pdfListView.updateStampResizeFactor);
         // sign creation finished
         sigCreator.signCompleted.connect(sigCreator.handleSigResult)
+        //  save signatures count in left sidebar
+        pdfModel.signaturesCounted.connect(leftSideBar.setSigCount)
+        // call SignaturesListModel to update the signatures list and validate all signatures
+        pdfModel.signaturesFound.connect(siglistModel.updateSigList)
     }
+
+
+    // ---------------------------------------------
+    // helper dialogs
 
     // Info dialog in center of window
     Dialog {
@@ -255,5 +285,5 @@ ApplicationWindow {
             onAccepted: {
                 console.log("Error message dialog closed.")
             }
-        }
+    }
 }

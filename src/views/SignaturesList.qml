@@ -78,8 +78,4 @@ ListView {
             color: "#c3c3c3"
         }
     }
-
-    Component.onCompleted: {
-        pdfModel.signaturesFound.connect(siglistModel.updateSigList)
-    }
 }

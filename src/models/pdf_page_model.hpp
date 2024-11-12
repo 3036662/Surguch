@@ -48,6 +48,7 @@ public:
 
 signals:
   void signaturesFound(std::vector<core::RawSignature> sigs, QString file_path);
+  void signaturesCounted(int sig_count);
 
 private:
   void processSignatures();

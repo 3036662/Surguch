@@ -130,7 +130,11 @@ ListView {
         pdfModel.setSource(source)
         setZoom(100)
         delegateRotation = 0
-        leftSideBar.showPreviews()
+        if (leftSideBar.sigCount===0){
+            leftSideBar.showPreviews()
+        } else{
+            leftSideBar.showCerts();
+        }
         aimResizeX = 1
         aimResizeY = 1
         aimIsAlreadyResized = false
