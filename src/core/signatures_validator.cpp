@@ -20,8 +20,11 @@ void SignaturesValidator::validateSignatures(
       break;
     }
     qWarning() << "validating signatures " << raw_signatures_.size();
-    // QThread::sleep(5);
     std::shared_ptr<CSPResponse> result;
+    // do not parse empty sigbatures
+    if (sig.getSigData().empty() || sig.getByteRanges().empty()){
+        continue;
+    }
     try {
       result = std::make_shared<CSPResponse>(sig, file_source.toStdString());
     } catch (const std::exception &ex) {
