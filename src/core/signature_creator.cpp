@@ -111,6 +111,10 @@ bool SignatureCreator::createSignature(const QVariantMap& qvparams){
 void SignatureCreator::estimateStampResizeFactor(const QVariantMap& qvparams){
     qWarning()<<"[SignatureCreator::estimateStampResizeFactor]";
     auto params=createWorkerParams(qvparams);
+    if (p_worker_resize_img_!=nullptr || p_resize_img_thread_!=nullptr){
+        qWarning()<<"estimateStampResizeFactor is alreary running";
+        return;
+    }
     p_worker_resize_img_=new SignWorker();
     p_resize_img_thread_=new QThread();
     p_worker_resize_img_->moveToThread(p_resize_img_thread_);
