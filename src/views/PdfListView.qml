@@ -33,18 +33,6 @@ ListView {
     signal canZoomOut
     signal stampLocationSelected(var stamp_location_info)
 
-    Layout.fillHeight: true
-    Layout.fillWidth: true
-    Layout.leftMargin: 20
-    Layout.rightMargin: 20
-    Layout.minimumWidth: 200
-    Layout.alignment: Qt.AlignHCenter
-
-    spacing: 30
-    flickableDirection: Flickable.HorizontalAndVerticalFlick
-    Layout.horizontalStretchFactor: 4
-    clip: true
-
     function zoomIn() {
         if (zoomPageFact < maxZoom) {
             if (zoomPageFact <= minZoom) {
@@ -121,6 +109,18 @@ ListView {
         console.warn("Finished stamp size calculation")
     }
 
+    Layout.fillHeight: true
+    Layout.fillWidth: true
+    Layout.leftMargin: 20
+    Layout.rightMargin: 20
+    Layout.minimumWidth: 200
+    Layout.alignment: Qt.AlignHCenter
+
+    spacing: 30
+    flickableDirection: Flickable.HorizontalAndVerticalFlick
+    Layout.horizontalStretchFactor: 4
+    clip: true
+
     onPageWidthChanged: {
         pageWidthUpdate(pageWidth)
         contentWidth = pageWidth
@@ -130,10 +130,10 @@ ListView {
         pdfModel.setSource(source)
         setZoom(100)
         delegateRotation = 0
-        if (leftSideBar.sigCount===0){
+        if (leftSideBar.sigCount === 0) {
             leftSideBar.showPreviews()
-        } else{
-            leftSideBar.showCerts();
+        } else {
+            leftSideBar.showCerts()
         }
         aimResizeX = 1
         aimResizeY = 1
@@ -166,35 +166,9 @@ ListView {
         width: root.width
         PdfPageRender {
             id: pdfPage
-            width: root.width * zoomPageFact
-            height: width * 1.42
 
-            //anchors.horizontalCenter: parent.horizontalCenter
             property int customRotation: root.delegateRotation
-
             property int aimResizeStatus: root.aimIsAlreadyResized
-
-            onWidthChanged: {
-                root.pageWidth = width
-                updateCrossSize()
-            }
-
-            onHeightChanged: {
-                updateCrossSize()
-            }
-
-            onAimResizeStatusChanged: {
-                updateCrossSize()
-            }
-
-            Component.onCompleted: {
-                setCtx(pdfModel.getCtx())
-                setDoc(pdfModel.getDoc())
-                setPageNumber(model.display)
-                if (width > 0 && root.hScrollPos > 0 && root.hScrollPos < 1) {
-                    root.contentX = width * root.hScrollPos
-                }
-            }
 
             function updateCrossSize() {
                 if (!root.aimIsAlreadyResized && pdfPage.width > 0
@@ -237,8 +211,34 @@ ListView {
                 }
             }
 
+            width: root.width * zoomPageFact
+            height: width * 1.42
+
+            onWidthChanged: {
+                root.pageWidth = width
+                updateCrossSize()
+            }
+
+            onHeightChanged: {
+                updateCrossSize()
+            }
+
+            onAimResizeStatusChanged: {
+                updateCrossSize()
+            }
+
+            Component.onCompleted: {
+                setCtx(pdfModel.getCtx())
+                setDoc(pdfModel.getDoc())
+                setPageNumber(model.display)
+                if (width > 0 && root.hScrollPos > 0 && root.hScrollPos < 1) {
+                    root.contentX = width * root.hScrollPos
+                }
+            }
+
             MouseArea {
                 id: aimMouseArea
+
                 enabled: root.signMode || root.signInProgress
                 anchors.fill: parent
                 hoverEnabled: true
@@ -285,16 +285,18 @@ ListView {
 
                 Rectangle {
                     id: cross
+
+                    property string defaultText: qsTr("Stamp position")
+                    property string invalidPositionText: qsTr(
+                                                             "Invalid position")
+                    property bool valid_position: true
+
                     width: 0
                     height: 0
                     color: "transparent"
                     border.color: valid_position ? "blue" : "red"
                     border.width: 2
                     visible: false
-                    property string defaultText: qsTr("Stamp position")
-                    property string invalidPositionText: qsTr(
-                                                             "Invalid position")
-                    property bool valid_position: true
 
                     Text {
                         topPadding: 10

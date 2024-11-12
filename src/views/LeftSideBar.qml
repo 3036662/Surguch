@@ -3,72 +3,72 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import alt.pdfcsp.pdfModel
 import alt.pdfcsp.pdfRender
-import alt.pdfcsp.signaturesListModel
 
 Item {
     id: root
-    enum ShowState{
+
+    enum ShowState {
         Preview,
         Certs
     }
-
     property string source: ""
-    property int showState : LeftSideBar.ShowState.Preview
-
-    Layout.maximumWidth: 400
-    Layout.preferredWidth:  200
-    Layout.minimumWidth:  200
-    Layout.fillHeight: true
-    Layout.fillWidth: true
-    Layout.horizontalStretchFactor: 1
+    property int showState: LeftSideBar.ShowState.Preview
+    property int sigCount: 0
 
     signal pageClick(int index)
     signal showSigData(string data)
 
+    function scrollToPage(newIndex) {
+        previewListView.positionViewAtIndex(newIndex - 1, ListView.Beginning)
+    }
 
+    function showPreviews() {
+        console.warn("show Previews func")
+        showState = LeftSideBar.ShowState.Preview
+    }
 
-    Item{
+    function showCerts() {
+        console.warn("showCerts function")
+        showState = LeftSideBar.ShowState.Certs
+    }
+
+    function setSigCount(sig_count) {
+        sigCount = sig_count
+    }
+
+    Layout.maximumWidth: 400
+    Layout.preferredWidth: 200
+    Layout.minimumWidth: 200
+    Layout.fillHeight: true
+    Layout.fillWidth: true
+    Layout.horizontalStretchFactor: 1
+
+    Item {
         anchors.fill: parent
 
-        PreviewListView{
-            id:previewListView
+        PreviewListView {
+            id: previewListView
             source: root.source
             visible: showState == LeftSideBar.ShowState.Preview
         }
 
-        SignaturesListModel {
-            id: siglistModel
-        }
-
-        SignaturesList{
+        SignaturesList {
             id: sigListView
-            visible: showState == LeftSideBar.ShowState.Certs && siglistModel.rowCount()>0
+            visible: showState == LeftSideBar.ShowState.Certs
+                     && siglistModel.rowCount() > 0
         }
 
-        Item{
+        Item {
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.fill:parent
-            visible: showState == LeftSideBar.ShowState.Certs && siglistModel.rowCount()===0
-            Text{
+            anchors.fill: parent
+            visible: showState == LeftSideBar.ShowState.Certs
+                     && siglistModel.rowCount() === 0
+            Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top
                 topPadding: 20
                 text: qsTr("No signatures")
             }
         }
-
-    }
-
-
-    function scrollToPage(newIndex) {
-        previewListView.positionViewAtIndex(newIndex - 1, ListView.Beginning)
-    }
-
-    function showPreviews(){
-        showState=LeftSideBar.ShowState.Preview
-    }
-
-    function showCerts(){
-        showState=LeftSideBar.ShowState.Certs
     }
 }

@@ -3,6 +3,7 @@ import QtQuick.Controls
 
 Column {
     id: root
+
     property string keyText
     property bool value
 

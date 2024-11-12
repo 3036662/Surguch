@@ -4,7 +4,6 @@ import QtQuick.Layouts
 
 Item {
     id: root
-    property alias edit_profile: edit_profile_panel
 
     enum ShowState {
         Invisible,
@@ -12,16 +11,9 @@ Item {
         ProfileInfo
     }
 
+    property alias edit_profile: edit_profile_panel
     property int showState: RightSideBar.ShowState.Invisible
     property var jsonData
-
-    visible: showState != RightSideBar.ShowState.Invisible
-    Layout.maximumWidth: 400
-    Layout.preferredWidth: 300
-    Layout.minimumWidth: 200
-    Layout.fillHeight: true
-    Layout.fillWidth: true
-    Layout.horizontalStretchFactor: 1
 
     function showData(data) {
         try {
@@ -37,6 +29,14 @@ Item {
             console.error("Error parsing JSON" + e.message)
         }
     }
+
+    visible: showState != RightSideBar.ShowState.Invisible
+    Layout.maximumWidth: 400
+    Layout.preferredWidth: 300
+    Layout.minimumWidth: 200
+    Layout.fillHeight: true
+    Layout.fillWidth: true
+    Layout.horizontalStretchFactor: 1
 
     Rectangle {
         anchors.fill: parent

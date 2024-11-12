@@ -8,7 +8,7 @@ Flickable {
     leftMargin: 10
     rightMargin: 10
 
-    RSBCloseButton{}
+    RSBCloseButton {}
 
     Column {
         width: parent.width
@@ -80,7 +80,9 @@ Flickable {
         //////////////////////////////////////
         // time stamp
         Repeater {
+
             model: root.jsonData !== undefined ? root.jsonData.tsp_info : []
+
             Column {
                 width: root.width
                 required property var modelData

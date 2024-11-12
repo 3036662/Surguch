@@ -5,12 +5,6 @@ import QtCore
 
 Flickable {
     id: root
-    width: parent.width
-    height: parent.height
-    contentHeight: 1000
-    leftMargin: 10
-    rightMargin: 10
-    topMargin: 10
 
     property var cert_data_raw
     property string profile_data
@@ -19,6 +13,70 @@ Flickable {
     property var cert_combo_model
     property var profiles_model
     property int profile_id: -1
+
+    // fill the form from profile_data JSON string
+    function updateProfileForm() {
+        if (profile_data) {
+            try {
+                profile_json = JSON.parse(profile_data)
+                profile_id = profile_json.id
+                profileIdTextPair.value = profile_json.id
+                profileName.text = profile_json.title
+                useAsDefaultProfileSwitch.checked = profile_json.use_as_default
+                const cert_indx = selectCertificateCombo.indexOfValue(
+                                    profile_json.cert_serial)
+                selectCertificateCombo.currentIndex = cert_indx
+                selectCertificateCombo.item_selected = true
+                if (cert_indx !== -1) {
+                    selectCertificateCombo.displayText = cert_combo_model[cert_indx].title
+                }
+                const cades_format_indx = selectCadesFormatCombo.indexOfValue(
+                                            profile_json.CADES_format)
+                selectCadesFormatCombo.currentIndex = cades_format_indx
+                selectCadesFormatCombo.item_selected = true
+                if (cades_format_indx !== -1) {
+                    selectCadesFormatCombo.displayText
+                            = selectCadesFormatCombo.model[cades_format_indx].title
+                }
+                const stamp_type_indx = selectStampTypeCombo.indexOfValue(
+                                          profile_json.stamp_type)
+                selectStampTypeCombo.currentIndex = stamp_type_indx
+                selectStampTypeCombo.item_selected = true
+                if (stamp_type_indx !== -1) {
+                    selectStampTypeCombo.displayText
+                            = selectStampTypeCombo.model[stamp_type_indx].title
+                }
+                logoPath.text = profile_json.logo_path
+                tspUrlEdit.text = profile_json.tsp_url
+            } catch (e) {
+                console.error("Error parsing JSON" + e.message)
+            }
+        } else {
+            // fill with empty/default values
+            profile_id = -1
+            profileIdTextPair.value = profile_id
+            profileName.text = ""
+            useAsDefaultProfileSwitch.checked = false
+            selectCertificateCombo.currentIndex = 0
+            selectCertificateCombo.item_selected = false
+            selectCertificateCombo.displayText = selectCertificateCombo.displayTextDefault
+            selectCadesFormatCombo.currentIndex = 0
+            selectCadesFormatCombo.item_selected = false
+            selectCadesFormatCombo.displayText = selectCadesFormatCombo.displayTextDefault
+            selectStampTypeCombo.currentIndex = 0
+            selectStampTypeCombo.item_selected = false
+            selectStampTypeCombo.displayText = selectStampTypeCombo.displayTextDefault
+            logoPath.text = ""
+            tspUrlEdit.text = ""
+        }
+    }
+
+    width: parent.width
+    height: parent.height
+    contentHeight: 1000
+    leftMargin: 10
+    rightMargin: 10
+    topMargin: 10
 
     RSBCloseButton {}
 
@@ -194,7 +252,8 @@ Flickable {
 
             Button {
                 id: saveButton
-                width: text.length<deleteProfileButton.text.length ? deleteProfileButton.width :150;
+                width: text.length
+                       < deleteProfileButton.text.length ? deleteProfileButton.width : 150
                 text: qsTr("Save profile")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
@@ -227,7 +286,7 @@ Flickable {
                         root.contentY = 300
                         return
                     }
-                    saveButton.enabled=false;
+                    saveButton.enabled = false
                     profile_json = {}
                     profile_json["id"] = profile_id
                     profile_json["title"] = profileName.text
@@ -254,10 +313,10 @@ Flickable {
                 anchors.bottom: parent.bottom
 
                 onClicked: {
-                      deleteProfileButton.enabled=false;
-                      if (profiles_model.deleteProfile(root.profile_id)){
-                            rightSideBar.showState = RightSideBar.ShowState.Invisible
-                      }
+                    deleteProfileButton.enabled = false
+                    if (profiles_model.deleteProfile(root.profile_id)) {
+                        rightSideBar.showState = RightSideBar.ShowState.Invisible
+                    }
                 }
             }
         } // delete profile end
@@ -297,66 +356,9 @@ Flickable {
     }
 
     onVisibleChanged: {
-        if (visible){
-            saveButton.enabled=true;
-            deleteProfileButton.enabled=true;
-        }
-    }
-
-    // fill the form from profile_data JSON string
-    function updateProfileForm() {
-        if (profile_data) {
-            try {
-                profile_json = JSON.parse(profile_data)
-                profile_id = profile_json.id
-                profileIdTextPair.value = profile_json.id
-                profileName.text = profile_json.title
-                useAsDefaultProfileSwitch.checked = profile_json.use_as_default
-                const cert_indx = selectCertificateCombo.indexOfValue(
-                                    profile_json.cert_serial)
-                selectCertificateCombo.currentIndex = cert_indx
-                selectCertificateCombo.item_selected = true
-                if (cert_indx !== -1) {
-                    selectCertificateCombo.displayText = cert_combo_model[cert_indx].title
-                }
-                const cades_format_indx = selectCadesFormatCombo.indexOfValue(
-                                            profile_json.CADES_format)
-                selectCadesFormatCombo.currentIndex = cades_format_indx
-                selectCadesFormatCombo.item_selected = true
-                if (cades_format_indx !== -1) {
-                    selectCadesFormatCombo.displayText
-                            = selectCadesFormatCombo.model[cades_format_indx].title
-                }
-                const stamp_type_indx = selectStampTypeCombo.indexOfValue(
-                                          profile_json.stamp_type)
-                selectStampTypeCombo.currentIndex = stamp_type_indx
-                selectStampTypeCombo.item_selected = true
-                if (stamp_type_indx !== -1) {
-                    selectStampTypeCombo.displayText
-                            = selectStampTypeCombo.model[stamp_type_indx].title
-                }
-                logoPath.text = profile_json.logo_path
-                tspUrlEdit.text = profile_json.tsp_url
-            } catch (e) {
-                console.error("Error parsing JSON" + e.message)
-            }   
-        } else {
-            // fill with empty/default values
-            profile_id = -1
-            profileIdTextPair.value = profile_id
-            profileName.text = ""
-            useAsDefaultProfileSwitch.checked = false
-            selectCertificateCombo.currentIndex = 0
-            selectCertificateCombo.item_selected = false
-            selectCertificateCombo.displayText = selectCertificateCombo.displayTextDefault
-            selectCadesFormatCombo.currentIndex = 0
-            selectCadesFormatCombo.item_selected = false
-            selectCadesFormatCombo.displayText = selectCadesFormatCombo.displayTextDefault
-            selectStampTypeCombo.currentIndex = 0
-            selectStampTypeCombo.item_selected = false
-            selectStampTypeCombo.displayText = selectStampTypeCombo.displayTextDefault
-            logoPath.text = ""
-            tspUrlEdit.text = ""
+        if (visible) {
+            saveButton.enabled = true
+            deleteProfileButton.enabled = true
         }
     }
 }

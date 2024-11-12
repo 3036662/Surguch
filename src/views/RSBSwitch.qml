@@ -3,6 +3,7 @@ import QtQuick.Controls
 
 Switch {
     id: control
+
     width: parent.width
 
     indicator: Rectangle {

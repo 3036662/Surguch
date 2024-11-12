@@ -4,13 +4,13 @@ import QtQuick.Layouts
 
 ListView {
     id: root
+
     anchors.leftMargin: 5
     anchors.rightMargin: 5
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.fill: parent
     spacing: 3
     flickableDirection: Flickable.VerticalFlick
-
     model: siglistModel
 
     delegate: ColumnLayout {

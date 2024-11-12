@@ -7,16 +7,16 @@ import alt.pdfcsp.pdfRender
 ListView {
     id: root
 
+    property int delegateRotation: 0
+    property double zoomPageFact: 1
+    property string source: ""
+
     anchors.leftMargin: 20
     anchors.rightMargin: 20
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.fill: parent
     spacing: 10
     flickableDirection: Flickable.VerticalFlick
-
-    property int delegateRotation: 0
-    property double zoomPageFact: 1
-    property string source: ""
 
     model: MuPdfModel {
         id: pdfPreviewModel

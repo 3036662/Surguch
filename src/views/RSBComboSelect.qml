@@ -3,12 +3,13 @@ import QtQuick.Controls
 
 ComboBox {
     id: control
+
+    property bool item_selected: false
+
     width: parent.width
     textRole: ""
     valueRole: ""
     wheelEnabled: false
-
-    property bool item_selected: false
 
     onActivated: {
         displayText = model[currentIndex].title

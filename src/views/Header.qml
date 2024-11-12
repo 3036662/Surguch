@@ -4,11 +4,28 @@ import QtQuick.Layouts
 import Qt.labs.platform
 import QtCore
 
-
 RowLayout {
     id: toolbar_layout
-    spacing: 5
 
+    function getCurrentProfileValue() {
+        return profileComboBox.currentValue
+    }
+
+    function disableSignMode() {
+        console.warn("disable sign mode")
+        signModeButton.down = false
+        signModeButton.enabled = false
+        pdfListView.signMode = false
+    }
+
+    function enableSignMode() {
+        signModeButton.down = false
+        signModeButton.enabled = true
+        pdfListView.signMode = false
+        pdfListView.signInProgress = false
+    }
+
+    spacing: 5
 
     Row {
         Layout.minimumWidth: 600
@@ -63,7 +80,8 @@ RowLayout {
                 implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
                 anchors.verticalCenter: parent.verticalCenter
                 onActivated: {
-                    profileComboBox.displayText = profileComboBox.textAt(currentIndex)
+                    profileComboBox.displayText = profileComboBox.textAt(
+                                currentIndex)
                     //open profile info panel
                     rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
                     // set the certificates for select
@@ -75,20 +93,20 @@ RowLayout {
                     if (currentValue === "new") {
                         rightSideBar.edit_profile.profile_data = ""
                         rightSideBar.edit_profile.profile_id = -1
-                    // ele set current profile data
+                        // ele set current profile data
                     } else {
                         rightSideBar.edit_profile.profile_data = currentValue
                     }
                 }
 
                 Component.onCompleted: {
-                    let def_profile=profilesModel.getDetDefaultProfileVal();
-                    if (def_profile!==""){
-                        const indx=profileComboBox.indexOfValue(def_profile);
-                        profileComboBox.displayText = profileComboBox.textAt(indx)
+                    let def_profile = profilesModel.getDetDefaultProfileVal()
+                    if (def_profile !== "") {
+                        const indx = profileComboBox.indexOfValue(def_profile)
+                        profileComboBox.displayText = profileComboBox.textAt(
+                                    indx)
                         profileComboBox.currentIndex = indx
                     }
-
                 }
             }
 
@@ -106,10 +124,10 @@ RowLayout {
                     rightSideBar.showState = RightSideBar.ShowState.Invisible
                 }
 
-                function onProfileDeleted(title){
-                    if (title!==""){
-                        profileComboBox.currentIndex=0;
-                        profileComboBox.displayText=profileComboBox.defaultText;
+                function onProfileDeleted(title) {
+                    if (title !== "") {
+                        profileComboBox.currentIndex = 0
+                        profileComboBox.displayText = profileComboBox.defaultText
                     }
                 }
             }
@@ -130,14 +148,14 @@ RowLayout {
             anchors.bottom: parent.bottom
 
             onClicked: {
-                if (profileComboBox.currentValue==="new"){
-                    profileComboBox.popup.open();
-                } else{
-                    pdfListView.signMode=!pdfListView.signMode;
-                    if (!down){
-                        pdfListView.reserRotation();
+                if (profileComboBox.currentValue === "new") {
+                    profileComboBox.popup.open()
+                } else {
+                    pdfListView.signMode = !pdfListView.signMode
+                    if (!down) {
+                        pdfListView.reserRotation()
                     }
-                    down=!down;
+                    down = !down
                 }
             }
         }
@@ -166,30 +184,11 @@ RowLayout {
         }
     }
 
-    Keys.onPressed:(event)=> {
-       if (event.key === Qt.Key_Escape && pdfListView.signMode) {
-           pdfListView.signMode=false;
-           signModeButton.down=false;
-       }
-    }
-
-    function getCurrentProfileValue(){
-        return profileComboBox.currentValue;
-    }
-
-    function disableSignMode(){
-        console.warn("disable sign mode");
-        signModeButton.down=false;
-        signModeButton.enabled=false;
-        pdfListView.signMode=false;
-    }
-
-    function enableSignMode(){
-        signModeButton.down=false;
-        signModeButton.enabled=true;
-        pdfListView.signMode=false;
-        pdfListView.signInProgress=false;
-    }
-
-
+    Keys.onPressed: event => {
+                        if (event.key === Qt.Key_Escape
+                            && pdfListView.signMode) {
+                            pdfListView.signMode = false
+                            signModeButton.down = false
+                        }
+                    }
 }

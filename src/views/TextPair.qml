@@ -2,10 +2,12 @@ import QtQuick
 import QtQuick.Controls
 Column {
     id:root
-    width: parent.width
+
     property string keyText
     property string value
     property int textWidth
+
+    width: parent.width
 
     Text{
         text:keyText
