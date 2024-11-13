@@ -9,6 +9,7 @@ ListView {
     property int pageWidth: 0
     property double hScrollPos: 0
     property string source: ""
+    property bool sourceIsTmp: false // the source file is temporary
     property double zoomPageFact: 1
     property int delegateRotation: 0
     property bool signMode: false

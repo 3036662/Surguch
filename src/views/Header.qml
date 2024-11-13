@@ -38,6 +38,8 @@ RowLayout {
         TopBarButton {
             icon.source: "qrc:/icons/file_simple.svg"
             text: qsTr("Show in folder")
+            enabled: pdfListView.source.length>0 && !pdfListView.sourceIsTmp
+            onClicked: showInFolderDialog.launch()
         }
         TopBarButton {
             icon.source: "qrc:/icons/folder_plus.svg"
@@ -171,18 +173,6 @@ RowLayout {
         rightPadding: 10
     }
 
-    FileDialog {
-        id: fileDialog
-        currentFile: ""
-        fileMode: FileDialog.OpenFile
-        nameFilters: ["Pdf files (*.pdf)"]
-        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
-        onAccepted: {
-            pdfListView.source = currentFile
-            leftSideBar.source = currentFile
-            rightSideBar.showState = RightSideBar.ShowState.Invisible
-        }
-    }
 
     Keys.onPressed: event => {
                         if (event.key === Qt.Key_Escape
@@ -191,4 +181,46 @@ RowLayout {
                             signModeButton.down = false
                         }
                     }
+
+    FileDialog {
+        id: fileDialog
+        currentFile: ""
+        fileMode: FileDialog.OpenFile
+        nameFilters: ["Pdf files (*.pdf)"]
+        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+        onAccepted: {
+            // source is chosen by user, not a temporary file
+            pdfListView.sourceIsTmp=false
+            pdfListView.source = currentFile
+            leftSideBar.source = currentFile
+            rightSideBar.showState = RightSideBar.ShowState.Invisible
+        }
+    }
+
+    FileDialog {
+        id: showInFolderDialog
+
+        currentFile: pdfListView.source
+        fileMode: FileDialog.OpenFile
+        acceptLabel:"OK"
+        options: FileDialog.HideNameFilterDetails
+        folder:""
+        nameFilters: ["Pdf files (*.pdf)"]
+
+        function launch(){
+            try{
+                let currSource=pdfListView.source;
+                let lastSlashIndex =  currSource.lastIndexOf('/');
+                if (lastSlashIndex!=-1){
+                     folder=currSource.substring(0,lastSlashIndex);
+                }
+                if (folder!==""){
+                    open();
+                }
+            }
+            catch(e){
+                console.warn(e.message);
+            }
+        }
+    }
 }
