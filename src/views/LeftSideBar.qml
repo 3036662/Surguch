@@ -34,6 +34,7 @@ Item {
 
     function setSigCount(sig_count) {
         sigCount = sig_count
+
     }
 
     Layout.maximumWidth: 400
@@ -55,14 +56,14 @@ Item {
         SignaturesList {
             id: sigListView
             visible: showState == LeftSideBar.ShowState.Certs
-                     && siglistModel.rowCount() > 0
+                     && sigCount > 0
         }
 
         Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.fill: parent
             visible: showState == LeftSideBar.ShowState.Certs
-                     && siglistModel.rowCount() === 0
+                     && sigCount === 0
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top

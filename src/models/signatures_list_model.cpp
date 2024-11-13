@@ -103,8 +103,6 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
   });
 
   worker_thread_->start();
-  // TODO(Oleg) check if everything is deleted
-
   endResetModel();
 }
 
