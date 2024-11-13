@@ -8,9 +8,15 @@
 namespace core{
 
 SignWorker::SignWorker(QObject *parent)
-    : QObject{parent}
+    : QObject{parent},locale_(newlocale(LC_ALL_MASK,"POSIX",static_cast<locale_t>(0)))
 {
 
+}
+
+SignWorker::~SignWorker(){
+    if(locale_!=nullptr){
+        freelocale(locale_);
+    }
 }
 
 void SignWorker::launchSign(SignParams sign_params){
@@ -20,7 +26,7 @@ void SignWorker::launchSign(SignParams sign_params){
 }
 
 
- SignWorker::SharedParamWrapper SignWorker::createParams(){
+ SignWorker::SharedParamWrapper SignWorker::createParams() const{
      auto params_wrapper=std::make_shared<CSignParamsWrapper>();
      pdfcsp::pdf::CSignParams& pod_params=params_wrapper->pod_params;
      pod_params.page_index=params_.page_index;
@@ -66,6 +72,9 @@ void SignWorker::launchSign(SignParams sign_params){
 }
 
 void SignWorker::estimateStampSize(SignParams sign_params){
+    if (locale_!=nullptr){
+        uselocale(locale_);
+    }
     params_=std::move(sign_params);
     auto params_wrapper=createParams();
     auto* p_resize_factor=pdfcsp::pdf::GetStampResultingSizeFactor(params_wrapper->pod_params);
@@ -80,6 +89,9 @@ void SignWorker::estimateStampSize(SignParams sign_params){
 }
 
 SignWorker::SignResult SignWorker::preparePdf(){
+    if (locale_!=nullptr){
+        uselocale(locale_);
+    }
     auto params_wrapper=createParams();
     auto* result=pdfcsp::pdf::PrepareDoc(params_wrapper->pod_params);
     SignResult res{};

@@ -5,6 +5,7 @@
 #include <vector>
 #include <QObject>
 #include <QDebug>
+#include <locale.h>
 
 namespace core{
 
@@ -70,6 +71,11 @@ public:
     };
 
     explicit SignWorker(QObject *parent = nullptr);
+    SignWorker(SignWorker&&) =delete;
+    SignWorker(const SignWorker&) =delete;
+    SignWorker& operator=(SignWorker&&) = delete;
+    SignWorker& operator=(const SignWorker&) = delete;
+    ~SignWorker() override;
 
     void launchSign(SignParams sign_params);
 
@@ -80,11 +86,11 @@ signals:
     void resizeStampCompleted(AimResizeFactor res);
 
 private:
-    SignParams params_;
     SignResult preparePdf();
+    SharedParamWrapper createParams() const;
 
-    SharedParamWrapper createParams();
-
+    SignParams params_;
+    locale_t locale_=nullptr;
 };
 
 } // namespace core
