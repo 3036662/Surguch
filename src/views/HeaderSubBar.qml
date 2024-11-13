@@ -283,15 +283,15 @@ ColumnLayout {
             Layout.fillWidth: true
         }
 
-        ToolButton {
-            flat: true
-            display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/fullscreen-custom.svg"
-            icon.width: 20
-            icon.height: 20
-            leftPadding: 5
-            rightPadding: 5
-            Layout.alignment: Qt.AlignRight
-        }
+        // ToolButton {
+        //     flat: true
+        //     display: AbstractButton.IconOnly
+        //     icon.source: "qrc:/icons/fullscreen-custom.svg"
+        //     icon.width: 20
+        //     icon.height: 20
+        //     leftPadding: 5
+        //     rightPadding: 5
+        //     Layout.alignment: Qt.AlignRight
+        // }
     }
 }

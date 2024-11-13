@@ -110,6 +110,25 @@ ListView {
         console.warn("Finished stamp size calculation")
     }
 
+    function openTmpFile(file){
+        sourceIsTmp=true;
+        source=file
+    }
+
+    function openFile(file){
+        sourceIsTmp=false;
+        source=file
+    }
+
+    function saveTo(dest){
+        if (dest){
+            // The second parameter will let the model delete the source file.
+            if (model.saveCurrSourceTo(dest,sourceIsTmp)){
+                openFile(dest)
+            }
+        }
+    }
+
     Layout.fillHeight: true
     Layout.fillWidth: true
     Layout.leftMargin: 20
@@ -129,6 +148,9 @@ ListView {
 
     onSourceChanged: {
         pdfModel.setSource(source)
+        if (sourceIsTmp){
+            pdfModel.deleteFileLater(source)
+        }
         setZoom(100)
         delegateRotation = 0
         if (leftSideBar.sigCount === 0) {

@@ -23,9 +23,15 @@ public:
     */
     Q_INVOKABLE bool createSignature(const QVariantMap& qvparams);
 
+    /**
+     * @brief estimate StampResizeFactor
+     * @param qvparams from qml
+     * @details In case text strings in certificates are very long, the stamp size will be enlarged.
+     */
     Q_INVOKABLE void estimateStampResizeFactor(const QVariantMap& qvparams);
 
 signals:
+
     void signCompleted(QVariantMap res);
     void stampSizeEstimated(QVariantMap res);
 

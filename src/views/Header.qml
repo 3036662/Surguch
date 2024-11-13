@@ -30,25 +30,32 @@ RowLayout {
     Row {
         Layout.minimumWidth: 600
         Layout.fillWidth: true
+
         TopBarButton {
             icon.source: "qrc:/icons/file_plus.svg"
             text: qsTr("Open")
             onClicked: fileDialog.open()
         }
+
         TopBarButton {
             icon.source: "qrc:/icons/file_simple.svg"
             text: qsTr("Show in folder")
             enabled: pdfListView.source.length>0 && !pdfListView.sourceIsTmp
             onClicked: showInFolderDialog.launch()
         }
+
         TopBarButton {
             icon.source: "qrc:/icons/folder_plus.svg"
             text: qsTr("Save as ...")
+            enabled: pdfListView.source.length>0
+            onClicked: saveFileDialog.open()
         }
-        TopBarButton {
-            icon.source: "qrc:/icons/printer_sm.svg"
-            text: qsTr("Print")
-        }
+
+        // TopBarButton {
+        //     icon.source: "qrc:/icons/printer_sm.svg"
+        //     text: qsTr("Print")
+        // }
+
         Row {
             spacing: 2
             id: comboBox_row
@@ -184,14 +191,14 @@ RowLayout {
 
     FileDialog {
         id: fileDialog
+
         currentFile: ""
         fileMode: FileDialog.OpenFile
         nameFilters: ["Pdf files (*.pdf)"]
         folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
         onAccepted: {
             // source is chosen by user, not a temporary file
-            pdfListView.sourceIsTmp=false
-            pdfListView.source = currentFile
+            pdfListView.openFile(currentFile)
             leftSideBar.source = currentFile
             rightSideBar.showState = RightSideBar.ShowState.Invisible
         }
@@ -207,6 +214,12 @@ RowLayout {
         folder:""
         nameFilters: ["Pdf files (*.pdf)"]
 
+
+    }
+
+    FileDialog {
+        id: saveFileDialog
+
         function launch(){
             try{
                 let currSource=pdfListView.source;
@@ -221,6 +234,17 @@ RowLayout {
             catch(e){
                 console.warn(e.message);
             }
+        }
+
+        currentFile:pdfListView.source
+        fileMode: FileDialog.SaveFile
+        defaultSuffix: "pdf"
+        nameFilters: ["Pdf files (*.pdf)"]
+        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+
+        onAccepted: {
+            console.warn(currentFile)
+            pdfListView.saveTo(currentFile);
         }
     }
 }

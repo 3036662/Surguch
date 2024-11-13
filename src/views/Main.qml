@@ -101,6 +101,7 @@ ApplicationWindow {
     MuPdfModel {
         id: pdfModel
         mustProcessSignatures: true
+        mustDeleteTmpFiles: true
     }
 
     ProfilesModel {
@@ -191,9 +192,8 @@ ApplicationWindow {
             // if successfully signed
             else{
              if (result.tmp_file_path!==undefined){
-                 // let the pdfListView know that the source file is temporary
-                 pdfListView.sourceIsTmp=true;
-                 pdfListView.source = result.tmp_file_path
+                 // open with openTmpFile, to be deleted later
+                 pdfListView.openTmpFile(result.tmp_file_path)
                  leftSideBar.source = result.tmp_file_path
                  rightSideBar.showState = RightSideBar.ShowState.Invisible
              }
