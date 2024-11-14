@@ -118,7 +118,7 @@ void TSignature::OneSigCoverage() {
   // full coverage
   {
     const size_t file_size = 1602;
-    const std::vector<unsigned char> sig_data(1002, 0xFF);
+    const std::vector<unsigned char> sig_data(500, 0xFF);
     const core::RangesVector ranges{{0, 100}, {1102, 500}};
     const core::RawSignature rsig(sig_data, ranges);
     const core::SignaturesValidator::CoverageInfo info =
@@ -126,7 +126,7 @@ void TSignature::OneSigCoverage() {
     QVERIFY(info.byteranges.size() > 1);
     QVERIFY(info.gaps.size() == 1);
     QVERIFY(info.gap_after_end == false);
-    QVERIFY(info.coverage == file_size - sig_data.size());
+    QVERIFY(info.coverage == file_size - info.sig_data_size);
     QVERIFY(!sig_data.empty());
     QVERIFY(info.gaps_size == file_size - info.coverage);
     QVERIFY(info.invalid_range == false);
@@ -136,7 +136,7 @@ void TSignature::OneSigCoverage() {
   // gap at the beginnig
   {
     const size_t file_size = 1602;
-    const std::vector<unsigned char> sig_data(1002, 0xFF);
+    const std::vector<unsigned char> sig_data(500, 0xFF);
     const core::RangesVector ranges{{1, 100}, {1102, 500}};
     const core::RawSignature rsig(sig_data, ranges);
     core::SignaturesValidator::CoverageInfo info =
@@ -145,7 +145,7 @@ void TSignature::OneSigCoverage() {
     QVERIFY(info.gaps.size() == 2);
     QVERIFY(info.gap_after_end == false);
     QVERIFY(info.coverage ==
-            file_size - sig_data.size()); // coverage is equal the signature
+            file_size - info.sig_data_size); // coverage is equal the signature
                                           // size,gives nothing
     QVERIFY(!sig_data.empty());
     QVERIFY(info.gaps_size == file_size - info.coverage);
@@ -156,7 +156,7 @@ void TSignature::OneSigCoverage() {
   // updated - gap at at the end can be casted to valid file
   {
     const size_t file_size = 1702;
-    const std::vector<unsigned char> sig_data(1002, 0xFF);
+    const std::vector<unsigned char> sig_data(500, 0xFF);
     const core::RangesVector ranges{{0, 100}, {1102, 500}};
     const core::RawSignature rsig(sig_data, ranges);
     const core::SignaturesValidator::CoverageInfo info =
@@ -169,7 +169,7 @@ void TSignature::OneSigCoverage() {
   // updated - gap at at the end can be casted to valid file
   {
     const size_t file_size = 17020;
-    const std::vector<unsigned char> sig_data(1002, 0xFF);
+    const std::vector<unsigned char> sig_data(500, 0xFF);
     const core::RangesVector ranges{{0, 100}, {1102, 500}};
     const core::RawSignature rsig(sig_data, ranges);
     const core::SignaturesValidator::CoverageInfo info =
@@ -181,7 +181,7 @@ void TSignature::OneSigCoverage() {
   // first gap < signature - can't be casted
   {
     const size_t file_size = 17020;
-    const std::vector<unsigned char> sig_data(1002, 0xFF);
+    const std::vector<unsigned char> sig_data(500, 0xFF);
     const core::RangesVector ranges{{0, 101}, {1102, 500}};
     const core::RawSignature rsig(sig_data, ranges);
     const core::SignaturesValidator::CoverageInfo info =
@@ -193,7 +193,7 @@ void TSignature::OneSigCoverage() {
   // first gap > signature - can't be casted
   {
     const size_t file_size = 17020;
-    const std::vector<unsigned char> sig_data(1002, 0xFF);
+    const std::vector<unsigned char> sig_data(500, 0xFF);
     const core::RangesVector ranges{{0, 99}, {1102, 500}};
     const core::RawSignature rsig(sig_data, ranges);
     const core::SignaturesValidator::CoverageInfo info =
@@ -205,7 +205,7 @@ void TSignature::OneSigCoverage() {
   // not full coverage
   {
       const size_t file_size = 1602;
-      const std::vector<unsigned char> sig_data(1001, 0xFF);
+      const std::vector<unsigned char> sig_data(499, 0xFF);
       const core::RangesVector ranges{{0, 100}, {1102, 500}};
       const core::RawSignature rsig(sig_data, ranges);
       const core::SignaturesValidator::CoverageInfo info =
@@ -217,7 +217,7 @@ void TSignature::OneSigCoverage() {
   // one range
   {
       const size_t file_size = 1602;
-      const std::vector<unsigned char> sig_data(1002, 0xFF);
+      const std::vector<unsigned char> sig_data(500, 0xFF);
       const core::RangesVector ranges{{1002, 500}};
       const core::RawSignature rsig(sig_data, ranges);
       const core::SignaturesValidator::CoverageInfo info =
@@ -229,7 +229,7 @@ void TSignature::OneSigCoverage() {
   // one range
   {
       const size_t file_size = 10000;
-      const std::vector<unsigned char> sig_data(1000, 0xFF);
+      const std::vector<unsigned char> sig_data(499, 0xFF);
       const core::RangesVector ranges{{0, 9000}};
       const core::RawSignature rsig(sig_data, ranges);
       const core::SignaturesValidator::CoverageInfo info =
@@ -253,7 +253,7 @@ void TSignature::OneSigCoverage() {
   //three ranges - full coverage
   {
       const size_t file_size = 10000;
-      const std::vector<unsigned char> sig_data(1000,0xff);
+      const std::vector<unsigned char> sig_data(499,0xff);
       const core::RangesVector ranges{{0, 5000},{5000,1000},{7000,3000}};
       const core::RawSignature rsig(sig_data, ranges);
       const core::SignaturesValidator::CoverageInfo info =
@@ -265,7 +265,7 @@ void TSignature::OneSigCoverage() {
   // overlapping ranges -full coverage
   {
       const size_t file_size = 10000;
-      const std::vector<unsigned char> sig_data(1000,0xff);
+      const std::vector<unsigned char> sig_data(499,0xff);
       const core::RangesVector ranges{{0, 5000},{4000,2000},{7000,3000}};
       const core::RawSignature rsig(sig_data, ranges);
       const core::SignaturesValidator::CoverageInfo info =
@@ -277,7 +277,7 @@ void TSignature::OneSigCoverage() {
   // overlapping ranges - not full coverage
   {
       const size_t file_size = 10000;
-      const std::vector<unsigned char> sig_data(1000,0xff);
+      const std::vector<unsigned char> sig_data(499,0xff);
       const core::RangesVector ranges{{0, 5000},{4000,1500},{7000,3000}};
       const core::RawSignature rsig(sig_data, ranges);
       const core::SignaturesValidator::CoverageInfo info =
@@ -289,7 +289,7 @@ void TSignature::OneSigCoverage() {
   // overlapping ranges - can be casted
   {
       const size_t file_size = 11000;
-      const std::vector<unsigned char> sig_data(1000,0xff);
+      const std::vector<unsigned char> sig_data(499,0xff);
       const core::RangesVector ranges{{0, 5000},{4000,2000},{7000,3000}};
       const core::RawSignature rsig(sig_data, ranges);
       const core::SignaturesValidator::CoverageInfo info =
@@ -301,7 +301,7 @@ void TSignature::OneSigCoverage() {
   // coverage > file size
   {
       const size_t file_size = 10000;
-      const std::vector<unsigned char> sig_data(1000,0xff);
+      const std::vector<unsigned char> sig_data(499,0xff);
       const core::RangesVector ranges{{0, 5000},{6000,6000}};
       const core::RawSignature rsig(sig_data, ranges);
       const core::SignaturesValidator::CoverageInfo info =

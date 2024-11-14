@@ -22,12 +22,17 @@ void SignaturesValidator::validateSignatures(
     }
     qWarning() << "validating signatures " << raw_signatures.size();
     std::shared_ptr<ValidationResult> result;
-    // do not parse empty sigbatures
+    // do not parse empty signatures
     if (sig.getSigData().empty() || sig.getByteRanges().empty()) {
       continue;
     }
     try {
       result = std::make_shared<ValidationResult>(sig, file_source.toStdString());
+      // analyse byteranges
+      const QFileInfo f_info(file_source);
+      const CoverageInfo cov_info=analyzeOneSigCoverage(sig,f_info.size());
+      result->full_coverage=cov_info.full_coverage;
+      result->can_be_casted_to_full_coverage=cov_info.can_be_casted_to_full_coverage;
     } catch (const std::exception &ex) {
       qWarning() << ex.what();
     }
@@ -49,7 +54,8 @@ SignaturesValidator::analyzeOneSigCoverage(const core::RawSignature &sig,
                                            size_t file_size) noexcept {
   CoverageInfo res{};
   res.file_size = file_size;
-  res.sig_data_size = sig.getSigData().size();
+  // convert to HEX string x2 + 2 bytes for brackets
+  res.sig_data_size = sig.getSigData().size()*2+2;
   res.byteranges = sig.getByteRanges();
   std::sort(res.byteranges.begin(), res.byteranges.end(),
             [](const std::pair<uint64_t, uint64_t> &lhs,

@@ -185,5 +185,18 @@ Flickable {
                 }
             }
         }
+
+        // ByteRange analasys
+        TextPairBool {
+            id: fullCoverageStatus
+            keyText: qsTr("The signature covers the entire document")
+            value: jsonData !== undefined ? jsonData.full_coverage : false;
+        }
+        TextPairBool {
+            visible:!fullCoverageStatus.value
+            keyText: qsTr("It is possible to open a signed version")
+            value: jsonData !== undefined ? jsonData.can_be_casted_to_full_coverage  : false;
+        }
+
     }
 }

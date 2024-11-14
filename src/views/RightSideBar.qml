@@ -21,6 +21,7 @@ Item {
                 jsonData = undefined
                 return
             }
+            console.warn(data);
             jsonData = JSON.parse(data)
             showState = RightSideBar.ShowState.SigInfo
             sigInfoPanel.contentY=10;
