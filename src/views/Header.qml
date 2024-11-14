@@ -207,19 +207,6 @@ RowLayout {
     FileDialog {
         id: showInFolderDialog
 
-        currentFile: pdfListView.source
-        fileMode: FileDialog.OpenFile
-        acceptLabel:"OK"
-        options: FileDialog.HideNameFilterDetails
-        folder:""
-        nameFilters: ["Pdf files (*.pdf)"]
-
-
-    }
-
-    FileDialog {
-        id: saveFileDialog
-
         function launch(){
             try{
                 let currSource=pdfListView.source;
@@ -235,6 +222,19 @@ RowLayout {
                 console.warn(e.message);
             }
         }
+
+        currentFile: pdfListView.source
+        fileMode: FileDialog.OpenFile
+        acceptLabel:"OK"
+        options: FileDialog.HideNameFilterDetails
+        folder:""
+        nameFilters: ["Pdf files (*.pdf)"]
+
+
+    }
+
+    FileDialog {
+        id: saveFileDialog
 
         currentFile:pdfListView.source
         fileMode: FileDialog.SaveFile
