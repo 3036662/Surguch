@@ -10,9 +10,9 @@
 
 namespace core {
 
-struct CSPResponse {
+struct ValidationResult {
 public:
-  CSPResponse(const core::RawSignature &raw_signature, const std::string &path);
+  ValidationResult(const core::RawSignature &raw_signature, const std::string &path);
 
   QJsonObject toJson() const;
 
@@ -42,6 +42,7 @@ public:
   time_t signers_time = 0;
   time_t cert_not_before = 0;
   time_t cert_not_after = 0;
+
 };
 
 } // namespace core

@@ -111,7 +111,7 @@ QHash<int, QByteArray> SignaturesListModel::roleNames() const {
 }
 
 void SignaturesListModel::saveValidationResult(
-    std::shared_ptr<core::CSPResponse> validation_result, size_t ind) {
+    std::shared_ptr<core::ValidationResult> validation_result, size_t ind) {
   validation_results_[ind] = std::move(validation_result);
   const QModelIndex qInd = index(static_cast<int>(ind), 0);
   qWarning() << "recieved validation result for index " << ind;

@@ -1,7 +1,7 @@
 #ifndef SIGNATUES_VALIDATOR_HPP
 #define SIGNATUES_VALIDATOR_HPP
 
-#include "csp_response.hpp"
+#include "validation_result.hpp"
 #include "raw_signature.hpp"
 #include <QObject>
 #include <memory>
@@ -40,7 +40,7 @@ public slots:
 signals:
   void validationFinished();
 
-  void validatationResult(std::shared_ptr<CSPResponse> validation_result,
+  void validatationResult(std::shared_ptr<ValidationResult> validation_result,
                           size_t index);
 
 private:

@@ -21,13 +21,13 @@ void SignaturesValidator::validateSignatures(
       break;
     }
     qWarning() << "validating signatures " << raw_signatures.size();
-    std::shared_ptr<CSPResponse> result;
+    std::shared_ptr<ValidationResult> result;
     // do not parse empty sigbatures
     if (sig.getSigData().empty() || sig.getByteRanges().empty()) {
       continue;
     }
     try {
-      result = std::make_shared<CSPResponse>(sig, file_source.toStdString());
+      result = std::make_shared<ValidationResult>(sig, file_source.toStdString());
     } catch (const std::exception &ex) {
       qWarning() << ex.what();
     }
@@ -43,22 +43,6 @@ void SignaturesValidator::validateSignatures(
   }
 }
 
-void SignaturesValidator::analyzeSigCoverages(
-    const std::vector<core::RawSignature> &raw_signatures,
-    const QString &file_source) noexcept {
-  const QFileInfo src_file(file_source);
-  const qint64 file_size = src_file.size();
-  if (!src_file.exists() || file_size == 0) {
-    qWarning() << "[AnalyzeByteRanges] file not found " << src_file;
-  }
-  std::map<size_t, size_t> coverage_map; // coverage -> index
-  bool full_coverage_found = false;
-  size_t covering_sig_index = 0;
-
-  for (const auto &sig : raw_signatures) {
-    analyzeOneSigCoverage(sig, file_size);
-  }
-}
 
 SignaturesValidator::CoverageInfo
 SignaturesValidator::analyzeOneSigCoverage(const core::RawSignature &sig,

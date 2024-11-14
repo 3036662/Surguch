@@ -1,4 +1,4 @@
-#include "csp_response.hpp"
+#include "validation_result.hpp"
 #include "bridge_utils.hpp"
 #include "raw_signature.hpp"
 #include <QJsonArray>
@@ -7,7 +7,7 @@
 
 namespace core {
 
-CSPResponse::CSPResponse(const core::RawSignature &raw_signature,
+ValidationResult::ValidationResult(const core::RawSignature &raw_signature,
                          const std::string &path) {
   // create CPodParams
   pdfcsp::c_bridge::CPodParam params{};
@@ -102,7 +102,7 @@ CSPResponse::CSPResponse(const core::RawSignature &raw_signature,
   pdfcsp::c_bridge::CFreeResult(pod);
 }
 
-QJsonObject CSPResponse::toJson() const {
+QJsonObject ValidationResult::toJson() const {
   // signature
   const char *ok = "ok";
   const char *bad = "bad";

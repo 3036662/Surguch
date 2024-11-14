@@ -1,5 +1,5 @@
 add_library (csp_c_bridge OBJECT
-    csp_response.cpp
+    validation_result.cpp
     bridge_utils.cpp
 )
 
