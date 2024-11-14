@@ -22,21 +22,20 @@ class SignaturesListModel : public QAbstractListModel {
 public:
   explicit SignaturesListModel(QObject *parent = nullptr);
 
-  // Header:
   QVariant headerData(int section, Qt::Orientation orientation,
                       int role = Qt::DisplayRole) const override;
 
-  // Basic functionality:
   [[nodiscard]] int
-  rowCount(const QModelIndex &parent = QModelIndex()) const override;
+  rowCount(const QModelIndex &parent) const override;
 
   [[nodiscard]] QVariant data(const QModelIndex &index,
-                              int role = Qt::DisplayRole) const override;
+                              int role) const override;
 
   QHash<int, QByteArray> roleNames() const override;
 
 public slots:
 
+  /// @brief store RawSignatures, send all signatures to validation
   void updateSigList(std::vector<core::RawSignature> sigs, QString file_source);
 
   void

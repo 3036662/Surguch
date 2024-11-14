@@ -101,8 +101,8 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
       worker_thread_ = nullptr;
       validator_= nullptr;
   });
-
   worker_thread_->start();
+
   endResetModel();
 }
 

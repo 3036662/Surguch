@@ -9,9 +9,9 @@
 
 namespace core {
 
-/*!
- * \brief The SignatureProcessor class
- * \throws runtime_error on construct
+/**
+ * @brief The SignatureProcessor class
+ * @throws runtime_error on construct
  */
 class SignatureProcessor {
 public:
@@ -23,8 +23,11 @@ public:
   SignatureProcessor &operator=(SignatureProcessor &&) = delete;
   ~SignatureProcessor() = default;
 
+  ///@brief find signature objects, place them in signarures_ptrs_
   [[nodiscard]] bool findSignatures() noexcept;
 
+  ///@brief parses signature object
+  ///@return returns array of RawSignature objects
   std::vector<RawSignature> ParseSignatures() noexcept;
 
   [[nodiscard]] pdf_obj *findAcroForm() const noexcept;
