@@ -30,6 +30,8 @@ private slots:
 
   void cBridgeCertList();
 
+  void OneSigCoverage();
+
 private:
   bool sigNumb(const QString &file, int sig_expected) const;
 

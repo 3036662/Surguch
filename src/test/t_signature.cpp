@@ -107,9 +107,207 @@ void TSignature::cBridge() {
   validator.validateSignatures(signatures, file1_);
 }
 
-
 void TSignature::cBridgeCertList() {
-   QString res= core::bridge_utils::getCertListJSON();
-   QVERIFY(!res.isEmpty());
-   qWarning()<<res;
+  QString res = core::bridge_utils::getCertListJSON();
+  QVERIFY(!res.isEmpty());
+  qWarning() << res;
+}
+
+void TSignature::OneSigCoverage() {
+  core::SignaturesValidator validator;
+  // full coverage
+  {
+    const size_t file_size = 1602;
+    const std::vector<unsigned char> sig_data(1002, 0xFF);
+    const core::RangesVector ranges{{0, 100}, {1102, 500}};
+    const core::RawSignature rsig(sig_data, ranges);
+    const core::SignaturesValidator::CoverageInfo info =
+        validator.analyzeOneSigCoverage(rsig, file_size);
+    QVERIFY(info.byteranges.size() > 1);
+    QVERIFY(info.gaps.size() == 1);
+    QVERIFY(info.gap_after_end == false);
+    QVERIFY(info.coverage == file_size - sig_data.size());
+    QVERIFY(!sig_data.empty());
+    QVERIFY(info.gaps_size == file_size - info.coverage);
+    QVERIFY(info.invalid_range == false);
+    QVERIFY(info.full_coverage);
+    QVERIFY(!info.can_be_casted_to_full_coverage);
+  }
+  // gap at the beginnig
+  {
+    const size_t file_size = 1602;
+    const std::vector<unsigned char> sig_data(1002, 0xFF);
+    const core::RangesVector ranges{{1, 100}, {1102, 500}};
+    const core::RawSignature rsig(sig_data, ranges);
+    core::SignaturesValidator::CoverageInfo info =
+        validator.analyzeOneSigCoverage(rsig, file_size);
+    QVERIFY(info.byteranges.size() > 1);
+    QVERIFY(info.gaps.size() == 2);
+    QVERIFY(info.gap_after_end == false);
+    QVERIFY(info.coverage ==
+            file_size - sig_data.size()); // coverage is equal the signature
+                                          // size,gives nothing
+    QVERIFY(!sig_data.empty());
+    QVERIFY(info.gaps_size == file_size - info.coverage);
+    QVERIFY(info.invalid_range == false);
+    QVERIFY(info.full_coverage == false);
+    QVERIFY(!info.can_be_casted_to_full_coverage);
+  }
+  // updated - gap at at the end can be casted to valid file
+  {
+    const size_t file_size = 1702;
+    const std::vector<unsigned char> sig_data(1002, 0xFF);
+    const core::RangesVector ranges{{0, 100}, {1102, 500}};
+    const core::RawSignature rsig(sig_data, ranges);
+    const core::SignaturesValidator::CoverageInfo info =
+        validator.analyzeOneSigCoverage(rsig, file_size);
+    QVERIFY(info.full_coverage == false);
+    QVERIFY(info.can_be_casted_to_full_coverage);
+    QVERIFY(!info.invalid_range);
+  }
+
+  // updated - gap at at the end can be casted to valid file
+  {
+    const size_t file_size = 17020;
+    const std::vector<unsigned char> sig_data(1002, 0xFF);
+    const core::RangesVector ranges{{0, 100}, {1102, 500}};
+    const core::RawSignature rsig(sig_data, ranges);
+    const core::SignaturesValidator::CoverageInfo info =
+        validator.analyzeOneSigCoverage(rsig, file_size);
+    QVERIFY(info.full_coverage == false);
+    QVERIFY(info.can_be_casted_to_full_coverage);
+    QVERIFY(!info.invalid_range);
+  }
+  // first gap < signature - can't be casted
+  {
+    const size_t file_size = 17020;
+    const std::vector<unsigned char> sig_data(1002, 0xFF);
+    const core::RangesVector ranges{{0, 101}, {1102, 500}};
+    const core::RawSignature rsig(sig_data, ranges);
+    const core::SignaturesValidator::CoverageInfo info =
+        validator.analyzeOneSigCoverage(rsig, file_size);
+    QVERIFY(!info.full_coverage);
+    QVERIFY(!info.can_be_casted_to_full_coverage);
+    QVERIFY(!info.invalid_range);
+  }
+  // first gap > signature - can't be casted
+  {
+    const size_t file_size = 17020;
+    const std::vector<unsigned char> sig_data(1002, 0xFF);
+    const core::RangesVector ranges{{0, 99}, {1102, 500}};
+    const core::RawSignature rsig(sig_data, ranges);
+    const core::SignaturesValidator::CoverageInfo info =
+        validator.analyzeOneSigCoverage(rsig, file_size);
+    QVERIFY(!info.full_coverage);
+    QVERIFY(!info.can_be_casted_to_full_coverage);
+    QVERIFY(!info.invalid_range);
+  }
+  // not full coverage
+  {
+      const size_t file_size = 1602;
+      const std::vector<unsigned char> sig_data(1001, 0xFF);
+      const core::RangesVector ranges{{0, 100}, {1102, 500}};
+      const core::RawSignature rsig(sig_data, ranges);
+      const core::SignaturesValidator::CoverageInfo info =
+          validator.analyzeOneSigCoverage(rsig, file_size);
+      QVERIFY(!info.full_coverage);
+      QVERIFY(!info.can_be_casted_to_full_coverage);
+      QVERIFY(!info.invalid_range);
+  }
+  // one range
+  {
+      const size_t file_size = 1602;
+      const std::vector<unsigned char> sig_data(1002, 0xFF);
+      const core::RangesVector ranges{{1002, 500}};
+      const core::RawSignature rsig(sig_data, ranges);
+      const core::SignaturesValidator::CoverageInfo info =
+          validator.analyzeOneSigCoverage(rsig, file_size);
+      QVERIFY(!info.full_coverage);
+      QVERIFY(!info.can_be_casted_to_full_coverage);
+      QVERIFY(!info.invalid_range);
+  }
+  // one range
+  {
+      const size_t file_size = 10000;
+      const std::vector<unsigned char> sig_data(1000, 0xFF);
+      const core::RangesVector ranges{{0, 9000}};
+      const core::RawSignature rsig(sig_data, ranges);
+      const core::SignaturesValidator::CoverageInfo info =
+          validator.analyzeOneSigCoverage(rsig, file_size);
+      QVERIFY(!info.full_coverage);
+      QVERIFY(!info.can_be_casted_to_full_coverage);
+      QVERIFY(!info.invalid_range);
+  }
+  //empty sig
+  {
+      const size_t file_size = 10000;
+      const std::vector<unsigned char> sig_data;
+      const core::RangesVector ranges{{0, 5000},{5000,5000}};
+      const core::RawSignature rsig(sig_data, ranges);
+      const core::SignaturesValidator::CoverageInfo info =
+          validator.analyzeOneSigCoverage(rsig, file_size);
+      QVERIFY(!info.full_coverage);
+      QVERIFY(!info.can_be_casted_to_full_coverage);
+      QVERIFY(!info.invalid_range);
+  }
+  //three ranges - full coverage
+  {
+      const size_t file_size = 10000;
+      const std::vector<unsigned char> sig_data(1000,0xff);
+      const core::RangesVector ranges{{0, 5000},{5000,1000},{7000,3000}};
+      const core::RawSignature rsig(sig_data, ranges);
+      const core::SignaturesValidator::CoverageInfo info =
+          validator.analyzeOneSigCoverage(rsig, file_size);
+      QVERIFY(info.full_coverage);
+      QVERIFY(!info.can_be_casted_to_full_coverage);
+      QVERIFY(!info.invalid_range);
+  }
+  // overlapping ranges -full coverage
+  {
+      const size_t file_size = 10000;
+      const std::vector<unsigned char> sig_data(1000,0xff);
+      const core::RangesVector ranges{{0, 5000},{4000,2000},{7000,3000}};
+      const core::RawSignature rsig(sig_data, ranges);
+      const core::SignaturesValidator::CoverageInfo info =
+          validator.analyzeOneSigCoverage(rsig, file_size);
+      QVERIFY(info.full_coverage);
+      QVERIFY(!info.can_be_casted_to_full_coverage);
+      QVERIFY(!info.invalid_range);
+  }
+  // overlapping ranges - not full coverage
+  {
+      const size_t file_size = 10000;
+      const std::vector<unsigned char> sig_data(1000,0xff);
+      const core::RangesVector ranges{{0, 5000},{4000,1500},{7000,3000}};
+      const core::RawSignature rsig(sig_data, ranges);
+      const core::SignaturesValidator::CoverageInfo info =
+          validator.analyzeOneSigCoverage(rsig, file_size);
+      QVERIFY(!info.full_coverage);
+      QVERIFY(!info.can_be_casted_to_full_coverage);
+      QVERIFY(!info.invalid_range);
+  }
+  // overlapping ranges - can be casted
+  {
+      const size_t file_size = 11000;
+      const std::vector<unsigned char> sig_data(1000,0xff);
+      const core::RangesVector ranges{{0, 5000},{4000,2000},{7000,3000}};
+      const core::RawSignature rsig(sig_data, ranges);
+      const core::SignaturesValidator::CoverageInfo info =
+          validator.analyzeOneSigCoverage(rsig, file_size);
+      QVERIFY(!info.full_coverage);
+      QVERIFY(info.can_be_casted_to_full_coverage);
+      QVERIFY(!info.invalid_range);
+  }
+  // coverage > file size
+  {
+      const size_t file_size = 10000;
+      const std::vector<unsigned char> sig_data(1000,0xff);
+      const core::RangesVector ranges{{0, 5000},{6000,6000}};
+      const core::RawSignature rsig(sig_data, ranges);
+      const core::SignaturesValidator::CoverageInfo info =
+          validator.analyzeOneSigCoverage(rsig, file_size);
+      QVERIFY(!info.full_coverage);
+      QVERIFY(!info.can_be_casted_to_full_coverage);
+      QVERIFY(info.invalid_range);
+  }
 }

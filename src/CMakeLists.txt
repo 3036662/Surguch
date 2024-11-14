@@ -3,13 +3,13 @@ find_package(Qt6 REQUIRED COMPONENTS Svg REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Widgets REQUIRED)
 #find_package(Qt6 REQUIRED COMPONENTS Pdf REQUIRED)
 
-
 if (NOT DEFINED TRANSLATION_DIR)
     set(TRANSLATION_DIR ${CMAKE_BINARY_DIR}/src/)
 endif()
 message(TRANSLATION_DIR=${TRANSLATION_DIR})
 
 set(CMAKE_AUTORCC ON)
+
 
 qt_add_executable(appgui_pdf_csp
     main.cpp
@@ -32,6 +32,7 @@ SET (PDFCSP_LINK_PATH /home/oleg/dev/eSign/csp_pdf/build/c_bridge/libcsp_c_bridg
 SET (PDFCSP_PDF_LINK_PATH /home/oleg/dev/eSign/csp_pdf/build/pdf/libcsppdf.so)
 SET (PDFCSP_INCLUDE_DIR /home/oleg/dev/eSign/csp_pdf/)
 SET (PDFCSP_PDF_INCLUDE_DIR /home/oleg/dev/eSign/csp_pdf/pdf)
+
 
 
 qt_add_qml_module(appgui_pdf_csp
@@ -62,6 +63,12 @@ qt_add_qml_module(appgui_pdf_csp
     QML_FILES views/RSBComboSelect.qml
     QML_FILES views/RSBTextArea.qml
 )
+
+
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    message(WITH_QTESt)
+    add_compile_definitions(WITH_QTEST=1)
+endif()
 
 add_subdirectory(core)
 
@@ -107,10 +114,7 @@ target_link_libraries(appgui_pdf_csp
 )
 target_include_directories(appgui_pdf_csp PRIVATE ${MUPDF_INCLUDE_DIR})
 
-if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-    message("Building tests")
-    add_subdirectory(test)
-endif()
+
 
 # alt csp lib linkage
 # harcoded mupdf linkage
@@ -123,4 +127,12 @@ target_link_libraries(appgui_pdf_csp
 )
 
 include(GNUInstallDirs)
+
+
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    add_compile_definitions(WITH_QTEST=1)
+    message("Building tests")
+    add_subdirectory(test)
+endif()
+
 

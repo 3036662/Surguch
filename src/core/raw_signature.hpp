@@ -17,6 +17,8 @@ using RangesVector = std::vector<std::pair<uint64_t, uint64_t>>;
 class RawSignature {
 public:
   explicit RawSignature(fz_context *fzctx, const PdfObjKeeper &sig_obj);
+  explicit RawSignature(BytesVector sigdata, RangesVector byteranges)
+      : sigdata_{std::move(sigdata)}, byteranges_{std::move(byteranges)} {}
 
   [[nodiscard]] const BytesVector &getSigData() const noexcept {
     return sigdata_;
