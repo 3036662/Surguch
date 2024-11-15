@@ -184,6 +184,10 @@ QJsonObject ValidationResult::toJson() const {
     }
   }
 
+  if (sig_curr_index){
+      res["current_index"]=static_cast<qint64>(sig_curr_index.value());
+  }
+
   // byterange analasys results
   res["full_coverage"]=full_coverage;
   res["can_be_casted_to_full_coverage"]=can_be_casted_to_full_coverage;

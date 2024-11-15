@@ -159,7 +159,7 @@ ApplicationWindow {
         // estimate the resulting stamp size
         function resizeAim(location_data){
             try{
-                let params=gatherParams(location_data);
+                let params=gatherParams(lockation_data);
                 sigCreator.estimateStampResizeFactor(params);
             } catch(e){
                 console.warn(e);
@@ -251,7 +251,7 @@ ApplicationWindow {
         pdfModel.signaturesCounted.connect(leftSideBar.setSigCount)
         // call SignaturesListModel to update the signatures list and validate all signatures
         pdfModel.signaturesFound.connect(siglistModel.updateSigList)
-
+        // file common status alerts
         siglistModel.commonDocStatus.connect(function(status){
             switch(status){
             case DocStatusEnum.CommonDocCoverageStatus.kDocCanBeRecovered:
@@ -272,6 +272,12 @@ ApplicationWindow {
                 errorMessageDialog.open();
                 break;
             }
+        });
+        // open the recovered file
+        siglistModel.fileRecovered.connect(function(dest){
+            rightSideBar.showState=RightSideBar.ShowState.Invisible
+            pdfListView.openTmpFile(dest);
+            leftSideBar.source = dest;
         });
     }
 

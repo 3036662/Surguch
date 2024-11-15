@@ -46,6 +46,9 @@ public:
   //byterange analasys results
   bool full_coverage=false;
   bool can_be_casted_to_full_coverage=false;
+  std::optional<size_t> sig_curr_index;
+  RangesVector byteranges;
+  QString file_path;
 };
 
 } // namespace core

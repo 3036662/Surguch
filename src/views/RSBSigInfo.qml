@@ -195,11 +195,28 @@ Flickable {
             value: jsonData !== undefined ? jsonData.full_coverage : false;
         }
         TextPairBool {
+            id: recoverableStatus
             visible:!fullCoverageStatus.value
             keyText: qsTr("It is possible to open a signed version")
             value: jsonData !== undefined ? jsonData.can_be_casted_to_full_coverage  : false;
         }
 
+        // Recover signed document button
+        Item {
+            width: parent.width
+            height: 50
+            visible: recoverableStatus.value
+            Button {
+                id: recoverDocButton
+                text: qsTr("Recover the document")
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom
 
+                onClicked: {
+                    siglistModel.recoverDoc(jsonData.current_index);
+                    //recoverDocButton.enabled = false
+                }
+            }
+        } // delete profile end
     }
 }

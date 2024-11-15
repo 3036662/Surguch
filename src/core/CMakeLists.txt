@@ -8,6 +8,7 @@ add_library(appcore OBJECT
     signatures_validator.hpp signatures_validator.cpp
     signature_creator.hpp signature_creator.cpp
     sign_worker.hpp sign_worker.cpp
+    file_recover_worker.hpp file_recover_worker.cpp
 )
 
 add_subdirectory(csp_c_bridge)
