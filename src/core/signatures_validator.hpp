@@ -8,8 +8,25 @@
 
 namespace core {
 
+class DocStatusEnum : public QObject{
+    Q_OBJECT
+public:
+    enum class CommonDocCoverageStatus:uint8_t{
+        kEverythingIsFine=0,
+        kDocCanBeRecovered=1,
+        kDocCantBeTrusted=2,
+        kDocSuspiciousPrevious=3,
+        kDocCanBeRecoveredButSuspicious=4
+    };
+    Q_ENUM(CommonDocCoverageStatus);
+
+    explicit DocStatusEnum(QObject *parent=nullptr):QObject(parent){}
+};
+
+
+
 class SignaturesValidator : public QObject {
-  Q_OBJECT
+Q_OBJECT
 
 public:
   struct CoverageInfo {
@@ -25,7 +42,7 @@ public:
     size_t file_size = 0;
   };
 
-  // explicit SignaturesValidator(QObject *parent = nullptr);
+  explicit SignaturesValidator(QObject *parent = nullptr) : QObject{parent} {};
 
   ~SignaturesValidator() override = default;
 
@@ -38,7 +55,7 @@ public slots:
                           QString file_source);
 
 signals:
-  void validationFinished();
+  void validationFinished(DocStatusEnum::CommonDocCoverageStatus);
 
   void validatationResult(std::shared_ptr<ValidationResult> validation_result,
                           size_t index);
@@ -47,13 +64,6 @@ private:
 #ifdef WITH_QTEST
 public:
 #endif
-  /** @brief Analyze byteranges
-   *  @details In perfect case, there is at least one signature covering the
-   * whole file content, if no,we need to emit a message
-   */
-  void
-  analyzeSigCoverages(const std::vector<core::RawSignature> &raw_signatures_,
-                      const QString &file_source) noexcept;
 
   CoverageInfo analyzeOneSigCoverage(const core::RawSignature &sig,
                                      size_t file_size) noexcept;
@@ -62,5 +72,6 @@ public:
 };
 
 } // namespace core
+
 
 #endif // SIGNATUES_VALIDATOR_HPP

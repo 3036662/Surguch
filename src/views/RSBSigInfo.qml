@@ -26,6 +26,7 @@ Flickable {
             value: jsonData !== undefined && jsonData.signature.status
         }
 
+
         Column {
             anchors.left: parent.left
             anchors.leftMargin: 20
@@ -186,6 +187,7 @@ Flickable {
             }
         }
 
+
         // ByteRange analasys
         TextPairBool {
             id: fullCoverageStatus
@@ -197,6 +199,7 @@ Flickable {
             keyText: qsTr("It is possible to open a signed version")
             value: jsonData !== undefined ? jsonData.can_be_casted_to_full_coverage  : false;
         }
+
 
     }
 }

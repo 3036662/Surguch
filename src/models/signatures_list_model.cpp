@@ -86,7 +86,8 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
      validator_->validateSignatures(raw_signatures_, file_source);
   });
   QObject::connect(validator_, &core::SignaturesValidator::validationFinished,
-                   [this] {
+                   [this]( core::DocStatusEnum::CommonDocCoverageStatus status) {
+                     emit commonDocStatus(status);
                      qWarning() << "Finished validation";
                      worker_thread_->quit();
                    });

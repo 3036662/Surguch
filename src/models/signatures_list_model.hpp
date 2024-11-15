@@ -8,6 +8,8 @@
 #include <QThread>
 #include <memory>
 
+
+
 class SignaturesListModel : public QAbstractListModel {
   Q_OBJECT
 
@@ -32,6 +34,10 @@ public:
                               int role) const override;
 
   QHash<int, QByteArray> roleNames() const override;
+
+signals:
+  // void commonDocStatus(core::SignaturesValidator::CommonDocCoverageStatus);
+   void commonDocStatus(core::DocStatusEnum::CommonDocCoverageStatus);
 
 public slots:
 

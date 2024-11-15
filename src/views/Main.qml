@@ -251,6 +251,28 @@ ApplicationWindow {
         pdfModel.signaturesCounted.connect(leftSideBar.setSigCount)
         // call SignaturesListModel to update the signatures list and validate all signatures
         pdfModel.signaturesFound.connect(siglistModel.updateSigList)
+
+        siglistModel.commonDocStatus.connect(function(status){
+            switch(status){
+            case DocStatusEnum.CommonDocCoverageStatus.kDocCanBeRecovered:
+                errorMessageDialog.text=qsTr("The document was changed after signing, but can be restored");
+                errorMessageDialog.open();
+                break;
+            case DocStatusEnum.kDocCantBeTrusted:
+                errorMessageDialog.text=qsTr("The document can't be trusted because none of signatures covers the whole document.﻿");
+                errorMessageDialog.open();
+                break;
+
+            case DocStatusEnum.kDocCanBeRecoveredButSuspicious:
+                errorMessageDialog.text=qsTr("The document was changed after signing.Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿");
+                errorMessageDialog.open();
+                break;
+            case DocStatusEnum.kDocSuspiciousPrevious:
+                errorMessageDialog.text=qsTr("Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿");
+                errorMessageDialog.open();
+                break;
+            }
+        });
     }
 
 

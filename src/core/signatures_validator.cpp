@@ -12,6 +12,7 @@ namespace core {
 void SignaturesValidator::validateSignatures(
     std::vector<core::RawSignature> raw_signatures, QString file_source) {
   bool aborted = false;
+  std::map<size_t,CoverageInfo> coverage_infos;
   for (size_t i = 0; i < raw_signatures.size(); ++i) {
     const auto &sig = raw_signatures[i];
     if (abort_recieved_ ||
@@ -30,9 +31,10 @@ void SignaturesValidator::validateSignatures(
       result = std::make_shared<ValidationResult>(sig, file_source.toStdString());
       // analyse byteranges
       const QFileInfo f_info(file_source);
-      const CoverageInfo cov_info=analyzeOneSigCoverage(sig,f_info.size());
+      CoverageInfo cov_info=analyzeOneSigCoverage(sig,f_info.size());
       result->full_coverage=cov_info.full_coverage;
       result->can_be_casted_to_full_coverage=cov_info.can_be_casted_to_full_coverage;
+      coverage_infos.insert_or_assign(i,cov_info);
     } catch (const std::exception &ex) {
       qWarning() << ex.what();
     }
@@ -43,8 +45,49 @@ void SignaturesValidator::validateSignatures(
   if (aborted) {
     qWarning() << "quit without sending results";
     QThread::currentThread()->quit();
-  } else {
-    emit validationFinished();
+  }else {
+    // emit message about signatures coverages
+      const bool at_least_one_full_coverage=std::any_of(coverage_infos.cbegin(),
+                                                  coverage_infos.cend(),[](const std::pair<size_t,CoverageInfo>& val){
+          return val.second.full_coverage;
+      });
+      const bool at_least_one_recoverable=std::any_of(coverage_infos.cbegin(),
+                                                  coverage_infos.cend(),[](const std::pair<size_t,CoverageInfo>& val){
+          return val.second.can_be_casted_to_full_coverage;
+      });
+      const bool at_lest_one_suspicious=std::any_of(coverage_infos.cbegin(),
+                                                    coverage_infos.cend(),[](const std::pair<size_t,CoverageInfo>& val){
+            return !val.second.can_be_casted_to_full_coverage && !val.second.full_coverage;
+        });
+      const bool  all_full_or_recoverable=std::all_of(coverage_infos.cbegin(),
+                                                coverage_infos.cend(),[](const std::pair<size_t,CoverageInfo>& val){
+         return val.second.full_coverage || val.second.can_be_casted_to_full_coverage;
+      });
+      // at least one is good, the rest are recoverable
+      const bool everything_is_fine=at_least_one_full_coverage && all_full_or_recoverable;
+      // the document can be recovered
+      const bool doc_can_be_recovered=all_full_or_recoverable && !at_least_one_full_coverage && !raw_signatures.empty();
+      // doc can't be trusted
+      const bool doc_cant_be_trusted=!at_least_one_full_coverage && !at_least_one_recoverable;
+      // some signatures are suspicious
+      const bool doc_suspicious_previous=at_least_one_full_coverage && at_lest_one_suspicious;
+      const bool doc_can_be_recoverd_but_suspicious=at_least_one_recoverable && at_lest_one_suspicious;
+
+      DocStatusEnum::CommonDocCoverageStatus status=DocStatusEnum::CommonDocCoverageStatus::kDocCantBeTrusted;
+      if (everything_is_fine || raw_signatures.empty()){
+          status= DocStatusEnum::CommonDocCoverageStatus::kEverythingIsFine;
+      }
+      if (doc_can_be_recovered){
+          status= DocStatusEnum::CommonDocCoverageStatus::kDocCanBeRecovered;
+      }
+      if (doc_suspicious_previous){
+          status= DocStatusEnum::CommonDocCoverageStatus::kDocSuspiciousPrevious;
+      }
+      if (doc_can_be_recoverd_but_suspicious){
+          status = DocStatusEnum::CommonDocCoverageStatus::kDocCanBeRecoveredButSuspicious;
+      }
+      emit validationFinished(status);
+
   }
 }
 

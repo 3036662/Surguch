@@ -28,6 +28,7 @@ int main(int argc, char *argv[]) {
   qmlRegisterType<PdfPageModel>("alt.pdfcsp.pdfModel", 0, 1, "MuPdfModel");
   qmlRegisterType<SignaturesListModel>("alt.pdfcsp.signaturesListModel", 0, 1,
                                        "SignaturesListModel");
+  qmlRegisterUncreatableType<core::DocStatusEnum>("alt.pdfcsp.signaturesListModel",0,1,"DocStatusEnum","C++ enum");
   qmlRegisterType<ProfilesModel>("alt.pdfcsp.profilesModel",0,1,"ProfilesModel");
   qmlRegisterType<core::SignatureCreator>("alt.pdfcsp.signatureCreator",0,1,"SignatureCreator");
 
