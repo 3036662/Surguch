@@ -14,8 +14,7 @@ public:
   void abort() { abort_recieved_ = true; };
 
 public slots:
-  void recoverFileWithByteRange(const QString path,
-                                const RangesVector branges);
+  void recoverFileWithByteRange(const QString path, const RangesVector branges);
 signals:
 
   void recoverCompleted(QString path);

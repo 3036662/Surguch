@@ -26,7 +26,6 @@ public:
   [[nodiscard]] QVariant data(const QModelIndex &index,
                               int role) const override;
 
-
   /**
    * @brief setSource open new pdf file
    * @param path
@@ -39,14 +38,14 @@ public:
    */
   Q_INVOKABLE QString getSource() const;
 
-
   /**
    * @brief resert the whole model
    */
   Q_INVOKABLE void redrawAll();
 
   /**
-   *  @details There is no need to read signatures when the model is utilized to render pdf previews.
+   *  @details There is no need to read signatures when the model is utilized to
+   * render pdf previews.
    */
   Q_PROPERTY(bool mustProcessSignatures READ mustProcessSignatures WRITE
                  setMustProcessSignatures);
@@ -55,7 +54,8 @@ public:
 
   Q_PROPERTY(bool mustDeleteTmpFiles MEMBER process_file_delete_)
 
-  Q_INVOKABLE bool saveCurrSourceTo(const QString path,bool delete_curr_source);
+  Q_INVOKABLE bool saveCurrSourceTo(const QString path,
+                                    bool delete_curr_source);
 
   Q_INVOKABLE void deleteFileLater(QString path);
 
@@ -64,7 +64,6 @@ public:
   [[nodiscard]] Q_INVOKABLE fz_context *getCtx() const;
 
   [[nodiscard]] Q_INVOKABLE pdf_document *getPdfDoc() const;
-
 
 signals:
   void signaturesFound(std::vector<core::RawSignature> sigs, QString file_path);
@@ -81,7 +80,7 @@ private:
   pdf_document *pdfdoc_ = nullptr;
   int page_count_ = 0;
   bool process_signatures_ = false;
-  bool process_file_delete_ =false;
+  bool process_file_delete_ = false;
 
   std::vector<QString> tmp_files_to_delete_;
 };

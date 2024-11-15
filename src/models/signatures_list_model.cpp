@@ -73,20 +73,20 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
   validator_ = new core::SignaturesValidator();
   validator_->moveToThread(worker_thread_);
 
-  QObject::connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit,
-                   [this] {
-                    if (worker_thread_!=nullptr && worker_thread_->isRunning()){
-                     worker_thread_->requestInterruption();
-                     validator_->abort();                     
-                     worker_thread_->wait();
-                    }
-                   });
+  QObject::connect(
+      QCoreApplication::instance(), &QCoreApplication::aboutToQuit, [this] {
+        if (worker_thread_ != nullptr && worker_thread_->isRunning()) {
+          worker_thread_->requestInterruption();
+          validator_->abort();
+          worker_thread_->wait();
+        }
+      });
 
   QObject::connect(worker_thread_, &QThread::started, [this, file_source]() {
-     validator_->validateSignatures(raw_signatures_, file_source);
+    validator_->validateSignatures(raw_signatures_, file_source);
   });
   QObject::connect(validator_, &core::SignaturesValidator::validationFinished,
-                   [this]( core::DocStatusEnum::CommonDocCoverageStatus status) {
+                   [this](core::DocStatusEnum::CommonDocCoverageStatus status) {
                      emit commonDocStatus(status);
                      qWarning() << "Finished validation";
                      worker_thread_->quit();
@@ -95,12 +95,11 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
   QObject::connect(validator_, &core::SignaturesValidator::validatationResult,
                    this, &SignaturesListModel::saveValidationResult);
 
-
-  QObject::connect(worker_thread_, &QThread::finished, [this](){
-      validator_->deleteLater();
-      worker_thread_->deleteLater();
-      worker_thread_ = nullptr;
-      validator_= nullptr;
+  QObject::connect(worker_thread_, &QThread::finished, [this]() {
+    validator_->deleteLater();
+    worker_thread_->deleteLater();
+    worker_thread_ = nullptr;
+    validator_ = nullptr;
   });
   worker_thread_->start();
 
@@ -117,4 +116,57 @@ void SignaturesListModel::saveValidationResult(
   const QModelIndex qInd = index(static_cast<int>(ind), 0);
   qWarning() << "recieved validation result for index " << ind;
   emit dataChanged(qInd, qInd);
+}
+
+void SignaturesListModel::recoverDoc(qint64 sig_index) {
+  const char *const expl = "[SignaturesListModel] recover doc failed";
+  if (sig_index >= validation_results_.size() ||
+      !validation_results_.at(sig_index)->can_be_casted_to_full_coverage) {
+    qWarning() << expl;
+    return;
+  }
+  const core::RangesVector &branges =
+      validation_results_.at(sig_index)->byteranges;
+  const QString &file_path = validation_results_.at(sig_index)->file_path;
+  if (branges.size() != 2 || file_path.isEmpty()) {
+    qWarning() << expl;
+    return;
+  }
+  if (recover_worker_ != nullptr || recover_thread_ != nullptr) {
+    qWarning() << "recoverDoc is alreary running";
+    return;
+  }
+  recover_worker_ = new core::FileRecoverWorker();
+  recover_thread_ = new QThread();
+  recover_worker_->moveToThread(recover_thread_);
+  // start job
+  QObject::connect(
+      recover_thread_, &QThread::started, [file_path, branges, this]() {
+        recover_worker_->recoverFileWithByteRange(file_path, branges);
+      });
+  // app closed
+  QObject::connect(
+      QCoreApplication::instance(), &QCoreApplication::aboutToQuit, [this]() {
+        if (recover_thread_ != nullptr && recover_thread_->isRunning()) {
+          recover_worker_->abort();
+          recover_thread_->requestInterruption();
+          recover_thread_->wait();
+        }
+      });
+  // job is completed
+  QObject::connect(recover_worker_, &core::FileRecoverWorker::recoverCompleted,
+                   [this](QString res) {
+                     if (!res.isEmpty()) {
+                       emit fileRecovered(res);
+                     }
+                     recover_thread_->quit();
+                   });
+  // thread is finished
+  QObject::connect(recover_thread_, &QThread::finished, [this]() {
+    recover_worker_->deleteLater();
+    recover_thread_->deleteLater();
+    recover_worker_ = nullptr;
+    recover_thread_ = nullptr;
+  });
+  recover_thread_->start();
 }

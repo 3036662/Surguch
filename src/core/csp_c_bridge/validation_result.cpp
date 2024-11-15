@@ -8,7 +8,7 @@
 namespace core {
 
 ValidationResult::ValidationResult(const core::RawSignature &raw_signature,
-                         const std::string &path) {
+                                   const std::string &path) {
   // create CPodParams
   pdfcsp::c_bridge::CPodParam params{};
   // Put the byteranges into the flat memory.
@@ -159,7 +159,8 @@ QJsonObject ValidationResult::toJson() const {
   QJsonObject res;
   res["signature"] = signature;
   // signers sertificate chain
-  const QJsonDocument json_chain = QJsonDocument::fromJson(cert_chain_json.toUtf8());
+  const QJsonDocument json_chain =
+      QJsonDocument::fromJson(cert_chain_json.toUtf8());
   if (json_chain.isNull()) {
     qDebug() << "Failed to create JSON doc.";
   } else {
@@ -167,7 +168,8 @@ QJsonObject ValidationResult::toJson() const {
   }
   // TSP stamp
   if (cades_type >= pdfcsp::csp::CadesType::kCadesT) {
-    const QJsonDocument tsp_info = QJsonDocument::fromJson(tsp_info_json.toUtf8());
+    const QJsonDocument tsp_info =
+        QJsonDocument::fromJson(tsp_info_json.toUtf8());
     if (!tsp_info.isArray()) {
       qDebug() << "Failed to parse JSON TSP info";
     } else {
@@ -184,13 +186,13 @@ QJsonObject ValidationResult::toJson() const {
     }
   }
 
-  if (sig_curr_index){
-      res["current_index"]=static_cast<qint64>(sig_curr_index.value());
+  if (sig_curr_index) {
+    res["current_index"] = static_cast<qint64>(sig_curr_index.value());
   }
 
   // byterange analasys results
-  res["full_coverage"]=full_coverage;
-  res["can_be_casted_to_full_coverage"]=can_be_casted_to_full_coverage;
+  res["full_coverage"] = full_coverage;
+  res["can_be_casted_to_full_coverage"] = can_be_casted_to_full_coverage;
   return res;
 }
 

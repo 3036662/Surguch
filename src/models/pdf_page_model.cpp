@@ -1,7 +1,7 @@
 #include "pdf_page_model.hpp"
 #include "core/signature_processor.hpp"
-#include <QThread>
 #include <QFile>
+#include <QThread>
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
 
@@ -28,7 +28,7 @@ PdfPageModel::~PdfPageModel() {
     fz_drop_context(fzctx_);
   }
   file_source_.clear(); // drop current source to allow deletion
-  processFileDelete(); //delete temp files
+  processFileDelete();  // delete temp files
 }
 
 QVariant PdfPageModel::headerData(int /*section*/,
@@ -61,7 +61,7 @@ QVariant PdfPageModel::data(const QModelIndex &index, int role) const {
   return {};
 }
 
-void PdfPageModel::setSource(const QString &path) {    
+void PdfPageModel::setSource(const QString &path) {
   fz_drop_document(fzctx_, fzdoc_);
   fz_drop_context(fzctx_);
   file_source_.clear();
@@ -104,9 +104,7 @@ void PdfPageModel::setSource(const QString &path) {
   }
 }
 
-Q_INVOKABLE QString PdfPageModel::getSource() const{
-    return file_source_;
-};
+Q_INVOKABLE QString PdfPageModel::getSource() const { return file_source_; };
 
 fz_document *PdfPageModel::getDoc() const { return fzdoc_; }
 
@@ -138,60 +136,65 @@ void PdfPageModel::processSignatures() {
   qWarning() << "signatures found " << signatures.size();
 }
 
-void PdfPageModel::processFileDelete(){
-    if (!process_file_delete_){return;}
-    std::vector<QString> resulting_queue;
-    for (const auto& path:tmp_files_to_delete_){
-        // don't delete curr source
-        if (path ==file_source_){
-            resulting_queue.push_back(path);
-            continue;
-        }
-        QFile file(path);
-        if (!file.exists()){
-            qWarning()<<"file "<<path<<" does not exist";
-            continue;
-        }
-        if (!file.remove()){
-            qWarning()<< "Failed to remove file:"<<path;
-            resulting_queue.push_back(path);
-        }
+void PdfPageModel::processFileDelete() {
+  if (!process_file_delete_) {
+    return;
+  }
+  std::vector<QString> resulting_queue;
+  for (const auto &path : tmp_files_to_delete_) {
+    // don't delete curr source
+    if (path == file_source_) {
+      resulting_queue.push_back(path);
+      continue;
     }
-    tmp_files_to_delete_=std::move(resulting_queue);
+    QFile file(path);
+    if (!file.exists()) {
+      qWarning() << "file " << path << " does not exist";
+      continue;
+    }
+    if (!file.remove()) {
+      qWarning() << "Failed to remove file:" << path;
+      resulting_queue.push_back(path);
+    }
+  }
+  tmp_files_to_delete_ = std::move(resulting_queue);
 }
 
-Q_INVOKABLE void PdfPageModel::deleteFileLater(QString path){
-    if (!process_file_delete_){return;}    
-    tmp_files_to_delete_.emplace_back(std::move(path));
+Q_INVOKABLE void PdfPageModel::deleteFileLater(QString path) {
+  if (!process_file_delete_) {
+    return;
+  }
+  tmp_files_to_delete_.emplace_back(std::move(path));
 }
 
-Q_INVOKABLE bool PdfPageModel::saveCurrSourceTo(QString path,bool delete_curr_source){
-    const QString prefix = "file://";
-    QString dest_path;
-    if (path.startsWith(prefix)) {
-      dest_path = path.mid(prefix.length());
-    } else {
-      dest_path = path;
-    }
-    QFile src_file(file_source_);
-    if (!src_file.exists()){
-        qWarning()<<"[SaveCurrSourceTo] source file does not exist";
-        return false;
-    }
-    QFile dest_file(dest_path);
-    if (dest_file.exists()){
-        dest_file.remove();
-    }
+Q_INVOKABLE bool PdfPageModel::saveCurrSourceTo(QString path,
+                                                bool delete_curr_source) {
+  const QString prefix = "file://";
+  QString dest_path;
+  if (path.startsWith(prefix)) {
+    dest_path = path.mid(prefix.length());
+  } else {
+    dest_path = path;
+  }
+  QFile src_file(file_source_);
+  if (!src_file.exists()) {
+    qWarning() << "[SaveCurrSourceTo] source file does not exist";
+    return false;
+  }
+  QFile dest_file(dest_path);
+  if (dest_file.exists()) {
+    dest_file.remove();
+  }
 
-    if (!src_file.copy(dest_path)){
-        qWarning()<< "Failed to copy file to "<<dest_path;
-        return false;
-    }
-    // Put the current source in the queue of files that should be deleted.
-    if (delete_curr_source){
-        tmp_files_to_delete_.emplace_back(file_source_);
-    }
-    return true;
+  if (!src_file.copy(dest_path)) {
+    qWarning() << "Failed to copy file to " << dest_path;
+    return false;
+  }
+  // Put the current source in the queue of files that should be deleted.
+  if (delete_curr_source) {
+    tmp_files_to_delete_.emplace_back(file_source_);
+  }
+  return true;
 }
 
 // NOLINTEND(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)

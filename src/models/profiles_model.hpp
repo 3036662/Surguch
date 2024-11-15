@@ -46,7 +46,8 @@ private:
   /// @brief readUserCerts, read certificates for current uset from CryptoApi
   void readUserCerts();
 
-  QString saveLogoImage(const QString &path, const QString &dest_name,const QString& old_logo_path);
+  QString saveLogoImage(const QString &path, const QString &dest_name,
+                        const QString &old_logo_path);
 
   bool deleteLogoImage(const QString &path);
 
@@ -56,7 +57,6 @@ private:
   QJsonArray user_certs_;
   QString config_path_;
   QString profiles_file_name_;
-
 };
 
 #endif // PROFILES_MODEL_HPP

@@ -7,8 +7,7 @@
 #include <QStandardPaths>
 
 ProfilesModel::ProfilesModel(QObject *parent)
-    : QAbstractListModel(parent),create_profile_title_{tr("CreateProfile")}
-{
+    : QAbstractListModel(parent), create_profile_title_{tr("CreateProfile")} {
   role_names_[TitleRole] = "title";
   role_names_[ValueRole] = "value";
   readProfiles();
@@ -166,12 +165,12 @@ Q_INVOKABLE bool ProfilesModel::saveProfile(QString profile_json) {
                                        return val.toObject().value("id") ==
                                               profile_object.value("id");
                                      });
-    if (it_old_value != profiles_.cend()) {  
-      QJsonObject old_profile=it_old_value->toObject();
-      if (old_profile.contains("logo_path")){
-          old_logo_path=old_profile.value("logo_path").toString();
+    if (it_old_value != profiles_.cend()) {
+      QJsonObject old_profile = it_old_value->toObject();
+      if (old_profile.contains("logo_path")) {
+        old_logo_path = old_profile.value("logo_path").toString();
       }
-      profiles_.erase(it_old_value);        
+      profiles_.erase(it_old_value);
     }
   }
   // copy the image
@@ -179,7 +178,8 @@ Q_INVOKABLE bool ProfilesModel::saveProfile(QString profile_json) {
   const QString dest_name =
       "profile_" + QString::number(profile_object.value("id").toInt()) +
       "_logo";
-  const QString copy_result_name = saveLogoImage(img_path, dest_name,old_logo_path);
+  const QString copy_result_name =
+      saveLogoImage(img_path, dest_name, old_logo_path);
   profile_object.insert("logo_path", copy_result_name);
   // if new profile will be used as default, disable default use for other
   // profiles
@@ -217,7 +217,8 @@ Q_INVOKABLE bool ProfilesModel::saveProfile(QString profile_json) {
 }
 
 QString ProfilesModel::saveLogoImage(const QString &path,
-                                     const QString &dest_name,const QString& old_logo_path) {
+                                     const QString &dest_name,
+                                     const QString &old_logo_path) {
   if (path.isEmpty()) {
     return {};
   }
@@ -252,10 +253,10 @@ QString ProfilesModel::saveLogoImage(const QString &path,
   QString dest =
       config_path_ + "/" + dest_name + "." + src_file_info.completeSuffix();
   // delete old logo
-  if (dest!=old_logo_path && old_logo_path!=file_path){
+  if (dest != old_logo_path && old_logo_path != file_path) {
     QFile old_logo_file(old_logo_path);
-    if (old_logo_file.exists()){
-        old_logo_file.remove();
+    if (old_logo_file.exists()) {
+      old_logo_file.remove();
     }
   }
   QFile dest_file(dest);
@@ -296,7 +297,7 @@ bool ProfilesModel::deleteProfile(int id_profile) {
       profile_title = profiles_[i].toObject().value("title").toString();
       deleteLogoImage(profiles_[i].toObject().value("logo_path").toString());
     } else if (profiles_[i].toObject().value("title").toString() !=
-              create_profile_title_) {
+               create_profile_title_) {
       profiles_new.append(profiles_[i]);
     }
   }
@@ -328,6 +329,4 @@ bool ProfilesModel::deleteLogoImage(const QString &path) {
   return true;
 }
 
-QString ProfilesModel::getConfigPath() const{
-    return config_path_;
-}
+QString ProfilesModel::getConfigPath() const { return config_path_; }

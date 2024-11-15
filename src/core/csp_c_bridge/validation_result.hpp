@@ -12,7 +12,8 @@ namespace core {
 
 struct ValidationResult {
 public:
-  ValidationResult(const core::RawSignature &raw_signature, const std::string &path);
+  ValidationResult(const core::RawSignature &raw_signature,
+                   const std::string &path);
 
   QJsonObject toJson() const;
 
@@ -43,9 +44,9 @@ public:
   time_t cert_not_before = 0;
   time_t cert_not_after = 0;
 
-  //byterange analasys results
-  bool full_coverage=false;
-  bool can_be_casted_to_full_coverage=false;
+  // byterange analasys results
+  bool full_coverage = false;
+  bool can_be_casted_to_full_coverage = false;
   std::optional<size_t> sig_curr_index;
   RangesVector byteranges;
   QString file_path;
