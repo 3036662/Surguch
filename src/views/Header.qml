@@ -170,15 +170,15 @@ RowLayout {
         }
     }
 
-    ToolButton {
-        flat: true
-        display: AbstractButton.IconOnly
-        icon.source: "qrc:/icons/bell.svg"
-        icon.width: 30
-        icon.height: 30
-        leftPadding: 10
-        rightPadding: 10
-    }
+    // ToolButton {
+    //     flat: true
+    //     display: AbstractButton.IconOnly
+    //     icon.source: "qrc:/icons/bell.svg"
+    //     icon.width: 30
+    //     icon.height: 30
+    //     leftPadding: 10
+    //     rightPadding: 10
+    // }
 
 
     Keys.onPressed: event => {
