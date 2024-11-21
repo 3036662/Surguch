@@ -1,7 +1,7 @@
 find_package(Qt6 6.5 REQUIRED COMPONENTS Quick REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Svg REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Widgets REQUIRED)
-#find_package(Qt6 REQUIRED COMPONENTS Pdf REQUIRED)
+
 
 if (NOT DEFINED TRANSLATION_DIR)
     set(TRANSLATION_DIR ${CMAKE_BINARY_DIR}/src/)
@@ -9,7 +9,6 @@ endif()
 message(TRANSLATION_DIR=${TRANSLATION_DIR})
 
 set(CMAKE_AUTORCC ON)
-
 
 qt_add_executable(appgui_pdf_csp
     main.cpp
@@ -23,15 +22,29 @@ add_compile_definitions(TRANSLATION_DIR="${TRANSLATION_DIR}")
 #target_compile_options(appgui_pdf_csp PRIVATE -fsanitize=memory)
 #target_link_libraries(appgui_pdf_csp PRIVATE -fsanitize=memory)
 
+IF(NOT DEFINED MUPDF_INCLUDE_DIR)
+    SET (MUPDF_INCLUDE_DIR /usr/include/)
+ENDIF()
 
-SET (MUPDF_INCLUDE_DIR /home/oleg/dev/mupdf/include/)
-SET (MUPDF_LINK_PATH /home/oleg/dev/mupdf/build/shared-release/libmupdf.so.25.0)
-#SET (MUPDF_LINK_PATH /home/oleg/dev/mupdf/build/shared-debug/libmupdf.so.25.0)
+IF(NOT DEFINED MUPDF_LINK_PATH)
+    SET (MUPDF_LINK_PATH mupdf)
+ENDIF()
 
-SET (PDFCSP_LINK_PATH /home/oleg/dev/eSign/csp_pdf/build/c_bridge/libcsp_c_bridge.so)
-SET (PDFCSP_PDF_LINK_PATH /home/oleg/dev/eSign/csp_pdf/build/pdf/libcsppdf.so)
-SET (PDFCSP_INCLUDE_DIR /home/oleg/dev/eSign/csp_pdf/)
-SET (PDFCSP_PDF_INCLUDE_DIR /home/oleg/dev/eSign/csp_pdf/pdf)
+IF(NOT DEFINED PDFCSP_LINK_PATH)
+    SET (PDFCSP_LINK_PATH csp_c_bridge)
+ENDIF()
+
+IF (NOT DEFINED PDFCSP_PDF_LINK_PATH)
+    SET (PDFCSP_PDF_LINK_PATH csppdf)
+ENDIF()
+
+IF (NOT DEFINED PDFCSP_INCLUDE_DIR)
+    SET (PDFCSP_INCLUDE_DIR /usr/include/pdfcsp/)
+ENDIF()
+
+IF (NOT DEFINED PDFCSP_PDF_INCLUDE_DIR)
+    SET (PDFCSP_PDF_INCLUDE_DIR /usr/include/pdfcsp/)
+ENDIF()
 
 
 
