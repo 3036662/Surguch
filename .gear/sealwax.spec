@@ -1,0 +1,39 @@
+Name: sealwax
+Version: 0.1
+Release: alt1
+License: GPL-3.0-or-later
+
+Summary: Verification and creation of digitally signed pdf documents.
+
+Source:  %name-%version.tar
+
+Group: Office
+
+BuildRequires: gcc-c++ cmake ninja-build
+BuildRequires: libaltcsp-devel libcsppdf-devel
+BuildRequires: libmupdf-devel
+BuildRequires:  qt6-base-devel qt6-declarative-devel rpm-macros-qt6 qt6-declarative qt6-svg-devel qt6-svg qt6-tools
+
+Requires: qt6-svg qt6-declarative
+
+%description
+A gui application for verification and creation of digitally signed pdf documents.
+
+%prep
+%setup
+
+%build
+%cmake -DCMAKE_BUILD_TYPE=Release -G Ninja
+%cmake_build
+
+%install
+%cmake_install
+
+%files
+%_bindir/appgui_pdf_csp
+
+
+%changelog
+* Thu Nov 21 2024 Oleg Proskurin <proskur@altlinux.org> 0.1-alt1
+- Initial build
+

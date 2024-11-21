@@ -21,5 +21,6 @@
         <file>icons/medal-ribbon-green.svg</file>
         <file>icons/medal-ribbon.svg</file>
         <file>icons/close_icon.svg</file>
+        <file>translations/ru_RU.qm</file>
     </qresource>
 </RCC>

@@ -30,5 +30,5 @@ target_link_libraries(appcore
      PRIVATE ${PDFCSP_PDF_LINK_PATH}
 )
 
-target_link_libraries(appcore PUBLIC csp_c_bridge)
+target_link_libraries(appcore PUBLIC csp_c_bridge_qt)
 target_link_libraries(appcore PRIVATE Qt6::Core)

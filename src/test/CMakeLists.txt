@@ -29,7 +29,7 @@ target_include_directories(test1 PUBLIC
 target_link_libraries(test1 PRIVATE Qt::Test)
 target_link_libraries(test1  PRIVATE appcore)
 target_link_libraries(test1  PRIVATE models)
-target_link_libraries(test1  PRIVATE csp_c_bridge)
+target_link_libraries(test1  PRIVATE csp_c_bridge_qt)
 
 target_link_libraries(test1
      PRIVATE ${PDFCSP_LINK_PATH}

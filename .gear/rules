@@ -1,0 +1,2 @@
+spec: .gear/sealwax.spec
+tar: . name=@name@-@version@

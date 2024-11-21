@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/gui_pdf_csp">
+        <file>CertInfo.qml</file>
+        <file>EditProfile.qml</file>
+        <file>Header.qml</file>
+        <file>HeaderSubBar.qml</file>
+        <file>HeaderToolSeparator.qml</file>
+        <file>LeftSideBar.qml</file>
+        <file>Main.qml</file>
+        <file>PdfListView.qml</file>
+        <file>PreviewListView.qml</file>
+        <file>RightSBHorizontalDelimiter.qml</file>
+        <file>RightSideBar.qml</file>
+        <file>RightSideBarCertChain.qml</file>
+        <file>RSBCloseButton.qml</file>
+        <file>RSBComboSelect.qml</file>
+        <file>RSBSigInfo.qml</file>
+        <file>RSBSwitch.qml</file>
+        <file>RSBTextArea.qml</file>
+        <file>RSideBarStatusMedal.qml</file>
+        <file>SignaturesList.qml</file>
+        <file>TextPair.qml</file>
+        <file>TextPairBool.qml</file>
+        <file>TextPairStatus.qml</file>
+        <file>TopBarButton.qml</file>
+    </qresource>
+</RCC>

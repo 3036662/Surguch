@@ -3,6 +3,7 @@
 
 #include "sign_worker.hpp"
 #include <QObject>
+#include <QVariant>
 
 namespace core {
 

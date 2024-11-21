@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
   QTranslator translator;
   QString locale = QLocale::system().name();
   QApplication app(argc, argv);
-  const QString translation_path = QString(TRANSLATION_DIR) + locale + ".qm";
+  const QString translation_path = ":/translations/" + locale + ".qm";
   if (!translator.load(translation_path)) {
     qWarning("Load translations failed");
   } else {
@@ -39,12 +39,19 @@ int main(int argc, char *argv[]) {
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
-  engine.loadFromModule("gui_pdf_csp", "Main");
 
-  // QDirIterator it(":", QDirIterator::Subdirectories);
-  // while (it.hasNext()) {
-  //     qWarning() << it.next();
-  // }
+  #if QT_LOAD_FROM_MODULE==1
+      engine.loadFromModule("gui_pdf_csp", "Main");
+      engine.addImportPath("qrc:/modules");
 
+  #else
+      const QUrl url("qrc:/gui_pdf_csp/Main.qml");
+      engine.load(url);
+  #endif
+
+   // QDirIterator it(":", QDirIterator::Subdirectories);
+   // while (it.hasNext()) {
+   //     qWarning() << it.next();
+   // }
   return QApplication::exec();
 }
