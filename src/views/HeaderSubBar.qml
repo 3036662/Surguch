@@ -245,7 +245,7 @@ ColumnLayout {
                 currentIndex: 0
                 implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
                 anchors.verticalCenter: parent.verticalCenter
-                popup.y:profileComboBox.height
+                popup.y:comboBoxZoom.height
             }
             Rectangle {
                 width: 10
