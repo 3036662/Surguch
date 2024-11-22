@@ -30,7 +30,7 @@ A gui application for verification and creation of digitally signed pdf document
 %cmake_install
 
 %files
-%_bindir/appgui_pdf_csp
+%_bindir/sealwax
 
 
 %changelog
