@@ -37,7 +37,7 @@ Item {
     Layout.minimumWidth: 200
     Layout.fillHeight: true
     Layout.fillWidth: true
-    Layout.horizontalStretchFactor: 1
+    //Layout.horizontalStretchFactor: 1
 
     Rectangle {
         anchors.fill: parent

@@ -138,7 +138,7 @@ ListView {
 
     spacing: 30
     flickableDirection: Flickable.HorizontalAndVerticalFlick
-    Layout.horizontalStretchFactor: 4
+    //Layout.horizontalStretchFactor: 4
     clip: true
 
     onPageWidthChanged: {

@@ -309,8 +309,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="+128"/>
-        <location filename="../../src/views/Main.qml" line="+128"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="+129"/>
+        <location filename="../../src/views/Main.qml" line="+129"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
@@ -392,8 +392,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="-255"/>
-        <location filename="../../src/views/Main.qml" line="-255"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="-256"/>
+        <location filename="../../src/views/Main.qml" line="-256"/>
         <source>SealWax</source>
         <translation></translation>
     </message>

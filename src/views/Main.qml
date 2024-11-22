@@ -47,6 +47,7 @@ ApplicationWindow {
         }
         PdfListView {
             id: pdfListView
+            Layout.preferredWidth: root_window.width-500;
         }
 
         RightSideBar {
