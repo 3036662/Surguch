@@ -8,16 +8,24 @@ Flickable {
     leftMargin: 10
     rightMargin: 10
 
-    RSBCloseButton {}
+
+
 
     Column {
         width: parent.width
 
+        Item{
+            width:parent.width
+            height:40
+            RSBCloseButton {}
+        }
+
         Text {
             text: qsTr("Signature")
             font.weight: Font.DemiBold
-            topPadding: 10
+
         }
+
 
         //////////////////////////////////////
         // signature

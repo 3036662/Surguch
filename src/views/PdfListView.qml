@@ -333,7 +333,8 @@ ListView {
     }
 
     ScrollBar.vertical: ScrollBar {
-        width: 30
-        policy: ScrollBar.AlwaysOn // Show scrollbar always
+        width: 15
+        minimumSize:0.2
+        policy:  ScrollBar.AsNeeded// Show scrollbar always
     }
 }

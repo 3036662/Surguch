@@ -24,7 +24,7 @@ Item {
             //console.warn(data);
             jsonData = JSON.parse(data)
             showState = RightSideBar.ShowState.SigInfo
-            sigInfoPanel.contentY=10;
+            sigInfoPanel.contentY=0;
 
         } catch (e) {
             console.error("Error parsing JSON" + e.message)

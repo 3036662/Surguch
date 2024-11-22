@@ -222,46 +222,40 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+36"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+15"/>
-        <location filename="../../build_manual/src/gui_pdf_csp/views/Header.qml" line="+15"/>
         <location filename="../../src/views/Header.qml" line="+36"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+5"/>
-        <location filename="../../build_manual/src/gui_pdf_csp/views/Header.qml" line="+5"/>
-        <location filename="../../src/views/Header.qml" line="+6"/>
+        <location filename="../../src/views/Header.qml" line="+7"/>
         <source>Show in folder</source>
         <translation>Открыть папку с файлом</translation>
     </message>
     <message>
         <location line="+7"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+4"/>
-        <location filename="../../build_manual/src/gui_pdf_csp/views/Header.qml" line="+4"/>
         <location filename="../../src/views/Header.qml" line="+7"/>
         <source>Save as ...</source>
         <translation>Сохранить как ...</translation>
     </message>
     <message>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+4"/>
-        <location filename="../../build_manual/src/gui_pdf_csp/views/Header.qml" line="+4"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+39"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+35"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+27"/>
-        <location filename="../../build_manual/src/gui_pdf_csp/views/Header.qml" line="+27"/>
-        <location filename="../../src/views/Header.qml" line="+39"/>
+        <location filename="../../src/views/Header.qml" line="+35"/>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>
     <message>
-        <location line="+65"/>
+        <location line="+75"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+12"/>
-        <location filename="../../build_manual/src/gui_pdf_csp/views/Header.qml" line="+12"/>
-        <location filename="../../src/views/Header.qml" line="+65"/>
+        <location filename="../../src/views/Header.qml" line="+75"/>
         <source>Sign</source>
         <translation>Подписать</translation>
     </message>
@@ -271,22 +265,19 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+145"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+86"/>
-        <location filename="../../build_manual/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+146"/>
         <location filename="../../src/views/HeaderSubBar.qml" line="+145"/>
         <source> of </source>
         <translation> из </translation>
     </message>
     <message>
-        <location line="+97"/>
+        <location line="+99"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+63"/>
-        <location filename="../../build_manual/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+97"/>
-        <location filename="../../src/views/HeaderSubBar.qml" line="+97"/>
+        <location filename="../../src/views/HeaderSubBar.qml" line="+99"/>
         <source>Automatic</source>
         <translation>Авто</translation>
     </message>
     <message>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+20"/>
-        <location filename="../../build_manual/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+21"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
@@ -295,7 +286,6 @@
     <name>LeftSideBar</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+71"/>
-        <location filename="../../build_manual/src/gui_pdf_csp/views/LeftSideBar.qml" line="+55"/>
         <location filename="../../src/views/LeftSideBar.qml" line="+71"/>
         <source>No signatures</source>
         <translation>Подписи отсутствуют</translation>
@@ -303,11 +293,6 @@
 </context>
 <context>
     <name>Main</name>
-    <message>
-        <location filename="../../build_manual/src/gui_pdf_csp/views/Main.qml" line="+11"/>
-        <source>PDF CSP</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="+129"/>
         <location filename="../../src/views/Main.qml" line="+129"/>
@@ -469,15 +454,15 @@
 <context>
     <name>RSBSigInfo</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+17"/>
-        <location filename="../../src/views/RSBSigInfo.qml" line="+17"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+24"/>
+        <location filename="../../src/views/RSBSigInfo.qml" line="+24"/>
         <source>Signature</source>
         <translation>Электронная подпись</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <location line="+72"/>
-        <location filename="../../src/views/RSBSigInfo.qml" line="+8"/>
+        <location filename="../../src/views/RSBSigInfo.qml" line="+9"/>
         <location line="+72"/>
         <source>Status</source>
         <translation>Статус</translation>
@@ -615,7 +600,6 @@
     <name>SignaturesList</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/SignaturesList.qml" line="+49"/>
-        <location filename="../../build_manual/src/gui_pdf_csp/views/SignaturesList.qml" line="+43"/>
         <location filename="../../src/views/SignaturesList.qml" line="+49"/>
         <source>Unsigned (empty)</source>
         <translation>Неподписанная (пустая)</translation>
