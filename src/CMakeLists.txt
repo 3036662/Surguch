@@ -167,6 +167,10 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     add_subdirectory(test)
 endif()
 
+if (NOT DEFINED SHARE_INSTALL_PREFIX)
+	SET (SHARE_INSTALL_PREFIX /usr/share)
+endif()	
+
 
 install(TARGETS  sealwax RUNTIME)
-
+install(FILES sealwax.desktop DESTINATION ${SHARE_INSTALL_PREFIX}/applications PERMISSIONS WORLD_READ WORLD_EXECUTE)

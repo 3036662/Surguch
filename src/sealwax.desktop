@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Sealwax
+GenericName=PDF Reader with electroinc signatures support
+MimeType=application/pdf
+Exec=sealwax
+Terminal=false
+Keywords=pdf;csp;crypto;sign
+Categories=Utility;
