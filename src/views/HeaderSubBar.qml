@@ -214,6 +214,8 @@ ColumnLayout {
             ComboBox {
                 id: comboBoxZoom
 
+
+
                 onCurrentIndexChanged: {
                     let newZoom = 0
                     switch (currentIndex) {
@@ -243,6 +245,7 @@ ColumnLayout {
                 currentIndex: 0
                 implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
                 anchors.verticalCenter: parent.verticalCenter
+                popup.y:profileComboBox.height
             }
             Rectangle {
                 width: 10

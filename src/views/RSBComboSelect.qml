@@ -11,6 +11,8 @@ ComboBox {
     valueRole: ""
     wheelEnabled: false
 
+    popup.y:control.height
+
     onActivated: {
         displayText = model[currentIndex].title
         control.item_selected = true
@@ -24,7 +26,8 @@ ComboBox {
 
         width: control.width
         contentItem: Text {
-            text: delegate.model[control.textRole]
+            //text: delegate.model[control.textRole]
+            text:  control.model[index][control.textRole]
             font: control.font
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
@@ -33,7 +36,7 @@ ComboBox {
     }
 
     contentItem: Text {
-        leftPadding: 0
+        leftPadding: 5
         rightPadding: control.indicator.width + control.spacing
         text: control.displayText
         font: control.font

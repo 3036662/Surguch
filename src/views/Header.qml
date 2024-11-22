@@ -35,6 +35,7 @@ RowLayout {
             icon.source: "qrc:/icons/file_plus.svg"
             text: qsTr("Open")
             onClicked: fileDialog.open()
+            width: 130
         }
 
         TopBarButton {
@@ -79,15 +80,21 @@ RowLayout {
             }
 
             ComboBox {
-                Layout.alignment: Qt.AlignVCenter
                 id: profileComboBox
+
+                property string defaultText: qsTr("Profile")
+
                 model: profilesModel
                 textRole: "title"
-                valueRole: "value"
-                displayText: defaultText
-                property string defaultText: qsTr("Profile")
+                valueRole: "value"                
+                displayText: defaultText                
                 implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
+                popup.y:profileComboBox.height
+
                 anchors.verticalCenter: parent.verticalCenter
+                Layout.alignment: Qt.AlignVCenter
+
+
                 onActivated: {
                     profileComboBox.displayText = profileComboBox.textAt(
                                 currentIndex)
