@@ -120,7 +120,7 @@ void SignaturesListModel::saveValidationResult(
 
 void SignaturesListModel::recoverDoc(qint64 sig_index) {
   const char *const expl = "[SignaturesListModel] recover doc failed";
-  if (validation_results_.count(sig_index)==0 ||
+  if (validation_results_.count(sig_index) == 0 ||
       !validation_results_.at(sig_index)->can_be_casted_to_full_coverage) {
     qWarning() << expl;
     return;

@@ -1,7 +1,10 @@
 #include "pdf_page_model.hpp"
 #include "core/signature_processor.hpp"
 #include <QFile>
+#include <QFileInfo>
 #include <QThread>
+#include <QUrl>
+
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
 
@@ -72,16 +75,18 @@ void PdfPageModel::setSource(const QString &path) {
     fz_register_document_handlers(fzctx_);
   }
   fz_catch(fzctx_) { fz_report_error(fzctx_); }
-  const QString prefix = "file://";
-  QString file_path;
-  if (path.startsWith(prefix)) {
-    file_path = path.mid(prefix.length());
-  } else {
-    file_path = path;
+
+  const QString file_path = QUrl(path).toString(QUrl::PreferLocalFile);
+  const QFile finfo(file_path);
+  const std::string local_path_std = file_path.toStdString();
+  if (!finfo.exists()) {
+    qWarning() << "[PdfPageModel::setSource] file does not exist" << file_path;
+    return;
   }
+
   fz_try(fzctx_) {
     // open the pdf file
-    fzdoc_ = fz_open_document(fzctx_, file_path.toStdString().c_str());
+    fzdoc_ = fz_open_document(fzctx_, local_path_std.c_str());
     if (fzdoc_ == nullptr) {
       qWarning("Can't open file");
     }
@@ -169,13 +174,7 @@ Q_INVOKABLE void PdfPageModel::deleteFileLater(QString path) {
 
 Q_INVOKABLE bool PdfPageModel::saveCurrSourceTo(QString path,
                                                 bool delete_curr_source) {
-  const QString prefix = "file://";
-  QString dest_path;
-  if (path.startsWith(prefix)) {
-    dest_path = path.mid(prefix.length());
-  } else {
-    dest_path = path;
-  }
+  const QString dest_path = QUrl(path).toString(QUrl::PreferLocalFile);
   QFile src_file(file_source_);
   if (!src_file.exists()) {
     qWarning() << "[SaveCurrSourceTo] source file does not exist";

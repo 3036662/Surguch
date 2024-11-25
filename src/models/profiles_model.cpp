@@ -222,13 +222,7 @@ QString ProfilesModel::saveLogoImage(const QString &path,
   if (path.isEmpty()) {
     return {};
   }
-  const QString prefix = "file://";
-  QString file_path;
-  if (path.startsWith(prefix)) {
-    file_path = path.mid(prefix.length());
-  } else {
-    file_path = path;
-  }
+  QString file_path = QUrl(path).toString(QUrl::PreferLocalFile);
   const QFileInfo src_file_info(file_path);
   if (!src_file_info.exists() || !src_file_info.isFile()) {
     qWarning()
