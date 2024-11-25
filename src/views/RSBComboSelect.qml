@@ -10,6 +10,7 @@ ComboBox {
     textRole: ""
     valueRole: ""
     wheelEnabled: false
+    font.family: "Noto Sans"
 
     popup.y:control.height
 

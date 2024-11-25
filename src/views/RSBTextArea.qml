@@ -11,4 +11,5 @@ TextArea {
     wrapMode: Text.WordWrap
     placeholderText: qsTr("Placeholder text")
     placeholderTextColor: "grey"
+    font.family: "Noto Sans"
 }

@@ -84,11 +84,12 @@ RowLayout {
 
                 property string defaultText: qsTr("Profile")
 
+                font.family: "Noto Sans"
                 model: profilesModel
                 textRole: "title"
                 valueRole: "value"                
                 displayText: defaultText                
-                implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
+                implicitContentWidthPolicy: ComboBox.WidestText
                 popup.y:profileComboBox.height
 
                 anchors.verticalCenter: parent.verticalCenter

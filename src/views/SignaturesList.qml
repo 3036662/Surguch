@@ -42,6 +42,7 @@ ListView {
                     wrapMode: Text.WordWrap
                     maximumLineCount: 3
                     font.pointSize: text.length > 40 ? 5 : 10
+                    font.family: "Noto Sans"
                 }
                 Text {
                     visible: model.empty
@@ -49,6 +50,7 @@ ListView {
                     text: qsTr("Unsigned (empty)")
                     topPadding: 5
                     font.pointSize: sigTitle.font.pointSize / 1.5
+                    font.family: "Noto Sans"
                 }
             }
             Item {

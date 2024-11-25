@@ -11,6 +11,7 @@ Column {
 
     Text{
         text:keyText
+        font.family: "Noto Sans"
     }
     TextArea{
         background: Rectangle {
@@ -24,6 +25,7 @@ Column {
         //maximumLineCount: 5
         text:value
         color: "grey"
+        font.family: "Noto Sans"
     }
 
 }

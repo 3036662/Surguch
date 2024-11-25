@@ -326,6 +326,7 @@ ListView {
                         anchors.horizontalCenter: parent.horizontalCenter
                         text: cross.valid_position ? cross.defaultText : cross.invalidPositionText
                         color: cross.valid_position ? "blue" : "red"
+                        font.family: "Noto Sans"
                     }
                 }
             }

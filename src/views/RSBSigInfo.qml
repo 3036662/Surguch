@@ -23,6 +23,7 @@ Flickable {
         Text {
             text: qsTr("Signature")
             font.weight: Font.DemiBold
+            font.family: "Noto Sans"
 
         }
 
@@ -100,6 +101,7 @@ Flickable {
                     font.weight: Font.DemiBold
                     topPadding: 10
                     bottomPadding: 10
+                    font.family: "Noto Sans"
                 }
                 RSideBarStatusMedal {
                     title: qsTr("Status")
@@ -156,6 +158,7 @@ Flickable {
                     font.weight: Font.DemiBold
                     topPadding: 10
                     bottomPadding: 10
+                    font.family: "Noto Sans"
                 }
                 Repeater {
                     model: modelData.tbs_response_data.responses

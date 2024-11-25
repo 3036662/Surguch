@@ -13,11 +13,12 @@ Column {
         wrapMode:Text.WordWrap
         maximumLineCount:5
         width:200
+        font.family: "Noto Sans"
     }
     Text{
         text:value ? qsTr("Valid") : qsTr("Invalid")
         color: value ? "grey" : "red"
+        font.family: "Noto Sans"
     }
-
 
 }

@@ -46,6 +46,7 @@ ENDIF()
 
 
 #translations
+IF (NOT DEFINED SIBLING_DEPLOY) #dont update translation for every sibling
 add_custom_target(update_translations ALL
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMAND /usr/bin/lupdate-qt6 -recursive -locations relative . -ts resources/translations/ru_RU.ts
@@ -53,6 +54,7 @@ add_custom_target(update_translations ALL
     COMMENT "Update and compile translations"
     BYPRODUCTS ${CMAKE_SOURCE_DIR}/resources/translations/ru_RU.qm
 )
+ENDIF()
 
 
 
@@ -102,7 +104,9 @@ ELSE()
     )
 ENDIF()
 
+IF (NOT DEFINED SIBLING_DEPLOY)
 add_dependencies(sealwax update_translations)
+ENDIF()
 
 
 if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")

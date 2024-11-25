@@ -3,6 +3,7 @@ import QtQuick.Controls
 
 Switch {
     id: control
+    font.family: "Noto Sans"
 
     width: parent.width
 

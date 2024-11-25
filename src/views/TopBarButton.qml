@@ -12,4 +12,5 @@ ToolButton{
     rightPadding: 10
     topPadding: 10
     bottomPadding: 10
+    font.family: "Noto Sans"
 }

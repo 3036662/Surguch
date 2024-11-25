@@ -7,21 +7,31 @@ Item {
 
     property var cert
 
+    Rectangle {
+        anchors.fill: parent
+        color: "#fcfcfc"
+    }
+
     Flickable {
         width: parent.width
-        height: parent.height
+        height: parent.height    
+        topMargin: 10
+        anchors.horizontalCenter: parent.horizontalCenter
         contentHeight: content.height * 1.1
         flickableDirection: Flickable.VerticalFlick
+
         Column {
             id: content
-            width: parent.width - 100
+
+            width: parent.width - 20
+            anchors.horizontalCenter: parent.horizontalCenter
             spacing: 5
 
             TextPairBool {
                 width: parent.width
                 keyText: qsTr("Status")
                 value: root.cert !== undefined ? root.cert.trust_status : ""
-            }
+            }            
 
             TextPair {
                 width: parent.width

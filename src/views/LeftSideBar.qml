@@ -69,6 +69,7 @@ Item {
                 anchors.top: parent.top
                 topPadding: 20
                 text: qsTr("No signatures")
+                font.family: "Noto Sans"
             }
         }
     }

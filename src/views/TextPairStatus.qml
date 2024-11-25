@@ -7,8 +7,12 @@ Column {
 
     Text {
         text: keyText
+        font.family: "Noto Sans"
     }
     Text {
+        id: titleText
+
+        font.family: "Noto Sans"
         text: {
             if (value === "no_field") {
                 return qsTr("Field is absent")
@@ -39,6 +43,6 @@ Column {
             if (value === "bad") {
                 return "red"
             }
-        }
+        }    
     }
 }

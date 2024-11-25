@@ -123,6 +123,7 @@ ColumnLayout {
             maximumLength: 100
             Layout.preferredWidth: 50
             horizontalAlignment: TextInput.AlignHCenter
+            font.family: "Noto Sans"
 
             validator: IntValidator {
                 id: pageNumberInputValidator
@@ -144,6 +145,7 @@ ColumnLayout {
             property int currPage: 1
             text: currPage + qsTr(" of ") + pageCount
             anchors.margins: 10
+            font.family: "Noto Sans"
         }
 
         HeaderToolSeparator {}

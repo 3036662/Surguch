@@ -88,6 +88,7 @@ Flickable {
             font.weight: Font.DemiBold
             topPadding: 10
             bottomPadding: 10
+            font.family: "Noto Sans"
         }
 
         TextPair {
@@ -99,6 +100,7 @@ Flickable {
         Text {
             text: qsTr("Profile name")
             bottomPadding: 5
+            font.family: "Noto Sans"
         }
 
         RSBTextArea {
@@ -136,12 +138,14 @@ Flickable {
             font.weight: Font.DemiBold
             topPadding: 10
             bottomPadding: 10
+            font.family: "Noto Sans"
         }
 
         // certificate choice
         Text {
             text: qsTr("Certificate")
             bottomPadding: 5
+            font.family: "Noto Sans"
         }
 
         RSBComboSelect {
@@ -158,6 +162,7 @@ Flickable {
             topPadding: 5
             text: qsTr("Cades type")
             bottomPadding: 5
+            font.family: "Noto Sans"
         }
 
         RSBComboSelect {
@@ -180,6 +185,7 @@ Flickable {
             topPadding: 10
             text: qsTr("Stamp appearance")
             bottomPadding: 5
+            font.family: "Noto Sans"
         }
 
         RSBComboSelect {
@@ -198,6 +204,7 @@ Flickable {
             topPadding: 10
             text: qsTr("Company logo")
             bottomPadding: 5
+            font.family: "Noto Sans"
         }
 
         RSBTextArea {
@@ -224,6 +231,7 @@ Flickable {
                 topPadding: 10
                 text: qsTr("TSP server URL")
                 bottomPadding: 5
+                font.family: "Noto Sans"
             }
 
             RSBTextArea {
@@ -257,6 +265,7 @@ Flickable {
                 text: qsTr("Save profile")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
+                font.family: "Noto Sans"
 
                 onClicked: {
                     if (profileName.text === "") {
@@ -311,6 +320,7 @@ Flickable {
                 text: qsTr("Delete profile")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
+                font.family: "Noto Sans"
 
                 onClicked: {
                     deleteProfileButton.enabled = false
