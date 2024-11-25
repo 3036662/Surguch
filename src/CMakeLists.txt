@@ -15,10 +15,10 @@ set(CMAKE_AUTORCC ON)
 
 add_compile_definitions(TRANSLATION_DIR="${TRANSLATION_DIR}")
 
-#target_compile_options(sealwax PRIVATE -fsanitize=address)
-#target_link_libraries(sealwax PRIVATE -fsanitize=address)
-#target_compile_options(sealwax PRIVATE -fsanitize=memory)
-#target_link_libraries(sealwax PRIVATE -fsanitize=memory)
+#target_compile_options(surguch PRIVATE -fsanitize=address)
+#target_link_libraries(surguch PRIVATE -fsanitize=address)
+#target_compile_options(surguch PRIVATE -fsanitize=memory)
+#target_link_libraries(surguch PRIVATE -fsanitize=memory)
 
 IF(NOT DEFINED MUPDF_INCLUDE_DIR)
     SET (MUPDF_INCLUDE_DIR /usr/include/)
@@ -60,7 +60,7 @@ ENDIF()
 
 # QQmlApplicationEngine::loadFromModule since 6.5
 IF(${Qt6_VERSION_MINOR} VERSION_LESS 5 )
-    qt_add_executable(sealwax
+    qt_add_executable(surguch
         main.cpp
         cpp_views/pdf_page_render.hpp cpp_views/pdf_page_render.cpp
         ${CMAKE_SOURCE_DIR}/resources/resources.qrc
@@ -69,12 +69,12 @@ IF(${Qt6_VERSION_MINOR} VERSION_LESS 5 )
     add_definitions(-DQT_LOAD_FROM_MODULE=0)
 ELSE()
     add_definitions(-DQT_LOAD_FROM_MODULE=1)
-    qt_add_executable(sealwax
+    qt_add_executable(surguch
         main.cpp
         ${CMAKE_SOURCE_DIR}/resources/resources.qrc
     )
 
-    qt_add_qml_module(sealwax
+    qt_add_qml_module(surguch
         URI gui_pdf_csp
         VERSION 1.0
         QML_FILES views/Main.qml
@@ -105,7 +105,7 @@ ELSE()
 ENDIF()
 
 IF (NOT DEFINED SIBLING_DEPLOY)
-add_dependencies(sealwax update_translations)
+add_dependencies(surguch update_translations)
 ENDIF()
 
 
@@ -117,48 +117,48 @@ add_subdirectory(core)
 
 add_subdirectory(models)
 
-target_link_libraries(sealwax PRIVATE
+target_link_libraries(surguch PRIVATE
     appcore
 )
 
-target_link_libraries(sealwax PRIVATE
+target_link_libraries(surguch PRIVATE
     models
 )
 
-target_link_libraries(sealwax PRIVATE
+target_link_libraries(surguch PRIVATE
     csp_c_bridge_qt
 )
 
 
-target_link_libraries(sealwax
+target_link_libraries(surguch
     PRIVATE Qt6::Quick
 )
 
-target_link_libraries(sealwax
+target_link_libraries(surguch
     PRIVATE Qt6::Widgets
 )
 
-target_link_libraries(sealwax
+target_link_libraries(surguch
      PRIVATE Qt6::Svg
 )
 
-target_link_libraries(sealwax PRIVATE Qt6::Core)
+target_link_libraries(surguch PRIVATE Qt6::Core)
 
-target_include_directories(sealwax PUBLIC ${CMAKE_SOURCE_DIR}/src/)
+target_include_directories(surguch PUBLIC ${CMAKE_SOURCE_DIR}/src/)
 
 # harcoded mupdf linkage
-target_link_libraries(sealwax
+target_link_libraries(surguch
      PRIVATE ${MUPDF_LINK_PATH}
 )
-target_include_directories(sealwax PRIVATE ${MUPDF_INCLUDE_DIR})
+target_include_directories(surguch PRIVATE ${MUPDF_INCLUDE_DIR})
 
 # alt csp lib linkage
 # harcoded mupdf linkage
-target_link_libraries(sealwax
+target_link_libraries(surguch
      PRIVATE ${PDFCSP_LINK_PATH}
 )
 
-target_link_libraries(sealwax
+target_link_libraries(surguch
     PRIVATE ${PDFCSP_PDF_LINK_PATH}
 )
 
@@ -176,5 +176,5 @@ if (NOT DEFINED SHARE_INSTALL_PREFIX)
 endif()	
 
 
-install(TARGETS  sealwax RUNTIME)
-install(FILES sealwax.desktop DESTINATION ${SHARE_INSTALL_PREFIX}/applications PERMISSIONS WORLD_READ WORLD_EXECUTE)
+install(TARGETS  surguch RUNTIME)
+install(FILES surguch.desktop DESTINATION ${SHARE_INSTALL_PREFIX}/applications PERMISSIONS WORLD_READ WORLD_EXECUTE)

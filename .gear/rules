@@ -1,2 +1,2 @@
-spec: .gear/sealwax.spec
+spec: .gear/surguch.spec
 tar: . name=@name@-@version@

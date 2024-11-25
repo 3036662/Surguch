@@ -1,4 +1,4 @@
-Name: sealwax
+Name: surguch
 Version: 0.1
 Release: alt1
 License: GPL-3.0-or-later
@@ -30,8 +30,8 @@ A gui application for verification and creation of digitally signed pdf document
 %cmake_install
 
 %files
-%_bindir/sealwax
-%_datadir/applications/sealwax.desktop
+%_bindir/surguch
+%_datadir/applications/surguch.desktop
 
 %changelog
 * Thu Nov 21 2024 Oleg Proskurin <proskur@altlinux.org> 0.1-alt1

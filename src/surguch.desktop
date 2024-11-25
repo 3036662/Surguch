@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
-Name=Sealwax
+Name=Surguch
 GenericName=PDF Reader with electroinc signatures support
-MimeType=application/pdf
-Exec=sealwax
+MimeType=application/pdf;
+Exec=surguch
 Terminal=false
 Keywords=pdf;csp;crypto;sign
 Categories=Utility;

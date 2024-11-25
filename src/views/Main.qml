@@ -13,7 +13,7 @@ ApplicationWindow {
     width: 1000
     height: 480
     visible: true
-    title: qsTr("SealWax")
+    title: qsTr("Surguch")
 
 
     // --------------------------------------
