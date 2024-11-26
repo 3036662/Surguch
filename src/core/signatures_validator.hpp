@@ -40,9 +40,13 @@ public:
     size_t file_size = 0;
   };
 
-  explicit SignaturesValidator(QObject *parent = nullptr) : QObject{parent} {};
+  explicit SignaturesValidator(QObject *parent = nullptr) : QObject{parent} {
+    qWarning() << "sign worker construct " << this;
+  };
 
-  ~SignaturesValidator() override = default;
+  ~SignaturesValidator() override {
+    qWarning() << "sign worker delete " << this;
+  }
 
   void abort() { abort_recieved_ = true; };
 
@@ -57,6 +61,8 @@ signals:
 
   void validatationResult(std::shared_ptr<ValidationResult> validation_result,
                           size_t index);
+
+  void validationFailedForSignature(size_t index);
 
 private:
 #ifdef WITH_QTEST

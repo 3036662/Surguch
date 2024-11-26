@@ -64,45 +64,98 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
   beginResetModel();
   validation_results_.clear();
   raw_signatures_ = std::move(sigs);
-  if (worker_thread_ != nullptr && worker_thread_->isRunning()) {
-    validator_->abort();
-    worker_thread_->requestInterruption();
+  QThread *worker_thread = nullptr;
+  core::SignaturesValidator *validator = nullptr;
+  if (!worker_threads_.empty() && curr_worker_index_ < worker_threads_.size() &&
+      curr_worker_index_ < validators_.size()) {
+    worker_thread = worker_threads_[curr_worker_index_].get();
+    validator = validators_[curr_worker_index_].get();
+  }
+  if (worker_thread != nullptr && worker_thread->isRunning()) {
+    if (validator != nullptr) {
+
+      validator->abort();
+    }
+    worker_thread->requestInterruption();
     // worker_thread_->wait();
   }
-  worker_thread_ = new QThread();
-  validator_ = new core::SignaturesValidator();
-  validator_->moveToThread(worker_thread_);
+  // qThreads and validator objects are stored in array, so it possible not to
+  // wait for results if the document changed, just create a new thred and run
+  // the verification
+  worker_threads_.emplace_back(std::make_unique<QThread>());
+  ++curr_worker_index_ = worker_threads_.size() - 1;
+  worker_thread = worker_threads_[curr_worker_index_].get();
+  qWarning() << "new worker_thread_ " << worker_thread;
+  validators_.emplace_back(std::make_unique<core::SignaturesValidator>());
+  validator = validators_[curr_worker_index_].get();
+  validator->moveToThread(worker_thread);
 
   QObject::connect(
       QCoreApplication::instance(), &QCoreApplication::aboutToQuit, [this] {
-        if (worker_thread_ != nullptr && worker_thread_->isRunning()) {
-          worker_thread_->requestInterruption();
-          validator_->abort();
-          worker_thread_->wait();
+        for (size_t i = 0; i < worker_threads_.size(); ++i) {
+          if (worker_threads_[i] && worker_threads_[i]->isRunning()) {
+            worker_threads_[i]->requestInterruption();
+            worker_threads_[i]->wait();
+          }
+          if (i < validators_.size() && validators_[i]) {
+            validators_[i]->abort();
+          }
         }
       });
 
-  QObject::connect(worker_thread_, &QThread::started, [this, file_source]() {
-    validator_->validateSignatures(raw_signatures_, file_source);
-  });
-  QObject::connect(validator_, &core::SignaturesValidator::validationFinished,
-                   [this](core::DocStatusEnum::CommonDocCoverageStatus status) {
-                     emit commonDocStatus(status);
-                     qWarning() << "Finished validation";
-                     worker_thread_->quit();
-                   });
+  QObject::connect(
+      worker_thread, &QThread::started, [validator, file_source, this]() {
+        validator->validateSignatures(raw_signatures_, file_source);
+      });
 
-  QObject::connect(validator_, &core::SignaturesValidator::validatationResult,
-                   this, &SignaturesListModel::saveValidationResult);
+  QObject::connect(
+      validator, &core::SignaturesValidator::validationFinished,
+      [this,
+       worker_thread](core::DocStatusEnum::CommonDocCoverageStatus status) {
+        if (curr_worker_index_ < worker_threads_.size() &&
+            worker_thread == worker_threads_[curr_worker_index_].get()) {
+          emit commonDocStatus(status);
+        }
+        qWarning() << "Finished validation";
+        worker_thread->quit();
+      });
 
-  QObject::connect(worker_thread_, &QThread::finished, [this]() {
-    validator_->deleteLater();
-    worker_thread_->deleteLater();
-    worker_thread_ = nullptr;
-    validator_ = nullptr;
-  });
-  worker_thread_->start();
+  QObject::connect(
+      validator, &core::SignaturesValidator::validatationResult,
+      [this,
+       worker_thread](std::shared_ptr<core::ValidationResult> validation_result,
+                      size_t ind) {
+        if (curr_worker_index_ < worker_threads_.size() &&
+            worker_thread == worker_threads_[curr_worker_index_].get()) {
+          qWarning() << "recieved validation result from validator"
+                     << validators_[curr_worker_index_].get();
+          saveValidationResult(validation_result, ind);
+        }
+      });
 
+  QObject::connect(
+      validator, &core::SignaturesValidator::validationFailedForSignature,
+      [this, worker_thread](size_t ind) {
+        if (curr_worker_index_ < worker_threads_.size() &&
+            worker_thread == worker_threads_[curr_worker_index_].get()) {
+          qWarning() << "validation failed for signature " << ind
+                     << " from validator"
+                     << validators_[curr_worker_index_].get();
+          emit validationFailedForSignature(ind);
+        }
+      });
+
+  // cleanup all threads that are finished
+  for (size_t i = 0; i < worker_threads_.size(); ++i) {
+    if (i != curr_worker_index_) {
+      if (worker_threads_[i] && worker_threads_[i]->isFinished()) {
+        if (curr_worker_index_ < validators_.size() && validators_[i]) {
+          validators_[i].reset();
+        }
+      }
+    }
+  }
+  worker_thread->start();
   endResetModel();
 }
 

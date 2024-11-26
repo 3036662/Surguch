@@ -9,7 +9,8 @@ void SignaturesValidator::validateSignatures(
     std::vector<core::RawSignature> raw_signatures, QString file_source) {
   bool aborted = false;
   std::map<size_t, CoverageInfo> coverage_infos;
-  for (size_t i = 0; i < raw_signatures.size(); ++i) {
+  size_t i = 0;
+  for (i = 0; i < raw_signatures.size(); ++i) {
     const auto &sig = raw_signatures[i];
     if (abort_recieved_ ||
         QThread::currentThread()->isInterruptionRequested()) {
@@ -38,6 +39,7 @@ void SignaturesValidator::validateSignatures(
       coverage_infos.insert_or_assign(i, cov_info);
     } catch (const std::exception &ex) {
       qWarning() << ex.what();
+      emit validationFailedForSignature(i);
     }
     if (result) {
       emit validatationResult(result, i);

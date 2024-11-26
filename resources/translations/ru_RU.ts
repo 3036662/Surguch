@@ -294,8 +294,14 @@
 <context>
     <name>Main</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="+129"/>
-        <location filename="../../src/views/Main.qml" line="+129"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="+16"/>
+        <location filename="../../src/views/Main.qml" line="+16"/>
+        <source>Surguch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+113"/>
+        <location filename="../../src/views/Main.qml" line="+113"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
@@ -372,15 +378,15 @@
         <translation>Некоторые из подписей не защищают весь документ целиком, следует считать подозрительным.</translation>
     </message>
     <message>
+        <location line="+13"/>
+        <location filename="../../src/views/Main.qml" line="+13"/>
+        <source>Validation failed for signature number</source>
+        <translation>Проверка одной из подписей не удалась, номер сигнатуры</translation>
+    </message>
+    <message>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+10"/>
         <source>Hello World</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="-256"/>
-        <location filename="../../src/views/Main.qml" line="-256"/>
-        <source>SealWax</source>
-        <translation></translation>
     </message>
 </context>
 <context>

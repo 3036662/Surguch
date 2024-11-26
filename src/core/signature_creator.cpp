@@ -2,9 +2,8 @@
 #include "sign_worker.hpp"
 #include <QCoreApplication>
 #include <QDebug>
-#include <QVariant>
 #include <QThread>
-
+#include <QVariant>
 
 namespace core {
 

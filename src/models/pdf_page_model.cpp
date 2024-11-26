@@ -5,7 +5,6 @@
 #include <QThread>
 #include <QUrl>
 
-
 // NOLINTBEGIN(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
 
 PdfPageModel::PdfPageModel(QObject *parent)

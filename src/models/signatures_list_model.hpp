@@ -41,6 +41,8 @@ signals:
   // file was recovered
   void fileRecovered(QString path);
 
+  void validationFailedForSignature(size_t index);
+
 public slots:
 
   /// @brief store RawSignatures, send all signatures to validation
@@ -52,8 +54,13 @@ public slots:
 private:
   QHash<int, QByteArray> role_names_;
   std::vector<core::RawSignature> raw_signatures_;
-  QThread *worker_thread_ = nullptr;
-  core::SignaturesValidator *validator_ = nullptr;
+
+  // QThread *worker_thread_ = nullptr;
+  // core::SignaturesValidator *validator_ = nullptr;
+  std::vector<std::unique_ptr<QThread>> worker_threads_;
+  std::vector<std::unique_ptr<core::SignaturesValidator>> validators_;
+  size_t curr_worker_index_ = 0;
+
   QThread *recover_thread_ = nullptr;
   core::FileRecoverWorker *recover_worker_ = nullptr;
   std::map<size_t, std::shared_ptr<core::ValidationResult>> validation_results_;

@@ -280,6 +280,11 @@ ApplicationWindow {
             pdfListView.openTmpFile(dest);
             leftSideBar.source = dest;
         });
+        // validation failed
+        siglistModel.validationFailedForSignature.connect(function(index){
+            errorMessageDialog.text=qsTr("Validation failed for signature number")+" "+index;
+            errorMessageDialog.open();
+        });
     }
 
 
