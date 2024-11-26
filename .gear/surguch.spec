@@ -14,7 +14,7 @@ BuildRequires: libaltcsp-devel libcsppdf-devel
 BuildRequires: libmupdf-devel
 BuildRequires:  qt6-base-devel qt6-declarative-devel rpm-macros-qt6 qt6-declarative qt6-svg-devel qt6-svg qt6-tools
 
-Requires: qt6-svg qt6-declarative
+Requires: qt6-svg qt6-declarative fonts-ttf-google-noto-sans
 
 %description
 A gui application for verification and creation of digitally signed pdf documents.
