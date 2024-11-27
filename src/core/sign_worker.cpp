@@ -33,7 +33,9 @@ SignWorker::SharedParamWrapper SignWorker::createParams() const {
   pod_params.stamp_width = params_.stamp_width;
   pod_params.stamp_height = params_.stamp_height;
   params_wrapper->qb_logo_path = params_.logo_path.toUtf8();
-  pod_params.logo_path = params_wrapper->qb_logo_path.data();
+  if (!params_wrapper->qb_logo_path.isEmpty()){
+    pod_params.logo_path = params_wrapper->qb_logo_path.data();
+  }
   params_wrapper->qb_config_path = params_.config_path.toUtf8();
   pod_params.config_path = params_wrapper->qb_config_path.data();
   params_wrapper->qb_cert_serial = params_.cert_serial.toUtf8();
