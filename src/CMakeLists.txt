@@ -162,6 +162,8 @@ target_link_libraries(surguch
     PRIVATE ${PDFCSP_PDF_LINK_PATH}
 )
 
+target_link_libraries(surguch PRIVATE Qt6::PrintSupport)
+
 include(GNUInstallDirs)
 
 

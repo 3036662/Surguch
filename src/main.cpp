@@ -1,4 +1,5 @@
 #include "core/signature_creator.hpp"
+#include "printer_launcher.hpp"
 #include "cpp_views/pdf_page_render.hpp"
 #include "models/pdf_page_model.hpp"
 #include "models/profiles_model.hpp"
@@ -10,6 +11,14 @@
 #include <QLocale>
 #include <QQmlApplicationEngine>
 #include <QTranslator>
+
+#include <QPrinter>
+#include <QPrintDialog>
+#include <QPrintEngine>
+
+
+#include <qpainter.h>
+
 
 int main(int argc, char *argv[]) {
 
@@ -33,6 +42,7 @@ int main(int argc, char *argv[]) {
                                  "ProfilesModel");
   qmlRegisterType<core::SignatureCreator>("alt.pdfcsp.signatureCreator", 0, 1,
                                           "SignatureCreator");
+  qmlRegisterType<core::PrinterLauncher>("alt.pdfcsp.printerLauncher",0,1,"PrinterLauncher");
 
   QQmlApplicationEngine engine;
 

@@ -52,10 +52,11 @@ RowLayout {
             onClicked: saveFileDialog.open()
         }
 
-        // TopBarButton {
-        //     icon.source: "qrc:/icons/printer_sm.svg"
-        //     text: qsTr("Print")
-        // }
+        TopBarButton {
+            icon.source: "qrc:/icons/printer_sm.svg"
+            text: qsTr("Print")
+            onClicked: printer.print(pdfListView.source,pdfListView.count,pdfListView.landscape);
+        }
 
         Row {
             spacing: 2

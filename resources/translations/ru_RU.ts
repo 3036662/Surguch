@@ -241,14 +241,16 @@
         <translation>Сохранить как ...</translation>
     </message>
     <message>
+        <location line="+7"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+4"/>
+        <location filename="../../src/views/Header.qml" line="+7"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+35"/>
+        <location line="+29"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+27"/>
-        <location filename="../../src/views/Header.qml" line="+35"/>
+        <location filename="../../src/views/Header.qml" line="+29"/>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>
@@ -294,14 +296,14 @@
 <context>
     <name>Main</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="+16"/>
-        <location filename="../../src/views/Main.qml" line="+16"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="+17"/>
+        <location filename="../../src/views/Main.qml" line="+17"/>
         <source>Surguch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+113"/>
-        <location filename="../../src/views/Main.qml" line="+113"/>
+        <location line="+117"/>
+        <location filename="../../src/views/Main.qml" line="+117"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
@@ -392,8 +394,8 @@
 <context>
     <name>PdfListView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+312"/>
-        <location filename="../../src/views/PdfListView.qml" line="+312"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+315"/>
+        <location filename="../../src/views/PdfListView.qml" line="+315"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>

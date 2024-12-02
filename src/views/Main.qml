@@ -6,6 +6,7 @@ import alt.pdfcsp.pdfModel
 import alt.pdfcsp.signatureCreator
 import alt.pdfcsp.profilesModel
 import alt.pdfcsp.signaturesListModel
+import alt.pdfcsp.printerLauncher
 
 ApplicationWindow {
     id: root_window
@@ -111,6 +112,10 @@ ApplicationWindow {
 
     SignaturesListModel {
         id: siglistModel
+    }
+
+    PrinterLauncher{
+        id:printer
     }
 
     SignatureCreator {

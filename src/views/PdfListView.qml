@@ -7,6 +7,7 @@ import alt.pdfcsp.pdfRender
 ListView {
     id: root
     property int pageWidth: 0
+    property bool landscape: false
     property double hScrollPos: 0
     property string source: ""
     property bool sourceIsTmp: false // the source file is temporary
@@ -199,7 +200,7 @@ ListView {
                     cross.width = pdfPage.width
                             < pdfPage.height ? Math.round(
                                                    pdfPage.width * 0.41) : Math.round(
-                                                   pdfPage.width / 3)
+                                                   pdfPage.width * 0.3)
                     if (pdfPage.height != 0) {
                         cross.height = pdfPage.width
                                 < pdfPage.height ? Math.round(
@@ -238,12 +239,14 @@ ListView {
             height: width * 1.42
 
             onWidthChanged: {
-                root.pageWidth = width
+                root.pageWidth = width                
                 updateCrossSize()
             }
 
             onHeightChanged: {
                 updateCrossSize()
+                landscape=pdfPage.width>pdfPage.height;
+                //console.warn("wdth "+pdfPage.width+" height "+pdfPage.height );
             }
 
             onAimResizeStatusChanged: {
@@ -256,7 +259,7 @@ ListView {
                 setPageNumber(model.display)
                 if (width > 0 && root.hScrollPos > 0 && root.hScrollPos < 1) {
                     root.contentX = width * root.hScrollPos
-                }
+                }                
             }
 
             MouseArea {
