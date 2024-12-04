@@ -7,100 +7,55 @@
 #include <QPrintEngine>
 #include <QPrinter>
 #include <QProcess>
+#include <QThread>
 #include <QUrl>
 
 namespace core {
 
 PrinterLauncher::PrinterLauncher(QObject *parent) : QObject{parent} {}
 
+/*!
+ * \brief Launch a native print dialog,print with cups
+ * \param src_file - pdf file to print
+ * \param page_count - total pages in file
+ * \param landscape - true if orientation is landscape
+ */
 void PrinterLauncher::print(QString src_file, int page_count, bool landscape) {
   QPrinter printer;
   QPrintDialog print_dialog(&printer, nullptr);
-  QSize size_hint = print_dialog.minimumSizeHint();
+  const QSize size_hint = print_dialog.minimumSizeHint();
   if (size_hint.isValid()) {
     print_dialog.resize(size_hint);
   }
   print_dialog.setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-  qWarning() << "PAGE_COUNT " << page_count;
   print_dialog.setMinMax(1, page_count);
   print_dialog.setFromTo(1, page_count);
   print_dialog.setPrintRange(QAbstractPrintDialog::AllPages);
   print_dialog.setOption(QAbstractPrintDialog::PrintToFile, false);
   if (landscape) {
-    qWarning("LANDSCAPE");
     printer.setPageOrientation(QPageLayout::Landscape);
   }
-  // print_dialog.setLayout()
-  //  print_dialog.setOption(QAbstractPrintDialog::PrintCurrentPage);
   if (print_dialog.exec() == QDialog::Accepted) {
-    qWarning() << "Print...";
-    // QPrintPreviewDialog preview_dialog(&printer);
-    // preview_dialog.exec();
-    // QPainter painter(&printer);
-    // painter.setPen(Qt::blue);
-    // painter.setFont(QFont("Arial", 30));
-    // QPointF pos(10,10);
-    // painter.drawText(pos, "SURGUCH PRINT TEST");
-    // painter.end();
-    qWarning() << "color mode" << printer.colorMode();
-    qWarning() << "copyCount" << printer.copyCount();
-    qWarning() << "creator " << printer.creator();
-    qWarning() << "doc name " << printer.docName();
-    qWarning() << "duplex " << printer.duplex();
-    qWarning() << "from page " << printer.fromPage();
-    qWarning() << "to from page " << printer.toPage();
-    qWarning() << "ranges " << printer.pageRanges().toString();
-    qWarning() << "printRange " << printer.printRange();
-    qWarning() << "fullPage " << printer.fullPage();
-    qWarning() << "pageOrder " << printer.pageOrder();
-    qWarning() << "pageRect " << printer.pageRect(QPrinter::Millimeter);
-    qWarning() << "paperRect " << printer.paperRect(QPrinter::Millimeter);
-    qWarning() << "printProgram " << printer.printProgram();
-    qWarning() << "printerName " << printer.printerName();
-    qWarning() << "resolution " << printer.resolution();
-    qWarning() << "PrintToFile"
-               << print_dialog.testOption(QAbstractPrintDialog::PrintToFile);
-    qWarning() << "PrintSelection"
-               << print_dialog.testOption(QAbstractPrintDialog::PrintSelection);
-    qWarning() << "PrintPageRange"
-               << print_dialog.testOption(QAbstractPrintDialog::PrintPageRange);
-    qWarning() << "PrintShowPageSize"
-               << print_dialog.testOption(
-                      QAbstractPrintDialog::PrintShowPageSize);
-    qWarning() << "PrintCollateCopies"
-               << print_dialog.testOption(
-                      QAbstractPrintDialog::PrintCollateCopies);
-    qWarning() << "PrintCurrentPage"
-               << print_dialog.testOption(
-                      QAbstractPrintDialog::PrintCurrentPage);
-    qWarning() << "PrintSelection"
-               << print_dialog.testOption(QAbstractPrintDialog::PrintSelection);
-    QStringList dialogOptions =
-        printer.printEngine()
-            ->property(QPrintEngine::PrintEnginePropertyKey(0xfe00))
-            .toStringList();
-    for (const auto &opt : dialogOptions) {
-      qWarning() << opt;
-    }
     auto options = createPrintCommand(printer, src_file);
     if (!options.empty()) {
-      QProcess process;
-      process.setProgram(cups_executable);
-      process.setArguments(options);
-      process.start(cups_executable, options);
-      if (!process.waitForStarted()) {
-        qWarning() << "Can not start the lp programm";
-      }
-      process.waitForFinished();
-      qWarning() << process.program() << process.arguments();
-      qWarning() << QString(process.readAllStandardOutput());
-      qWarning() << QString(process.readAllStandardError());
+      QProcess *process = new QProcess();
+      // finished
+      connect(process, &QProcess::finished,
+              [process] { process->deleteLater(); });
+      //  error
+      connect(process, &QProcess::errorOccurred,
+              [process](QProcess::ProcessError err) {
+                if (err == QProcess::FailedToStart) {
+                  qWarning() << "Cups executable failed to start:"
+                             << QString(process->readAllStandardError());
+                }
+                process->close();
+                process->deleteLater();
+              });
+      process->setProgram(cups_executable_);
+      process->setArguments(options);
+      process->start(cups_executable_, options);
     }
-    // print_dialog.dumpObjectTree();
-    // QAbstractPrintDialog* priv_dialog=static_cast<QAbstractPrintDialog*>
-    // (&print_dialog); QPrintDialogPrivate*
-    // priv_dialog_priv=reinterpret_cast<QPrintDialogPrivate*> (priv_dialog);
-    // auto opts= print_dialog.options();
   }
 }
 
@@ -215,8 +170,6 @@ QStringList PrinterLauncher::createPrintCommand(const QPrinter &printer,
       res.append(tmp);
     }
   }
-
-
 
   return res;
 }
