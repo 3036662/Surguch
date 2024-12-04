@@ -115,8 +115,8 @@
         <translation>Настройки профиля</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <location filename="../../src/views/EditProfile.qml" line="+9"/>
+        <location line="+10"/>
+        <location filename="../../src/views/EditProfile.qml" line="+10"/>
         <source>Profile id</source>
         <translation>ID профиля</translation>
     </message>
@@ -133,8 +133,8 @@
         <translation>Введите название профиля</translation>
     </message>
     <message>
-        <location line="+21"/>
-        <location filename="../../src/views/EditProfile.qml" line="+21"/>
+        <location line="+23"/>
+        <location filename="../../src/views/EditProfile.qml" line="+23"/>
         <source>Use this profile by default</source>
         <translation>Использовать по умолчанию</translation>
     </message>
@@ -211,8 +211,14 @@
         <translation>Сохранить профиль</translation>
     </message>
     <message>
-        <location line="+55"/>
-        <location filename="../../src/views/EditProfile.qml" line="+55"/>
+        <location line="+10"/>
+        <location filename="../../src/views/EditProfile.qml" line="+10"/>
+        <source>Profile with this name already exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+53"/>
+        <location filename="../../src/views/EditProfile.qml" line="+53"/>
         <source>Delete profile</source>
         <translation>Удалить профиль</translation>
     </message>
@@ -255,9 +261,9 @@
         <translation>Профиль</translation>
     </message>
     <message>
-        <location line="+76"/>
+        <location line="+78"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+12"/>
-        <location filename="../../src/views/Header.qml" line="+76"/>
+        <location filename="../../src/views/Header.qml" line="+78"/>
         <source>Sign</source>
         <translation>Подписать</translation>
     </message>

@@ -90,7 +90,9 @@ RowLayout {
                 textRole: "title"
                 valueRole: "value"                
                 displayText: defaultText                
-                implicitContentWidthPolicy: ComboBox.WidestText
+                width: 200
+                //implicitContentWidthPolicy: ComboBox.WidestText
+                //implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
                 popup.y:profileComboBox.height
 
                 anchors.verticalCenter: parent.verticalCenter

@@ -92,8 +92,9 @@ Flickable {
         }
 
         TextPair {
-            id: profileIdTextPair
-            keyText: qsTr("Profile id")
+             visible:false
+             id: profileIdTextPair
+             keyText: qsTr("Profile id")
         }
 
         // profile name
@@ -108,11 +109,13 @@ Flickable {
             placeholderText: qsTr("Enter profile name")
 
             onTextChanged: {
-                let validInput = profileName.text.match(/^[a-zA-Z0-9]*$/)
-                if (!validInput) {
-                    profileName.text = profileName.text.replace(
-                                /[^a-zA-Z0-9s]/g, '')
+                let validInput = profileName.text.match(/^S+$/)
+                if (!validInput) {                    
+                    profileName.text = profileName.text.replace(/\s/g, '')
                     profileName.cursorPosition = profileName.text.length
+                }
+                if (profileName.text.length>50){
+                    profileName.text=profileName.text.slice(0,50);
                 }
             }
         }
@@ -268,6 +271,14 @@ Flickable {
                 font.family: "Noto Sans"
 
                 onClicked: {
+                    if (profile_id<0 &&
+                        !profiles_model.uniqueName(profileName.text)){
+                        profileName.forceActiveFocus()
+                        root.contentY = 10
+                        errorMessageDialog.text=qsTr("Profile with this name already exists");
+                        errorMessageDialog.open();
+                        return
+                    }
                     if (profileName.text === "") {
                         profileName.forceActiveFocus()
                         root.contentY = 10

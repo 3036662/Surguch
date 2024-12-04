@@ -32,6 +32,8 @@ public:
 
   Q_INVOKABLE bool deleteProfile(int id_profile);
 
+  Q_INVOKABLE bool uniqueName(QString profile_name);
+
   Q_INVOKABLE QString getConfigPath() const;
 
 signals:
