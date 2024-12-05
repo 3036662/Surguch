@@ -254,9 +254,9 @@
         <translation>Печать</translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+30"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+27"/>
-        <location filename="../../src/views/Header.qml" line="+29"/>
+        <location filename="../../src/views/Header.qml" line="+30"/>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>
@@ -418,8 +418,8 @@
 <context>
     <name>PdfListView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+321"/>
-        <location filename="../../src/views/PdfListView.qml" line="+321"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+324"/>
+        <location filename="../../src/views/PdfListView.qml" line="+324"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>

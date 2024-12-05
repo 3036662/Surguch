@@ -56,6 +56,7 @@ RowLayout {
         TopBarButton {
             icon.source: "qrc:/icons/printer_sm.svg"
             text: qsTr("Print")
+            enabled: pdfListView.source.length>0
             onClicked: printer.print(pdfListView.source,pdfListView.count,pdfListView.landscape);
         }
 

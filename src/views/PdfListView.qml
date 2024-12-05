@@ -169,6 +169,9 @@ ListView {
         aimResizeY = 1
         aimIsAlreadyResized = false
         signInProgress = false
+        if (source.length>0){
+            root_window.title=source;
+        }
     }
 
     onZoomPageFactChanged: {
