@@ -214,7 +214,7 @@
         <location line="+10"/>
         <location filename="../../src/views/EditProfile.qml" line="+10"/>
         <source>Profile with this name already exists</source>
-        <translation type="unfinished"></translation>
+        <translation>Профиль с таким именем уже существует</translation>
     </message>
     <message>
         <location line="+53"/>
@@ -417,7 +417,7 @@
     <message>
         <location filename="../../src/models/profiles_model.cpp" line="+10"/>
         <source>CreateProfile</source>
-        <translation>Создать Профиль</translation>
+        <translation>Создать профиль</translation>
     </message>
     <message>
         <location line="+49"/>

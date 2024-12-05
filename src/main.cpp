@@ -1,9 +1,9 @@
 #include "core/signature_creator.hpp"
-#include "printer_launcher.hpp"
 #include "cpp_views/pdf_page_render.hpp"
 #include "models/pdf_page_model.hpp"
 #include "models/profiles_model.hpp"
 #include "models/signatures_list_model.hpp"
+#include "printer_launcher.hpp"
 #include <QApplication>
 #include <QDebug>
 #include <QDirIterator>
@@ -12,13 +12,9 @@
 #include <QQmlApplicationEngine>
 #include <QTranslator>
 
-#include <QPrinter>
-#include <QPrintDialog>
-#include <QPrintEngine>
-
+#include <QQmlContext>
 
 #include <qpainter.h>
-
 
 int main(int argc, char *argv[]) {
 
@@ -42,26 +38,31 @@ int main(int argc, char *argv[]) {
                                  "ProfilesModel");
   qmlRegisterType<core::SignatureCreator>("alt.pdfcsp.signatureCreator", 0, 1,
                                           "SignatureCreator");
-  qmlRegisterType<core::PrinterLauncher>("alt.pdfcsp.printerLauncher",0,1,"PrinterLauncher");
+  qmlRegisterType<core::PrinterLauncher>("alt.pdfcsp.printerLauncher", 0, 1,
+                                         "PrinterLauncher");
 
   QQmlApplicationEngine engine;
+  QStringList args = app.arguments();
+  // file to open on start
+  engine.rootContext()->setContextProperty("openOnStart",
+                                           (args.size() > 1 ? args.at(1) : ""));
 
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
 
-  #if QT_LOAD_FROM_MODULE==1
-      engine.loadFromModule("gui_pdf_csp", "Main");
-      engine.addImportPath("qrc:/modules");
+#if QT_LOAD_FROM_MODULE == 1
+  engine.loadFromModule("gui_pdf_csp", "Main");
+  engine.addImportPath("qrc:/modules");
 
-  #else
-      const QUrl url("qrc:/gui_pdf_csp/Main.qml");
-      engine.load(url);
-  #endif
+#else
+  const QUrl url("qrc:/gui_pdf_csp/Main.qml");
+  engine.load(url);
+#endif
 
-   // QDirIterator it(":", QDirIterator::Subdirectories);
-   // while (it.hasNext()) {
-   //     qWarning() << it.next();
-   // }
+  // QDirIterator it(":", QDirIterator::Subdirectories);
+  // while (it.hasNext()) {
+  //     qWarning() << it.next();
+  // }
   return QApplication::exec();
 }

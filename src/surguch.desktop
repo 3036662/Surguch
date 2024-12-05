@@ -1,9 +1,16 @@
 [Desktop Entry]
 Type=Application
 Name=Surguch
+Name[ru]=Сургуч
 GenericName=PDF Reader with electroinc signatures support
+GenericName[ru]=Приложение для проверки и подписи PDF
+Comment=Reader with electroinc signatures support
+Comment[ru]=Проверка и подпись PDF-документов
 MimeType=application/pdf;
-Exec=surguch
+Exec=surguch %f
 Terminal=false
-Keywords=pdf;csp;crypto;sign
+Keywords=pdf;csp;crypto;sign;pades;cades
+Keywords[ru]=пдф;крипто;падес;кадес;подпись
 Categories=Utility;
+Keywords=MATE;pdf;csp;crypto;sign;pades;cades;
+Keywords[ru]=MATE;пдф;крипто;падес;кадес;подпись;

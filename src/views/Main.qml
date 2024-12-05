@@ -290,6 +290,12 @@ ApplicationWindow {
             errorMessageDialog.text=qsTr("Validation failed for signature number")+" "+index;
             errorMessageDialog.open();
         });
+        // open document on strart
+        if (openOnStart!==""){
+            pdfListView.openFile(openOnStart)
+            leftSideBar.source = openOnStart
+            rightSideBar.showState = RightSideBar.ShowState.Invisible
+        }
     }
 
 
