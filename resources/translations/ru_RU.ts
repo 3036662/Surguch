@@ -226,9 +226,9 @@
 <context>
     <name>Header</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+36"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+37"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+15"/>
-        <location filename="../../src/views/Header.qml" line="+36"/>
+        <location filename="../../src/views/Header.qml" line="+37"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
@@ -266,6 +266,24 @@
         <location filename="../../src/views/Header.qml" line="+78"/>
         <source>Sign</source>
         <translation>Подписать</translation>
+    </message>
+    <message>
+        <location line="+43"/>
+        <location filename="../../src/views/Header.qml" line="+43"/>
+        <source>Pdf files (*.pdf)</source>
+        <translation>Pdf файлы (*.pdf)</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <location filename="../../src/views/Header.qml" line="+0"/>
+        <source>Any file (* *.*)</source>
+        <translation>Любой файл (* *.*)</translation>
+    </message>
+    <message>
+        <location line="+43"/>
+        <location filename="../../src/views/Header.qml" line="+43"/>
+        <source>PDF files (*.pdf)</source>
+        <translation>PDF файлы (*.pdf)</translation>
     </message>
 </context>
 <context>

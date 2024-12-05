@@ -1,7 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import Qt.labs.platform
+
+import QtQuick.Dialogs
 import QtCore
 
 RowLayout {
@@ -202,11 +203,10 @@ RowLayout {
 
     FileDialog {
         id: fileDialog
-
-        currentFile: ""
         fileMode: FileDialog.OpenFile
-        nameFilters: ["Pdf files (*.pdf)"]
-        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+        //nameFilters: ["Pdf files (*.pdf)","Any file (* *.*)"];
+        nameFilters: [qsTr("Pdf files (*.pdf)"),qsTr("Any file (* *.*)")];
+        currentFolder:StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
         onAccepted: {
             // source is chosen by user, not a temporary file
             pdfListView.openFile(currentFile)
@@ -234,12 +234,11 @@ RowLayout {
             }
         }
 
-        currentFile: pdfListView.source
         fileMode: FileDialog.OpenFile
         acceptLabel:"OK"
         options: FileDialog.HideNameFilterDetails
-        folder:""
-        nameFilters: ["Pdf files (*.pdf)"]
+        currentFolder: ""
+        nameFilters: ["PDF files (*.pdf)"]
 
 
     }
@@ -247,11 +246,10 @@ RowLayout {
     FileDialog {
         id: saveFileDialog
 
-        currentFile:pdfListView.source
         fileMode: FileDialog.SaveFile
         defaultSuffix: "pdf"
-        nameFilters: ["Pdf files (*.pdf)"]
-        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+        nameFilters: [qsTr("PDF files (*.pdf)")]
+        currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
 
         onAccepted: {
             console.warn(currentFile)
