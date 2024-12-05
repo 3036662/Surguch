@@ -26,3 +26,5 @@ target_include_directories(models PUBLIC
 
 target_link_libraries(models PRIVATE Qt6::Core)
 
+target_link_libraries(models PRIVATE Qt6::Gui)
+

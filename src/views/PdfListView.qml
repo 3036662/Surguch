@@ -130,6 +130,12 @@ ListView {
         }
     }
 
+    function showInFolder(){
+        if (source.length>0){
+            model.showInFolder();
+        }
+    }
+
     Layout.fillHeight: true
     Layout.fillWidth: true
     Layout.leftMargin: 20

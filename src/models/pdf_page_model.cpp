@@ -1,5 +1,7 @@
 #include "pdf_page_model.hpp"
 #include "core/signature_processor.hpp"
+#include <QDesktopServices>
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QThread>
@@ -193,6 +195,11 @@ Q_INVOKABLE bool PdfPageModel::saveCurrSourceTo(QString path,
     tmp_files_to_delete_.emplace_back(file_source_);
   }
   return true;
+}
+
+void PdfPageModel::showInFolder(){
+  QUrl folder_url=QUrl::fromLocalFile( QFileInfo(file_source_).absoluteDir().absolutePath());
+  QDesktopServices::openUrl(folder_url);
 }
 
 // NOLINTEND(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)

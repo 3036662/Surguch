@@ -237,7 +237,7 @@
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+5"/>
         <location filename="../../src/views/Header.qml" line="+7"/>
         <source>Show in folder</source>
-        <translation>Открыть папку с файлом</translation>
+        <translation>Показать в папке</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -280,8 +280,8 @@
         <translation>Любой файл (* *.*)</translation>
     </message>
     <message>
-        <location line="+43"/>
-        <location filename="../../src/views/Header.qml" line="+43"/>
+        <location line="+15"/>
+        <location filename="../../src/views/Header.qml" line="+15"/>
         <source>PDF files (*.pdf)</source>
         <translation>PDF файлы (*.pdf)</translation>
     </message>
@@ -418,8 +418,8 @@
 <context>
     <name>PdfListView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+315"/>
-        <location filename="../../src/views/PdfListView.qml" line="+315"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+321"/>
+        <location filename="../../src/views/PdfListView.qml" line="+321"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>

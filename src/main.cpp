@@ -11,10 +11,8 @@
 #include <QLocale>
 #include <QQmlApplicationEngine>
 #include <QTranslator>
-
 #include <QQmlContext>
 
-#include <qpainter.h>
 
 int main(int argc, char *argv[]) {
 

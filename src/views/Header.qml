@@ -43,7 +43,7 @@ RowLayout {
             icon.source: "qrc:/icons/file_simple.svg"
             text: qsTr("Show in folder")
             enabled: pdfListView.source.length>0 && !pdfListView.sourceIsTmp
-            onClicked: showInFolderDialog.launch()
+            onClicked: pdfListView.showInFolder()
         }
 
         TopBarButton {
@@ -213,34 +213,6 @@ RowLayout {
             leftSideBar.source = currentFile
             rightSideBar.showState = RightSideBar.ShowState.Invisible
         }
-    }
-
-    FileDialog {
-        id: showInFolderDialog
-
-        function launch(){
-            try{
-                let currSource=pdfListView.source;
-                let lastSlashIndex =  currSource.lastIndexOf('/');
-                if (lastSlashIndex!=-1){
-                     folder=currSource.substring(0,lastSlashIndex);
-                }
-                if (folder!==""){
-                    open();
-                }
-            }
-            catch(e){
-                console.warn(e.message);
-            }
-        }
-
-        fileMode: FileDialog.OpenFile
-        acceptLabel:"OK"
-        options: FileDialog.HideNameFilterDetails
-        currentFolder: ""
-        nameFilters: ["PDF files (*.pdf)"]
-
-
     }
 
     FileDialog {

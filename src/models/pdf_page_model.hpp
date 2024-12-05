@@ -59,6 +59,9 @@ public:
 
   Q_INVOKABLE void deleteFileLater(QString path);
 
+  Q_INVOKABLE void showInFolder();
+
+
   [[nodiscard]] Q_INVOKABLE fz_document *getDoc() const;
 
   [[nodiscard]] Q_INVOKABLE fz_context *getCtx() const;
