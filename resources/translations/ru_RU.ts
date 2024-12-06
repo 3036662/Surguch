@@ -151,14 +151,14 @@
         <translation>Сертификат</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <location filename="../../src/views/EditProfile.qml" line="+11"/>
+        <location line="+8"/>
+        <location filename="../../src/views/EditProfile.qml" line="+8"/>
         <source>Select the certificate</source>
         <translation>Выберите сертификат</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <location filename="../../src/views/EditProfile.qml" line="+6"/>
+        <location line="+11"/>
+        <location filename="../../src/views/EditProfile.qml" line="+11"/>
         <source>Cades type</source>
         <translation>Тип CADES</translation>
     </message>
@@ -221,6 +221,12 @@
         <location filename="../../src/views/EditProfile.qml" line="+53"/>
         <source>Delete profile</source>
         <translation>Удалить профиль</translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <location filename="../../src/views/EditProfile.qml" line="+40"/>
+        <source>Issuer: </source>
+        <translation>Издатель: </translation>
     </message>
 </context>
 <context>

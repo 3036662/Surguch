@@ -153,11 +153,13 @@ Flickable {
 
         RSBComboSelect {
             id: selectCertificateCombo
+
+            property string displayTextDefault: qsTr("Select the certificate")
+
             model: root.cert_combo_model
             textRole: "title"
             valueRole: "serial"
             displayText: displayTextDefault
-            property string displayTextDefault: qsTr("Select the certificate")
         }
 
         // Cades format
@@ -360,7 +362,7 @@ Flickable {
 
     onCert_data_rawChanged: {
         if (cert_data_raw) {
-            try {
+            try {               
                 cert_array = JSON.parse(cert_data_raw)
                 //console.warn(JSON.stringify(cert_array));
                 cert_combo_model = cert_array.map(item => {
@@ -368,6 +370,7 @@ Flickable {
                                                       res.title = item.subject_common_name
                                                       + " " + item.serial
                                                       res.serial = item.serial
+                                                      res.tooltip =qsTr("Issuer: ")+ item.issuer_common_name;
                                                       return res
                                                   })
             } catch (e) {
