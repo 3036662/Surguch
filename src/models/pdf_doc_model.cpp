@@ -1,15 +1,18 @@
-#include "pdf_page_model.hpp"
+#include "pdf_doc_model.hpp"
 #include "core/signature_processor.hpp"
 #include <QDesktopServices>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QGuiApplication>
+#include <QScreen>
 #include <QThread>
 #include <QUrl>
+#include <QWindow>
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
 
-PdfPageModel::PdfPageModel(QObject *parent)
+PdfDocModel::PdfDocModel(QObject *parent)
     : QAbstractListModel(parent),
       fzctx_{fz_new_context(nullptr, nullptr, 500000000)} {
   if (fzctx_ == nullptr) {
@@ -21,10 +24,31 @@ PdfPageModel::PdfPageModel(QObject *parent)
     fz_register_document_handlers(fzctx_);
   }
   fz_catch(fzctx_) { fz_report_error(fzctx_); }
+  // ---------------------------
+  // watch for current screen dpi
+  QGuiApplication *app =
+      dynamic_cast<QGuiApplication *>(QGuiApplication::instance());
+  QWindow *p_window = nullptr;
+  QScreen *p_screen = nullptr;
+  QWindowList window_list;
+  if (app && !(window_list = app->topLevelWindows()).isEmpty() &&
+      (p_window = window_list.at(0)) != nullptr &&
+      (p_screen = p_window->screen()) != nullptr) {
+    physical_screen_dpi_ = p_screen->physicalDotsPerInch();
+    screenDpiChanged();
+    // catch change dpi event
+    connect(p_window, &QWindow::screenChanged, [this](QScreen *screen) {
+      if (screen != nullptr && process_signatures_) { // if main view
+        physical_screen_dpi_ = screen->physicalDotsPerInch();
+        screenDpiChanged();
+        redrawAll();
+      }
+    });
+  }
   // qWarning()<<"Model created"<< QThread::currentThreadId();
 }
 
-PdfPageModel::~PdfPageModel() {
+PdfDocModel::~PdfDocModel() {
   if (fzdoc_ != nullptr) {
     fz_drop_document(fzctx_, fzdoc_);
   }
@@ -35,13 +59,13 @@ PdfPageModel::~PdfPageModel() {
   processFileDelete();  // delete temp files
 }
 
-QVariant PdfPageModel::headerData(int /*section*/,
-                                  Qt::Orientation /*orientation*/,
-                                  int /*role*/) const {
+QVariant PdfDocModel::headerData(int /*section*/,
+                                 Qt::Orientation /*orientation*/,
+                                 int /*role*/) const {
   return {};
 }
 
-int PdfPageModel::rowCount(const QModelIndex &parent) const {
+int PdfDocModel::rowCount(const QModelIndex &parent) const {
   // For list models only the root node (an invalid parent) should return the
   // list's size. For all other (valid) parents, rowCount() should return 0 so
   // that it does not become a tree model.
@@ -51,7 +75,7 @@ int PdfPageModel::rowCount(const QModelIndex &parent) const {
   return page_count_;
 }
 
-QVariant PdfPageModel::data(const QModelIndex &index, int role) const {
+QVariant PdfDocModel::data(const QModelIndex &index, int role) const {
   if (!index.isValid()) {
     return {};
   }
@@ -65,7 +89,7 @@ QVariant PdfPageModel::data(const QModelIndex &index, int role) const {
   return {};
 }
 
-void PdfPageModel::setSource(const QString &path) {
+void PdfDocModel::setSource(const QString &path) {
   fz_drop_document(fzctx_, fzdoc_);
   fz_drop_context(fzctx_);
   file_source_.clear();
@@ -81,7 +105,7 @@ void PdfPageModel::setSource(const QString &path) {
   const QFile finfo(file_path);
   const std::string local_path_std = file_path.toStdString();
   if (!finfo.exists()) {
-    qWarning() << "[PdfPageModel::setSource] file does not exist" << file_path;
+    qWarning() << "[PdfDocModel::setSource] file does not exist" << file_path;
     return;
   }
 
@@ -110,22 +134,23 @@ void PdfPageModel::setSource(const QString &path) {
   }
 }
 
-Q_INVOKABLE QString PdfPageModel::getSource() const { return file_source_; };
+Q_INVOKABLE QString PdfDocModel::getSource() const { return file_source_; };
 
-fz_document *PdfPageModel::getDoc() const { return fzdoc_; }
+fz_document *PdfDocModel::getDoc() const { return fzdoc_; }
 
-fz_context *PdfPageModel::getCtx() const { return fzctx_; }
+fz_context *PdfDocModel::getCtx() const { return fzctx_; }
 
-pdf_document *PdfPageModel::getPdfDoc() const { return pdfdoc_; }
+pdf_document *PdfDocModel::getPdfDoc() const { return pdfdoc_; }
 
-void PdfPageModel::redrawAll() {
+void PdfDocModel::redrawAll() {
+  qWarning()<<"redraw all";
   beginResetModel();
   endResetModel();
 }
 
-void PdfPageModel::processSignatures() {
+void PdfDocModel::processSignatures() {
   std::unique_ptr<core::SignatureProcessor> prc;
-  const QString err_str = "[PdfPageModel] Error processing signatures ";
+  const QString err_str = "[PdfDocModel] Error processing signatures ";
   try {
     prc = std::make_unique<core::SignatureProcessor>(fzctx_, pdfdoc_);
   } catch (const std::exception &ex) {
@@ -142,7 +167,7 @@ void PdfPageModel::processSignatures() {
   qWarning() << "signatures found " << signatures.size();
 }
 
-void PdfPageModel::processFileDelete() {
+void PdfDocModel::processFileDelete() {
   if (!process_file_delete_) {
     return;
   }
@@ -166,15 +191,15 @@ void PdfPageModel::processFileDelete() {
   tmp_files_to_delete_ = std::move(resulting_queue);
 }
 
-Q_INVOKABLE void PdfPageModel::deleteFileLater(QString path) {
+Q_INVOKABLE void PdfDocModel::deleteFileLater(QString path) {
   if (!process_file_delete_) {
     return;
   }
   tmp_files_to_delete_.emplace_back(std::move(path));
 }
 
-Q_INVOKABLE bool PdfPageModel::saveCurrSourceTo(QString path,
-                                                bool delete_curr_source) {
+Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(QString path,
+                                               bool delete_curr_source) {
   const QString dest_path = QUrl(path).toString(QUrl::PreferLocalFile);
   QFile src_file(file_source_);
   if (!src_file.exists()) {
@@ -197,8 +222,9 @@ Q_INVOKABLE bool PdfPageModel::saveCurrSourceTo(QString path,
   return true;
 }
 
-void PdfPageModel::showInFolder(){
-  QUrl folder_url=QUrl::fromLocalFile( QFileInfo(file_source_).absoluteDir().absolutePath());
+void PdfDocModel::showInFolder() {
+  QUrl folder_url =
+      QUrl::fromLocalFile(QFileInfo(file_source_).absoluteDir().absolutePath());
   QDesktopServices::openUrl(folder_url);
 }
 

@@ -24,9 +24,17 @@ public:
   void geometryChange(const QRectF &newGeometry,
                       const QRectF &oldGeometry) override;
 
+
+
+
   Q_INVOKABLE void setDoc(fz_document *fzdoc);
   Q_INVOKABLE void setCtx(fz_context *fzctx);
   Q_INVOKABLE void setPageNumber(int page_number);
+
+  Q_PROPERTY (float widthGoal MEMBER width_goal_);
+  Q_PROPERTY (float zoomGoal MEMBER zoom_goal_);
+
+  Q_PROPERTY (float currScreenDpi MEMBER screen_dpi_);
 
 signals:
 
@@ -38,6 +46,11 @@ private:
   float zoom_dpi_last_ = 1;
   float pwidth_ = 0;
   float dev_pix_ratio_ = 2;
+
+  float width_goal_=0;
+  float zoom_goal_=1;
+  float screen_dpi_=72;
+
 };
 
 #endif // PDF_PAGE_RENDER_HPP

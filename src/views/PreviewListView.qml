@@ -28,7 +28,11 @@ ListView {
         PdfPageRender {
             visible: root.visible
             id: pdfPreviewPage
+
             width: root.width - verticalScroll.width * 2
+            widthGoal: width
+
+
             height: width * 1.42
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.rightMargin: verticalScroll.width

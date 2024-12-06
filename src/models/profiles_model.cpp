@@ -134,10 +134,13 @@ QString ProfilesModel::getUserCertsJSON() const {
   return json_doc.toJson();
 }
 
-Q_INVOKABLE bool ProfilesModel::uniqueName(QString profile_name){
-  return !profile_name.isEmpty() && std::none_of(profiles_.begin(),profiles_.end(),[&profile_name](const QJsonValue& val){
-      return profile_name==val.toObject().value("title").toString();
-  });
+Q_INVOKABLE bool ProfilesModel::uniqueName(QString profile_name) {
+  return !profile_name.isEmpty() &&
+         std::none_of(profiles_.begin(), profiles_.end(),
+                      [&profile_name](const QJsonValue &val) {
+                        return profile_name ==
+                               val.toObject().value("title").toString();
+                      });
 }
 
 Q_INVOKABLE bool ProfilesModel::saveProfile(QString profile_json) {
@@ -153,11 +156,13 @@ Q_INVOKABLE bool ProfilesModel::saveProfile(QString profile_json) {
   QString old_logo_path;
   // if new profile - create a new id
   if (profile_object.value("id").toInt() == -1) {
-      bool unique_name= profile_object.contains("title") && uniqueName(profile_object.value("title").toString());
-      if (!unique_name){
-          qWarning() << "Can't create profile,profile with this name already exists";
-          return false;
-      }
+    bool unique_name = profile_object.contains("title") &&
+                       uniqueName(profile_object.value("title").toString());
+    if (!unique_name) {
+      qWarning()
+          << "Can't create profile,profile with this name already exists";
+      return false;
+    }
 
     auto it_max_current =
         std::max_element(profiles_.cbegin(), profiles_.cend(),

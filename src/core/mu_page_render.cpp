@@ -30,8 +30,10 @@ MuPageRender::MuPageRender(fz_context *fzctx, fz_document *fzdoc)
  * \return RenderRes structure
  */
 RenderRes MuPageRender::RenderPage(int page_number, float custom_rot_value,
-                                   double width,
-                                   float pix_ratio) const noexcept {
+                                   // double width,
+                                   float pix_ratio, float goal_width,
+                                   float goal_zoom,
+                                   float screen_dpi) const noexcept {
   RenderRes res{};
   fz_device *draw_device = nullptr;
   fz_pixmap *pixmap = nullptr;
@@ -47,17 +49,30 @@ RenderRes MuPageRender::RenderPage(int page_number, float custom_rot_value,
     separation = fz_page_separations(fzctx_, page);
     fz_rect page_rect = fz_bound_page(fzctx_, page);
     const fz_matrix custom_rotation_matrix = fz_rotate(custom_rot_value);
-    page_rect = fz_transform_rect(page_rect, custom_rotation_matrix);
+    page_rect =
+        fz_transform_rect(page_rect, custom_rotation_matrix); // page size 72dpi
     fz_colorspace *color_space = fz_device_rgb(fzctx_);
     // a dpi multiplier to render the pdf page with good quality
     float zoom_dpi = 1; // 72 dpi x multiplier
-    res.page_width = page_rect.x1 - page_rect.x0;
+    float pdf_page_width = page_rect.x1 - page_rect.x0;
+    // if no wixed width - use the goal zoom value
+    if (goal_width == 0) {
+      if (goal_zoom<=0){goal_zoom=1;}
+      goal_width = (page_rect.x1 - page_rect.x0) * screen_dpi / 72 * goal_zoom;
+      res.result_zoom=goal_zoom;
+    } else{
+        res.result_zoom=goal_width/(page_rect.x1 - page_rect.x0);
+    }
+
+    res.page_width = goal_width;
+    // qWarning()<<"page_width "<< res.page_width;
+    // qWarning()<<"render width  "<< width;
     if (res.page_width > 1) {
-      zoom_dpi = static_cast<float>(width) / res.page_width;
+      zoom_dpi = goal_width / pdf_page_width;
     }
     res.page_height = (page_rect.y1 - page_rect.y0) * zoom_dpi;
     // create a new pixmap
-    const int pixmap_width = qRound(width * pix_ratio);
+    const int pixmap_width = qRound(goal_width * pix_ratio);
     const int pixmap_height = qRound(res.page_height * pix_ratio);
     pixmap = fz_new_pixmap(fzctx_, color_space, pixmap_width, pixmap_height,
                            separation, 0);

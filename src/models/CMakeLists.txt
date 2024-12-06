@@ -1,7 +1,10 @@
 add_library(models OBJECT
-  pdf_page_model.cpp pdf_page_model.hpp
-  signatures_list_model.hpp signatures_list_model.cpp
-  profiles_model.hpp profiles_model.cpp
+  pdf_doc_model.cpp 
+  pdf_doc_model.hpp
+  signatures_list_model.hpp 
+  signatures_list_model.cpp
+  profiles_model.hpp 
+  profiles_model.cpp
 )
 
 target_include_directories(models PRIVATE ${MUPDF_INCLUDE_DIR})

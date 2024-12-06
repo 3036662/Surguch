@@ -44,8 +44,8 @@ ApplicationWindow {
         anchors.fill: parent
 
         LeftSideBar {
-            id: leftSideBar
-        }
+             id: leftSideBar
+         }
         PdfListView {
             id: pdfListView
             Layout.preferredWidth: root_window.width-500;
@@ -165,6 +165,7 @@ ApplicationWindow {
         // estimate the resulting stamp size
         function resizeAim(location_data){
             try{
+                if(location_data===undefined) {return;}
                 let params=gatherParams(lockation_data);
                 sigCreator.estimateStampResizeFactor(params);
             } catch(e){

@@ -15,8 +15,6 @@ class PrinterLauncher : public QObject {
 public:
   explicit PrinterLauncher(QObject *parent = nullptr);
 
-
-
   /*!
    * \brief Launch a native print dialog,print with cups
    * \param src_file - pdf file to print
@@ -28,10 +26,10 @@ public:
 signals:
 
 private:
-
   /// @details: https://www.cups.org/doc/options.html
   /// @details: man lp-cups
-  static QStringList createPrintCommand(const QPrinter &printer, const QString &file);
+  static QStringList createPrintCommand(const QPrinter &printer,
+                                        const QString &file);
 
   const QString cups_executable_ = "lp-cups";
 };

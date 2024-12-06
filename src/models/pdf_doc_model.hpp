@@ -1,22 +1,22 @@
-#ifndef PDF_PAGE_MODEL_HPP
-#define PDF_PAGE_MODEL_HPP
+#ifndef pdf_doc_model_HPP
+#define pdf_doc_model_HPP
 
 #include "core/raw_signature.hpp"
 #include "mupdf/fitz.h"
 #include "mupdf/pdf.h"
 #include <QAbstractListModel>
 
-class PdfPageModel : public QAbstractListModel {
+class PdfDocModel : public QAbstractListModel {
   Q_OBJECT
 
 public:
-  explicit PdfPageModel(QObject *parent = nullptr);
+  explicit PdfDocModel(QObject *parent = nullptr);
 
-  PdfPageModel(const PdfPageModel &) = delete;
-  PdfPageModel(PdfPageModel &&) = delete;
-  PdfPageModel &operator=(const PdfPageModel &) = delete;
-  PdfPageModel &operator=(PdfPageModel &&) = delete;
-  ~PdfPageModel() override;
+  PdfDocModel(const PdfDocModel &) = delete;
+  PdfDocModel(PdfDocModel &&) = delete;
+  PdfDocModel &operator=(const PdfDocModel &) = delete;
+  PdfDocModel &operator=(PdfDocModel &&) = delete;
+  ~PdfDocModel() override;
 
   [[nodiscard]] QVariant headerData(int section, Qt::Orientation orientation,
                                     int role) const override;
@@ -61,6 +61,8 @@ public:
 
   Q_INVOKABLE void showInFolder();
 
+  Q_PROPERTY(
+      qreal screenDpi MEMBER physical_screen_dpi_ NOTIFY screenDpiChanged)
 
   [[nodiscard]] Q_INVOKABLE fz_document *getDoc() const;
 
@@ -71,6 +73,7 @@ public:
 signals:
   void signaturesFound(std::vector<core::RawSignature> sigs, QString file_path);
   void signaturesCounted(int sig_count);
+  void screenDpiChanged();
 
 private:
   void processSignatures();
@@ -85,7 +88,10 @@ private:
   bool process_signatures_ = false;
   bool process_file_delete_ = false;
 
+  // std::unique_ptr<QSizeF>  physical_screen_size_;
+  qreal physical_screen_dpi_;
+
   std::vector<QString> tmp_files_to_delete_;
 };
 
-#endif // PDF_PAGE_MODEL_HPP
+#endif // pdf_doc_model_HPP

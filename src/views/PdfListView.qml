@@ -6,23 +6,31 @@ import alt.pdfcsp.pdfRender
 
 ListView {
     id: root
-    property int pageWidth: 0
-    property bool landscape: false
+
     property double hScrollPos: 0
+    // --------
+    // source
     property string source: ""
     property bool sourceIsTmp: false // the source file is temporary
+    // --------
+    // page sizes and zoom
     property double zoomPageFact: 1
+    property int pageWidth: 0
+    property bool landscape: false
+    property bool zoomAuto: false
     property int delegateRotation: 0
+    readonly property double maxZoom: 4
+    readonly property double minZoom: 0.2
+    // --------
+    //signing
     property bool signMode: false
     property bool signInProgress: false
-
+    // --------
+    //aim
     property double aimResizeX: 1
     property double aimResizeY: 1
     property bool aimIsAlreadyResized: false
     property bool aimResizeInProgress: false
-
-    readonly property double maxZoom: 4
-    readonly property double minZoom: 0.2
 
     signal pagesCountChanged(int count)
     signal currPageChanged(int index)
@@ -36,6 +44,10 @@ ListView {
     signal stampLocationSelected(var stamp_location_info)
 
     function zoomIn() {
+        if (zoomAuto){
+            zoomAuto=false;
+            zoomPageFact=1;
+        }
         if (zoomPageFact < maxZoom) {
             if (zoomPageFact <= minZoom) {
                 canZoomOut()
@@ -48,6 +60,10 @@ ListView {
     }
 
     function zoomOut() {
+        if (zoomAuto){
+            zoomAuto=false;
+            zoomPageFact=1;
+        }
         if (zoomPageFact > minZoom) {
             if (zoomPageFact >= maxZoom) {
                 canZoom()
@@ -63,10 +79,12 @@ ListView {
     }
 
     function setZoom(newZoom) {
-        if (!newZoom > 0) {
-            zoomPageFact = 1
+        if (newZoom <= 0) { //auto zoom
+            zoomPageFact = -1
+            zoomAuto=true;
             return
         }
+        zoomAuto=false;
         zoomPageFact = newZoom / 100
         if (zoomPageFact < maxZoom) {
             canZoom()
@@ -74,7 +92,7 @@ ListView {
         if (zoomPageFact > minZoom) {
             canZoomOut()
         }
-        //console.warn("new zoom " + zoomPageFact)
+        console.warn("new zoom "+zoomPageFact);
     }
 
     function scrollToPage(newIndex) {
@@ -145,7 +163,6 @@ ListView {
 
     spacing: 30
     flickableDirection: Flickable.HorizontalAndVerticalFlick
-    //Layout.horizontalStretchFactor: 4
     clip: true
 
     onPageWidthChanged: {
@@ -158,7 +175,8 @@ ListView {
         if (sourceIsTmp){
             pdfModel.deleteFileLater(source)
         }
-        setZoom(100)
+        setZoom(-1)
+
         delegateRotation = 0
         if (leftSideBar.sigCount === 0) {
             leftSideBar.showPreviews()
@@ -176,6 +194,7 @@ ListView {
 
     onZoomPageFactChanged: {
         zoomFactorUpdate(zoomPageFact)
+        pdfModel.redrawAll()
     }
 
     onFlickEnded: {
@@ -193,15 +212,31 @@ ListView {
         }
     }
 
+    onZoomAutoChanged: {
+        pdfModel.redrawAll()
+    }
+
+
     model: pdfModel
 
     delegate: Column {
-        width: root.width
+        width: root.width - verticalScroll.width * 2
+
         PdfPageRender {
             id: pdfPage
 
+
+
             property int customRotation: root.delegateRotation
             property int aimResizeStatus: root.aimIsAlreadyResized
+
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.rightMargin: verticalScroll.width
+
+            zoomGoal: zoomPageFact
+            // set goal width only if autoZoom
+            widthGoal: zoomAuto ? root.width : 0;
+            currScreenDpi: pdfModel.screenDpi
 
             function updateCrossSize() {
                 if (!root.aimIsAlreadyResized && pdfPage.width > 0
@@ -244,9 +279,6 @@ ListView {
                 }
             }
 
-            width: root.width * zoomPageFact
-            height: width * 1.42
-
             onWidthChanged: {
                 root.pageWidth = width                
                 updateCrossSize()
@@ -255,7 +287,6 @@ ListView {
             onHeightChanged: {
                 updateCrossSize()
                 landscape=pdfPage.width>pdfPage.height;
-                //console.warn("wdth "+pdfPage.width+" height "+pdfPage.height );
             }
 
             onAimResizeStatusChanged: {
@@ -346,8 +377,10 @@ ListView {
     }
 
     ScrollBar.vertical: ScrollBar {
+        id: verticalScroll
         width: 15
         minimumSize:0.2
         policy:  ScrollBar.AsNeeded// Show scrollbar always
+        snapMode: ScrollBar.NoSnap
     }
 }

@@ -42,22 +42,23 @@ RowLayout {
         TopBarButton {
             icon.source: "qrc:/icons/file_simple.svg"
             text: qsTr("Show in folder")
-            enabled: pdfListView.source.length>0 && !pdfListView.sourceIsTmp
+            enabled: pdfListView.source.length > 0 && !pdfListView.sourceIsTmp
             onClicked: pdfListView.showInFolder()
         }
 
         TopBarButton {
             icon.source: "qrc:/icons/folder_plus.svg"
             text: qsTr("Save as ...")
-            enabled: pdfListView.source.length>0
+            enabled: pdfListView.source.length > 0
             onClicked: saveFileDialog.open()
         }
 
         TopBarButton {
             icon.source: "qrc:/icons/printer_sm.svg"
             text: qsTr("Print")
-            enabled: pdfListView.source.length>0
-            onClicked: printer.print(pdfListView.source,pdfListView.count,pdfListView.landscape);
+            enabled: pdfListView.source.length > 0
+            onClicked: printer.print(pdfListView.source, pdfListView.count,
+                                     pdfListView.landscape)
         }
 
         Row {
@@ -99,16 +100,15 @@ RowLayout {
                 font.family: "Noto Sans"
                 model: profilesModel
                 textRole: "title"
-                valueRole: "value"                
-                displayText: defaultText                
+                valueRole: "value"
+                displayText: defaultText
                 width: 200
                 //implicitContentWidthPolicy: ComboBox.WidestText
                 //implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
-                popup.y:profileComboBox.height
+                popup.y: profileComboBox.height
 
                 anchors.verticalCenter: parent.verticalCenter
                 Layout.alignment: Qt.AlignVCenter
-
 
                 onActivated: {
                     profileComboBox.displayText = profileComboBox.textAt(
@@ -201,8 +201,6 @@ RowLayout {
     //     leftPadding: 10
     //     rightPadding: 10
     // }
-
-
     Keys.onPressed: event => {
                         if (event.key === Qt.Key_Escape
                             && pdfListView.signMode) {
@@ -215,8 +213,9 @@ RowLayout {
         id: fileDialog
         fileMode: FileDialog.OpenFile
         //nameFilters: ["Pdf files (*.pdf)","Any file (* *.*)"];
-        nameFilters: [qsTr("Pdf files (*.pdf)"),qsTr("Any file (* *.*)")];
-        currentFolder:StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+        nameFilters: [qsTr("Pdf files (*.pdf)"), qsTr("Any file (* *.*)")]
+        currentFolder: StandardPaths.writableLocation(
+                           StandardPaths.DocumentsLocation)
         onAccepted: {
             // source is chosen by user, not a temporary file
             pdfListView.openFile(currentFile)
@@ -231,11 +230,12 @@ RowLayout {
         fileMode: FileDialog.SaveFile
         defaultSuffix: "pdf"
         nameFilters: [qsTr("PDF files (*.pdf)")]
-        currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+        currentFolder: StandardPaths.writableLocation(
+                           StandardPaths.DocumentsLocation)
 
         onAccepted: {
             console.warn(currentFile)
-            pdfListView.saveTo(currentFile);
+            pdfListView.saveTo(currentFile)
         }
     }
 }

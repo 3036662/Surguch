@@ -51,6 +51,7 @@ Item {
             id: previewListView
             source: root.source
             visible: showState == LeftSideBar.ShowState.Preview
+
         }
 
         SignaturesList {

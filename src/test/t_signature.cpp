@@ -3,7 +3,7 @@
 #include "core/signature_processor.hpp"
 #include "core/signatures_validator.hpp"
 #include "core/utils.hpp"
-#include "models/pdf_page_model.hpp"
+#include "models/pdf_doc_model.hpp"
 #include <QTest>
 #include <fstream>
 #include <iostream>
@@ -13,7 +13,7 @@ TSignature::TSignature(QObject *parent) : QObject{parent} {}
 void TSignature::testTrue() { QVERIFY(true); }
 
 void TSignature::testModelConstruct() {
-  PdfPageModel model;
+  PdfDocModel model;
   model.setSource(file1_);
   QVERIFY(model.rowCount({}) == 14);
   QVERIFY(model.getCtx() != nullptr);
@@ -27,7 +27,7 @@ void TSignature::createProcessorFail() {
 }
 
 void TSignature::createProcessor() {
-  PdfPageModel model;
+  PdfDocModel model;
   model.setSource(file1_);
   std::unique_ptr<core::SignatureProcessor> processor = nullptr;
   QVERIFY_THROWS_NO_EXCEPTION(processor =
@@ -37,7 +37,7 @@ void TSignature::createProcessor() {
 }
 
 void TSignature::findSignatures() {
-  PdfPageModel model;
+  PdfDocModel model;
   model.setSource(file1_);
   std::unique_ptr<core::SignatureProcessor> processor = nullptr;
   QVERIFY_THROWS_NO_EXCEPTION(processor =
@@ -86,14 +86,14 @@ void TSignature::parseHexString() {
 }
 
 bool TSignature::sigNumb(const QString &file, int sig_expected) const {
-  PdfPageModel model;
+  PdfDocModel model;
   model.setSource(file);
   core::SignatureProcessor prc(model.getCtx(), model.getPdfDoc());
   return prc.findSignatures() && (prc.getSignaturesCount() == sig_expected);
 }
 
 void TSignature::cBridge() {
-  PdfPageModel model;
+  PdfDocModel model;
   model.setSource(file1_);
   std::unique_ptr<core::SignatureProcessor> processor = nullptr;
   QVERIFY_THROWS_NO_EXCEPTION(processor =

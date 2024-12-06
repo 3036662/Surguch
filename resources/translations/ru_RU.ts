@@ -260,22 +260,22 @@
         <translation>Печать</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+40"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+27"/>
-        <location filename="../../src/views/Header.qml" line="+46"/>
+        <location filename="../../src/views/Header.qml" line="+40"/>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>
     <message>
-        <location line="+78"/>
+        <location line="+77"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+12"/>
-        <location filename="../../src/views/Header.qml" line="+78"/>
+        <location filename="../../src/views/Header.qml" line="+77"/>
         <source>Sign</source>
         <translation>Подписать</translation>
     </message>
     <message>
-        <location line="+43"/>
-        <location filename="../../src/views/Header.qml" line="+43"/>
+        <location line="+41"/>
+        <location filename="../../src/views/Header.qml" line="+41"/>
         <source>Pdf files (*.pdf)</source>
         <translation>Pdf файлы (*.pdf)</translation>
     </message>
@@ -286,8 +286,8 @@
         <translation>Любой файл (* *.*)</translation>
     </message>
     <message>
-        <location line="+15"/>
-        <location filename="../../src/views/Header.qml" line="+15"/>
+        <location line="+16"/>
+        <location filename="../../src/views/Header.qml" line="+16"/>
         <source>PDF files (*.pdf)</source>
         <translation>PDF файлы (*.pdf)</translation>
     </message>
@@ -295,16 +295,16 @@
 <context>
     <name>HeaderSubBar</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+146"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+152"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+86"/>
-        <location filename="../../src/views/HeaderSubBar.qml" line="+146"/>
+        <location filename="../../src/views/HeaderSubBar.qml" line="+152"/>
         <source> of </source>
         <translation> из </translation>
     </message>
     <message>
-        <location line="+100"/>
+        <location line="+98"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+63"/>
-        <location filename="../../src/views/HeaderSubBar.qml" line="+100"/>
+        <location filename="../../src/views/HeaderSubBar.qml" line="+98"/>
         <source>Automatic</source>
         <translation>Авто</translation>
     </message>
@@ -317,8 +317,8 @@
 <context>
     <name>LeftSideBar</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+71"/>
-        <location filename="../../src/views/LeftSideBar.qml" line="+71"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+72"/>
+        <location filename="../../src/views/LeftSideBar.qml" line="+72"/>
         <source>No signatures</source>
         <translation>Подписи отсутствуют</translation>
     </message>
@@ -368,8 +368,8 @@
         <translation>ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ</translation>
     </message>
     <message>
-        <location line="+35"/>
-        <location filename="../../src/views/Main.qml" line="+35"/>
+        <location line="+36"/>
+        <location filename="../../src/views/Main.qml" line="+36"/>
         <source>Your certificate is expired.</source>
         <translation>Истек срок действия сертификата.</translation>
     </message>
@@ -424,8 +424,8 @@
 <context>
     <name>PdfListView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+324"/>
-        <location filename="../../src/views/PdfListView.qml" line="+324"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+355"/>
+        <location filename="../../src/views/PdfListView.qml" line="+355"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>

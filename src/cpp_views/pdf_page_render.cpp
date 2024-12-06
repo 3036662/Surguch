@@ -6,11 +6,12 @@
 #include <QThread>
 #include <QtMath>
 #include <memory>
+#include <QScreen>
 
 PdfPageRender::PdfPageRender() {
   setFlag(QQuickItem::ItemHasContents, true);
   setClip(true);
-  const qreal pix_rat = QWindow().devicePixelRatio();
+  const qreal pix_rat = QWindow().devicePixelRatio();  
   if (pix_rat > 2) {
     dev_pix_ratio_ = static_cast<float>(pix_rat);
   }
@@ -26,7 +27,7 @@ void PdfPageRender::geometryChange(const QRectF &newGeometry,
         qFabs(new_zoom_dpi_ - zoom_dpi_last_) / zoom_dpi_last_;
     if (zoom_change > 0.1) {
       needs_new_rendering = true;
-      // qWarning() << "zoom change" << zoom_change * 100 << "%";
+       qWarning() << "zoom change" << zoom_change * 100 << "%";
     }
   }
   if (needs_new_rendering && isVisible()) {
@@ -57,9 +58,12 @@ QSGNode *PdfPageRender::updatePaintNode(
     try {
       const core::MuPageRender mupdf(fzctx_, fzdoc_);
       const core::RenderRes render_result = mupdf.RenderPage(
-          page_number_, custom_rot_value, width(), dev_pix_ratio_);
+          page_number_, custom_rot_value,/* width(),*/ dev_pix_ratio_,width_goal_,zoom_goal_,screen_dpi_);
       if (render_result.buf == nullptr) {
         throw std::runtime_error("[PdfPageRender] failed to render the page");
+      }
+      if (render_result.page_width>0){
+          setWidth(render_result.page_width);
       }
       if (render_result.page_height > 0) {
         setHeight(render_result.page_height);
@@ -90,6 +94,8 @@ QSGNode *PdfPageRender::updatePaintNode(
   return rectNode;
 }
 // NOLINTEND(cppcoreguidelines-owning-memory)
+
+
 
 void PdfPageRender::setDoc(fz_document *fzdoc) { fzdoc_ = fzdoc; }
 

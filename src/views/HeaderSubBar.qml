@@ -23,6 +23,11 @@ ColumnLayout {
     }
 
     function updateZoomValue(zoom) {
+        if (zoom===-1){
+            comboBoxZoom.currentIndex = -1
+            comboBoxZoom.displayText = comboBoxZoom.model[0]
+            return
+        }
         comboBoxZoom.displayText = Math.round(zoom * 100) + "%"
         comboBoxZoom.currentIndex = -1
     }
@@ -50,6 +55,7 @@ ColumnLayout {
         color: "grey"
         Layout.fillWidth: true
     }
+
     RowLayout {
         id: toolbar_subpanel
         spacing: 5
@@ -216,13 +222,11 @@ ColumnLayout {
             ComboBox {
                 id: comboBoxZoom
 
-
-
                 onCurrentIndexChanged: {
                     let newZoom = 0
                     switch (currentIndex) {
                     case 0:
-                        newZoom = 100
+                        newZoom = -1 //auto
                         break
                     case 1:
                         newZoom = 75
@@ -247,7 +251,7 @@ ColumnLayout {
                 currentIndex: 0
                 implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
                 anchors.verticalCenter: parent.verticalCenter
-                popup.y:comboBoxZoom.height
+                popup.y: comboBoxZoom.height
             }
             Rectangle {
                 width: 10
