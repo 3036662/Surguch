@@ -260,9 +260,9 @@
         <translation>Печать</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+46"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+27"/>
-        <location filename="../../src/views/Header.qml" line="+30"/>
+        <location filename="../../src/views/Header.qml" line="+46"/>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>

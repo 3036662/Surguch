@@ -69,13 +69,22 @@ RowLayout {
                 height: parent.height
                 color: "transparent"
             }
-            Image {
-                Layout.alignment: Qt.AlignVCenter
-                id: wrench_icon
-                source: "qrc:/icons/wrench.svg"
-                height: parent.height
-                fillMode: Image.PreserveAspectFit
+            TopBarButton {
+                icon.source: "qrc:/icons/wrench.svg"
+                enabled: profileComboBox.currentValue !== "new"
+
+                onClicked: {
+                    //open profile info panel
+                    rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
+                    // set the certificates for select
+                    rightSideBar.edit_profile.cert_data_raw
+                            = profileComboBox.model.getUserCertsJSON()
+                    // set a reference to this model
+                    rightSideBar.edit_profile.profiles_model = profileComboBox.model
+                    rightSideBar.edit_profile.profile_data = profileComboBox.currentValue
+                }
             }
+
             Rectangle {
                 width: 5
                 height: parent.height
