@@ -19,7 +19,7 @@ ListView {
     property bool landscape: false
     property bool zoomAuto: false
     property int delegateRotation: 0
-    readonly property double maxZoom: 4
+    readonly property double maxZoom: 3
     readonly property double minZoom: 0.2
     // --------
     //signing
@@ -45,9 +45,11 @@ ListView {
 
     function zoomIn() {
         if (zoomAuto){
+            let zoom_fact_goal=itemAt(100, contentY).zoomLast+0.2;
+            zoomPageFact=zoom_fact_goal;
             zoomAuto=false;
-            zoomPageFact=1;
         }
+
         if (zoomPageFact < maxZoom) {
             if (zoomPageFact <= minZoom) {
                 canZoomOut()
@@ -61,8 +63,11 @@ ListView {
 
     function zoomOut() {
         if (zoomAuto){
+            let zoom_fact_goal=itemAt(50, contentY).zoomLast-0.2;
+            if (zoom_fact_goal<=0) {return;}
+            console.warn(zoom_fact_goal)
+            zoomPageFact=zoom_fact_goal;
             zoomAuto=false;
-            zoomPageFact=1;
         }
         if (zoomPageFact > minZoom) {
             if (zoomPageFact >= maxZoom) {
@@ -213,7 +218,8 @@ ListView {
     }
 
     onZoomAutoChanged: {
-        pdfModel.redrawAll()
+
+        //pdfModel.redrawAll()
     }
 
 
@@ -222,16 +228,28 @@ ListView {
     delegate: Column {
         width: root.width - verticalScroll.width * 2
 
+
+        property alias zoomLast : pdfPage.zoomLast;
+
+        onWidthChanged: {
+            if (root.zoomAuto){
+                pdfPage.widthGoal=width
+                pdfPage.width=width
+                pdfPage.height=width/ pdfPage.pageRatio
+            }
+        }
+
         PdfPageRender {
             id: pdfPage
 
-
-
-            property int customRotation: root.delegateRotation
             property int aimResizeStatus: root.aimIsAlreadyResized
 
+            customRotation:  root.delegateRotation
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.rightMargin: verticalScroll.width
+
+            width:root.width
+            height: width*1.42;
 
             zoomGoal: zoomPageFact
             // set goal width only if autoZoom

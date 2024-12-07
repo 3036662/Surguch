@@ -25,9 +25,9 @@ void PdfPageRender::geometryChange(const QRectF &newGeometry,
     const qreal new_zoom_dpi_ = width() / pwidth_;
     const double zoom_change =
         qFabs(new_zoom_dpi_ - zoom_dpi_last_) / zoom_dpi_last_;
-    if (zoom_change > 0.1) {
+    if (zoom_change > 0.1 && isVisible()) {
       needs_new_rendering = true;
-       qWarning() << "zoom change" << zoom_change * 100 << "%";
+      //qWarning() << "zoom change" << zoom_change * 100 << "%";
     }
   }
   if (needs_new_rendering && isVisible()) {
@@ -44,6 +44,10 @@ QSGNode *PdfPageRender::updatePaintNode(
   QSGSimpleTextureNode *rectNode = nullptr;
   if (node != nullptr) {
     rectNode = dynamic_cast<QSGSimpleTextureNode *>(node);
+    if (!isVisible()){
+        //qWarning()<<"return same node, not visible";
+        return node;
+    }
   }
   if (rectNode == nullptr) {
     if (!size().isValid()) {
@@ -53,12 +57,13 @@ QSGNode *PdfPageRender::updatePaintNode(
     rectNode->setFiltering(QSGTexture::Linear);
     rectNode->setOwnsTexture(true);
   }
+
   if (!image_) {
-    const float custom_rot_value = property("customRotation").toFloat();
+    //const float custom_rot_value = property("customRotation").toFloat();
     try {
       const core::MuPageRender mupdf(fzctx_, fzdoc_);
       const core::RenderRes render_result = mupdf.RenderPage(
-          page_number_, custom_rot_value,/* width(),*/ dev_pix_ratio_,width_goal_,zoom_goal_,screen_dpi_);
+          page_number_, custom_rotation_,/* width(),*/ dev_pix_ratio_,width_goal_,zoom_goal_,screen_dpi_);
       if (render_result.buf == nullptr) {
         throw std::runtime_error("[PdfPageRender] failed to render the page");
       }
@@ -69,7 +74,12 @@ QSGNode *PdfPageRender::updatePaintNode(
         setHeight(render_result.page_height);
       }
       pwidth_ = render_result.page_width;
+      pheight_ = render_result.page_height;
+      if (pheight_>0){
+          pratio_=pwidth_/pheight_;
+      }
       zoom_dpi_last_ = render_result.zoom_dpi;
+      result_zoom_last_=render_result.result_zoom;
       image_ = std::make_unique<QImage>(
           render_result.buf, width() * dev_pix_ratio_,
           height() * dev_pix_ratio_, render_result.pix_stride,
