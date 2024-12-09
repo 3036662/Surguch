@@ -108,6 +108,7 @@ ColumnLayout {
         }
 
         ToolButton {
+
             flat: true
             display: AbstractButton.IconOnly
             icon.source: "qrc:/icons/arrow-circle-up.svg"

@@ -44,10 +44,11 @@ ListView {
     signal stampLocationSelected(var stamp_location_info)
 
     function zoomIn() {
-        if (zoomAuto){
-            let zoom_fact_goal=itemAt(100, contentY).zoomLast+0.2;
-            zoomPageFact=zoom_fact_goal;
-            zoomAuto=false;
+        forceActiveFocus()
+        if (zoomAuto) {
+            let zoom_fact_goal = itemAt(100, contentY).zoomLast + 0.2
+            zoomPageFact = zoom_fact_goal
+            zoomAuto = false
         }
 
         if (zoomPageFact < maxZoom) {
@@ -62,12 +63,15 @@ ListView {
     }
 
     function zoomOut() {
-        if (zoomAuto){
-            let zoom_fact_goal=itemAt(50, contentY).zoomLast-0.2;
-            if (zoom_fact_goal<=0) {return;}
+        forceActiveFocus()
+        if (zoomAuto) {
+            let zoom_fact_goal = itemAt(50, contentY).zoomLast - 0.2
+            if (zoom_fact_goal <= 0) {
+                return
+            }
             console.warn(zoom_fact_goal)
-            zoomPageFact=zoom_fact_goal;
-            zoomAuto=false;
+            zoomPageFact = zoom_fact_goal
+            zoomAuto = false
         }
         if (zoomPageFact > minZoom) {
             if (zoomPageFact >= maxZoom) {
@@ -84,12 +88,14 @@ ListView {
     }
 
     function setZoom(newZoom) {
-        if (newZoom <= 0) { //auto zoom
+        forceActiveFocus()
+        if (newZoom <= 0) {
+            //auto zoom
             zoomPageFact = -1
-            zoomAuto=true;
+            zoomAuto = true
             return
         }
-        zoomAuto=false;
+        zoomAuto = false
         zoomPageFact = newZoom / 100
         if (zoomPageFact < maxZoom) {
             canZoom()
@@ -97,14 +103,16 @@ ListView {
         if (zoomPageFact > minZoom) {
             canZoomOut()
         }
-        console.warn("new zoom "+zoomPageFact);
+        console.warn("new zoom " + zoomPageFact)
     }
 
     function scrollToPage(newIndex) {
+        forceActiveFocus()
         positionViewAtIndex(newIndex - 1, ListView.Beginning)
     }
 
     function reserRotation() {
+        forceActiveFocus()
         if (delegateRotation !== 0) {
             delegateRotation = 0
             model.redrawAll()
@@ -113,6 +121,7 @@ ListView {
     }
 
     function rotateClockWise() {
+        forceActiveFocus()
         let currentPage = indexAt(100, contentY + 100) + 1
         delegateRotation = delegateRotation == 270 ? 0 : delegateRotation + 90
         model.redrawAll()
@@ -120,6 +129,7 @@ ListView {
     }
 
     function rotateCounterClockWise() {
+        forceActiveFocus()
         let currentPage = indexAt(100, contentY + 100) + 1
         delegateRotation = delegateRotation == 0 ? 270 : delegateRotation - 90
         model.redrawAll()
@@ -134,28 +144,28 @@ ListView {
         console.warn("Finished stamp size calculation")
     }
 
-    function openTmpFile(file){
-        sourceIsTmp=true;
-        source=file
+    function openTmpFile(file) {
+        sourceIsTmp = true
+        source = file
     }
 
-    function openFile(file){
-        sourceIsTmp=false;
-        source=file
+    function openFile(file) {
+        sourceIsTmp = false
+        source = file
     }
 
-    function saveTo(dest){
-        if (dest){
+    function saveTo(dest) {
+        if (dest) {
             // The second parameter will let the model delete the source file.
-            if (model.saveCurrSourceTo(dest,sourceIsTmp)){
+            if (model.saveCurrSourceTo(dest, sourceIsTmp)) {
                 openFile(dest)
             }
         }
     }
 
-    function showInFolder(){
-        if (source.length>0){
-            model.showInFolder();
+    function showInFolder() {
+        if (source.length > 0) {
+            model.showInFolder()
         }
     }
 
@@ -169,6 +179,8 @@ ListView {
     spacing: 30
     flickableDirection: Flickable.HorizontalAndVerticalFlick
     clip: true
+    focus: true
+    keyNavigationEnabled: false
 
     onPageWidthChanged: {
         pageWidthUpdate(pageWidth)
@@ -177,7 +189,7 @@ ListView {
 
     onSourceChanged: {
         pdfModel.setSource(source)
-        if (sourceIsTmp){
+        if (sourceIsTmp) {
             pdfModel.deleteFileLater(source)
         }
         setZoom(-1)
@@ -192,9 +204,10 @@ ListView {
         aimResizeY = 1
         aimIsAlreadyResized = false
         signInProgress = false
-        if (source.length>0){
-            root_window.title=source;
+        if (source.length > 0) {
+            root_window.title = source
         }
+        forceActiveFocus()
     }
 
     onZoomPageFactChanged: {
@@ -222,20 +235,18 @@ ListView {
         //pdfModel.redrawAll()
     }
 
-
     model: pdfModel
 
     delegate: Column {
         width: root.width - verticalScroll.width * 2
 
-
-        property alias zoomLast : pdfPage.zoomLast;
+        property alias zoomLast: pdfPage.zoomLast
 
         onWidthChanged: {
-            if (root.zoomAuto){
-                pdfPage.widthGoal=width
-                pdfPage.width=width
-                pdfPage.height=width/ pdfPage.pageRatio
+            if (root.zoomAuto) {
+                pdfPage.widthGoal = width
+                pdfPage.width = width
+                pdfPage.height = width / pdfPage.pageRatio
             }
         }
 
@@ -244,16 +255,16 @@ ListView {
 
             property int aimResizeStatus: root.aimIsAlreadyResized
 
-            customRotation:  root.delegateRotation
-            anchors.horizontalCenter: parent.horizontalCenter
+            customRotation: root.delegateRotation
+            anchors.horizontalCenter: width < parent.width ? parent.horizontalCenter : undefined
             anchors.rightMargin: verticalScroll.width
 
-            width:root.width
-            height: width*1.42;
+            width: root.width
+            height: width * 1.42
 
             zoomGoal: zoomPageFact
             // set goal width only if autoZoom
-            widthGoal: zoomAuto ? root.width : 0;
+            widthGoal: zoomAuto ? root.width : 0
             currScreenDpi: pdfModel.screenDpi
 
             function updateCrossSize() {
@@ -298,13 +309,13 @@ ListView {
             }
 
             onWidthChanged: {
-                root.pageWidth = width                
+                root.pageWidth = width
                 updateCrossSize()
             }
 
             onHeightChanged: {
                 updateCrossSize()
-                landscape=pdfPage.width>pdfPage.height;
+                landscape = pdfPage.width > pdfPage.height
             }
 
             onAimResizeStatusChanged: {
@@ -317,7 +328,15 @@ ListView {
                 setPageNumber(model.display)
                 if (width > 0 && root.hScrollPos > 0 && root.hScrollPos < 1) {
                     root.contentX = width * root.hScrollPos
-                }                
+                }
+            }
+
+            MouseArea {
+                enabled: !aimMouseArea.enabled
+                anchors.fill: parent
+                onClicked: {
+                    root.forceActiveFocus()
+                }
             }
 
             MouseArea {
@@ -352,6 +371,9 @@ ListView {
                         root.signMode = false
                         root.signInProgress = true
                         stampLocationSelected(location_data)
+                    }
+                    onClicked: {
+                        root.forceActiveFocus()
                     }
                 }
 
@@ -397,8 +419,54 @@ ListView {
     ScrollBar.vertical: ScrollBar {
         id: verticalScroll
         width: 15
-        minimumSize:0.2
-        policy:  ScrollBar.AsNeeded// Show scrollbar always
+        minimumSize: 0.2
+        policy: ScrollBar.AsNeeded // Show scrollbar always
         snapMode: ScrollBar.NoSnap
     }
+
+    Keys.onPressed: event => {
+                        //
+                        if (event.key === Qt.Key_Left) {
+                            flick(300, 0)
+                            return
+                        }
+                        if (event.key === Qt.Key_Right) {
+                            flick(-300, 0)
+                        }
+                        if (event.key === Qt.Key_Up) {
+                            flick(0, 300)
+                            return
+                        }
+                        if (event.key === Qt.Key_Down) {
+                            flick(0, -300)
+                        }
+                        if (event.key === Qt.Key_P
+                            && event.modifiers === Qt.ControlModifier) {
+                            printer.print(pdfListView.source,
+                                          pdfListView.count,
+                                          pdfListView.landscape)
+                        }
+                        let currentIndexAtTop = root.indexAt(50,
+                                                             contentY + 10) + 1
+                        if (!currentIndexAtTop) {
+                            return
+                        }
+                        if (event.key === Qt.Key_PageUp
+                            //|| event.key === Qt.Key_Left
+                            || event.nativeScanCode === 112) {
+                            if (currentIndexAtTop > 0) {
+                                scrollToPage(currentIndexAtTop - 1)
+                            }
+                            event.accepted = true
+                            return
+                        }
+                        if (event.key === Qt.Key_PageDown
+                            || event.key === Qt.Key_Space
+                            //|| event.key === Qt.Key_Right
+                            || event.nativeScanCode === 117) {
+                            scrollToPage(currentIndexAtTop + 1)
+                            event.accepted = true
+                            return
+                        }
+                    }
 }

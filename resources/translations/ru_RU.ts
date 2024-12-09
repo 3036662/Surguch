@@ -274,8 +274,8 @@
         <translation>Подписать</translation>
     </message>
     <message>
-        <location line="+41"/>
-        <location filename="../../src/views/Header.qml" line="+41"/>
+        <location line="+44"/>
+        <location filename="../../src/views/Header.qml" line="+44"/>
         <source>Pdf files (*.pdf)</source>
         <translation>Pdf файлы (*.pdf)</translation>
     </message>
@@ -295,9 +295,9 @@
 <context>
     <name>HeaderSubBar</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+152"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+153"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+86"/>
-        <location filename="../../src/views/HeaderSubBar.qml" line="+152"/>
+        <location filename="../../src/views/HeaderSubBar.qml" line="+153"/>
         <source> of </source>
         <translation> из </translation>
     </message>
@@ -383,7 +383,7 @@
         <location line="+2"/>
         <location filename="../../src/views/Main.qml" line="+2"/>
         <source>Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.</source>
-        <translation>Произошла ошибка цепочки сертификатов, похоже, что один из корневых сертификатов отсутствует или его нет в списке доверенных.</translation>
+        <translation type="unfinished">Произошла ошибка проверки цепочки сертификатов, похоже, что один из корневых сертификатов отсутствует или его нет в списке доверенных.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -425,7 +425,7 @@
         <location line="+13"/>
         <location filename="../../src/views/Main.qml" line="+13"/>
         <source>CryptoPro CSP 5.0 R3 not found, please check if installed</source>
-        <translation>CryptoPro CSP 5.0 R3 не найден, пожалуйста, проверьте, установлен ли пакет</translation>
+        <translation type="unfinished">CryptoPro CSP 5.0 не найден, убедитесь,что в системе установлен КриптоПро 5.0 версии не ниже R3</translation>
     </message>
     <message>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+10"/>
@@ -436,8 +436,8 @@
 <context>
     <name>PdfListView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+373"/>
-        <location filename="../../src/views/PdfListView.qml" line="+373"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+395"/>
+        <location filename="../../src/views/PdfListView.qml" line="+395"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>

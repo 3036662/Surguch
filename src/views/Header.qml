@@ -206,7 +206,10 @@ RowLayout {
                             && pdfListView.signMode) {
                             pdfListView.signMode = false
                             signModeButton.down = false
+                            event.accepted=true
+                            return
                         }
+                        event.accepted=false
                     }
 
     FileDialog {

@@ -79,7 +79,7 @@ ApplicationWindow {
             onPositionChanged: {
                 pdfListView.contentX = position * contWidth
                 pdfListView.hScrollPos = position
-                console.warn(position + size)
+                console.warn(position+ " / " +  pdfListView.contentX)
             }
 
             // page width changed
