@@ -22,6 +22,10 @@ QString getCertListJSON() noexcept {
       pod->common_execution_status) {
     res = pod->user_certifitate_list_json;
   }
+  if (pod!= nullptr && !pod->common_execution_status){
+      qWarning()<<"ERR STRING"<<pod->err_string;
+      res=kErrNoCSPLib;
+  }
   pdfcsp::c_bridge::CFreeResult(pod);
   return res;
 }

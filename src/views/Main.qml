@@ -190,8 +190,10 @@ ApplicationWindow {
               if (result.err_string==="CERT_EXPIRED"){
                 errorMessageDialog.text=qsTr("Your certificate is expired.");
               } else if (result.err_string==="MAYBE_TSP_URL_INVALID"){
-                errorMessageDialog.text=qsTr("Common error. It looks like the TSP URL is not valid.");
-              } else{
+                errorMessageDialog.text=qsTr("Common error. It looks like the TSP URL is not valid.");                  
+              } else if (result.err_string==="CERT_CHAINING_ERR"){
+                errorMessageDialog.text=qsTr("Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.")
+              }else{
                   errorMessageDialog.text=qsTr("Common error");
               }
               errorMessageDialog.open();
@@ -297,6 +299,17 @@ ApplicationWindow {
             leftSideBar.source = openOnStart
             rightSideBar.showState = RightSideBar.ShowState.Invisible
         }
+
+        // no cryptoPro error
+        if (profilesModel.errStatus){
+            if (profilesModel.errString==="ERR_NO_CSP_LIB"){
+                errorMessageDialog.text=qsTr("CryptoPro CSP 5.0 R3 not found, please check if installed");
+
+            }else{
+                errorMessageDialog.text="err: "+profilesModel.errString;
+            }
+            errorMessageDialog.open();
+        };
     }
 
 
@@ -322,7 +335,7 @@ ApplicationWindow {
 
         // Handle dialog closing
         onAccepted: {
-            console.log("Dialog closed")
+         //   console.log("Dialog closed")
         }
     }
 
@@ -331,7 +344,7 @@ ApplicationWindow {
             buttons: MessageDialog.Ok
             title: "Error"
             onAccepted: {
-                console.log("Error message dialog closed.")
+                //console.log("Error message dialog closed.")
             }
     }
 }

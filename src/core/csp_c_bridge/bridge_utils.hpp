@@ -5,6 +5,8 @@
 
 namespace core::bridge_utils {
 
+constexpr const char* const kErrNoCSPLib="ERR_NO_CSP_LIB";
+
 QString timeToString(time_t val) noexcept;
 
 QString getCertListJSON() noexcept;

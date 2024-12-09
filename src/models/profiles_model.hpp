@@ -36,9 +36,13 @@ public:
 
   Q_INVOKABLE QString getConfigPath() const;
 
+  Q_PROPERTY(bool errStatus MEMBER error_status_)
+  Q_PROPERTY(QString errString  MEMBER err_string_)
+
 signals:
   void profileSaved(QString);   // value of saved profile
   void profileDeleted(QString); // title of deleted profile
+  void errNoCspLib(); // no cryptoPro lib error
 
 private:
   /// @brief readProfiles from JSON file in
@@ -59,6 +63,9 @@ private:
   QJsonArray user_certs_;
   QString config_path_;
   QString profiles_file_name_;
+
+  bool error_status_=false;
+  QString err_string_;
 };
 
 #endif // PROFILES_MODEL_HPP

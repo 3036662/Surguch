@@ -115,8 +115,12 @@ void ProfilesModel::readProfiles() {
 
 void ProfilesModel::readUserCerts() {
   const QString certs_json = core::bridge_utils::getCertListJSON();
-  if (certs_json.isEmpty()) {
-    qWarning() << tr("Failed getting the user's certificates list");
+  if (certs_json.isEmpty() || certs_json==core::bridge_utils::kErrNoCSPLib) {
+    qWarning() << tr("Failed getting the user's certificates list");    
+    error_status_=true;
+    if (!certs_json.isEmpty()){
+        err_string_=certs_json;
+    }
     return;
   }
   const QByteArray certs_json_qb = certs_json.toUtf8();
