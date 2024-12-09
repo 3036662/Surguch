@@ -26,7 +26,11 @@ int ProfilesModel::rowCount(const QModelIndex &parent) const {
   if (parent.isValid()) {
     return 0;
   }
-  return profiles_.count();
+  if (profiles_.count() > std::numeric_limits<int>::max()) {
+    qWarning() << "[rofilesModel::rowCount] can not cast to integer";
+    return 0;
+  }
+  return static_cast<int>(profiles_.count());
 }
 
 QVariant ProfilesModel::data(const QModelIndex &index, int role) const {
@@ -39,7 +43,7 @@ QVariant ProfilesModel::data(const QModelIndex &index, int role) const {
         profiles_.at(index.row()).toObject().value("title").toString();
     return res;
   }
-  case ValueRole:
+  case ValueRole: {
     if (profiles_.at(index.row()).toObject().value("title").toString() ==
         create_profile_title_) {
       return "new";
@@ -49,6 +53,10 @@ QVariant ProfilesModel::data(const QModelIndex &index, int role) const {
         QJsonDocument(profiles_.at(index.row()).toObject()).toJson();
     return res;
   }
+  default:
+    return {};
+  }
+
   return {};
 }
 
@@ -115,11 +123,11 @@ void ProfilesModel::readProfiles() {
 
 void ProfilesModel::readUserCerts() {
   const QString certs_json = core::bridge_utils::getCertListJSON();
-  if (certs_json.isEmpty() || certs_json==core::bridge_utils::kErrNoCSPLib) {
-    qWarning() << tr("Failed getting the user's certificates list");    
-    error_status_=true;
-    if (!certs_json.isEmpty()){
-        err_string_=certs_json;
+  if (certs_json.isEmpty() || certs_json == core::bridge_utils::kErrNoCSPLib) {
+    qWarning() << tr("Failed getting the user's certificates list");
+    error_status_ = true;
+    if (!certs_json.isEmpty()) {
+      err_string_ = certs_json;
     }
     return;
   }
@@ -147,7 +155,7 @@ Q_INVOKABLE bool ProfilesModel::uniqueName(QString profile_name) {
                       });
 }
 
-Q_INVOKABLE bool ProfilesModel::saveProfile(QString profile_json) {
+Q_INVOKABLE bool ProfilesModel::saveProfile(const QString &profile_json) {
   if (profile_json.isEmpty()) {
     return false;
   }
@@ -160,8 +168,9 @@ Q_INVOKABLE bool ProfilesModel::saveProfile(QString profile_json) {
   QString old_logo_path;
   // if new profile - create a new id
   if (profile_object.value("id").toInt() == -1) {
-    bool unique_name = profile_object.contains("title") &&
-                       uniqueName(profile_object.value("title").toString());
+    const bool unique_name =
+        profile_object.contains("title") &&
+        uniqueName(profile_object.value("title").toString());
     if (!unique_name) {
       qWarning()
           << "Can't create profile,profile with this name already exists";
@@ -187,7 +196,7 @@ Q_INVOKABLE bool ProfilesModel::saveProfile(QString profile_json) {
                                               profile_object.value("id");
                                      });
     if (it_old_value != profiles_.cend()) {
-      QJsonObject old_profile = it_old_value->toObject();
+      const QJsonObject old_profile = it_old_value->toObject();
       if (old_profile.contains("logo_path")) {
         old_logo_path = old_profile.value("logo_path").toString();
       }
@@ -243,7 +252,7 @@ QString ProfilesModel::saveLogoImage(const QString &path,
   if (path.isEmpty()) {
     return {};
   }
-  QString file_path = QUrl(path).toString(QUrl::PreferLocalFile);
+  const QString file_path = QUrl(path).toString(QUrl::PreferLocalFile);
   const QFileInfo src_file_info(file_path);
   if (!src_file_info.exists() || !src_file_info.isFile()) {
     qWarning()

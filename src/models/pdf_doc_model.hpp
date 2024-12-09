@@ -36,7 +36,7 @@ public:
    * @brief get current source path
    * @return string
    */
-  Q_INVOKABLE QString getSource() const;
+  [[nodiscard]] Q_INVOKABLE QString getSource() const;
 
   /**
    * @brief resert the whole model
@@ -49,12 +49,14 @@ public:
    */
   Q_PROPERTY(bool mustProcessSignatures READ mustProcessSignatures WRITE
                  setMustProcessSignatures);
-  bool mustProcessSignatures() const { return process_signatures_; }
+  [[nodiscard]] bool mustProcessSignatures() const {
+    return process_signatures_;
+  }
   void setMustProcessSignatures(bool val) { process_signatures_ = val; }
 
   Q_PROPERTY(bool mustDeleteTmpFiles MEMBER process_file_delete_)
 
-  Q_INVOKABLE bool saveCurrSourceTo(const QString path,
+  Q_INVOKABLE bool saveCurrSourceTo(const QString &path,
                                     bool delete_curr_source);
 
   Q_INVOKABLE void deleteFileLater(QString path);

@@ -44,9 +44,9 @@ public:
     qWarning() << "sign worker construct " << this;
   };
 
-  ~SignaturesValidator() override {
-    qWarning() << "sign worker delete " << this;
-  }
+  // ~SignaturesValidator() override {
+  //   qWarning() << "sign worker delete " << this;
+  // }
 
   void abort() { abort_recieved_ = true; };
 
@@ -54,7 +54,7 @@ public slots:
 
   /// @brief validate all non-empty signatures by creating CspResponse objects
   void validateSignatures(std::vector<core::RawSignature> raw_signatures,
-                          QString file_source);
+                          const QString& file_source);
 
 signals:
   void validationFinished(DocStatusEnum::CommonDocCoverageStatus);
@@ -69,11 +69,11 @@ private:
 public:
 #endif
 
-  CoverageInfo analyzeOneSigCoverage(const core::RawSignature &sig,
+  static CoverageInfo analyzeOneSigCoverage(const core::RawSignature &sig,
                                      size_t file_size) noexcept;
 
   DocStatusEnum::CommonDocCoverageStatus
-  coverageStatus(const std::map<size_t, CoverageInfo> &coverage_infos,
+  static coverageStatus(const std::map<size_t, CoverageInfo> &coverage_infos,
                  bool raw_signatures_empty);
 
   bool abort_recieved_ = false;

@@ -8,7 +8,7 @@ namespace core {
 
 SignWorker::SignWorker(QObject *parent)
     : QObject{parent},
-      locale_(newlocale(LC_ALL_MASK, "POSIX", static_cast<locale_t>(0))) {}
+      locale_(newlocale(LC_ALL_MASK, "POSIX", static_cast<locale_t>(nullptr))) {}
 
 SignWorker::~SignWorker() {
   if (locale_ != nullptr) {
@@ -18,7 +18,7 @@ SignWorker::~SignWorker() {
 
 void SignWorker::launchSign(SignParams sign_params) {
   params_ = std::move(sign_params);
-  SignResult res = preparePdf();
+  const SignResult res = preparePdf();
   emit signCompleted(res);
 }
 

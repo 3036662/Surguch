@@ -11,9 +11,9 @@ SignaturesListModel::SignaturesListModel(QObject *parent)
   role_names_[SigData] = "sigData";
 }
 
-QVariant SignaturesListModel::headerData(int section,
-                                         Qt::Orientation orientation,
-                                         int role) const {
+QVariant SignaturesListModel::headerData(int /*section*/,
+                                         Qt::Orientation /*orientation*/,
+                                         int /*role*/) const {
   return {};
 }
 
@@ -21,7 +21,7 @@ int SignaturesListModel::rowCount(const QModelIndex &parent) const {
   if (parent.isValid()) {
     return 0;
   }
-  return raw_signatures_.size();
+  return static_cast<int>(raw_signatures_.size());
 }
 
 QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
@@ -55,12 +55,14 @@ QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
       return validation_results_.at(index.row())->toJson();
     }
     break;
+  default:
+    return {};
   }
   return {};
 }
 
 void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
-                                        QString file_source) {
+                                        const QString &file_source) {
   beginResetModel();
   validation_results_.clear();
   raw_signatures_ = std::move(sigs);
@@ -129,7 +131,7 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
             worker_thread == worker_threads_[curr_worker_index_].get()) {
           qWarning() << "recieved validation result from validator"
                      << validators_[curr_worker_index_].get();
-          saveValidationResult(validation_result, ind);
+          saveValidationResult(std::move(validation_result), ind);
         }
       });
 
@@ -208,7 +210,7 @@ void SignaturesListModel::recoverDoc(qint64 sig_index) {
       });
   // job is completed
   QObject::connect(recover_worker_, &core::FileRecoverWorker::recoverCompleted,
-                   [this](QString res) {
+                   [this](const QString &res) {
                      if (!res.isEmpty()) {
                        emit fileRecovered(res);
                      }

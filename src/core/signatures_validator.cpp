@@ -6,12 +6,12 @@
 namespace core {
 
 void SignaturesValidator::validateSignatures(
-    std::vector<core::RawSignature> raw_signatures, QString file_source) {
+    std::vector<core::RawSignature> raw_signatures,const QString& file_source) {
   bool aborted = false;
   std::map<size_t, CoverageInfo> coverage_infos;
-  size_t i = 0;
-  for (i = 0; i < raw_signatures.size(); ++i) {
-    const auto &sig = raw_signatures[i];
+  size_t index_curr_sig = 0;
+  for (index_curr_sig = 0; index_curr_sig < raw_signatures.size(); ++index_curr_sig) {
+    const auto &sig = raw_signatures[index_curr_sig];
     if (abort_recieved_ ||
         QThread::currentThread()->isInterruptionRequested()) {
       qWarning() << "Validation abort";
@@ -34,15 +34,15 @@ void SignaturesValidator::validateSignatures(
       result->can_be_casted_to_full_coverage =
           cov_info.can_be_casted_to_full_coverage;
       result->byteranges = sig.getByteRanges();
-      result->sig_curr_index = i;
+      result->sig_curr_index = index_curr_sig;
       result->file_path = file_source;
-      coverage_infos.insert_or_assign(i, cov_info);
+      coverage_infos.insert_or_assign(index_curr_sig, cov_info);
     } catch (const std::exception &ex) {
       qWarning() << ex.what();
-      emit validationFailedForSignature(i);
+      emit validationFailedForSignature(index_curr_sig);
     }
     if (result) {
-      emit validatationResult(result, i);
+      emit validatationResult(result, index_curr_sig);
     }
   }
   if (aborted) {
@@ -50,7 +50,7 @@ void SignaturesValidator::validateSignatures(
     QThread::currentThread()->quit();
   } else {
     // emit message about signatures coverages
-    DocStatusEnum::CommonDocCoverageStatus status =
+    const DocStatusEnum::CommonDocCoverageStatus status =
         coverageStatus(coverage_infos, raw_signatures.empty());
     emit validationFinished(status);
   }
@@ -150,14 +150,14 @@ DocStatusEnum::CommonDocCoverageStatus SignaturesValidator::coverageStatus(
                                     !at_least_one_full_coverage &&
                                     !raw_signatures_empty;
   // doc can't be trusted
-  const bool doc_cant_be_trusted =
-      !at_least_one_full_coverage && !at_least_one_recoverable;
+  // const bool doc_cant_be_trusted =
+  //     !at_least_one_full_coverage && !at_least_one_recoverable;
   // some signatures are suspicious
   const bool doc_suspicious_previous =
       at_least_one_full_coverage && at_lest_one_suspicious;
   const bool doc_can_be_recoverd_but_suspicious =
       at_least_one_recoverable && at_lest_one_suspicious;
-
+  // cann't be trusted by default
   DocStatusEnum::CommonDocCoverageStatus status =
       DocStatusEnum::CommonDocCoverageStatus::kDocCantBeTrusted;
   if (everything_is_fine || raw_signatures_empty) {

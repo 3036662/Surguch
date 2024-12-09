@@ -14,7 +14,7 @@ QString timeToString(time_t val) noexcept {
 }
 
 QString getCertListJSON() noexcept {
-  pdfcsp::c_bridge::CPodParam params{};
+  const pdfcsp::c_bridge::CPodParam params{};
   pdfcsp::c_bridge::CPodResult *const pod =
       pdfcsp::c_bridge::CGetCertList(params);
   QString res;

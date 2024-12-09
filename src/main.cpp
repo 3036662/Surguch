@@ -10,20 +10,19 @@
 #include <QGuiApplication>
 #include <QLocale>
 #include <QQmlApplicationEngine>
-#include <QTranslator>
 #include <QQmlContext>
-
+#include <QTranslator>
 
 int main(int argc, char *argv[]) {
 
   QTranslator translator;
-  QString locale = QLocale::system().name();
+  const QString locale = QLocale::system().name();
   QApplication app(argc, argv);
   const QString translation_path = ":/translations/" + locale + ".qm";
   if (!translator.load(translation_path)) {
     qWarning("Load translations failed");
   } else {
-    app.installTranslator(&translator);
+    QApplication::installTranslator(&translator);
   }
 
   qmlRegisterType<PdfPageRender>("alt.pdfcsp.pdfRender", 0, 1, "PdfPageRender");
@@ -40,7 +39,7 @@ int main(int argc, char *argv[]) {
                                          "PrinterLauncher");
 
   QQmlApplicationEngine engine;
-  QStringList args = app.arguments();
+  const QStringList args = QApplication::arguments();
   // file to open on start
   engine.rootContext()->setContextProperty("openOnStart",
                                            (args.size() > 1 ? args.at(1) : ""));

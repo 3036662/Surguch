@@ -94,7 +94,7 @@ bool SignatureCreator::createSignature(const QVariantMap &qvparams) {
       });
   // job is completed
   QObject::connect(p_worker_, &SignWorker::signCompleted,
-                   [this](SignWorker::SignResult res) {
+                   [this](const SignWorker::SignResult& res) {
                      handleResult(res);
                      p_sign_thread_->quit();
                    });
@@ -150,7 +150,7 @@ void SignatureCreator::estimateStampResizeFactor(const QVariantMap &qvparams) {
   p_resize_img_thread_->start();
 }
 
-void SignatureCreator::handleResult(SignWorker::SignResult res) {
+void SignatureCreator::handleResult(const SignWorker::SignResult& res) {
   QVariantMap js_result;
   js_result["status"] = res.status;
   js_result["tmp_file_path"] = res.tmp_result_file;

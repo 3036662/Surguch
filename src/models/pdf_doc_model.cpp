@@ -26,13 +26,10 @@ PdfDocModel::PdfDocModel(QObject *parent)
   fz_catch(fzctx_) { fz_report_error(fzctx_); }
   // ---------------------------
   // watch for current screen dpi
-  QGuiApplication *app =
-      dynamic_cast<QGuiApplication *>(QGuiApplication::instance());
   QWindow *p_window = nullptr;
   QScreen *p_screen = nullptr;
-  QWindowList window_list;
-  if (app && !(window_list = app->topLevelWindows()).isEmpty() &&
-      (p_window = window_list.at(0)) != nullptr &&
+  const QWindowList window_list = QGuiApplication::topLevelWindows();
+  if (!window_list.isEmpty() && (p_window = window_list.at(0)) != nullptr &&
       (p_screen = p_window->screen()) != nullptr) {
     physical_screen_dpi_ = p_screen->physicalDotsPerInch();
     screenDpiChanged();
@@ -143,7 +140,7 @@ fz_context *PdfDocModel::getCtx() const { return fzctx_; }
 pdf_document *PdfDocModel::getPdfDoc() const { return pdfdoc_; }
 
 void PdfDocModel::redrawAll() {
-  qWarning()<<"redraw all";
+  qWarning() << "redraw all";
   beginResetModel();
   endResetModel();
 }
@@ -161,8 +158,8 @@ void PdfDocModel::processSignatures() {
     qWarning() << err_str;
     return;
   }
-  std::vector<core::RawSignature> signatures = prc->ParseSignatures();
-  emit signaturesCounted(signatures.size());
+  const std::vector<core::RawSignature> signatures = prc->ParseSignatures();
+  emit signaturesCounted(static_cast<int>(signatures.size()));
   emit signaturesFound(signatures, file_source_);
   qWarning() << "signatures found " << signatures.size();
 }
@@ -198,7 +195,7 @@ Q_INVOKABLE void PdfDocModel::deleteFileLater(QString path) {
   tmp_files_to_delete_.emplace_back(std::move(path));
 }
 
-Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(QString path,
+Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(const QString &path,
                                                bool delete_curr_source) {
   const QString dest_path = QUrl(path).toString(QUrl::PreferLocalFile);
   QFile src_file(file_source_);
@@ -223,7 +220,7 @@ Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(QString path,
 }
 
 void PdfDocModel::showInFolder() {
-  QUrl folder_url =
+  const QUrl folder_url =
       QUrl::fromLocalFile(QFileInfo(file_source_).absoluteDir().absolutePath());
   QDesktopServices::openUrl(folder_url);
 }

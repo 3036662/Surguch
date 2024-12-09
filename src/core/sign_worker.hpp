@@ -4,7 +4,7 @@
 #include "pdf_csp_c.hpp"
 #include <QDebug>
 #include <QObject>
-#include <locale.h>
+#include <clocale>
 #include <vector>
 
 namespace core {
@@ -84,8 +84,9 @@ signals:
   void resizeStampCompleted(AimResizeFactor res);
 
 private:
-  SignResult preparePdf();
-  SharedParamWrapper createParams() const;
+
+  [[nodiscard]] SignResult preparePdf();
+  [[nodiscard]] SharedParamWrapper createParams() const;
 
   SignParams params_;
   locale_t locale_ = nullptr;

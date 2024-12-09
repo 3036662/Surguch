@@ -6,11 +6,11 @@
 
 namespace core {
 
-void FileRecoverWorker::recoverFileWithByteRange(const QString path,
-                                                 const RangesVector branges) {
+void FileRecoverWorker::recoverFileWithByteRange(const QString& path,
+                                                 const RangesVector& branges) {
   const QFileInfo finfo(path);
   QFile src_file(path);
-  const qint64 eof_pos = branges.at(1).first + branges.at(1).second;
+  const quint64 eof_pos = branges.at(1).first + branges.at(1).second;
   if (!src_file.exists() || branges.size() != 2 || eof_pos >= src_file.size()) {
     qWarning() << "[recoverFileWithByteRange] invalid parameters";
     emit recoverCompleted("");
@@ -41,15 +41,15 @@ void FileRecoverWorker::recoverFileWithByteRange(const QString path,
   // copy
   src_file.seek(0);
   while (!src_file.atEnd() && src_file.pos() < eof_pos && !abort_recieved_) {
-    char ch = 0x00;
-    if (!src_file.getChar(&ch)) {
+    char symbol = 0x00;
+    if (!src_file.getChar(&symbol)) {
       break;
     }
-    dest_file.putChar(ch);
+    dest_file.putChar(symbol);
   }
   dest_file.close();
   src_file.close();
-  QFileInfo dest_finfo(dest_file);
+  const QFileInfo dest_finfo(dest_file);
   if (dest_finfo.size() != eof_pos) {
     qWarning() << "[recoverFileWithByteRange] recover failed";
     emit recoverCompleted("");

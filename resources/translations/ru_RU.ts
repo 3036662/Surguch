@@ -456,7 +456,7 @@
         <translation>Создать профиль</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+57"/>
         <source>Standart config location cannot be determined, using home</source>
         <translation>Не удалось определить расположение конфигурационных файлов пользователя, будет использована домашняя директория</translation>
     </message>

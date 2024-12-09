@@ -12,7 +12,7 @@ class SignatureCreator : public QObject {
 public:
   explicit SignatureCreator(QObject *parent = nullptr);
 
-  void handleResult(SignWorker::SignResult res);
+  void handleResult(const SignWorker::SignResult& res);
 
   void handleStampResize(SignWorker::AimResizeFactor res);
 

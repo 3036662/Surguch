@@ -23,8 +23,8 @@ class SignaturesListModel : public QAbstractListModel {
 public:
   explicit SignaturesListModel(QObject *parent = nullptr);
 
-  QVariant headerData(int section, Qt::Orientation orientation,
-                      int role = Qt::DisplayRole) const override;
+  QVariant headerData(int /*section*/, Qt::Orientation /*orientation*/,
+                      int /*role*/) const override;
 
   [[nodiscard]] int rowCount(const QModelIndex &parent) const override;
 
@@ -46,7 +46,8 @@ signals:
 public slots:
 
   /// @brief store RawSignatures, send all signatures to validation
-  void updateSigList(std::vector<core::RawSignature> sigs, QString file_source);
+  void updateSigList(std::vector<core::RawSignature> sigs,
+                     const QString &file_source);
 
   void saveValidationResult(
       std::shared_ptr<core::ValidationResult> validation_result, size_t ind);

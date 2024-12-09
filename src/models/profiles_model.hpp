@@ -24,25 +24,25 @@ public:
   [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
   ///@brief get a json array with user certificates
-  Q_INVOKABLE QString getUserCertsJSON() const;
+  [[nodiscard]] Q_INVOKABLE QString getUserCertsJSON() const;
 
-  Q_INVOKABLE bool saveProfile(QString profile_json);
+  [[nodiscard]] Q_INVOKABLE bool saveProfile(const QString &profile_json);
 
-  Q_INVOKABLE QString getDetDefaultProfileVal();
+  [[nodiscard]] Q_INVOKABLE QString getDetDefaultProfileVal();
 
-  Q_INVOKABLE bool deleteProfile(int id_profile);
+  [[nodiscard]] Q_INVOKABLE bool deleteProfile(int id_profile);
 
-  Q_INVOKABLE bool uniqueName(QString profile_name);
+  [[nodiscard]] Q_INVOKABLE bool uniqueName(QString profile_name);
 
-  Q_INVOKABLE QString getConfigPath() const;
+  [[nodiscard]] Q_INVOKABLE QString getConfigPath() const;
 
   Q_PROPERTY(bool errStatus MEMBER error_status_)
-  Q_PROPERTY(QString errString  MEMBER err_string_)
+  Q_PROPERTY(QString errString MEMBER err_string_)
 
 signals:
   void profileSaved(QString);   // value of saved profile
   void profileDeleted(QString); // title of deleted profile
-  void errNoCspLib(); // no cryptoPro lib error
+  void errNoCspLib();           // no cryptoPro lib error
 
 private:
   /// @brief readProfiles from JSON file in
@@ -64,7 +64,7 @@ private:
   QString config_path_;
   QString profiles_file_name_;
 
-  bool error_status_=false;
+  bool error_status_ = false;
   QString err_string_;
 };
 
