@@ -32,6 +32,9 @@ A gui application for verification and creation of digitally signed pdf document
 %files
 %_bindir/surguch
 %_datadir/applications/surguch.desktop
+%_datadir/icons/hicolor/scalable/apps/SealWax-1_32.svg
+%_datadir/pixmaps/SealWax-1_32.png
+
 
 %changelog
 * Thu Nov 21 2024 Oleg Proskurin <proskur@altlinux.org> 0.1-alt1
