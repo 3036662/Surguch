@@ -22,5 +22,6 @@
         <file>icons/medal-ribbon.svg</file>
         <file>icons/close_icon.svg</file>
         <file>translations/ru_RU.qm</file>
+        <file>app_icons/SealWax-1_32.png</file>
     </qresource>
 </RCC>

@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QDirIterator>
 #include <QGuiApplication>
+#include <QIcon>
 #include <QLocale>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
@@ -19,6 +20,8 @@ int main(int argc, char *argv[]) {
   QTranslator translator;
   const QString locale = QLocale::system().name();
   QApplication app(argc, argv);
+
+  QGuiApplication::setWindowIcon(QIcon(":/app_icons/SealWax-1_32.png"));
   const QString translation_path = ":/translations/" + locale + ".qm";
   if (!translator.load(translation_path)) {
     qWarning("Load translations failed");
@@ -56,6 +59,11 @@ int main(int argc, char *argv[]) {
   const QUrl url("qrc:/gui_pdf_csp/Main.qml");
   engine.load(url);
 #endif
+
+  // QDirIterator it(":", QDirIterator::Subdirectories);
+  // while (it.hasNext()) {
+  //     qWarning() << it.next();
+  // }
 
   return QApplication::exec();
 }

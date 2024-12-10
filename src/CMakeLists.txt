@@ -40,6 +40,7 @@ IF (NOT DEFINED PDFCSP_PDF_INCLUDE_DIR)
     SET (PDFCSP_PDF_INCLUDE_DIR /usr/include/pdfcsp/)
 ENDIF()
 
+
 #translations
 IF (NOT DEFINED SIBLING_DEPLOY) #dont update translation for every sibling
 add_custom_target(update_translations ALL
@@ -166,9 +167,19 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 endif()
 
 if (NOT DEFINED SHARE_INSTALL_PREFIX)
-	SET (SHARE_INSTALL_PREFIX /usr/share)
+        SET (SHARE_INSTALL_PREFIX /usr/share)
 endif()	
 
 
 install(TARGETS  surguch RUNTIME)
 install(FILES surguch.desktop DESTINATION ${SHARE_INSTALL_PREFIX}/applications PERMISSIONS WORLD_READ WORLD_EXECUTE)
+
+IF (NOT DEFINED APP_ICON_DIR)
+    SET (APP_ICON_DIR /usr/share/icons/hicolor/scalable/apps/)
+ENDIF()
+IF (NOT DEFINED APP_ICON_PNG_DIR)
+    SET (APP_ICON_PNG_DIR /usr/share/pixmaps/)
+ENDIF()
+
+install(FILES ${CMAKE_SOURCE_DIR}/resources/app_icons/SealWax-1_32.svg DESTINATION ${APP_ICON_DIR}  PERMISSIONS WORLD_READ)
+install(FILES ${CMAKE_SOURCE_DIR}/resources/app_icons/SealWax-1_32.png DESTINATION ${APP_ICON_PNG_DIR}  PERMISSIONS WORLD_READ)
