@@ -1,9 +1,8 @@
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
-<svg fill="#000000" width="184px" height="184px" viewBox="-1.68 -1.68 27.36 27.36" xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="0.00024000000000000003">
-<g id="SVGRepo_bgCarrier" stroke-width="0"/>
-<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.24000000000000005"/>
-<g id="SVGRepo_iconCarrier">
-<path d="M20,23a1,1,0,0,0,1-1V2a1,1,0,0,0-1-1H6A3,3,0,0,0,3,4V20a3,3,0,0,0,3,3ZM5,4A1,1,0,0,1,6,3H19V16H5ZM5,20V18H19v3H6A1,1,0,0,1,5,20Z"/>
-</g>
-</svg>
+<svg version="1.1" width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <style id="current-color-scheme" type="text/css">.ColorScheme-Text {
+        color:#232629;
+      }</style>
+ </defs>
+ <path class="ColorScheme-Text" fill-rule="evenodd" d="M8.665 3.166a2.833 2.833 0 0 0-2.833 2.833v17.418c.04-.043.08-.086.123-.128a3.833 3.833 0 0 1 2.71-1.123h17.5V3.999a.833.833 0 0 0-.833-.833H8.665Zm18.5.833a1.833 1.833 0 0 0-1.833-1.833H8.665a3.833 3.833 0 0 0-3.833 3.833v20a3.833 3.833 0 0 0 3.833 3.834h16.667a1.833 1.833 0 0 0 1.833-1.834V4Zm-1 19.167h-17.5a2.833 2.833 0 1 0 0 5.667h16.667a.833.833 0 0 0 .833-.834v-4.833Z" clip-rule="evenodd" fill="currentColor"/>
+</svg>

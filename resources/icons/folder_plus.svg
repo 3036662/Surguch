@@ -1,5 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M3 6C3 4.34315 4.34315 3 6 3H8.92157C9.45201 3 9.96071 3.21071 10.3358 3.58579L11.4142 4.66421C11.7893 5.03929 12.298 5.25 12.8284 5.25H18C19.6569 5.25 21 6.59315 21 8.25V18C21 19.6569 19.6569 21 18 21H6C4.34315 21 3 19.6569 3 18V6Z" stroke="#000000" stroke-width="2"/>
-<path d="M9 13H15M12 10L12 16" stroke="#000000" stroke-width="2" stroke-linecap="round"/>
+<svg version="1.1" width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <style id="current-color-scheme" type="text/css">.ColorScheme-Text {
+        color:#232629;
+      }</style>
+ </defs>
+
+ <path class="ColorScheme-Text" fill-rule="evenodd" d="M3 6c0-1.09.91-2 2-2h9.076c.471 0 .908-.001 1.371.23.418.21.676.472 1.054.855l.206.208L18.414 7H27c1.108 0 2 .892 2 2v7h-1V9c0-.554-.446-1-1-1h-8.586l-1.707 1.707a39.58 39.58 0 0 0-.206.208c-.378.384-.637.646-1.054.855-.463.231-.9.23-1.37.23H4v14c0 .554.446 1 1 1h13v1H5c-1.108 0-2-.892-2-2V6Zm11-1H5c-.554 0-1 .446-1 1v4h10c.425 0 .67 0 .887-.077.294-.104.538-.348 1.113-.923l1.5-1.5L16 6c-.575-.575-.82-.82-1.113-.923C14.669 5 14.425 5 14 5Z" clip-rule="evenodd" fill="currentColor"/>
+
+ <path class="ColorScheme-Text" fill-rule="evenodd" d="M30 22.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0ZM24 19v3h-3v1h3v3h1v-3h3v-1h-3v-3h-1Z" clip-rule="evenodd" fill="currentColor"/>
+
 </svg>
