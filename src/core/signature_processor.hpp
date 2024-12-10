@@ -10,13 +10,12 @@
 namespace core {
 
 /**
- * @brief The SignatureProcessor class
+ * @brief Find signatures in the given document
  * @throws runtime_error on construct
  */
 class SignatureProcessor {
 public:
   SignatureProcessor(fz_context *fzctx, pdf_document *pdfdoc);
-
   SignatureProcessor(const SignatureProcessor &) = delete;
   SignatureProcessor(SignatureProcessor &&) = delete;
   SignatureProcessor &operator=(const SignatureProcessor &) = delete;
@@ -30,13 +29,18 @@ public:
   ///@return returns array of RawSignature objects
   std::vector<RawSignature> ParseSignatures() noexcept;
 
-  [[nodiscard]] pdf_obj *findAcroForm() const noexcept;
-
+  /// @brief Get the SigFlags bitset
+  /// @details ISO32000 [12.7.2]
   [[nodiscard]] std::bitset<32> getFormSigFlags() const noexcept;
 
+  /// @brief The number of signatures in the file
   [[nodiscard]] size_t getSignaturesCount() const noexcept {
     return signarures_ptrs_.size();
   }
+
+  /// @brief ind AcroForm object
+  /// @details ISO 32000 [12.7.2]
+  [[nodiscard]] pdf_obj *findAcroForm() const noexcept;
 
 private:
   fz_context *fzctx_ = nullptr;

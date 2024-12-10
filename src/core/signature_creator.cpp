@@ -9,6 +9,7 @@ namespace core {
 
 SignatureCreator::SignatureCreator(QObject *parent) : QObject{parent} {}
 
+/// @brief parse all parameters recieved from QML
 SignWorker::SignParams
 SignatureCreator::createWorkerParams(const QVariantMap &qvparams) {
   SignWorker::SignParams params{};
@@ -73,6 +74,10 @@ SignatureCreator::createWorkerParams(const QVariantMap &qvparams) {
   return params;
 }
 
+/**
+ * @brief Create a signature (nonblocking)
+ * @param QVariantMap, suitable for filling SignWorker::SignParams
+ */
 bool SignatureCreator::createSignature(const QVariantMap &qvparams) {
   qWarning() << "[SignatureCreator::CreateSignature]";
   auto params = createWorkerParams(qvparams);
@@ -94,7 +99,7 @@ bool SignatureCreator::createSignature(const QVariantMap &qvparams) {
       });
   // job is completed
   QObject::connect(p_worker_, &SignWorker::signCompleted,
-                   [this](const SignWorker::SignResult& res) {
+                   [this](const SignWorker::SignResult &res) {
                      handleResult(res);
                      p_sign_thread_->quit();
                    });
@@ -110,6 +115,12 @@ bool SignatureCreator::createSignature(const QVariantMap &qvparams) {
   return true;
 }
 
+/**
+ * @brief estimate StampResizeFactor
+ * @param qvparams from qml
+ * @details In case text strings in certificates are very long, the stamp size
+ * will be enlarged.
+ */
 void SignatureCreator::estimateStampResizeFactor(const QVariantMap &qvparams) {
   qWarning() << "[SignatureCreator::estimateStampResizeFactor]";
   auto params = createWorkerParams(qvparams);
@@ -150,7 +161,8 @@ void SignatureCreator::estimateStampResizeFactor(const QVariantMap &qvparams) {
   p_resize_img_thread_->start();
 }
 
-void SignatureCreator::handleResult(const SignWorker::SignResult& res) {
+/// @brief Handle the result of the signature worker thread.
+void SignatureCreator::handleResult(const SignWorker::SignResult &res) {
   QVariantMap js_result;
   js_result["status"] = res.status;
   js_result["tmp_file_path"] = res.tmp_result_file;
@@ -158,6 +170,7 @@ void SignatureCreator::handleResult(const SignWorker::SignResult& res) {
   emit signCompleted(js_result);
 }
 
+/// @brief Recieve the estimated stamp size and send it to the frontend
 void SignatureCreator::handleStampResize(SignWorker::AimResizeFactor res) {
   QVariantMap js_result;
   js_result["x_resize"] = res.x;

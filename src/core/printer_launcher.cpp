@@ -20,7 +20,8 @@ PrinterLauncher::PrinterLauncher(QObject *parent) : QObject{parent} {}
  * \param page_count - total pages in file
  * \param landscape - true if orientation is landscape
  */
-void PrinterLauncher::print(const QString& src_file, int page_count, bool landscape) {
+void PrinterLauncher::print(const QString &src_file, int page_count,
+                            bool landscape) {
   QPrinter printer;
   QPrintDialog print_dialog(&printer, nullptr);
   const QSize size_hint = print_dialog.minimumSizeHint();

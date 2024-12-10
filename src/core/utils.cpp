@@ -1,9 +1,14 @@
 #include "utils.hpp"
 #include <QDebug>
-#include <iostream>
 
 namespace core::utils {
 
+/**
+ * @brief Read a PDF HEX string to simple vector
+ * @param str pointer to data
+ * @param size size of the data
+ * @return std::vector<unsigned char>
+ */
 std::vector<unsigned char> hexStringToByteArray(const char *str,
                                                 size_t size) noexcept {
   std::vector<unsigned char> res;

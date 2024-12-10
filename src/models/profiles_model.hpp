@@ -5,6 +5,9 @@
 #include <QHash>
 #include <QJsonArray>
 
+/**
+ * @brief Model for user profiles
+ */
 class ProfilesModel : public QAbstractListModel {
   Q_OBJECT
 
@@ -26,17 +29,26 @@ public:
   ///@brief get a json array with user certificates
   [[nodiscard]] Q_INVOKABLE QString getUserCertsJSON() const;
 
+  /// @brief save user's profile
   [[nodiscard]] Q_INVOKABLE bool saveProfile(const QString &profile_json);
 
+  /// @brief find the default profile and return it as JSON string
   [[nodiscard]] Q_INVOKABLE QString getDetDefaultProfileVal();
 
+  /// @brief delete the user's profile
   [[nodiscard]] Q_INVOKABLE bool deleteProfile(int id_profile);
 
+  /// @brief check if the given name is unique
   [[nodiscard]] Q_INVOKABLE bool uniqueName(QString profile_name);
 
+  /// @brief path to config directory (/home/$user/.config)
   [[nodiscard]] Q_INVOKABLE QString getConfigPath() const;
 
+  /// @brief TRUE if some global error ocurred
+  /// @details for now, TRUE if no CSP library was found
   Q_PROPERTY(bool errStatus MEMBER error_status_)
+
+  /// @brief error code string for errStatus
   Q_PROPERTY(QString errString MEMBER err_string_)
 
 signals:
@@ -46,15 +58,24 @@ signals:
 
 private:
   /// @brief readProfiles from JSON file in
-  /// /HOME/USER/.config/pdfcsp/profiles.json
+  /// @details /HOME/USER/.config/pdfcsp/profiles.json
   void readProfiles();
 
   /// @brief readUserCerts, read certificates for current uset from CryptoApi
   void readUserCerts();
 
+  /**
+   * @brief Save logo image
+   *
+   * @param path source image path
+   * @param dest_name destanation file name
+   * @param old_logo_path old logo to delete
+   * @return QString full path to saved logo on success
+   */
   QString saveLogoImage(const QString &path, const QString &dest_name,
                         const QString &old_logo_path);
 
+  /// @brief delete the given file
   bool deleteLogoImage(const QString &path);
 
   const QString create_profile_title_;

@@ -17,6 +17,10 @@ PdfPageRender::PdfPageRender() {
   }
 }
 
+/**
+ * @brief Handle the geometry change
+ * @details Makes a decision if we need to rerender the whole page.
+ */
 void PdfPageRender::geometryChange(const QRectF &newGeometry,
                                    const QRectF &oldGeometry) {
 
@@ -37,6 +41,7 @@ void PdfPageRender::geometryChange(const QRectF &newGeometry,
   QQuickItem::geometryChange(newGeometry, oldGeometry);
 }
 
+/// @brief perfom the render
 // NOLINTBEGIN(cppcoreguidelines-owning-memory)
 QSGNode *PdfPageRender::updatePaintNode(
     QSGNode *node,
@@ -57,7 +62,6 @@ QSGNode *PdfPageRender::updatePaintNode(
     rectNode->setFiltering(QSGTexture::Linear);
     rectNode->setOwnsTexture(true);
   }
-
   if (!image_) {
     try {
       const core::MuPageRender mupdf(fzctx_, fzdoc_);
@@ -105,10 +109,11 @@ QSGNode *PdfPageRender::updatePaintNode(
 }
 // NOLINTEND(cppcoreguidelines-owning-memory)
 
+/// setters to connect with the low-level MuPdf from pdf_doc_model
 void PdfPageRender::setDoc(fz_document *fzdoc) { fzdoc_ = fzdoc; }
-
 void PdfPageRender::setCtx(fz_context *fzctx) { fzctx_ = fzctx; }
 
+/// @brief set index of a page to render  
 void PdfPageRender::setPageNumber(int page_number) {
   page_number_ = page_number;
 }

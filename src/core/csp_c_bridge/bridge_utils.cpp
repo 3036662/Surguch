@@ -13,6 +13,7 @@ QString timeToString(time_t val) noexcept {
   return date_time.toString("dd.MM.yyyy hh:mm:ss UTC");
 }
 
+/// @brief get list of certificates from CSP
 QString getCertListJSON() noexcept {
   const pdfcsp::c_bridge::CPodParam params{};
   pdfcsp::c_bridge::CPodResult *const pod =

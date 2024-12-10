@@ -2,16 +2,12 @@ find_package(Qt6 6.4 REQUIRED COMPONENTS Quick REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Svg REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Widgets REQUIRED)
 
-
 if (NOT DEFINED TRANSLATION_DIR)
     set(TRANSLATION_DIR ${CMAKE_BINARY_DIR}/src/)
 endif()
 message(TRANSLATION_DIR=${TRANSLATION_DIR})
 
 set(CMAKE_AUTORCC ON)
-
-
-
 
 add_compile_definitions(TRANSLATION_DIR="${TRANSLATION_DIR}")
 
@@ -44,7 +40,6 @@ IF (NOT DEFINED PDFCSP_PDF_INCLUDE_DIR)
     SET (PDFCSP_PDF_INCLUDE_DIR /usr/include/pdfcsp/)
 ENDIF()
 
-
 #translations
 IF (NOT DEFINED SIBLING_DEPLOY) #dont update translation for every sibling
 add_custom_target(update_translations ALL
@@ -55,8 +50,6 @@ add_custom_target(update_translations ALL
     BYPRODUCTS ${CMAKE_SOURCE_DIR}/resources/translations/ru_RU.qm
 )
 ENDIF()
-
-
 
 # QQmlApplicationEngine::loadFromModule since 6.5
 IF(${Qt6_VERSION_MINOR} VERSION_LESS 5 )
@@ -128,7 +121,6 @@ target_link_libraries(surguch PRIVATE
 target_link_libraries(surguch PRIVATE
     csp_c_bridge_qt
 )
-
 
 target_link_libraries(surguch
     PRIVATE Qt6::Quick

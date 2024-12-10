@@ -1,7 +1,6 @@
 #include "signature_processor.hpp"
 #include "raw_signature.hpp"
 #include <QDebug>
-#include <iostream>
 #include <stdexcept>
 
 namespace core {
@@ -32,10 +31,7 @@ SignatureProcessor::SignatureProcessor(fz_context *fzctx, pdf_document *pdfdoc)
   }
 }
 
-// SignatureProcessor::~SignatureProcessor() {
-//   // pdf_drop_obj(fzctx_,trailer); // crash
-// }
-
+///@brief find signature objects, place them in signarures_ptrs_
 bool SignatureProcessor::findSignatures() noexcept {
   signarures_ptrs_.clear();
   // pdf_debug_obj(fzctx_, trailer_);
@@ -76,6 +72,8 @@ bool SignatureProcessor::findSignatures() noexcept {
   return true;
 }
 
+/// @brief ind AcroForm object
+/// @details ISO 32000 [12.7.2]
 pdf_obj *SignatureProcessor::findAcroForm() const noexcept {
   if (pdf_root_ == nullptr) {
     return nullptr;
@@ -111,6 +109,8 @@ pdf_obj *SignatureProcessor::findAcroForm() const noexcept {
   return result;
 }
 
+/// @brief Get the SigFlags bitset
+/// @details ISO32000 [12.7.2]
 std::bitset<32> SignatureProcessor::getFormSigFlags() const noexcept {
   std::bitset<32> res;
   if (pdf_acro_ == nullptr) {
@@ -129,6 +129,8 @@ std::bitset<32> SignatureProcessor::getFormSigFlags() const noexcept {
   return res;
 }
 
+///@brief parses signature object
+///@return returns array of RawSignature objects
 std::vector<RawSignature> SignatureProcessor::ParseSignatures() noexcept {
   if (signarures_ptrs_.empty()) {
     return {};

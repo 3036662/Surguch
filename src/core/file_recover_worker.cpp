@@ -6,8 +6,13 @@
 
 namespace core {
 
-void FileRecoverWorker::recoverFileWithByteRange(const QString& path,
-                                                 const RangesVector& branges) {
+/**
+ * @brief Perform the recovery
+ * @param path file to recover
+ * @param branges the byteranges covered by signature
+ */
+void FileRecoverWorker::recoverFileWithByteRange(const QString &path,
+                                                 const RangesVector &branges) {
   const QFileInfo finfo(path);
   QFile src_file(path);
   const quint64 eof_pos = branges.at(1).first + branges.at(1).second;

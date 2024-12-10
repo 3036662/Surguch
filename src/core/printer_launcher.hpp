@@ -21,7 +21,8 @@ public:
    * \param page_count - total pages in file
    * \param landscape - true if orientation is landscape
    */
-  Q_INVOKABLE void print(const QString& src_file, int page_count, bool landscape);
+  Q_INVOKABLE void print(const QString &src_file, int page_count,
+                         bool landscape);
 
 signals:
 

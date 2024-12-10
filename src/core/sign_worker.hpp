@@ -11,6 +11,10 @@ namespace core {
 
 using FlatByteRange = std::vector<uint64_t>;
 
+/**
+ * @brief Create a signature
+ * @details Is supposed to run in a separate thread
+ */
 class SignWorker : public QObject {
   Q_OBJECT
 public:
@@ -75,17 +79,23 @@ public:
   SignWorker &operator=(const SignWorker &) = delete;
   ~SignWorker() override;
 
+  /// @brief perform signing
   void launchSign(SignParams sign_params);
 
+  /// @brief calculate the actual stamp size for the given parameters
   void estimateStampSize(SignParams sign_params);
 
 signals:
+
+  /// @brief signinig process(launchSign) is completed
   void signCompleted(SignResult res);
+  /// @brief estimateStampSize is completed
   void resizeStampCompleted(AimResizeFactor res);
 
 private:
-
+  /// @brief Go to library, execute pdfcsp::pdf::PrepareDoc
   [[nodiscard]] SignResult preparePdf();
+  /// @brief Gather all parameters (pdfcsp::pdf::CSignParam)
   [[nodiscard]] SharedParamWrapper createParams() const;
 
   SignParams params_;

@@ -8,7 +8,9 @@ namespace core {
 
 SignWorker::SignWorker(QObject *parent)
     : QObject{parent},
-      locale_(newlocale(LC_ALL_MASK, "POSIX", static_cast<locale_t>(nullptr))) {}
+      // Erase the locale to fix the behavior of the stamp-generating library.
+      locale_(newlocale(LC_ALL_MASK, "POSIX", static_cast<locale_t>(nullptr))) {
+}
 
 SignWorker::~SignWorker() {
   if (locale_ != nullptr) {
@@ -16,12 +18,14 @@ SignWorker::~SignWorker() {
   }
 }
 
+/// @brief perform signing
 void SignWorker::launchSign(SignParams sign_params) {
   params_ = std::move(sign_params);
   const SignResult res = preparePdf();
   emit signCompleted(res);
 }
 
+/// @brief Gather all parameters (pdfcsp::pdf::CSignParam)
 SignWorker::SharedParamWrapper SignWorker::createParams() const {
   auto params_wrapper = std::make_shared<CSignParamsWrapper>();
   pdfcsp::pdf::CSignParams &pod_params = params_wrapper->pod_params;
@@ -71,6 +75,7 @@ SignWorker::SharedParamWrapper SignWorker::createParams() const {
   return params_wrapper;
 }
 
+/// @brief calculate the actual stamp size for the given parameters
 void SignWorker::estimateStampSize(SignParams sign_params) {
   if (locale_ != nullptr) {
     uselocale(locale_);
@@ -90,6 +95,7 @@ void SignWorker::estimateStampSize(SignParams sign_params) {
   }
 }
 
+/// @brief Go to library, execute pdfcsp::pdf::PrepareDoc
 SignWorker::SignResult SignWorker::preparePdf() {
   if (locale_ != nullptr) {
     uselocale(locale_);

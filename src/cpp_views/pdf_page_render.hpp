@@ -7,8 +7,12 @@
 #include <QQuickItem>
 #include <memory>
 
+/**
+ * @brief QML Item for rendering PDF pages
+ */
 class PdfPageRender : public QQuickItem {
   Q_OBJECT
+
 public:
   PdfPageRender();
   ~PdfPageRender() override = default;
@@ -17,26 +21,40 @@ public:
   PdfPageRender &operator=(const PdfPageRender &) = delete;
   PdfPageRender &operator=(PdfPageRender &&) = delete;
 
+  /**
+   * @brief Handle the geometry change
+   * @details Makes a decision if we need to rerender the whole page.
+   */
+  void geometryChange(const QRectF &newGeometry,
+                      const QRectF &oldGeometry) override;
+
+  /// @brief perfom the render
   QSGNode *updatePaintNode(
       QSGNode *oldNode,
       QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;
 
-  void geometryChange(const QRectF &newGeometry,
-                      const QRectF &oldGeometry) override;
-
+  /// setters to connect with the low-level MuPdf from pdf_doc_model
   Q_INVOKABLE void setDoc(fz_document *fzdoc);
   Q_INVOKABLE void setCtx(fz_context *fzctx);
+  /// @brief set index of a page to render  
   Q_INVOKABLE void setPageNumber(int page_number);
 
+  /// @brief the goal with of element
   Q_PROPERTY(float widthGoal MEMBER width_goal_);
+  /// @brief the goal zoom of element
   Q_PROPERTY(float zoomGoal MEMBER zoom_goal_);
-
+  /// @brief current screen DPI setter
   Q_PROPERTY(float currScreenDpi MEMBER screen_dpi_);
+  /// @brief the last zoom value for zoomIn/zoomOut
   Q_PROPERTY(float zoomLast MEMBER result_zoom_last_ NOTIFY zoomLastChanged);
+  /// @brief rotation value in degrees
   Q_PROPERTY(float customRotation MEMBER custom_rotation_);
+  /// @brief Is utilized to set the page height on page width change.
   Q_PROPERTY(float pageRatio MEMBER pratio_);
 
 signals:
+
+  /// @brief Notification signal for zoomLast changes
   void zoomLastChanged();
 
 private:
@@ -48,14 +66,11 @@ private:
   float pwidth_ = 0;
   float pheight_ = 0;
   float pratio_ = 1;
-
   float dev_pix_ratio_ = 2;
-
   float width_goal_ = 0;
   float zoom_goal_ = 1;
   float screen_dpi_ = 72;
   float result_zoom_last_ = 1;
-
   float custom_rotation_ = 0;
 };
 

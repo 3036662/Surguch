@@ -15,7 +15,7 @@ public:
   ValidationResult(const core::RawSignature &raw_signature,
                    const std::string &path);
 
-  QJsonObject toJson() const;
+  [[nodiscard]] QJsonObject toJson() const;
 
   pdfcsp::csp::checks::BoolResults bres;
   pdfcsp::csp::CadesType cades_type = pdfcsp::csp::CadesType::kUnknown;

@@ -60,6 +60,8 @@ QVariant ProfilesModel::data(const QModelIndex &index, int role) const {
   return {};
 }
 
+/// @brief readProfiles from JSON file in
+/// @details /HOME/USER/.config/pdfcsp/profiles.json
 void ProfilesModel::readProfiles() {
   config_path_ =
       QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
@@ -121,6 +123,7 @@ void ProfilesModel::readProfiles() {
   profiles_.append(create_profile_field);
 }
 
+/// @brief readUserCerts, read certificates for current uset from CryptoApi
 void ProfilesModel::readUserCerts() {
   const QString certs_json = core::bridge_utils::getCertListJSON();
   if (certs_json.isEmpty() || certs_json == core::bridge_utils::kErrNoCSPLib) {
@@ -141,11 +144,13 @@ void ProfilesModel::readUserCerts() {
   user_certs_ = json_doc.array();
 }
 
+///@brief get a json array with user certificates
 QString ProfilesModel::getUserCertsJSON() const {
   const QJsonDocument json_doc(user_certs_);
   return json_doc.toJson();
 }
 
+/// @brief check if the given name is unique
 Q_INVOKABLE bool ProfilesModel::uniqueName(QString profile_name) {
   return !profile_name.isEmpty() &&
          std::none_of(profiles_.begin(), profiles_.end(),
@@ -155,6 +160,7 @@ Q_INVOKABLE bool ProfilesModel::uniqueName(QString profile_name) {
                       });
 }
 
+/// @brief save user's profile
 Q_INVOKABLE bool ProfilesModel::saveProfile(const QString &profile_json) {
   if (profile_json.isEmpty()) {
     return false;
@@ -246,6 +252,14 @@ Q_INVOKABLE bool ProfilesModel::saveProfile(const QString &profile_json) {
   return false;
 }
 
+/**
+ * @brief Save logo image
+ *
+ * @param path source image path
+ * @param dest_name destanation file name
+ * @param old_logo_path old logo to delete
+ * @return QString full path to saved logo on success
+ */
 QString ProfilesModel::saveLogoImage(const QString &path,
                                      const QString &dest_name,
                                      const QString &old_logo_path) {
@@ -299,6 +313,7 @@ QString ProfilesModel::saveLogoImage(const QString &path,
   return dest;
 }
 
+/// @brief find the default profile and return it as JSON string
 QString ProfilesModel::getDetDefaultProfileVal() {
   for (const auto &profile : profiles_) {
     if (profile.toObject().value("use_as_default").toBool()) {
@@ -309,8 +324,8 @@ QString ProfilesModel::getDetDefaultProfileVal() {
   return {};
 }
 
+/// @brief delete the user's profile
 bool ProfilesModel::deleteProfile(int id_profile) {
-
   QString profile_title;
   QJsonArray profiles_new;
   for (qsizetype i = 0; i < profiles_.count(); ++i) {
@@ -342,6 +357,7 @@ bool ProfilesModel::deleteProfile(int id_profile) {
   return false;
 }
 
+/// @brief delete the given file
 bool ProfilesModel::deleteLogoImage(const QString &path) {
   const QFileInfo finfo_tmp(path);
   // use only filename and extension
@@ -353,4 +369,5 @@ bool ProfilesModel::deleteLogoImage(const QString &path) {
   return true;
 }
 
+/// @brief path to config directory (/home/$user/.config)
 QString ProfilesModel::getConfigPath() const { return config_path_; }

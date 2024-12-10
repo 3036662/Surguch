@@ -15,6 +15,7 @@
 
 int main(int argc, char *argv[]) {
 
+  // tranlsation
   QTranslator translator;
   const QString locale = QLocale::system().name();
   QApplication app(argc, argv);
@@ -25,6 +26,7 @@ int main(int argc, char *argv[]) {
     QApplication::installTranslator(&translator);
   }
 
+  // register types
   qmlRegisterType<PdfPageRender>("alt.pdfcsp.pdfRender", 0, 1, "PdfPageRender");
   qmlRegisterType<PdfDocModel>("alt.pdfcsp.pdfModel", 0, 1, "MuPdfModel");
   qmlRegisterType<SignaturesListModel>("alt.pdfcsp.signaturesListModel", 0, 1,
@@ -37,13 +39,12 @@ int main(int argc, char *argv[]) {
                                           "SignatureCreator");
   qmlRegisterType<core::PrinterLauncher>("alt.pdfcsp.printerLauncher", 0, 1,
                                          "PrinterLauncher");
-
+  // run the app
   QQmlApplicationEngine engine;
   const QStringList args = QApplication::arguments();
   // file to open on start
   engine.rootContext()->setContextProperty("openOnStart",
                                            (args.size() > 1 ? args.at(1) : ""));
-
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
@@ -51,15 +52,10 @@ int main(int argc, char *argv[]) {
 #if QT_LOAD_FROM_MODULE == 1
   engine.loadFromModule("gui_pdf_csp", "Main");
   engine.addImportPath("qrc:/modules");
-
 #else
   const QUrl url("qrc:/gui_pdf_csp/Main.qml");
   engine.load(url);
 #endif
 
-  // QDirIterator it(":", QDirIterator::Subdirectories);
-  // while (it.hasNext()) {
-  //     qWarning() << it.next();
-  // }
   return QApplication::exec();
 }

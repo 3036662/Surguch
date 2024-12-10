@@ -7,13 +7,18 @@
 
 namespace core {
 
+/**
+ * @brief Create a signature and signature's stamp
+ */
 class SignatureCreator : public QObject {
   Q_OBJECT
 public:
   explicit SignatureCreator(QObject *parent = nullptr);
 
-  void handleResult(const SignWorker::SignResult& res);
+  /// @brief Handle the result of the signature worker thread.
+  void handleResult(const SignWorker::SignResult &res);
 
+  /// @brief Recieve the estimated stamp size and send it to the frontend
   void handleStampResize(SignWorker::AimResizeFactor res);
 
   /**
@@ -32,10 +37,14 @@ public:
 
 signals:
 
+  /// @brief Signature is created
   void signCompleted(QVariantMap res);
+
+  /// @brief Send the estimated stamp size to the frontend
   void stampSizeEstimated(QVariantMap res);
 
 private:
+  /// @brief parse all parameters recieved from QML
   static SignWorker::SignParams createWorkerParams(const QVariantMap &qvparams);
 
   SignWorker *p_worker_resize_img_ = nullptr;

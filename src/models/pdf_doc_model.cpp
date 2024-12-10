@@ -86,6 +86,7 @@ QVariant PdfDocModel::data(const QModelIndex &index, int role) const {
   return {};
 }
 
+/// @brief setSource open new pdf file
 void PdfDocModel::setSource(const QString &path) {
   fz_drop_document(fzctx_, fzdoc_);
   fz_drop_context(fzctx_);
@@ -131,6 +132,7 @@ void PdfDocModel::setSource(const QString &path) {
   }
 }
 
+/// @brief get current source path
 Q_INVOKABLE QString PdfDocModel::getSource() const { return file_source_; };
 
 fz_document *PdfDocModel::getDoc() const { return fzdoc_; }
@@ -139,12 +141,14 @@ fz_context *PdfDocModel::getCtx() const { return fzctx_; }
 
 pdf_document *PdfDocModel::getPdfDoc() const { return pdfdoc_; }
 
+/// @brief resert the whole model
 void PdfDocModel::redrawAll() {
-  qWarning() << "redraw all";
+  // qWarning() << "redraw all";
   beginResetModel();
   endResetModel();
 }
 
+/// @brief find all signatures
 void PdfDocModel::processSignatures() {
   std::unique_ptr<core::SignatureProcessor> prc;
   const QString err_str = "[PdfDocModel] Error processing signatures ";
@@ -164,6 +168,7 @@ void PdfDocModel::processSignatures() {
   qWarning() << "signatures found " << signatures.size();
 }
 
+/// @brief delete all files scheduled for deletion
 void PdfDocModel::processFileDelete() {
   if (!process_file_delete_) {
     return;
@@ -188,6 +193,7 @@ void PdfDocModel::processFileDelete() {
   tmp_files_to_delete_ = std::move(resulting_queue);
 }
 
+/// @brief schedule the given file for deletion
 Q_INVOKABLE void PdfDocModel::deleteFileLater(QString path) {
   if (!process_file_delete_) {
     return;
@@ -195,6 +201,7 @@ Q_INVOKABLE void PdfDocModel::deleteFileLater(QString path) {
   tmp_files_to_delete_.emplace_back(std::move(path));
 }
 
+/// @brief the 'save file as' implementation
 Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(const QString &path,
                                                bool delete_curr_source) {
   const QString dest_path = QUrl(path).toString(QUrl::PreferLocalFile);
@@ -219,6 +226,7 @@ Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(const QString &path,
   return true;
 }
 
+/// @brief Open a folder that contains the current file in the file browser.
 void PdfDocModel::showInFolder() {
   const QUrl folder_url =
       QUrl::fromLocalFile(QFileInfo(file_source_).absoluteDir().absolutePath());

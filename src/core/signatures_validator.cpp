@@ -5,12 +5,15 @@
 
 namespace core {
 
+/// @brief validate all non-empty signatures by creating CspResponse objects
 void SignaturesValidator::validateSignatures(
-    std::vector<core::RawSignature> raw_signatures,const QString& file_source) {
+    std::vector<core::RawSignature> raw_signatures,
+    const QString &file_source) {
   bool aborted = false;
   std::map<size_t, CoverageInfo> coverage_infos;
   size_t index_curr_sig = 0;
-  for (index_curr_sig = 0; index_curr_sig < raw_signatures.size(); ++index_curr_sig) {
+  for (index_curr_sig = 0; index_curr_sig < raw_signatures.size();
+       ++index_curr_sig) {
     const auto &sig = raw_signatures[index_curr_sig];
     if (abort_recieved_ ||
         QThread::currentThread()->isInterruptionRequested()) {
@@ -56,6 +59,14 @@ void SignaturesValidator::validateSignatures(
   }
 }
 
+/**
+ * @brief Analyze how the signatures cover the document.
+ * @details In a perfect world, we expect at least one signature to protect the
+ * whole document content.
+ * @param sig a RawSignature
+ * @param file_size
+ * @return CoverageInfo
+ */
 SignaturesValidator::CoverageInfo
 SignaturesValidator::analyzeOneSigCoverage(const core::RawSignature &sig,
                                            size_t file_size) noexcept {
@@ -117,6 +128,12 @@ SignaturesValidator::analyzeOneSigCoverage(const core::RawSignature &sig,
   return res;
 }
 
+/**
+ * @brief Decide what level of trust can we suggest for the document
+ * @param coverage_infos
+ * @param raw_signatures_empty
+ * @return DocStatusEnum::CommonDocCoverageStatus
+ */
 DocStatusEnum::CommonDocCoverageStatus SignaturesValidator::coverageStatus(
     const std::map<size_t, CoverageInfo> &coverage_infos,
     bool raw_signatures_empty) {

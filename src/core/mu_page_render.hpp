@@ -12,8 +12,8 @@ struct RenderRes {
   unsigned char *buf = nullptr;
   float page_width = 0;
   float page_height = 0;
-  float zoom_dpi = 0;       // zoom value,utilized to run_page
-  float result_zoom=0;
+  float zoom_dpi = 0; // zoom value,utilized to run_page
+  float result_zoom = 0;
   ptrdiff_t pix_stride = 0; // the number of pixels in one line
 };
 

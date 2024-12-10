@@ -73,13 +73,12 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
     worker_thread = worker_threads_[curr_worker_index_].get();
     validator = validators_[curr_worker_index_].get();
   }
+  // abort current running thread without waiting for result
   if (worker_thread != nullptr && worker_thread->isRunning()) {
     if (validator != nullptr) {
-
       validator->abort();
     }
     worker_thread->requestInterruption();
-    // worker_thread_->wait();
   }
   // qThreads and validator objects are stored in array, so it possible not to
   // wait for results if the document changed, just create a new thred and run
@@ -87,11 +86,11 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
   worker_threads_.emplace_back(std::make_unique<QThread>());
   ++curr_worker_index_ = worker_threads_.size() - 1;
   worker_thread = worker_threads_[curr_worker_index_].get();
-  qWarning() << "new worker_thread_ " << worker_thread;
   validators_.emplace_back(std::make_unique<core::SignaturesValidator>());
   validator = validators_[curr_worker_index_].get();
   validator->moveToThread(worker_thread);
 
+  // quit application
   QObject::connect(
       QCoreApplication::instance(), &QCoreApplication::aboutToQuit, [this] {
         for (size_t i = 0; i < worker_threads_.size(); ++i) {
@@ -105,11 +104,13 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
         }
       });
 
+  // thread start
   QObject::connect(
       worker_thread, &QThread::started, [validator, file_source, this]() {
         validator->validateSignatures(raw_signatures_, file_source);
       });
 
+  // document validation finished
   QObject::connect(
       validator, &core::SignaturesValidator::validationFinished,
       [this,
@@ -122,6 +123,7 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
         worker_thread->quit();
       });
 
+  // one signature validation finished
   QObject::connect(
       validator, &core::SignaturesValidator::validatationResult,
       [this,
@@ -135,6 +137,7 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
         }
       });
 
+  // validation failed
   QObject::connect(
       validator, &core::SignaturesValidator::validationFailedForSignature,
       [this, worker_thread](size_t ind) {
@@ -169,10 +172,10 @@ void SignaturesListModel::saveValidationResult(
     std::shared_ptr<core::ValidationResult> validation_result, size_t ind) {
   validation_results_[ind] = std::move(validation_result);
   const QModelIndex qInd = index(static_cast<int>(ind), 0);
-  qWarning() << "recieved validation result for index " << ind;
   emit dataChanged(qInd, qInd);
 }
 
+/// @brief recover the document to state when it signed by signature
 void SignaturesListModel::recoverDoc(qint64 sig_index) {
   const char *const expl = "[SignaturesListModel] recover doc failed";
   if (validation_results_.count(sig_index) == 0 ||
@@ -194,11 +197,13 @@ void SignaturesListModel::recoverDoc(qint64 sig_index) {
   recover_worker_ = new core::FileRecoverWorker();
   recover_thread_ = new QThread();
   recover_worker_->moveToThread(recover_thread_);
+
   // start job
   QObject::connect(
       recover_thread_, &QThread::started, [file_path, branges, this]() {
         recover_worker_->recoverFileWithByteRange(file_path, branges);
       });
+
   // app closed
   QObject::connect(
       QCoreApplication::instance(), &QCoreApplication::aboutToQuit, [this]() {
@@ -208,6 +213,7 @@ void SignaturesListModel::recoverDoc(qint64 sig_index) {
           recover_thread_->wait();
         }
       });
+
   // job is completed
   QObject::connect(recover_worker_, &core::FileRecoverWorker::recoverCompleted,
                    [this](const QString &res) {
@@ -216,6 +222,7 @@ void SignaturesListModel::recoverDoc(qint64 sig_index) {
                      }
                      recover_thread_->quit();
                    });
+
   // thread is finished
   QObject::connect(recover_thread_, &QThread::finished, [this]() {
     recover_worker_->deleteLater();

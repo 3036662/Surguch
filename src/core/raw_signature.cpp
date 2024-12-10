@@ -9,6 +9,7 @@ namespace core {
 // NOLINTBEGIN(bugprone-multi-level-implicit-pointer-conversion,
 // cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay)
 
+/// @brief create from PdfObjKeeper
 RawSignature::RawSignature(fz_context *fzctx, const PdfObjKeeper &sig_obj) {
   if (fzctx == nullptr) {
     throw std::runtime_error(
@@ -43,6 +44,8 @@ RawSignature::RawSignature(fz_context *fzctx, const PdfObjKeeper &sig_obj) {
   }
 }
 
+/// @brief read the 'Contents'
+/// @details ISO 32000 [table 252]
 bool RawSignature::readContent(fz_context *fzctx, pdf_obj *sig_val) noexcept {
   if (fzctx == nullptr || sig_val == nullptr) {
     return false;
@@ -58,6 +61,8 @@ bool RawSignature::readContent(fz_context *fzctx, pdf_obj *sig_val) noexcept {
   return true;
 }
 
+/// @brief read the 'ByteRange'
+/// @details ISO 32000 [table 252]
 bool RawSignature::readByteRanges(fz_context *fzctx,
                                   pdf_obj *sig_val) noexcept {
   if (fzctx == nullptr || sig_val == nullptr) {
