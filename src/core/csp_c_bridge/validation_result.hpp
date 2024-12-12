@@ -14,6 +14,7 @@ struct ValidationResult {
 public:
   ValidationResult(const core::RawSignature &raw_signature,
                    const std::string &path);
+  ValidationResult() = default;
 
   [[nodiscard]] QJsonObject toJson() const;
 

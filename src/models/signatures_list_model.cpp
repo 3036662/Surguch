@@ -146,6 +146,9 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
           qWarning() << "validation failed for signature " << ind
                      << " from validator"
                      << validators_[curr_worker_index_].get();
+          // save default-constructed validation result for this signature
+          // (invalid sig)
+          saveValidationResult(std::make_shared<core::ValidationResult>(), ind);
           emit validationFailedForSignature(ind);
         }
       });
@@ -157,6 +160,7 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
         if (curr_worker_index_ < validators_.size() && validators_[i]) {
           validators_[i].reset();
         }
+        worker_threads_[i].reset();
       }
     }
   }

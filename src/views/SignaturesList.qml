@@ -25,7 +25,7 @@ ListView {
             BusyIndicator {
                 id: busy_indicator
                 leftPadding: 10
-                running: true
+                running: !model.empty && !model.checkStatus
                 visible: !model.empty && !model.checkStatus
             }
 
