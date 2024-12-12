@@ -52,6 +52,9 @@ add_custom_target(update_translations ALL
 )
 ENDIF()
 
+MESSAGE("Qt6 version minor ${Qt6_VERSION_MINOR}")
+
+
 # QQmlApplicationEngine::loadFromModule since 6.5
 IF(${Qt6_VERSION_MINOR} VERSION_LESS 5 )
     qt_add_executable(surguch
@@ -62,6 +65,9 @@ IF(${Qt6_VERSION_MINOR} VERSION_LESS 5 )
     )
     add_definitions(-DQT_LOAD_FROM_MODULE=0)
 ELSE()
+
+    qt_policy(SET QTP0001 NEW)
+
     add_definitions(-DQT_LOAD_FROM_MODULE=1)
     qt_add_executable(surguch
         main.cpp
@@ -96,7 +102,11 @@ ELSE()
         QML_FILES views/RSBComboSelect.qml
         QML_FILES views/RSBTextArea.qml
     )
+
+    qt6_import_qml_plugins(surguch)
 ENDIF()
+
+
 
 IF (NOT DEFINED SIBLING_DEPLOY)
 add_dependencies(surguch update_translations)

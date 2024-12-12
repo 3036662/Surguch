@@ -54,7 +54,6 @@ int main(int argc, char *argv[]) {
 
 #if QT_LOAD_FROM_MODULE == 1
   engine.loadFromModule("gui_pdf_csp", "Main");
-  engine.addImportPath("qrc:/modules");
 #else
   const QUrl url("qrc:/gui_pdf_csp/Main.qml");
   engine.load(url);
