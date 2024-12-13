@@ -74,6 +74,8 @@ signals:
   /// @brief Current screen DPI was changed.
   void screenDpiChanged();
 
+  void errorOpenFile(const QString& err_string);
+
 private:
   /// @brief find all signatures
   void processSignatures();

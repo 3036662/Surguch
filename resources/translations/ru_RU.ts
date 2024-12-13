@@ -306,10 +306,10 @@
 <context>
     <name>Header</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+37"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+38"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+37"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+37"/>
-        <location filename="../../src/views/Header.qml" line="+37"/>
+        <location filename="../../src/views/Header.qml" line="+38"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
@@ -354,26 +354,30 @@
         <translation>Подписать</translation>
     </message>
     <message>
-        <location line="+44"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+44"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+44"/>
-        <location filename="../../src/views/Header.qml" line="+44"/>
         <source>Pdf files (*.pdf)</source>
         <translation>Pdf файлы (*.pdf)</translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+44"/>
+        <location line="+33"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+0"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+0"/>
-        <location filename="../../src/views/Header.qml" line="+0"/>
+        <location filename="../../src/views/Header.qml" line="+44"/>
+        <location line="+33"/>
         <source>Any file (* *.*)</source>
         <translation>Любой файл (* *.*)</translation>
     </message>
     <message>
+        <location line="-33"/>
         <location line="+16"/>
+        <location line="+17"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+16"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+16"/>
-        <location filename="../../src/views/Header.qml" line="+16"/>
+        <location filename="../../src/views/Header.qml" line="-33"/>
+        <location line="+16"/>
+        <location line="+17"/>
         <source>PDF files (*.pdf)</source>
         <translation>PDF файлы (*.pdf)</translation>
     </message>
@@ -423,10 +427,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+118"/>
+        <location line="+117"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+117"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+117"/>
-        <location filename="../../src/views/Main.qml" line="+118"/>
+        <location filename="../../src/views/Main.qml" line="+117"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
@@ -503,10 +507,10 @@
         <translation>Общая ошибка</translation>
     </message>
     <message>
-        <location line="+70"/>
+        <location line="+77"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+70"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+70"/>
-        <location filename="../../src/views/Main.qml" line="+70"/>
+        <location filename="../../src/views/Main.qml" line="+77"/>
         <source>The document was changed after signing, but can be restored</source>
         <translation>Документ был изменен после подиси, есть возможность восстановить подписанную версию</translation>
     </message>
@@ -555,6 +559,25 @@
         <location filename="../../src/views/Main.qml" line="+3"/>
         <source>Failed getting the user&apos;s certificates list</source>
         <translation>Не удалось получить список сертификатов пользователя</translation>
+    </message>
+</context>
+<context>
+    <name>PdfDocModel</name>
+    <message>
+        <location filename="../../src/models/pdf_doc_model.cpp" line="+110"/>
+        <source>File does not exist</source>
+        <translation>Файл не существует</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Wrong file type</source>
+        <translation>Неверный формат файла</translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <location line="+15"/>
+        <source>Can not open file</source>
+        <translation>Не удалось открыть файл</translation>
     </message>
 </context>
 <context>

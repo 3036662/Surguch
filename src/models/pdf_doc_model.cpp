@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QGuiApplication>
+#include <QMimeDatabase>
 #include <QScreen>
 #include <QThread>
 #include <QUrl>
@@ -101,12 +102,20 @@ void PdfDocModel::setSource(const QString &path) {
 
   const QString file_path = QUrl(path).toString(QUrl::PreferLocalFile);
   const QFile finfo(file_path);
+  const QMimeDatabase mime_database;
+  const QMimeType mime_type = mime_database.mimeTypeForFile(file_path);
   const std::string local_path_std = file_path.toStdString();
   if (!finfo.exists()) {
     qWarning() << "[PdfDocModel::setSource] file does not exist" << file_path;
+    emit errorOpenFile(tr("File does not exist"));
+    return;
+  }
+  if (mime_type.name()!="application/pdf"){
+    emit errorOpenFile(tr("Wrong file type"));
     return;
   }
 
+  bool mu_exception_caught=false;
   fz_try(fzctx_) {
     // open the pdf file
     fzdoc_ = fz_open_document(fzctx_, local_path_std.c_str());
@@ -116,16 +125,30 @@ void PdfDocModel::setSource(const QString &path) {
     pdfdoc_ = pdf_specifics(fzctx_, fzdoc_);
     if (pdfdoc_ == nullptr) {
       qWarning("Not a pdf document");
-    }
+    }    
     emit beginResetModel();
-    file_source_ = file_path;
-    // get the number of pages
     page_count_ = fz_count_pages(fzctx_, fzdoc_);
+    // if not a valid pdf
+    if (fzdoc_ ==nullptr || pdfdoc_==nullptr || page_count_<=0){
+        file_source_="";
+        emit errorOpenFile(tr("Can not open file"));
+    }
+    else{
+        file_source_ = file_path;
+    }
+    // get the number of pages
     emit endResetModel();
   }
   fz_catch(fzctx_) {
     qWarning() << fz_caught_message(fzctx_);
+    mu_exception_caught=true;
     fz_caught(fzctx_);
+    file_source_="";
+  }
+  if (mu_exception_caught){
+    emit errorOpenFile(tr("Can not open file"));
+    file_source_="";
+    return;
   }
   if (process_signatures_) {
     processSignatures();

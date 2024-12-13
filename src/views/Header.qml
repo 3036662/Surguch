@@ -1,8 +1,9 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import Qt.labs.platform as LabsDialogs
 
-import QtQuick.Dialogs
+import QtQuick.Dialogs as CommonDialods
 import QtCore
 
 RowLayout {
@@ -35,7 +36,7 @@ RowLayout {
         TopBarButton {
             icon.source: "qrc:/icons/file_plus.svg"
             text: qsTr("Open")
-            onClicked: fileDialog.open()
+            onClicked: kdeVersion==="5" ? labsFileDialog.open() : fileDialog.open();
             width: 130
         }
 
@@ -50,7 +51,7 @@ RowLayout {
             icon.source: "qrc:/icons/folder_plus.svg"
             text: qsTr("Save as ...")
             enabled: pdfListView.source.length > 0
-            onClicked: saveFileDialog.open()
+            onClicked: kdeVersion==="5" ? labsSaveFileDialog.open() :saveFileDialog.open()
         }
 
         TopBarButton {
@@ -214,11 +215,11 @@ RowLayout {
                         event.accepted=false
                     }
 
-    FileDialog {
+    CommonDialods.FileDialog {
         id: fileDialog
-        fileMode: FileDialog.OpenFile
-        //nameFilters: ["Pdf files (*.pdf)","Any file (* *.*)"];
-        nameFilters: [qsTr("Pdf files (*.pdf)"), qsTr("Any file (* *.*)")]
+        fileMode: CommonDialods.FileDialog.OpenFile
+        //nameFilters: ["PDF files (*.pdf)","Any file (* *.*)"];
+        nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
         currentFolder: StandardPaths.writableLocation(
                            StandardPaths.DocumentsLocation)
         onAccepted: {
@@ -229,10 +230,10 @@ RowLayout {
         }
     }
 
-    FileDialog {
+    CommonDialods.FileDialog {
         id: saveFileDialog
 
-        fileMode: FileDialog.SaveFile
+        fileMode: CommonDialods.FileDialog.SaveFile
         defaultSuffix: "pdf"
         nameFilters: [qsTr("PDF files (*.pdf)")]
         currentFolder: StandardPaths.writableLocation(
@@ -243,4 +244,39 @@ RowLayout {
             pdfListView.saveTo(currentFile)
         }
     }
+
+
+    // KDE5 - use lab LabsDialogs
+    LabsDialogs.FileDialog {
+        id: labsFileDialog
+
+        currentFile: ""
+        fileMode: LabsDialogs.FileDialog.OpenFile
+        nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
+        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+        onAccepted: {
+            // source is chosen by user, not a temporary file
+            pdfListView.openFile(currentFile)
+            leftSideBar.source = currentFile
+            rightSideBar.showState = RightSideBar.ShowState.Invisible
+        }
+    }
+    // KDE5 - use lab LabsDialogs
+    LabsDialogs.FileDialog {
+            id: labsSaveFileDialog
+
+            fileMode: LabsDialogs.FileDialog.SaveFile
+            defaultSuffix: "pdf"
+            currentFile:pdfListView.source
+            nameFilters: ["PDF files (*.pdf)"]
+            folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+
+            onAccepted: {
+                console.warn(currentFile)
+                pdfListView.saveTo(currentFile);
+            }
+    }
+
+
+
 }

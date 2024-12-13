@@ -261,6 +261,13 @@ ApplicationWindow {
         pdfModel.signaturesCounted.connect(leftSideBar.setSigCount)
         // call SignaturesListModel to update the signatures list and validate all signatures
         pdfModel.signaturesFound.connect(siglistModel.updateSigList)
+        // open file error
+        pdfModel.errorOpenFile.connect(function(err_string){
+            errorMessageDialog.text=err_string;
+            errorMessageDialog.open();
+            pdfListView.source="";
+            leftSideBar.source="";
+        });
         // file common status alerts
         siglistModel.commonDocStatus.connect(function(status){
             switch(status){

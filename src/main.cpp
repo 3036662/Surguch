@@ -52,6 +52,14 @@ int main(int argc, char *argv[]) {
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
 
+  // determine the KDE version
+  if (qEnvironmentVariable("XDG_CURRENT_DESKTOP")=="KDE"){
+        const QString kde_version=qEnvironmentVariable("KDE_SESSION_VERSION");
+        //qWarning()<<kde_version;
+        engine.rootContext()->setContextProperty("kdeVersion",
+                                                    kde_version);
+  }
+
 #if QT_LOAD_FROM_MODULE == 1
   engine.loadFromModule("gui_pdf_csp", "Main");
 #else
