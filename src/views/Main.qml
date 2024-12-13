@@ -122,7 +122,7 @@ ApplicationWindow {
         id: sigCreator
 
         // common function to gather parameters used in resizeAim and signDoc
-        function gatherParams(location_data){
+        function gatherParams(location_data){            
             let curr_profile = JSON.parse(header.getCurrentProfileValue());
             let cert_array = JSON.parse(profilesModel.getUserCertsJSON())
             // console.warn(JSON.stringify(rightSideBar.edit_profile.cert_array));
@@ -164,23 +164,23 @@ ApplicationWindow {
 
         // estimate the resulting stamp size
         function resizeAim(location_data){
-            try{
-                if(location_data===undefined) {return;}
-                let params=gatherParams(lockation_data);
+            try{            
+                if(typeof(location_data) == "undefined") {return;}
+                let params=gatherParams(location_data);
                 sigCreator.estimateStampResizeFactor(params);
             } catch(e){
-                console.warn(e);
+                console.warn("resizeAim"+e);
             }
         }
 
         // sign the document
         function signDoc(location_data) {
             try {
-                if(location_data===undefined) {return;}
+                if(typeof(location_data) == "undefined") {return;}
                 let params=gatherParams(location_data);
                 sigCreator.createSignature(params)
             } catch (e) {
-                console.warn(e)
+                console.warn("signDoc"+e)
             }
         }
 
@@ -349,6 +349,6 @@ ApplicationWindow {
             title: "Error"
             onAccepted: {
                 //console.log("Error message dialog closed.")
-            }
+            }            
     }
 }

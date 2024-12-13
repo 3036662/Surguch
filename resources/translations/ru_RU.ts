@@ -346,18 +346,18 @@
         <translation>Профиль</translation>
     </message>
     <message>
-        <location line="+82"/>
+        <location line="+79"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+77"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+77"/>
-        <location filename="../../src/views/Header.qml" line="+82"/>
+        <location filename="../../src/views/Header.qml" line="+79"/>
         <source>Sign</source>
         <translation>Подписать</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+44"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+44"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+44"/>
-        <location filename="../../src/views/Header.qml" line="+45"/>
+        <location filename="../../src/views/Header.qml" line="+44"/>
         <source>Pdf files (*.pdf)</source>
         <translation>Pdf файлы (*.pdf)</translation>
     </message>
@@ -423,10 +423,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+117"/>
+        <location line="+118"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+117"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+117"/>
-        <location filename="../../src/views/Main.qml" line="+117"/>
+        <location filename="../../src/views/Main.qml" line="+118"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>

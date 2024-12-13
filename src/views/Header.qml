@@ -180,8 +180,7 @@ RowLayout {
             anchors.top: parent.top
             anchors.bottom: parent.bottom
 
-            onClicked: {
-                console.warn(profileComboBox.currentValue)
+            onClicked: {                
                 if (profileComboBox.currentValue === "new" || profileComboBox.currentIndex===-1) {
                     profileComboBox.popup.open()
                 } else {
