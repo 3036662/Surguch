@@ -346,18 +346,18 @@
         <translation>Профиль</translation>
     </message>
     <message>
-        <location line="+77"/>
+        <location line="+82"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+77"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+77"/>
-        <location filename="../../src/views/Header.qml" line="+77"/>
+        <location filename="../../src/views/Header.qml" line="+82"/>
         <source>Sign</source>
         <translation>Подписать</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+45"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+44"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+44"/>
-        <location filename="../../src/views/Header.qml" line="+44"/>
+        <location filename="../../src/views/Header.qml" line="+45"/>
         <source>Pdf files (*.pdf)</source>
         <translation>Pdf файлы (*.pdf)</translation>
     </message>
@@ -492,7 +492,7 @@
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+2"/>
         <location filename="../../src/views/Main.qml" line="+2"/>
         <source>Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.</source>
-        <translation type="unfinished">Произошла ошибка проверки цепочки сертификатов, похоже, что один из корневых сертификатов отсутствует или его нет в списке доверенных.</translation>
+        <translation>Произошла ошибка проверки цепочки сертификатов, похоже, что один из корневых сертификатов отсутствует или его нет в списке доверенных.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -548,13 +548,13 @@
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+13"/>
         <location filename="../../src/views/Main.qml" line="+13"/>
         <source>CryptoPro CSP 5.0 R3 not found, please check if installed</source>
-        <translation type="unfinished">CryptoPro CSP 5.0 не найден, убедитесь,что в системе установлен КриптоПро 5.0 версии не ниже R3</translation>
+        <translation>CryptoPro CSP 5.0 не найден, убедитесь,что в системе установлен КриптоПро 5.0 версии не ниже R3</translation>
     </message>
     <message>
         <location line="+3"/>
         <location filename="../../src/views/Main.qml" line="+3"/>
         <source>Failed getting the user&apos;s certificates list</source>
-        <translation type="unfinished">Не удалось получить список сертификатов пользователя</translation>
+        <translation>Не удалось получить список сертификатов пользователя</translation>
     </message>
 </context>
 <context>

@@ -130,13 +130,15 @@ RowLayout {
                     }
                 }
 
-                Component.onCompleted: {
-                    let def_profile = profilesModel.getDetDefaultProfileVal()
+                Component.onCompleted: {                    
+                    let def_profile = profilesModel.getDetDefaultProfileVal()                    
                     if (def_profile !== "") {
                         const indx = profileComboBox.indexOfValue(def_profile)
                         profileComboBox.displayText = profileComboBox.textAt(
                                     indx)
                         profileComboBox.currentIndex = indx
+                    } else {
+                        profileComboBox.currentIndex=-1;
                     }
                 }
             }
@@ -179,7 +181,8 @@ RowLayout {
             anchors.bottom: parent.bottom
 
             onClicked: {
-                if (profileComboBox.currentValue === "new") {
+                console.warn(profileComboBox.currentValue)
+                if (profileComboBox.currentValue === "new" || profileComboBox.currentIndex===-1) {
                     profileComboBox.popup.open()
                 } else {
                     pdfListView.signMode = !pdfListView.signMode
