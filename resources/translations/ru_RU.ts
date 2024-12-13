@@ -471,10 +471,10 @@
         <translation>ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+37"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+36"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+36"/>
-        <location filename="../../src/views/Main.qml" line="+36"/>
+        <location filename="../../src/views/Main.qml" line="+37"/>
         <source>Your certificate is expired.</source>
         <translation>Истек срок действия сертификата.</translation>
     </message>
@@ -550,6 +550,12 @@
         <source>CryptoPro CSP 5.0 R3 not found, please check if installed</source>
         <translation type="unfinished">CryptoPro CSP 5.0 не найден, убедитесь,что в системе установлен КриптоПро 5.0 версии не ниже R3</translation>
     </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../../src/views/Main.qml" line="+3"/>
+        <source>Failed getting the user&apos;s certificates list</source>
+        <translation type="unfinished">Не удалось получить список сертификатов пользователя</translation>
+    </message>
 </context>
 <context>
     <name>PdfListView</name>
@@ -613,12 +619,12 @@
         <translation>Ошибка чтения файла профиля </translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>Failed getting the user&apos;s certificates list</source>
         <translation>Не удалось получить список сертификатов пользователя</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+13"/>
         <source>Failed to parse the certificates list from the JSON string</source>
         <translation>Не удалось прочитать список сертификатов из JSON</translation>
     </message>

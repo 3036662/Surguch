@@ -125,14 +125,18 @@ void ProfilesModel::readProfiles() {
 
 /// @brief readUserCerts, read certificates for current uset from CryptoApi
 void ProfilesModel::readUserCerts() {
-  const QString certs_json = core::bridge_utils::getCertListJSON();
-  if (certs_json.isEmpty() || certs_json == core::bridge_utils::kErrNoCSPLib) {
+  QString certs_json = core::bridge_utils::getCertListJSON();
+  if (certs_json == core::bridge_utils::kErrGetCerts ||
+      certs_json == core::bridge_utils::kErrNoCSPLib) {
     qWarning() << tr("Failed getting the user's certificates list");
     error_status_ = true;
     if (!certs_json.isEmpty()) {
       err_string_ = certs_json;
     }
     return;
+  }
+  if (certs_json.isEmpty()) {
+    certs_json = "[]";
   }
   const QByteArray certs_json_qb = certs_json.toUtf8();
   const QJsonDocument json_doc = QJsonDocument::fromJson(certs_json_qb);

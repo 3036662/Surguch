@@ -176,6 +176,7 @@ ApplicationWindow {
         // sign the document
         function signDoc(location_data) {
             try {
+                if(location_data===undefined) {return;}
                 let params=gatherParams(location_data);
                 sigCreator.createSignature(params)
             } catch (e) {
@@ -303,9 +304,12 @@ ApplicationWindow {
         // no cryptoPro error
         if (profilesModel.errStatus){
             if (profilesModel.errString==="ERR_NO_CSP_LIB"){
-                errorMessageDialog.text=qsTr("CryptoPro CSP 5.0 R3 not found, please check if installed");
-
-            }else{
+                errorMessageDialog.text=qsTr("CryptoPro CSP 5.0 R3 not found, please check if installed");                
+            }
+            else if(profilesModel.errString==="ERR_GET_CERTS"){
+                errorMessageDialog.text=qsTr("Failed getting the user's certificates list");
+            }
+            else{
                 errorMessageDialog.text="err: "+profilesModel.errString;
             }
             errorMessageDialog.open();
