@@ -306,18 +306,18 @@
 <context>
     <name>Header</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+38"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+51"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+37"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+37"/>
-        <location filename="../../src/views/Header.qml" line="+38"/>
+        <location filename="../../src/views/Header.qml" line="+51"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+7"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+7"/>
-        <location filename="../../src/views/Header.qml" line="+7"/>
+        <location filename="../../src/views/Header.qml" line="+8"/>
         <source>Show in folder</source>
         <translation>Показать в папке</translation>
     </message>
@@ -330,10 +330,10 @@
         <translation>Сохранить как ...</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+7"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+7"/>
-        <location filename="../../src/views/Header.qml" line="+7"/>
+        <location filename="../../src/views/Header.qml" line="+8"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
@@ -360,24 +360,24 @@
         <translation>Pdf файлы (*.pdf)</translation>
     </message>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+44"/>
-        <location line="+33"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+45"/>
+        <location line="+37"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+0"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+0"/>
-        <location filename="../../src/views/Header.qml" line="+44"/>
-        <location line="+33"/>
+        <location filename="../../src/views/Header.qml" line="+45"/>
+        <location line="+37"/>
         <source>Any file (* *.*)</source>
         <translation>Любой файл (* *.*)</translation>
     </message>
     <message>
-        <location line="-33"/>
-        <location line="+16"/>
-        <location line="+17"/>
+        <location line="-37"/>
+        <location line="+18"/>
+        <location line="+19"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+16"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+16"/>
-        <location filename="../../src/views/Header.qml" line="-33"/>
-        <location line="+16"/>
-        <location line="+17"/>
+        <location filename="../../src/views/Header.qml" line="-37"/>
+        <location line="+18"/>
+        <location line="+19"/>
         <source>PDF files (*.pdf)</source>
         <translation>PDF файлы (*.pdf)</translation>
     </message>
@@ -559,6 +559,26 @@
         <location filename="../../src/views/Main.qml" line="+3"/>
         <source>Failed getting the user&apos;s certificates list</source>
         <translation>Не удалось получить список сертификатов пользователя</translation>
+    </message>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation type="vanished">Файл не сохранен</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <translation type="vanished">Сохранить текущий файл?</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="vanished">Сохранить</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation type="vanished">Не сохранять</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Отмена</translation>
     </message>
 </context>
 <context>
@@ -920,6 +940,39 @@
         <location filename="../../src/views/TextPairStatus.qml" line="+3"/>
         <source>Invalid</source>
         <translation>Неверно</translation>
+    </message>
+</context>
+<context>
+    <name>UnsavedChangesDialog</name>
+    <message>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+16"/>
+        <location filename="../../src/views/UnsavedChangesDialog.qml" line="+16"/>
+        <source>Unsaved Changes</source>
+        <translation type="unfinished">Файл не сохранен</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <location filename="../../src/views/UnsavedChangesDialog.qml" line="+13"/>
+        <source>Do you want to save your changes?</source>
+        <translation type="unfinished">Сохранить текущий файл?</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <location filename="../../src/views/UnsavedChangesDialog.qml" line="+8"/>
+        <source>Save</source>
+        <translation type="unfinished">Сохранить</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <location filename="../../src/views/UnsavedChangesDialog.qml" line="+10"/>
+        <source>Discard</source>
+        <translation type="unfinished">Не сохранять</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <location filename="../../src/views/UnsavedChangesDialog.qml" line="+9"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Отмена</translation>
     </message>
 </context>
 </TS>

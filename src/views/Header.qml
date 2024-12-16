@@ -27,6 +27,19 @@ RowLayout {
         pdfListView.signInProgress = false
     }
 
+    function launchSaveFileWithQuit(quit_after_save) {
+        let dlg;
+        if (kdeVersion === "5") {
+           dlg=labsSaveFileDialog;
+        } else {
+            dlg=saveFileDialog;
+        }
+        if (quit_after_save){
+            dlg.quitAfterSave=true;
+        }
+        dlg.open();
+    }
+
     spacing: 5
 
     Row {
@@ -36,7 +49,8 @@ RowLayout {
         TopBarButton {
             icon.source: "qrc:/icons/file_plus.svg"
             text: qsTr("Open")
-            onClicked: kdeVersion==="5" ? labsFileDialog.open() : fileDialog.open();
+            onClicked: kdeVersion === "5" ? labsFileDialog.open(
+                                                ) : fileDialog.open()
             width: 130
         }
 
@@ -51,7 +65,8 @@ RowLayout {
             icon.source: "qrc:/icons/folder_plus.svg"
             text: qsTr("Save as ...")
             enabled: pdfListView.source.length > 0
-            onClicked: kdeVersion==="5" ? labsSaveFileDialog.open() :saveFileDialog.open()
+            onClicked: kdeVersion === "5" ? labsSaveFileDialog.open(
+                                                ) : saveFileDialog.open()
         }
 
         TopBarButton {
@@ -131,15 +146,15 @@ RowLayout {
                     }
                 }
 
-                Component.onCompleted: {                    
-                    let def_profile = profilesModel.getDetDefaultProfileVal()                    
+                Component.onCompleted: {
+                    let def_profile = profilesModel.getDetDefaultProfileVal()
                     if (def_profile !== "") {
                         const indx = profileComboBox.indexOfValue(def_profile)
                         profileComboBox.displayText = profileComboBox.textAt(
                                     indx)
                         profileComboBox.currentIndex = indx
                     } else {
-                        profileComboBox.currentIndex=-1;
+                        profileComboBox.currentIndex = -1
                     }
                 }
             }
@@ -181,8 +196,9 @@ RowLayout {
             anchors.top: parent.top
             anchors.bottom: parent.bottom
 
-            onClicked: {                
-                if (profileComboBox.currentValue === "new" || profileComboBox.currentIndex===-1) {
+            onClicked: {
+                if (profileComboBox.currentValue === "new"
+                        || profileComboBox.currentIndex === -1) {
                     profileComboBox.popup.open()
                 } else {
                     pdfListView.signMode = !pdfListView.signMode
@@ -209,10 +225,10 @@ RowLayout {
                             && pdfListView.signMode) {
                             pdfListView.signMode = false
                             signModeButton.down = false
-                            event.accepted=true
+                            event.accepted = true
                             return
                         }
-                        event.accepted=false
+                        event.accepted = false
                     }
 
     CommonDialods.FileDialog {
@@ -233,6 +249,8 @@ RowLayout {
     CommonDialods.FileDialog {
         id: saveFileDialog
 
+        property bool quitAfterSave: false
+
         fileMode: CommonDialods.FileDialog.SaveFile
         defaultSuffix: "pdf"
         nameFilters: [qsTr("PDF files (*.pdf)")]
@@ -242,9 +260,11 @@ RowLayout {
         onAccepted: {
             console.warn(currentFile)
             pdfListView.saveTo(currentFile)
+            if (quitAfterSave){
+                Qt.quit();
+            }
         }
     }
-
 
     // KDE5 - use lab LabsDialogs
     LabsDialogs.FileDialog {
@@ -263,20 +283,22 @@ RowLayout {
     }
     // KDE5 - use lab LabsDialogs
     LabsDialogs.FileDialog {
-            id: labsSaveFileDialog
+        id: labsSaveFileDialog
 
-            fileMode: LabsDialogs.FileDialog.SaveFile
-            defaultSuffix: "pdf"
-            currentFile:pdfListView.source
-            nameFilters: ["PDF files (*.pdf)"]
-            folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+        property bool quitAfterSave: false
 
-            onAccepted: {
-                console.warn(currentFile)
-                pdfListView.saveTo(currentFile);
+        fileMode: LabsDialogs.FileDialog.SaveFile
+        defaultSuffix: "pdf"
+        currentFile: pdfListView.source
+        nameFilters: ["PDF files (*.pdf)"]
+        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+
+        onAccepted: {
+            console.warn(currentFile)
+            pdfListView.saveTo(currentFile)
+            if (quitAfterSave){
+                Qt.quit();
             }
+        }
     }
-
-
-
 }

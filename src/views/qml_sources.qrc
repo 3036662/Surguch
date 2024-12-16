@@ -23,5 +23,6 @@
         <file>TextPairBool.qml</file>
         <file>TextPairStatus.qml</file>
         <file>TopBarButton.qml</file>
+        <file>UnsavedChangesDialog.qml</file>
     </qresource>
 </RCC>

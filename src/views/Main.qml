@@ -321,6 +321,14 @@ ApplicationWindow {
             }
             errorMessageDialog.open();
         };
+        // close window
+        root_window.closing.connect(function(close_event){
+            if (pdfListView.sourceIsTmp){
+                close_event.accepted=false;
+                undsavedFileDialog.open();
+            }
+        });
+        undsavedFileDialog.saveWithQuit.connect(header.launchSaveFileWithQuit);
     }
 
 
@@ -358,4 +366,12 @@ ApplicationWindow {
                 //console.log("Error message dialog closed.")
             }            
     }
+
+    UnsavedChangesDialog{
+        id:undsavedFileDialog
+    }
+
+
+
+
 }
