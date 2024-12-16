@@ -4,7 +4,7 @@ import QtQuick.Controls
 Flickable {
     width: parent.width
     height: parent.height
-    contentHeight: 1500
+    contentHeight: sigInfoContentColumn.height+20
     leftMargin: 10
     rightMargin: 10
 
@@ -12,6 +12,7 @@ Flickable {
 
 
     Column {
+        id : sigInfoContentColumn
         width: parent.width
 
         Item{
