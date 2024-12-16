@@ -48,6 +48,7 @@ Flickable {
                 }
                 logoPath.text = profile_json.logo_path
                 tspUrlEdit.text = profile_json.tsp_url
+                root.contentY=10;
             } catch (e) {
                 console.error("Error parsing JSON" + e.message)
             }
@@ -73,7 +74,7 @@ Flickable {
 
     width: parent.width
     height: parent.height
-    contentHeight: 1000
+    contentHeight: profileColumn.height+30
     leftMargin: 10
     rightMargin: 10
     topMargin: 10
@@ -81,6 +82,7 @@ Flickable {
     RSBCloseButton {}
 
     Column {
+        id : profileColumn
         width: parent.width
 
         Text {

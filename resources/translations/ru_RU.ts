@@ -143,10 +143,10 @@
 <context>
     <name>EditProfile</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/EditProfile.qml" line="+87"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/EditProfile.qml" line="+89"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+87"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+87"/>
-        <location filename="../../src/views/EditProfile.qml" line="+87"/>
+        <location filename="../../src/views/EditProfile.qml" line="+89"/>
         <source>Profile settings</source>
         <translation>Настройки профиля</translation>
     </message>
@@ -574,7 +574,7 @@
         <translation>Неверный формат файла</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+20"/>
         <location line="+15"/>
         <source>Can not open file</source>
         <translation>Не удалось открыть файл</translation>
