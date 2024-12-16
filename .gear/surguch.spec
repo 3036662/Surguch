@@ -12,7 +12,7 @@ Group: Office
 BuildRequires: gcc-c++ cmake ninja-build
 BuildRequires: libaltcsp-devel libcsppdf-devel
 BuildRequires: libmupdf-devel
-BuildRequires:  qt6-base-devel qt6-declarative-devel rpm-macros-qt6 qt6-declarative qt6-svg-devel qt6-svg qt6-tools
+BuildRequires:  qt6-base-devel qt6-declarative-devel rpm-macros-qt6 qt6-declarative qt6-svg-devel qt6-svg qt6-tools qt6-translations
 
 Requires: qt6-svg qt6-declarative fonts-ttf-google-noto-sans qt6-wayland
 
