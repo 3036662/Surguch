@@ -70,8 +70,8 @@ bool RawSignature::readByteRanges(fz_context *fzctx,
   }
   pdf_obj *byteranges_obj = pdf_dict_getp(fzctx, sig_val, "ByteRange");
   if (byteranges_obj != nullptr && pdf_is_array(fzctx, byteranges_obj) != 0) {
-    const size_t arr_size = pdf_array_len(fzctx, byteranges_obj);
-    if (arr_size % 2 != 0) {
+    const int arr_size = pdf_array_len(fzctx, byteranges_obj);
+    if (arr_size % 2 != 0 || arr_size < 0) {
       return false;
     }
     int64_t start = 0;
