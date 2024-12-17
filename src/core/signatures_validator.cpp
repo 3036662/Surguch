@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QFileInfo>
 #include <QThread>
+#include <cstdint>
 
 namespace core {
 
@@ -101,7 +102,7 @@ SignaturesValidator::analyzeOneSigCoverage(const core::RawSignature &sig,
   }
   // total gap size
   res.gaps_size = std::accumulate(
-      res.gaps.cbegin(), res.gaps.cend(), 0,
+      res.gaps.cbegin(), res.gaps.cend(), static_cast<uint64_t>(0),
       [](uint64_t val, const std::pair<uint64_t, uint64_t> &gap) {
         return val + (gap.second - gap.first);
       });
