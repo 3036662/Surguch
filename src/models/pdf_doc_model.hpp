@@ -90,7 +90,7 @@ private:
   int page_count_ = 0;
   bool process_signatures_ = false;
   bool process_file_delete_ = false;
-  qreal physical_screen_dpi_;
+  qreal physical_screen_dpi_ = 72;// default MuPDF DPI
   std::vector<QString> tmp_files_to_delete_;
 };
 

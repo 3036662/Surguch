@@ -49,7 +49,7 @@ ValidationResult::ValidationResult(const core::RawSignature &raw_signature,
   }
   if (pod->x_times_collection != nullptr && pod->x_times_collection_size > 0) {
     std::copy(pod->x_times_collection,
-              pod->x_times_collection + pod->times_collection_size,
+              pod->x_times_collection + pod->x_times_collection_size,
               std::back_inserter(x_times_collection));
   }
   if (pod->cert_issuer_dname != nullptr) {
