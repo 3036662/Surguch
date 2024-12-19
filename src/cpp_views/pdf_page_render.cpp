@@ -84,6 +84,7 @@ QSGNode *PdfPageRender::updatePaintNode(
       }
       zoom_dpi_last_ = render_result.zoom_dpi;
       result_zoom_last_ = render_result.result_zoom;
+      //qWarning()<<"result_zoom_last"<<result_zoom_last_;
       image_ = std::make_unique<QImage>(
           render_result.buf, width() * dev_pix_ratio_,
           height() * dev_pix_ratio_, render_result.pix_stride,

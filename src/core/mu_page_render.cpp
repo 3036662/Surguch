@@ -61,9 +61,16 @@ RenderRes MuPageRender::RenderPage(int page_number, float custom_rot_value,
         goal_zoom = 1;
       }
       goal_width = (page_rect.x1 - page_rect.x0) * screen_dpi / 72 * goal_zoom;
-      res.result_zoom = goal_zoom;
+      res.result_zoom = goal_zoom;      
     } else {
-      res.result_zoom = goal_width / (page_rect.x1 - page_rect.x0);
+        //qWarning() <<"goal_zoom ="<<goal_zoom;
+        //qWarning() <<"goal_width ="<<goal_width;
+        //qWarning() <<"page_width ="<<(page_rect.x1 - page_rect.x0);
+        //qWarning() <<"screen_dpi ="<<screen_dpi;
+        int p_width=page_rect.x1 - page_rect.x0;
+        if (p_width>0){
+            res.result_zoom=(goal_width/p_width)/(screen_dpi/72);
+        } else {res.result_zoom=1;}
     }
 
     res.page_width = goal_width;

@@ -49,6 +49,7 @@ ListView {
             let zoom_fact_goal = itemAt(100, contentY).zoomLast + 0.2
             zoomPageFact = zoom_fact_goal
             zoomAuto = false
+            return
         }
 
         if (zoomPageFact < maxZoom) {
@@ -66,12 +67,14 @@ ListView {
         forceActiveFocus()
         if (zoomAuto) {
             let zoom_fact_goal = itemAt(50, contentY).zoomLast - 0.2
+            //console.warn("qml zoom_fact_goal" + zoom_fact_goal)
             if (zoom_fact_goal <= 0) {
                 return
             }
-            console.warn(zoom_fact_goal)
+            //console.warn(zoom_fact_goal)
             zoomPageFact = zoom_fact_goal
             zoomAuto = false
+            return
         }
         if (zoomPageFact > minZoom) {
             if (zoomPageFact >= maxZoom) {
@@ -93,6 +96,8 @@ ListView {
             //auto zoom
             zoomPageFact = -1
             zoomAuto = true
+            canZoom()
+            canZoomOut()
             return
         }
         zoomAuto = false
@@ -103,7 +108,7 @@ ListView {
         if (zoomPageFact > minZoom) {
             canZoomOut()
         }
-        console.warn("new zoom " + zoomPageFact)
+       // console.warn("new zoom " + zoomPageFact)
     }
 
     function scrollToPage(newIndex) {
@@ -232,7 +237,7 @@ ListView {
 
     onZoomAutoChanged: {
 
-        //pdfModel.redrawAll()
+        pdfModel.redrawAll()
     }
 
     model: pdfModel
@@ -425,7 +430,6 @@ ListView {
     }
 
     Keys.onPressed: event => {
-                        //
                         if (event.key === Qt.Key_Left) {
                             flick(300, 0)
                             return
