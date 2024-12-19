@@ -37,6 +37,9 @@ A gui application for verification and creation of digitally signed pdf document
 
 
 %changelog
+* Thu Dec 19 2024 Oleg Proskurin <proskur@altlinux.org> 0.1-alt2
+- License info was added
+
 * Thu Nov 21 2024 Oleg Proskurin <proskur@altlinux.org> 0.1-alt1
 - Initial build
 
