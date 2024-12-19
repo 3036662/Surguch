@@ -554,7 +554,7 @@
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+13"/>
         <location filename="../../src/views/Main.qml" line="+13"/>
         <source>CryptoPro CSP 5.0 R3 not found, please check if installed</source>
-        <translation>CryptoPro CSP 5.0 не найден, убедитесь,что в системе установлен КриптоПро 5.0 версии не ниже R3</translation>
+        <translation type="unfinished">CryptoPro CSP 5.0 не найден, убедитесь, что в системе установлен КриптоПро 5.0 версии не ниже R3</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -952,35 +952,35 @@
         <location filename="../../build/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+16"/>
         <location filename="../../src/views/UnsavedChangesDialog.qml" line="+16"/>
         <source>Unsaved Changes</source>
-        <translation type="unfinished">Файл не сохранен</translation>
+        <translation>Файл не сохранен</translation>
     </message>
     <message>
         <location line="+13"/>
         <location filename="../../build/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+13"/>
         <location filename="../../src/views/UnsavedChangesDialog.qml" line="+13"/>
         <source>Do you want to save your changes?</source>
-        <translation type="unfinished">Сохранить текущий файл?</translation>
+        <translation>Сохранить текущий файл?</translation>
     </message>
     <message>
         <location line="+8"/>
         <location filename="../../build/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+8"/>
         <location filename="../../src/views/UnsavedChangesDialog.qml" line="+8"/>
         <source>Save</source>
-        <translation type="unfinished">Сохранить</translation>
+        <translation>Сохранить</translation>
     </message>
     <message>
         <location line="+10"/>
         <location filename="../../build/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+10"/>
         <location filename="../../src/views/UnsavedChangesDialog.qml" line="+10"/>
         <source>Discard</source>
-        <translation type="unfinished">Не сохранять</translation>
+        <translation>Не сохранять</translation>
     </message>
     <message>
         <location line="+9"/>
         <location filename="../../build/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+9"/>
         <location filename="../../src/views/UnsavedChangesDialog.qml" line="+9"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 </TS>
