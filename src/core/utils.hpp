@@ -31,6 +31,6 @@ namespace core::utils {
 std::vector<unsigned char> hexStringToByteArray(const char *str,
                                                 size_t size) noexcept;
 
-} // namespace core::utils
+}  // namespace core::utils
 
-#endif // UTILS_HPP
+#endif  // UTILS_HPP

@@ -27,31 +27,31 @@ namespace core {
 constexpr const char *const kKeyO = "-o";
 
 class PrinterLauncher : public QObject {
-  Q_OBJECT
+    Q_OBJECT
 
-public:
-  explicit PrinterLauncher(QObject *parent = nullptr);
+   public:
+    explicit PrinterLauncher(QObject *parent = nullptr);
 
-  /*!
-   * \brief Launch a native print dialog,print with cups
-   * \param src_file - pdf file to print
-   * \param page_count - total pages in file
-   * \param landscape - true if orientation is landscape
-   */
-  Q_INVOKABLE void print(const QString &src_file, int page_count,
-                         bool landscape);
+    /*!
+     * \brief Launch a native print dialog,print with cups
+     * \param src_file - pdf file to print
+     * \param page_count - total pages in file
+     * \param landscape - true if orientation is landscape
+     */
+    Q_INVOKABLE void print(const QString &src_file, int page_count,
+                           bool landscape);
 
-signals:
+   signals:
 
-private:
-  /// @details: https://www.cups.org/doc/options.html
-  /// @details: man lp-cups
-  static QStringList createPrintCommand(const QPrinter &printer,
-                                        const QString &file);
+   private:
+    /// @details: https://www.cups.org/doc/options.html
+    /// @details: man lp-cups
+    static QStringList createPrintCommand(const QPrinter &printer,
+                                          const QString &file);
 
-  const QString cups_executable_ = "lp-cups";
+    const QString cups_executable_ = "lp-cups";
 };
 
-} // namespace core
+}  // namespace core
 
-#endif // PRINTER_LAUNCHER_HPP
+#endif  // PRINTER_LAUNCHER_HPP
