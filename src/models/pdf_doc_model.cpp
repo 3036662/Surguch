@@ -1,3 +1,20 @@
+/* File: pdf_doc_model.cpp
+Copyright (C) Basealt LLC,  2024
+Author: Oleg Proskurin, <proskurinov@basealt.ru>
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include "pdf_doc_model.hpp"
 #include "core/signature_processor.hpp"
 #include <QDesktopServices>
@@ -110,12 +127,12 @@ void PdfDocModel::setSource(const QString &path) {
     emit errorOpenFile(tr("File does not exist"));
     return;
   }
-  if (mime_type.name()!="application/pdf"){
+  if (mime_type.name() != "application/pdf") {
     emit errorOpenFile(tr("Wrong file type"));
     return;
   }
 
-  bool mu_exception_caught=false;
+  bool mu_exception_caught = false;
   fz_try(fzctx_) {
     // open the pdf file
     fzdoc_ = fz_open_document(fzctx_, local_path_std.c_str());
@@ -125,29 +142,28 @@ void PdfDocModel::setSource(const QString &path) {
     pdfdoc_ = pdf_specifics(fzctx_, fzdoc_);
     if (pdfdoc_ == nullptr) {
       qWarning("Not a pdf document");
-    }    
+    }
     emit beginResetModel();
     page_count_ = fz_count_pages(fzctx_, fzdoc_);
     // if not a valid pdf
-    if (fzdoc_ ==nullptr || pdfdoc_==nullptr || page_count_<=0){
-        file_source_="";
-        emit errorOpenFile(tr("Can not open file"));
-    }
-    else{
-        file_source_ = file_path;
+    if (fzdoc_ == nullptr || pdfdoc_ == nullptr || page_count_ <= 0) {
+      file_source_ = "";
+      emit errorOpenFile(tr("Can not open file"));
+    } else {
+      file_source_ = file_path;
     }
     // get the number of pages
     emit endResetModel();
   }
   fz_catch(fzctx_) {
     qWarning() << fz_caught_message(fzctx_);
-    mu_exception_caught=true;
+    mu_exception_caught = true;
     fz_caught(fzctx_);
-    file_source_="";
+    file_source_ = "";
   }
-  if (mu_exception_caught){
+  if (mu_exception_caught) {
     emit errorOpenFile(tr("Can not open file"));
-    file_source_="";
+    file_source_ = "";
     return;
   }
   if (process_signatures_) {

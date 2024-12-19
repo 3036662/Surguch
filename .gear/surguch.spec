@@ -1,6 +1,6 @@
 Name: surguch
 Version: 0.1
-Release: alt1
+Release: alt2
 License: GPL-3.0-or-later
 
 Summary: Verification and creation of digitally signed pdf documents.

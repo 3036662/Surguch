@@ -1,3 +1,20 @@
+/* File: pdf_page_render.cpp
+Copyright (C) Basealt LLC,  2024
+Author: Oleg Proskurin, <proskurinov@basealt.ru>
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include "pdf_page_render.hpp"
 #include <QPainter>
 #include <QSGGeometryNode>
@@ -84,7 +101,7 @@ QSGNode *PdfPageRender::updatePaintNode(
       }
       zoom_dpi_last_ = render_result.zoom_dpi;
       result_zoom_last_ = render_result.result_zoom;
-      //qWarning()<<"result_zoom_last"<<result_zoom_last_;
+      // qWarning()<<"result_zoom_last"<<result_zoom_last_;
       image_ = std::make_unique<QImage>(
           render_result.buf, width() * dev_pix_ratio_,
           height() * dev_pix_ratio_, render_result.pix_stride,
@@ -114,7 +131,7 @@ QSGNode *PdfPageRender::updatePaintNode(
 void PdfPageRender::setDoc(fz_document *fzdoc) { fzdoc_ = fzdoc; }
 void PdfPageRender::setCtx(fz_context *fzctx) { fzctx_ = fzctx; }
 
-/// @brief set index of a page to render  
+/// @brief set index of a page to render
 void PdfPageRender::setPageNumber(int page_number) {
   page_number_ = page_number;
 }

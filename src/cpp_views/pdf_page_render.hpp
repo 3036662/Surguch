@@ -1,3 +1,20 @@
+/* File: pdf_page_render.hpp
+Copyright (C) Basealt LLC,  2024
+Author: Oleg Proskurin, <proskurinov@basealt.ru>
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #ifndef PDF_PAGE_RENDER_HPP
 #define PDF_PAGE_RENDER_HPP
 
@@ -36,7 +53,7 @@ public:
   /// setters to connect with the low-level MuPdf from pdf_doc_model
   Q_INVOKABLE void setDoc(fz_document *fzdoc);
   Q_INVOKABLE void setCtx(fz_context *fzctx);
-  /// @brief set index of a page to render  
+  /// @brief set index of a page to render
   Q_INVOKABLE void setPageNumber(int page_number);
 
   /// @brief the goal with of element

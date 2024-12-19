@@ -1,3 +1,20 @@
+/* File: pdf_doc_model.hpp
+Copyright (C) Basealt LLC,  2024
+Author: Oleg Proskurin, <proskurinov@basealt.ru>
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #ifndef pdf_doc_model_HPP
 #define pdf_doc_model_HPP
 
@@ -74,7 +91,7 @@ signals:
   /// @brief Current screen DPI was changed.
   void screenDpiChanged();
 
-  void errorOpenFile(const QString& err_string);
+  void errorOpenFile(const QString &err_string);
 
 private:
   /// @brief find all signatures
@@ -90,7 +107,7 @@ private:
   int page_count_ = 0;
   bool process_signatures_ = false;
   bool process_file_delete_ = false;
-  qreal physical_screen_dpi_ = 72;// default MuPDF DPI
+  qreal physical_screen_dpi_ = 72; // default MuPDF DPI
   std::vector<QString> tmp_files_to_delete_;
 };
 

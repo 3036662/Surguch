@@ -587,7 +587,7 @@
 <context>
     <name>PdfDocModel</name>
     <message>
-        <location filename="../../src/models/pdf_doc_model.cpp" line="+110"/>
+        <location filename="../../src/models/pdf_doc_model.cpp" line="+127"/>
         <source>File does not exist</source>
         <translation>Файл не существует</translation>
     </message>
@@ -598,7 +598,7 @@
     </message>
     <message>
         <location line="+20"/>
-        <location line="+15"/>
+        <location line="+14"/>
         <source>Can not open file</source>
         <translation>Не удалось открыть файл</translation>
     </message>
@@ -625,7 +625,7 @@
 <context>
     <name>ProfilesModel</name>
     <message>
-        <location filename="../../src/models/profiles_model.cpp" line="+10"/>
+        <location filename="../../src/models/profiles_model.cpp" line="+27"/>
         <source>CreateProfile</source>
         <translation>Создать профиль</translation>
     </message>
