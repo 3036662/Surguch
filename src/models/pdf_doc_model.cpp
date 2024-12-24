@@ -114,7 +114,7 @@ void PdfDocModel::setSource(const QString &path) {
     processFileDelete();
     fzctx_ = fz_new_context(nullptr, nullptr, 500000000);
     fz_try(fzctx_) {
-        fz_set_aa_level(fzctx_, 8);
+        fz_set_aa_level(fzctx_, 0);
         fz_register_document_handlers(fzctx_);
     }
     fz_catch(fzctx_) { fz_report_error(fzctx_); }
@@ -136,6 +136,7 @@ void PdfDocModel::setSource(const QString &path) {
     }
 
     bool mu_exception_caught = false;
+    bool was_repaired=false;
     fz_try(fzctx_) {
         // open the pdf file
         fzdoc_ = fz_open_document(fzctx_, local_path_std.c_str());
@@ -145,6 +146,9 @@ void PdfDocModel::setSource(const QString &path) {
         pdfdoc_ = pdf_specifics(fzctx_, fzdoc_);
         if (pdfdoc_ == nullptr) {
             qWarning("Not a pdf document");
+        }
+        if( pdf_was_repaired(fzctx_,pdfdoc_)>0){
+            was_repaired=true;
         }
         emit beginResetModel();
         page_count_ = fz_count_pages(fzctx_, fzdoc_);
@@ -157,6 +161,9 @@ void PdfDocModel::setSource(const QString &path) {
         }
         // get the number of pages
         emit endResetModel();
+        if (was_repaired && process_signatures_){
+           emit docWasRepaired();
+        }
     }
     fz_catch(fzctx_) {
         qWarning() << fz_caught_message(fzctx_);
