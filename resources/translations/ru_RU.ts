@@ -429,18 +429,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+117"/>
+        <location line="+111"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+117"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+117"/>
-        <location filename="../../src/views/Main.qml" line="+117"/>
+        <location filename="../../src/views/Main.qml" line="+111"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+17"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+16"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+16"/>
-        <location filename="../../src/views/Main.qml" line="+16"/>
+        <location filename="../../src/views/Main.qml" line="+17"/>
         <source>Certificate: </source>
         <translation>Сертификат: </translation>
     </message>
@@ -461,10 +461,10 @@
         <translation>Действителен: </translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="+1"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+0"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+0"/>
-        <location filename="../../src/views/Main.qml" line="+0"/>
+        <location filename="../../src/views/Main.qml" line="+1"/>
         <source> till </source>
         <translation> по </translation>
     </message>
@@ -477,50 +477,50 @@
         <translation>ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+41"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+36"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+37"/>
-        <location filename="../../src/views/Main.qml" line="+37"/>
+        <location filename="../../src/views/Main.qml" line="+41"/>
         <source>Your certificate is expired.</source>
         <translation>Истек срок действия сертификата.</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+2"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+2"/>
-        <location filename="../../src/views/Main.qml" line="+2"/>
+        <location filename="../../src/views/Main.qml" line="+3"/>
         <source>Common error. It looks like the TSP URL is not valid.</source>
         <translation>Ошибка. Возможно указан неверный адрес службы TSP.</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+2"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+2"/>
-        <location filename="../../src/views/Main.qml" line="+2"/>
+        <location filename="../../src/views/Main.qml" line="+3"/>
         <source>Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.</source>
         <translation>Произошла ошибка проверки цепочки сертификатов, похоже, что один из корневых сертификатов отсутствует или его нет в списке доверенных.</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+2"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+2"/>
-        <location filename="../../src/views/Main.qml" line="+2"/>
+        <location filename="../../src/views/Main.qml" line="+3"/>
         <source>Common error</source>
         <translation>Общая ошибка</translation>
     </message>
     <message>
-        <location line="+77"/>
+        <location line="+75"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+70"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+77"/>
-        <location filename="../../src/views/Main.qml" line="+77"/>
+        <location filename="../../src/views/Main.qml" line="+75"/>
         <source>The document was changed after signing, but can be restored</source>
         <translation>Документ был изменен после подиси, есть возможность восстановить подписанную версию</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+4"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+4"/>
-        <location filename="../../src/views/Main.qml" line="+4"/>
+        <location filename="../../src/views/Main.qml" line="+5"/>
         <source>The document can&apos;t be trusted because none of signatures covers the whole document.﻿</source>
         <translation>Этому документу нельзя доверять, поскольку ни одна из подписей не защищает весь документ целиком.</translation>
     </message>
@@ -533,28 +533,28 @@
         <translation>Документ был изменен после подписания.Некоторые подписи не защищают весь документ целиком, следует считать подозрительным.</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+4"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+4"/>
-        <location filename="../../src/views/Main.qml" line="+4"/>
+        <location filename="../../src/views/Main.qml" line="+5"/>
         <source>Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿</source>
         <translation>Некоторые из подписей не защищают весь документ целиком, следует считать подозрительным.</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+13"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+13"/>
-        <location filename="../../src/views/Main.qml" line="+13"/>
+        <location filename="../../src/views/Main.qml" line="+14"/>
         <source>Validation failed for signature number</source>
         <translation>Проверка одной из подписей не удалась, номер сигнатуры</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+13"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+13"/>
-        <location filename="../../src/views/Main.qml" line="+13"/>
+        <location filename="../../src/views/Main.qml" line="+14"/>
         <source>CryptoPro CSP 5.0 R3 not found, please check if installed</source>
-        <translation type="unfinished">CryptoPro CSP 5.0 не найден, убедитесь, что в системе установлен КриптоПро 5.0 версии не ниже R3</translation>
+        <translation>CryptoPro CSP 5.0 не найден, убедитесь, что в системе установлен КриптоПро 5.0 версии не ниже R3</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -562,6 +562,12 @@
         <location filename="../../src/views/Main.qml" line="+3"/>
         <source>Failed getting the user&apos;s certificates list</source>
         <translation>Не удалось получить список сертификатов пользователя</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <location filename="../../src/views/Main.qml" line="+18"/>
+        <source>Errors were found in the document when it was opened. The document may be displayed incorrectly.</source>
+        <translation>При открытии в документе были обнаружены ошибки. Возможно, документ будет отображён неверно.</translation>
     </message>
     <message>
         <source>Unsaved Changes</source>
@@ -587,7 +593,7 @@
 <context>
     <name>PdfDocModel</name>
     <message>
-        <location filename="../../src/models/pdf_doc_model.cpp" line="+127"/>
+        <location filename="../../src/models/pdf_doc_model.cpp" line="+130"/>
         <source>File does not exist</source>
         <translation>Файл не существует</translation>
     </message>
@@ -597,8 +603,8 @@
         <translation>Неверный формат файла</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <location line="+14"/>
+        <location line="+24"/>
+        <location line="+17"/>
         <source>Can not open file</source>
         <translation>Не удалось открыть файл</translation>
     </message>
@@ -625,12 +631,12 @@
 <context>
     <name>ProfilesModel</name>
     <message>
-        <location filename="../../src/models/profiles_model.cpp" line="+27"/>
+        <location filename="../../src/models/profiles_model.cpp" line="+29"/>
         <source>CreateProfile</source>
         <translation>Создать профиль</translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+61"/>
         <source>Standart config location cannot be determined, using home</source>
         <translation>Не удалось определить расположение конфигурационных файлов пользователя, будет использована домашняя директория</translation>
     </message>
@@ -650,7 +656,7 @@
         <translation>Не удалось создать директорию </translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
         <source>Can not create file </source>
         <translation>Не удалось создать файл </translation>
     </message>
@@ -665,7 +671,7 @@
         <translation>Ошибка чтения файла профиля </translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Failed getting the user&apos;s certificates list</source>
         <translation>Не удалось получить список сертификатов пользователя</translation>
     </message>

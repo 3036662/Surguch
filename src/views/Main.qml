@@ -16,10 +16,8 @@ ApplicationWindow {
     visible: true
     title: qsTr("Surguch")
 
-
     // --------------------------------------
     // header
-
     header: ToolBar {
         id: toolbar
         topPadding: 2
@@ -36,19 +34,17 @@ ApplicationWindow {
         }
     }
 
-
     // --------------------------------------
     // body
-
     RowLayout {
         anchors.fill: parent
 
         LeftSideBar {
-             id: leftSideBar
-         }
+            id: leftSideBar
+        }
         PdfListView {
             id: pdfListView
-            Layout.preferredWidth: root_window.width-500;
+            Layout.preferredWidth: root_window.width - 500
         }
 
         RightSideBar {
@@ -58,7 +54,6 @@ ApplicationWindow {
 
     // --------------------------------------
     // footer
-
     footer: Pane {
         id: footer_frame
         width: parent.width
@@ -99,7 +94,6 @@ ApplicationWindow {
 
     // --------------------------------------
     // instantinate cpp models
-
     MuPdfModel {
         id: pdfModel
         mustProcessSignatures: true
@@ -114,16 +108,16 @@ ApplicationWindow {
         id: siglistModel
     }
 
-    PrinterLauncher{
-        id:printer
+    PrinterLauncher {
+        id: printer
     }
 
     SignatureCreator {
         id: sigCreator
 
         // common function to gather parameters used in resizeAim and signDoc
-        function gatherParams(location_data){            
-            let curr_profile = JSON.parse(header.getCurrentProfileValue());
+        function gatherParams(location_data) {
+            let curr_profile = JSON.parse(header.getCurrentProfileValue())
             let cert_array = JSON.parse(profilesModel.getUserCertsJSON())
             // console.warn(JSON.stringify(rightSideBar.edit_profile.cert_array));
             let cert_index = cert_array.findIndex(cert => {
@@ -131,91 +125,97 @@ ApplicationWindow {
                                                       === cert.serial
                                                   })
             if (cert_index === -1) {
-                errorMessageDialog.text=qsTr("Certificate not found, looks like it was deleted.﻿");
-                errorMessageDialog.open();
-                throw new Error('Certificate data not found');
+                errorMessageDialog.text = qsTr(
+                            "Certificate not found, looks like it was deleted.﻿")
+                errorMessageDialog.open()
+                throw new Error('Certificate data not found')
             }
             // gather all information needed to create a signature visual representation
             let params = {
-                page_index: location_data.page_index,
-                page_width: location_data.page_width,
-                page_height: location_data.page_height,
-                stamp_x: location_data.stamp_x,
-                stamp_y: location_data.stamp_y,
-                stamp_width: location_data.stamp_width,
-                stamp_height: location_data.stamp_height,
-                logo_path: curr_profile.logo_path,
-                config_path: profilesModel.getConfigPath(),
-                cert_serial: curr_profile.cert_serial,
-                cert_serial_prefix: qsTr("Certificate: "),
-                cert_subject: cert_array[cert_index].subject_common_name,
-                cert_subject_prefix: qsTr("Subject: "),
-                cert_time_validity: qsTr("Vaildity: ")+cert_array[cert_index].not_before_readable + qsTr(
+                "page_index": location_data.page_index,
+                "page_width": location_data.page_width,
+                "page_height": location_data.page_height,
+                "stamp_x": location_data.stamp_x,
+                "stamp_y": location_data.stamp_y,
+                "stamp_width": location_data.stamp_width,
+                "stamp_height": location_data.stamp_height,
+                "logo_path": curr_profile.logo_path,
+                "config_path": profilesModel.getConfigPath(),
+                "cert_serial": curr_profile.cert_serial,
+                "cert_serial_prefix": qsTr("Certificate: "),
+                "cert_subject": cert_array[cert_index].subject_common_name,
+                "cert_subject_prefix": qsTr("Subject: "),
+                "cert_time_validity": qsTr("Vaildity: ")
+                                      + cert_array[cert_index].not_before_readable + qsTr(
                     " till ") + cert_array[cert_index].not_after_readable,
-                stamp_title:qsTr("THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE"),
-                stamp_type: curr_profile.stamp_type,
-                cades_type: curr_profile.CADES_format,
-                tsp_url:curr_profile.tsp_url,
-                file_to_sign_path: pdfModel.getSource()
+                "stamp_title": qsTr("THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE"),
+                "stamp_type": curr_profile.stamp_type,
+                "cades_type": curr_profile.CADES_format,
+                "tsp_url": curr_profile.tsp_url,
+                "file_to_sign_path": pdfModel.getSource()
             }
             //console.warn(JSON.stringify(params))
-            return params;
+            return params
         }
 
         // estimate the resulting stamp size
-        function resizeAim(location_data){
-            try{            
-                if(typeof(location_data) == "undefined") {return;}
-                let params=gatherParams(location_data);
-                sigCreator.estimateStampResizeFactor(params);
-            } catch(e){
-                console.warn("resizeAim"+e);
+        function resizeAim(location_data) {
+            try {
+                if (typeof (location_data) == "undefined") {
+                    return
+                }
+                let params = gatherParams(location_data)
+                sigCreator.estimateStampResizeFactor(params)
+            } catch (e) {
+                console.warn("resizeAim" + e)
             }
         }
 
         // sign the document
         function signDoc(location_data) {
             try {
-                if(typeof(location_data) == "undefined") {return;}
-                let params=gatherParams(location_data);
+                if (typeof (location_data) == "undefined") {
+                    return
+                }
+                let params = gatherParams(location_data)
                 sigCreator.createSignature(params)
             } catch (e) {
-                console.warn("signDoc"+e)
+                console.warn("signDoc" + e)
             }
         }
 
         // handle the result of signDoc function
-        function handleSigResult(result){
-            console.warn(result.status);
-            if (!result.status){
-              if (result.err_string==="CERT_EXPIRED"){
-                errorMessageDialog.text=qsTr("Your certificate is expired.");
-              } else if (result.err_string==="MAYBE_TSP_URL_INVALID"){
-                errorMessageDialog.text=qsTr("Common error. It looks like the TSP URL is not valid.");                  
-              } else if (result.err_string==="CERT_CHAINING_ERR"){
-                errorMessageDialog.text=qsTr("Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.")
-              }else{
-                  errorMessageDialog.text=qsTr("Common error");
-              }
-              errorMessageDialog.open();
+        function handleSigResult(result) {
+            console.warn(result.status)
+            if (!result.status) {
+                if (result.err_string === "CERT_EXPIRED") {
+                    errorMessageDialog.text = qsTr(
+                                "Your certificate is expired.")
+                } else if (result.err_string === "MAYBE_TSP_URL_INVALID") {
+                    errorMessageDialog.text = qsTr(
+                                "Common error. It looks like the TSP URL is not valid.")
+                } else if (result.err_string === "CERT_CHAINING_ERR") {
+                    errorMessageDialog.text = qsTr(
+                                "Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.")
+                } else {
+                    errorMessageDialog.text = qsTr("Common error")
+                }
+                errorMessageDialog.open()
+            } // if successfully signed
+            else {
+                if (result.tmp_file_path !== undefined) {
+                    // open with openTmpFile, to be deleted later
+                    pdfListView.openTmpFile(result.tmp_file_path)
+                    leftSideBar.source = result.tmp_file_path
+                    rightSideBar.showState = RightSideBar.ShowState.Invisible
+                }
             }
-            // if successfully signed
-            else{
-             if (result.tmp_file_path!==undefined){
-                 // open with openTmpFile, to be deleted later
-                 pdfListView.openTmpFile(result.tmp_file_path)
-                 leftSideBar.source = result.tmp_file_path
-                 rightSideBar.showState = RightSideBar.ShowState.Invisible
-             }
-            }
-            header.enableSignMode();
+            header.enableSignMode()
         }
     }
 
-
     // --------------------------------------
     //  connect the events
-
     Component.onCompleted: {
         // update page count in header
         pdfListView.pagesCountChanged.connect(headerSubBar.changePageCount)
@@ -251,10 +251,11 @@ ApplicationWindow {
         headerSubBar.showPreviews.connect(leftSideBar.showPreviews)
         headerSubBar.showCerts.connect(leftSideBar.showCerts)
         // sign the document
-        pdfListView.stampLocationSelected.connect(header.disableSignMode);
+        pdfListView.stampLocationSelected.connect(header.disableSignMode)
         pdfListView.stampLocationSelected.connect(sigCreator.signDoc)
         // stamp size estimated
-        sigCreator.stampSizeEstimated.connect(pdfListView.updateStampResizeFactor);
+        sigCreator.stampSizeEstimated.connect(
+                    pdfListView.updateStampResizeFactor)
         // sign creation finished
         sigCreator.signCompleted.connect(sigCreator.handleSigResult)
         //  save signatures count in left sidebar
@@ -262,75 +263,85 @@ ApplicationWindow {
         // call SignaturesListModel to update the signatures list and validate all signatures
         pdfModel.signaturesFound.connect(siglistModel.updateSigList)
         // open file error
-        pdfModel.errorOpenFile.connect(function(err_string){
-            errorMessageDialog.text=err_string;
-            errorMessageDialog.open();
-            pdfListView.source="";
-            leftSideBar.source="";
-        });
+        pdfModel.errorOpenFile.connect(function (err_string) {
+            errorMessageDialog.text = err_string
+            errorMessageDialog.open()
+            pdfListView.source = ""
+            leftSideBar.source = ""
+        })
         // file common status alerts
-        siglistModel.commonDocStatus.connect(function(status){
-            switch(status){
+        siglistModel.commonDocStatus.connect(function (status) {
+            switch (status) {
             case DocStatusEnum.CommonDocCoverageStatus.kDocCanBeRecovered:
-                errorMessageDialog.text=qsTr("The document was changed after signing, but can be restored");
-                errorMessageDialog.open();
-                break;
+                errorMessageDialog.text = qsTr(
+                            "The document was changed after signing, but can be restored")
+                errorMessageDialog.open()
+                break
             case DocStatusEnum.kDocCantBeTrusted:
-                errorMessageDialog.text=qsTr("The document can't be trusted because none of signatures covers the whole document.﻿");
-                errorMessageDialog.open();
-                break;
-
+                errorMessageDialog.text = qsTr(
+                            "The document can't be trusted because none of signatures covers the whole document.﻿")
+                errorMessageDialog.open()
+                break
             case DocStatusEnum.kDocCanBeRecoveredButSuspicious:
-                errorMessageDialog.text=qsTr("The document was changed after signing.Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿");
-                errorMessageDialog.open();
-                break;
+                errorMessageDialog.text = qsTr(
+                            "The document was changed after signing.Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿")
+                errorMessageDialog.open()
+                break
             case DocStatusEnum.kDocSuspiciousPrevious:
-                errorMessageDialog.text=qsTr("Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿");
-                errorMessageDialog.open();
-                break;
+                errorMessageDialog.text = qsTr(
+                            "Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿")
+                errorMessageDialog.open()
+                break
             }
-        });
+        })
         // open the recovered file
-        siglistModel.fileRecovered.connect(function(dest){
-            rightSideBar.showState=RightSideBar.ShowState.Invisible
-            pdfListView.openTmpFile(dest);
-            leftSideBar.source = dest;
-        });
+        siglistModel.fileRecovered.connect(function (dest) {
+            rightSideBar.showState = RightSideBar.ShowState.Invisible
+            pdfListView.openTmpFile(dest)
+            leftSideBar.source = dest
+        })
         // validation failed
-        siglistModel.validationFailedForSignature.connect(function(index){
-            errorMessageDialog.text=qsTr("Validation failed for signature number")+" "+index;
-            errorMessageDialog.open();
-        });
+        siglistModel.validationFailedForSignature.connect(function (index) {
+            errorMessageDialog.text = qsTr(
+                        "Validation failed for signature number") + " " + index
+            errorMessageDialog.open()
+        })
         // open document on strart
-        if (openOnStart!==""){
+        if (openOnStart !== "") {
             pdfListView.openFile(openOnStart)
             leftSideBar.source = openOnStart
             rightSideBar.showState = RightSideBar.ShowState.Invisible
         }
 
         // no cryptoPro error
-        if (profilesModel.errStatus){
-            if (profilesModel.errString==="ERR_NO_CSP_LIB"){
-                errorMessageDialog.text=qsTr("CryptoPro CSP 5.0 R3 not found, please check if installed");                
+        if (profilesModel.errStatus) {
+            if (profilesModel.errString === "ERR_NO_CSP_LIB") {
+                errorMessageDialog.text = qsTr(
+                            "CryptoPro CSP 5.0 R3 not found, please check if installed")
+            } else if (profilesModel.errString === "ERR_GET_CERTS") {
+                errorMessageDialog.text = qsTr(
+                            "Failed getting the user's certificates list")
+            } else {
+                errorMessageDialog.text = "err: " + profilesModel.errString
             }
-            else if(profilesModel.errString==="ERR_GET_CERTS"){
-                errorMessageDialog.text=qsTr("Failed getting the user's certificates list");
-            }
-            else{
-                errorMessageDialog.text="err: "+profilesModel.errString;
-            }
-            errorMessageDialog.open();
-        };
+            errorMessageDialog.open()
+        }
+        ;
         // close window
-        root_window.closing.connect(function(close_event){
-            if (pdfListView.sourceIsTmp){
-                close_event.accepted=false;
-                undsavedFileDialog.open();
+        root_window.closing.connect(function (close_event) {
+            if (pdfListView.sourceIsTmp) {
+                close_event.accepted = false
+                undsavedFileDialog.open()
             }
-        });
-        undsavedFileDialog.saveWithQuit.connect(header.launchSaveFileWithQuit);
+        })
+        undsavedFileDialog.saveWithQuit.connect(header.launchSaveFileWithQuit)
+        // invalid pdf
+        pdfModel.docWasRepaired.connect(function () {
+            errorMessageDialog.text = qsTr(
+                        "Errors were found in the document when it was opened. The document may be displayed incorrectly.")
+            errorMessageDialog.open()
+        })
     }
-
 
     // ---------------------------------------------
     // helper dialogs
@@ -354,24 +365,22 @@ ApplicationWindow {
 
         // Handle dialog closing
         onAccepted: {
-         //   console.log("Dialog closed")
+
+            //   console.log("Dialog closed")
         }
     }
 
     MessageDialog {
-            id: errorMessageDialog
-            buttons: MessageDialog.Ok
-            title: "Error"
-            onAccepted: {
-                //console.log("Error message dialog closed.")
-            }            
+        id: errorMessageDialog
+        buttons: MessageDialog.Ok
+        title: "Error"
+        onAccepted: {
+
+            //console.log("Error message dialog closed.")
+        }
     }
 
-    UnsavedChangesDialog{
-        id:undsavedFileDialog
+    UnsavedChangesDialog {
+        id: undsavedFileDialog
     }
-
-
-
-
 }
