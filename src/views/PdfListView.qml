@@ -310,7 +310,7 @@ ListView {
             anchors.horizontalCenter: width < parent.width ? parent.horizontalCenter : undefined
             anchors.rightMargin: verticalScroll.width
 
-            width: root.pageWidth>0 ? root.pageWidth : root.width
+            width: {if (root.pageWidth>0  && !sizeKnown){return root.pageWidth>0 ? root.pageWidth : root.width}}
             height: width * 1.42
 
             zoomGoal: zoomPageFact
@@ -363,6 +363,10 @@ ListView {
             onWidthChanged: {
                 root.pageWidth = width
                 updateCrossSize()
+            }
+
+            onZoomLastChanged: {
+                 sizeKnown=true
             }
 
             onHeightChanged: {

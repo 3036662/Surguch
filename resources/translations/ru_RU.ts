@@ -612,10 +612,10 @@
 <context>
     <name>PdfListView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+450"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+451"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/PdfListView.qml" line="+395"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+395"/>
-        <location filename="../../src/views/PdfListView.qml" line="+450"/>
+        <location filename="../../src/views/PdfListView.qml" line="+451"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>
