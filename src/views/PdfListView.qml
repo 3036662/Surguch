@@ -176,8 +176,8 @@ ListView {
 
     Layout.fillHeight: true
     Layout.fillWidth: true
-    Layout.leftMargin: 20
-    Layout.rightMargin: 20
+    Layout.leftMargin: 5
+    Layout.rightMargin: 5
     Layout.minimumWidth: 200
     Layout.alignment: Qt.AlignHCenter
 
@@ -243,7 +243,8 @@ ListView {
     model: pdfModel
 
     delegate: Column {
-        width: root.width - verticalScroll.width * 2
+        //width: root.width - verticalScroll.width * 2
+        width:root.width - verticalScroll.width;
 
         property alias zoomLast: pdfPage.zoomLast
 

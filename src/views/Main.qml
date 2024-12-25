@@ -38,6 +38,7 @@ ApplicationWindow {
     // body
     RowLayout {
         anchors.fill: parent
+        spacing: 0
 
         LeftSideBar {
             id: leftSideBar
@@ -57,7 +58,7 @@ ApplicationWindow {
     footer: Pane {
         id: footer_frame
         width: parent.width
-        height: 30
+        height: 10
         ScrollBar {
             id: horizontalScroll
             hoverEnabled: true

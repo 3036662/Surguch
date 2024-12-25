@@ -11,8 +11,8 @@ ListView {
     property double zoomPageFact: 1
     property string source: ""
 
-    anchors.leftMargin: 20
-    anchors.rightMargin: 20
+    anchors.leftMargin: 5
+    anchors.rightMargin: 0
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.fill: parent
     spacing: 10

@@ -429,10 +429,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+111"/>
+        <location line="+112"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+117"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+117"/>
-        <location filename="../../src/views/Main.qml" line="+111"/>
+        <location filename="../../src/views/Main.qml" line="+112"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
@@ -612,10 +612,10 @@
 <context>
     <name>PdfListView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+400"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+401"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/PdfListView.qml" line="+395"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+395"/>
-        <location filename="../../src/views/PdfListView.qml" line="+400"/>
+        <location filename="../../src/views/PdfListView.qml" line="+401"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>
@@ -684,10 +684,10 @@
 <context>
     <name>RSBSigInfo</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+25"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+26"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+24"/>
         <location filename="../../build/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+25"/>
-        <location filename="../../src/views/RSBSigInfo.qml" line="+25"/>
+        <location filename="../../src/views/RSBSigInfo.qml" line="+26"/>
         <source>Signature</source>
         <translation>Электронная подпись</translation>
     </message>
