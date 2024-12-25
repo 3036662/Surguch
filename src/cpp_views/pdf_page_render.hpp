@@ -58,9 +58,9 @@ class PdfPageRender : public QQuickItem {
     Q_INVOKABLE void setPageNumber(int page_number);
 
     /// @brief the goal with of element
-    Q_PROPERTY(float widthGoal MEMBER width_goal_);
+    Q_PROPERTY(float widthGoal MEMBER width_goal_ NOTIFY widthGoalChanged);
     /// @brief the goal zoom of element
-    Q_PROPERTY(float zoomGoal MEMBER zoom_goal_);
+    Q_PROPERTY(float zoomGoal MEMBER zoom_goal_ NOTIFY zoomGoalChanged);
     /// @brief current screen DPI setter
     Q_PROPERTY(float currScreenDpi MEMBER screen_dpi_);
     /// @brief the last zoom value for zoomIn/zoomOut
@@ -68,12 +68,15 @@ class PdfPageRender : public QQuickItem {
     /// @brief rotation value in degrees
     Q_PROPERTY(float customRotation MEMBER custom_rotation_);
     /// @brief Is utilized to set the page height on page width change.
-    Q_PROPERTY(float pageRatio MEMBER pratio_);
+    Q_PROPERTY(float pageRatio MEMBER pratio_);        
+
 
    signals:
 
     /// @brief Notification signal for zoomLast changes
     void zoomLastChanged();
+    void zoomGoalChanged();
+    void widthGoalChanged();
 
    private:
     fz_document *fzdoc_ = nullptr;

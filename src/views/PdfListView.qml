@@ -53,10 +53,33 @@ ListView {
         }
 
         if (zoomPageFact < maxZoom) {
-            if (zoomPageFact <= minZoom) {
+            zoomPageFact += 0.2
+            if (zoomPageFact > minZoom) {
                 canZoomOut()
             }
-            zoomPageFact += 0.2
+            if (zoomPageFact >= maxZoom) {
+                maxZoomReached()
+            }
+        }
+    }
+
+    function zoomInWheel() {
+        let step = 0.10
+        forceActiveFocus()
+        if (zoomAuto) {
+            let zoom_fact_goal = itemAt(100, contentY).zoomLast + step
+            if (zoom_fact_goal < root.maxZoom) {
+                zoomPageFact = zoom_fact_goal
+                zoomAuto = false
+            }
+            return
+        }
+
+        if (zoomPageFact < maxZoom) {
+            zoomPageFact += step
+            if (zoomPageFact > minZoom) {
+                canZoomOut()
+            }
             if (zoomPageFact >= maxZoom) {
                 maxZoomReached()
             }
@@ -77,15 +100,36 @@ ListView {
             return
         }
         if (zoomPageFact > minZoom) {
-            if (zoomPageFact >= maxZoom) {
+            zoomPageFact -= 0.2
+            if (zoomPageFact < maxZoom) {
                 canZoom()
             }
-            zoomPageFact -= 0.2
             if (zoomPageFact < minZoom) {
                 zoomPageFact = minZoom
-            }
-            if (zoomPageFact == minZoom) {
                 minZoomReached()
+            }
+        }
+    }
+
+    function zoomOutWheel() {
+        let step = 0.10
+        forceActiveFocus()
+        if (zoomAuto) {
+            let zoom_fact_goal = itemAt(100, contentY).zoomLast - step
+            if (zoom_fact_goal > minZoom) {
+                zoomPageFact = zoom_fact_goal
+                zoomAuto = false
+            }
+            return
+        }
+        if (zoomPageFact > minZoom) {
+            zoomPageFact -= step
+            if (zoomPageFact < maxZoom) {
+                canZoom()
+            }
+            if (zoomPageFact <= minZoom) {
+                minZoomReached()
+                zoomPageFact = minZoom
             }
         }
     }
@@ -108,7 +152,7 @@ ListView {
         if (zoomPageFact > minZoom) {
             canZoomOut()
         }
-       // console.warn("new zoom " + zoomPageFact)
+        // console.warn("new zoom " + zoomPageFact)
     }
 
     function scrollToPage(newIndex) {
@@ -244,7 +288,7 @@ ListView {
 
     delegate: Column {
         //width: root.width - verticalScroll.width * 2
-        width:root.width - verticalScroll.width;
+        width: root.width - verticalScroll.width
 
         property alias zoomLast: pdfPage.zoomLast
 
@@ -260,18 +304,20 @@ ListView {
             id: pdfPage
 
             property int aimResizeStatus: root.aimIsAlreadyResized
+            property bool sizeKnown: false
 
             customRotation: root.delegateRotation
             anchors.horizontalCenter: width < parent.width ? parent.horizontalCenter : undefined
             anchors.rightMargin: verticalScroll.width
 
-            width: root.width
+            width: root.pageWidth>0 ? root.pageWidth : root.width
             height: width * 1.42
 
             zoomGoal: zoomPageFact
             // set goal width only if autoZoom
             widthGoal: zoomAuto ? root.width : 0
             currScreenDpi: pdfModel.screenDpi
+
 
             function updateCrossSize() {
                 if (!root.aimIsAlreadyResized && pdfPage.width > 0
@@ -428,6 +474,26 @@ ListView {
         minimumSize: 0.2
         policy: ScrollBar.AsNeeded // Show scrollbar always
         snapMode: ScrollBar.NoSnap
+    }
+
+    MouseArea {
+        anchors.fill: parent
+
+        Connections {
+            function onWheel(event) {
+                if (event.modifiers === Qt.ControlModifier) {
+                    if (event.angleDelta.y > 0) {
+                        zoomInWheel()
+                    } else {
+                        zoomOutWheel()
+                    }
+                    event.accepted = true
+                    return
+                }
+                ;
+                event.accepted = false
+            }
+        }
     }
 
     Keys.onPressed: event => {

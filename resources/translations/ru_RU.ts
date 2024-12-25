@@ -429,10 +429,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+112"/>
+        <location line="+113"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+117"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+117"/>
-        <location filename="../../src/views/Main.qml" line="+112"/>
+        <location filename="../../src/views/Main.qml" line="+113"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
@@ -612,10 +612,10 @@
 <context>
     <name>PdfListView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+401"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+450"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/PdfListView.qml" line="+395"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+395"/>
-        <location filename="../../src/views/PdfListView.qml" line="+401"/>
+        <location filename="../../src/views/PdfListView.qml" line="+450"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>

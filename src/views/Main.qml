@@ -51,6 +51,7 @@ ApplicationWindow {
         RightSideBar {
             id: rightSideBar
         }
+
     }
 
     // --------------------------------------
