@@ -310,14 +310,17 @@ ListView {
             anchors.horizontalCenter: width < parent.width ? parent.horizontalCenter : undefined
             anchors.rightMargin: verticalScroll.width
 
-            width: {if (root.pageWidth>0  && !sizeKnown){return root.pageWidth>0 ? root.pageWidth : root.width}}
+            width: {
+                if (root.pageWidth > 0 && !sizeKnown) {
+                    return root.pageWidth > 0 ? root.pageWidth : root.width
+                }
+            }
             height: width * 1.42
 
             zoomGoal: zoomPageFact
             // set goal width only if autoZoom
             widthGoal: zoomAuto ? root.width : 0
             currScreenDpi: pdfModel.screenDpi
-
 
             function updateCrossSize() {
                 if (!root.aimIsAlreadyResized && pdfPage.width > 0
@@ -366,7 +369,7 @@ ListView {
             }
 
             onZoomLastChanged: {
-                 sizeKnown=true
+                sizeKnown = true
             }
 
             onHeightChanged: {
@@ -411,6 +414,7 @@ ListView {
                     cursorShape = Qt.ArrowCursor
                 }
                 onClicked: {
+                    console.warn("click")
                     if (root.signMode && !root.signInProgress
                             && cross.valid_position) {
                         let location_data = {
@@ -427,8 +431,6 @@ ListView {
                         root.signMode = false
                         root.signInProgress = true
                         stampLocationSelected(location_data)
-                    }
-                    onClicked: {
                         root.forceActiveFocus()
                     }
                 }
@@ -482,6 +484,7 @@ ListView {
 
     MouseArea {
         anchors.fill: parent
+        acceptedButtons: Qt.NoButton
 
         Connections {
             function onWheel(event) {
