@@ -292,6 +292,7 @@ ListView {
 
         property alias zoomLast: pdfPage.zoomLast
 
+
         onWidthChanged: {
             if (root.zoomAuto) {
                 pdfPage.widthGoal = width
@@ -305,16 +306,12 @@ ListView {
 
             property int aimResizeStatus: root.aimIsAlreadyResized
             property bool sizeKnown: false
+            property int defaultWidth: root.pageWidth > 0 && !sizeKnown ? root.pageWidth : root.width
 
             customRotation: root.delegateRotation
             anchors.horizontalCenter: width < parent.width ? parent.horizontalCenter : undefined
             anchors.rightMargin: verticalScroll.width
-
-            width: {
-                if (root.pageWidth > 0 && !sizeKnown) {
-                    return root.pageWidth > 0 ? root.pageWidth : root.width
-                }
-            }
+            width: defaultWidth
             height: width * 1.42
 
             zoomGoal: zoomPageFact
