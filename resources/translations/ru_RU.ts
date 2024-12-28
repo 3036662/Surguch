@@ -383,12 +383,18 @@
     <message>
         <location line="+3"/>
         <location filename="../../src/views/Main.qml" line="+3"/>
+        <source>Error.Timeout exceeded.</source>
+        <translation type="unfinished">Ошибка: превышен максимальный интервал ожидания.</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../../src/views/Main.qml" line="+5"/>
         <source>Common error</source>
         <translation>Общая ошибка</translation>
     </message>
     <message>
-        <location line="+75"/>
-        <location filename="../../src/views/Main.qml" line="+75"/>
+        <location line="+76"/>
+        <location filename="../../src/views/Main.qml" line="+76"/>
         <source>The document was changed after signing, but can be restored</source>
         <translation>Документ был изменен после подиси, есть возможность восстановить подписанную версию</translation>
     </message>
@@ -477,8 +483,8 @@
 <context>
     <name>PdfListView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+457"/>
-        <location filename="../../src/views/PdfListView.qml" line="+457"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+450"/>
+        <location filename="../../src/views/PdfListView.qml" line="+450"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>

@@ -199,7 +199,12 @@ ApplicationWindow {
                 } else if (result.err_string === "CERT_CHAINING_ERR") {
                     errorMessageDialog.text = qsTr(
                                 "Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.")
-                } else {
+                } else if (result.err_string ==="TIMEOUT"){
+                    errorMessageDialog.text =qsTr(
+                                "Error.Timeout exceeded."
+                                )
+                }
+                else {
                     errorMessageDialog.text = qsTr("Common error")
                 }
                 errorMessageDialog.open()
@@ -273,23 +278,24 @@ ApplicationWindow {
         })
         // file common status alerts
         siglistModel.commonDocStatus.connect(function (status) {
+            //console.warn("status:"+status)
             switch (status) {
-            case DocStatusEnum.CommonDocCoverageStatus.kDocCanBeRecovered:
+            case "kDocCanBeRecovered":
                 errorMessageDialog.text = qsTr(
                             "The document was changed after signing, but can be restored")
                 errorMessageDialog.open()
                 break
-            case DocStatusEnum.kDocCantBeTrusted:
+            case "kDocCantBeTrusted":
                 errorMessageDialog.text = qsTr(
                             "The document can't be trusted because none of signatures covers the whole document.﻿")
                 errorMessageDialog.open()
                 break
-            case DocStatusEnum.kDocCanBeRecoveredButSuspicious:
+            case "kDocCanBeRecoveredButSuspicious":
                 errorMessageDialog.text = qsTr(
                             "The document was changed after signing.Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿")
                 errorMessageDialog.open()
                 break
-            case DocStatusEnum.kDocSuspiciousPrevious:
+            case "kDocSuspiciousPrevious":
                 errorMessageDialog.text = qsTr(
                             "Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿")
                 errorMessageDialog.open()
