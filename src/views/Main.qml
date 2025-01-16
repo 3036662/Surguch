@@ -381,7 +381,7 @@ ApplicationWindow {
     MessageDialog {
         id: errorMessageDialog
         buttons: MessageDialog.Ok
-        title: "Error"
+        title: qsTr("Error")
         onAccepted: {
 
             //console.log("Error message dialog closed.")

@@ -441,6 +441,12 @@
         <translation>При открытии в документе были обнаружены ошибки. Возможно, документ будет отображён неверно.</translation>
     </message>
     <message>
+        <location line="+36"/>
+        <location filename="../../src/views/Main.qml" line="+36"/>
+        <source>Error</source>
+        <translation>Ошибка</translation>
+    </message>
+    <message>
         <source>Unsaved Changes</source>
         <translation type="vanished">Файл не сохранен</translation>
     </message>
