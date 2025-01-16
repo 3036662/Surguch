@@ -384,7 +384,7 @@
         <location line="+3"/>
         <location filename="../../src/views/Main.qml" line="+3"/>
         <source>Error.Timeout exceeded.</source>
-        <translation type="unfinished">Ошибка: превышен максимальный интервал ожидания.</translation>
+        <translation>Ошибка: превышен максимальный интервал ожидания.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -396,7 +396,7 @@
         <location line="+76"/>
         <location filename="../../src/views/Main.qml" line="+76"/>
         <source>The document was changed after signing, but can be restored</source>
-        <translation>Документ был изменен после подиси, есть возможность восстановить подписанную версию</translation>
+        <translation type="unfinished">Документ был изменен после подписи, есть возможность восстановить подписанную версию</translation>
     </message>
     <message>
         <location line="+5"/>
