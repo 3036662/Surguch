@@ -232,8 +232,8 @@
 <context>
     <name>Header</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+51"/>
-        <location filename="../../src/views/Header.qml" line="+51"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+52"/>
+        <location filename="../../src/views/Header.qml" line="+52"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
@@ -273,18 +273,18 @@
     </message>
     <message>
         <location line="+45"/>
-        <location line="+37"/>
+        <location line="+38"/>
         <location filename="../../src/views/Header.qml" line="+45"/>
-        <location line="+37"/>
+        <location line="+38"/>
         <source>Any file (* *.*)</source>
         <translation>Любой файл (* *.*)</translation>
     </message>
     <message>
-        <location line="-37"/>
-        <location line="+18"/>
+        <location line="-38"/>
         <location line="+19"/>
-        <location filename="../../src/views/Header.qml" line="-37"/>
-        <location line="+18"/>
+        <location line="+19"/>
+        <location filename="../../src/views/Header.qml" line="-38"/>
+        <location line="+19"/>
         <location line="+19"/>
         <source>PDF files (*.pdf)</source>
         <translation>PDF файлы (*.pdf)</translation>
@@ -441,8 +441,8 @@
         <translation>При открытии в документе были обнаружены ошибки. Возможно, документ будет отображён неверно.</translation>
     </message>
     <message>
-        <location line="+36"/>
-        <location filename="../../src/views/Main.qml" line="+36"/>
+        <location line="+37"/>
+        <location filename="../../src/views/Main.qml" line="+37"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>

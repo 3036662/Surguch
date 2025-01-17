@@ -348,6 +348,8 @@ ApplicationWindow {
             errorMessageDialog.text = qsTr(
                         "Errors were found in the document when it was opened. The document may be displayed incorrectly.")
             errorMessageDialog.open()
+            // disable signing for damaged document
+            header.disableSignMode()
         })
     }
 
