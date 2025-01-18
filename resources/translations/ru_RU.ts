@@ -396,7 +396,7 @@
         <location line="+76"/>
         <location filename="../../src/views/Main.qml" line="+76"/>
         <source>The document was changed after signing, but can be restored</source>
-        <translation type="unfinished">Документ был изменен после подписи, есть возможность восстановить подписанную версию</translation>
+        <translation>Документ был изменен после подписи! Присутствует возможность восстановить подписанную версию</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -441,8 +441,8 @@
         <translation>При открытии в документе были обнаружены ошибки. Возможно, документ будет отображён неверно.</translation>
     </message>
     <message>
-        <location line="+37"/>
-        <location filename="../../src/views/Main.qml" line="+37"/>
+        <location line="+38"/>
+        <location filename="../../src/views/Main.qml" line="+38"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
