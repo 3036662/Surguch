@@ -17,7 +17,9 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #ifndef UTILS_HPP
 #define UTILS_HPP
+#include <cstddef>
 #include <vector>
+
 
 namespace core::utils {
 
