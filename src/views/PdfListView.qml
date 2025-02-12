@@ -16,11 +16,17 @@ ListView {
     // page sizes and zoom
     property double zoomPageFact: 1
     property int pageWidth: 0
+    property int lastPageHeight: 0
+    property int lastPageWidth: 0
+    property int lastPageUsedSize: 0
+    property double prevZoom: 1
     property bool landscape: false
     property bool zoomAuto: false
     property int delegateRotation: 0
+    property int pageIndToPreserveWhenZoom: 0
     readonly property double maxZoom: 3
     readonly property double minZoom: 0.2
+
     // --------
     //signing
     property bool signMode: false
@@ -44,9 +50,10 @@ ListView {
     signal stampLocationSelected(var stamp_location_info)
 
     function zoomIn() {
+        prevZoom = zoomPageFact
         forceActiveFocus()
         if (zoomAuto) {
-            let zoom_fact_goal = itemAt(100, contentY).zoomLast + 0.2
+            let zoom_fact_goal = currentPage().zoomLast + 0.2
             zoomPageFact = zoom_fact_goal
             zoomAuto = false
             return
@@ -64,10 +71,11 @@ ListView {
     }
 
     function zoomInWheel() {
+        prevZoom = zoomPageFact
         let step = 0.10
         forceActiveFocus()
         if (zoomAuto) {
-            let zoom_fact_goal = itemAt(100, contentY).zoomLast + step
+            let zoom_fact_goal = currentPage().zoomLast + step
             if (zoom_fact_goal < root.maxZoom) {
                 zoomPageFact = zoom_fact_goal
                 zoomAuto = false
@@ -87,14 +95,13 @@ ListView {
     }
 
     function zoomOut() {
+        prevZoom = zoomPageFact
         forceActiveFocus()
         if (zoomAuto) {
-            let zoom_fact_goal = itemAt(50, contentY).zoomLast - 0.2
-            //console.warn("qml zoom_fact_goal" + zoom_fact_goal)
+            let zoom_fact_goal = currentPage().zoomLast - 0.2
             if (zoom_fact_goal <= 0) {
                 return
             }
-            //console.warn(zoom_fact_goal)
             zoomPageFact = zoom_fact_goal
             zoomAuto = false
             return
@@ -112,10 +119,11 @@ ListView {
     }
 
     function zoomOutWheel() {
+        prevZoom = zoomPageFact
         let step = 0.10
         forceActiveFocus()
         if (zoomAuto) {
-            let zoom_fact_goal = itemAt(100, contentY).zoomLast - step
+            let zoom_fact_goal = currentPage().zoomLast - step
             if (zoom_fact_goal > minZoom) {
                 zoomPageFact = zoom_fact_goal
                 zoomAuto = false
@@ -135,6 +143,7 @@ ListView {
     }
 
     function setZoom(newZoom) {
+        prevZoom = zoomPageFact
         forceActiveFocus()
         if (newZoom <= 0) {
             //auto zoom
@@ -151,8 +160,7 @@ ListView {
         }
         if (zoomPageFact > minZoom) {
             canZoomOut()
-        }
-        // console.warn("new zoom " + zoomPageFact)
+        }     
     }
 
     function scrollToPage(newIndex) {
@@ -165,13 +173,13 @@ ListView {
         if (delegateRotation !== 0) {
             delegateRotation = 0
             model.redrawAll()
-            scrollToPage(indexAt(100, contentY + 100) + 1)
+            scrollToPage(currentPageIndex() + 1)
         }
     }
 
     function rotateClockWise() {
         forceActiveFocus()
-        let currentPage = indexAt(100, contentY + 100) + 1
+        let currentPage = currentPageIndex() + 1
         delegateRotation = delegateRotation == 270 ? 0 : delegateRotation + 90
         model.redrawAll()
         scrollToPage(currentPage)
@@ -179,7 +187,7 @@ ListView {
 
     function rotateCounterClockWise() {
         forceActiveFocus()
-        let currentPage = indexAt(100, contentY + 100) + 1
+        let currentPage = currentPageIndex() + 1
         delegateRotation = delegateRotation == 0 ? 270 : delegateRotation - 90
         model.redrawAll()
         scrollToPage(currentPage)
@@ -218,6 +226,70 @@ ListView {
         }
     }
 
+
+    /* Get the current view position at page: page index, ratio.
+     * The ratio value means how far away the view is from the beginning of the page.
+     * Returns object {value,ratio}
+     */
+    function preservePosition() {
+        let viewMidY = contentY + height / 2
+        let viewMidX = width / 2
+        let currPage = itemAtIndex(pageIndToPreserveWhenZoom)
+        let pageHeight = currPage ? currPage.height : root.lastPageHeight
+        let pageLastZoom = currPage ? currPage.zoomLast : 1
+        let pageYRatio = 1
+        if (pageHeight > 0) {
+            let a = 0
+            let b = 0
+            let step = pageHeight / 8
+            let pointed = pageIndToPreserveWhenZoom
+            let iterCounter = 0
+            const maxIter = 10
+            // measure the page in to directions (up and down) from the center
+            while (pointed === pageIndToPreserveWhenZoom
+                   && iterCounter < maxIter) {
+                ++a
+                pointed = indexAt(viewMidX, viewMidY - step * a)
+            }
+            pointed = pageIndToPreserveWhenZoom
+            iterCounter = 0
+            while (pointed === pageIndToPreserveWhenZoom
+                   && iterCounter < maxIter) {
+                ++b
+                pointed = indexAt(viewMidX, viewMidY + step * b)
+            }
+            pageYRatio = a + b > 0 ? a / (a + b) : 0.5
+        }
+        let pos = {
+            "index": pageIndToPreserveWhenZoom,
+            "ratio": pageYRatio,
+            "zoom_last": pageLastZoom
+        }
+        return pos
+    }
+
+    function currentPage() {
+        let currPage = itemAt(width / 2, contentY + height / 2)
+        let iterCount = 0
+        while (currPage === null && iterCount < 10) {
+            ++iterCount
+            currPage = itemAt(width / 2,
+                              contentY + height / 2 - spacing * iterCount)
+        }
+        return currPage
+    }
+
+    function currentPageIndex() {
+        let index = indexAt(width / 2, contentY + height / 2)
+        let iterCount = 0
+        while (index === -1 && iterCount < 10) {
+            ++iterCount
+            index = indexAt(width / 2,
+                            contentY + height / 2 - spacing * iterCount)
+        }
+        return index
+    }
+
     Layout.fillHeight: true
     Layout.fillWidth: true
     Layout.leftMargin: 5
@@ -237,13 +309,18 @@ ListView {
     }
 
     onSourceChanged: {
+        lastPageHeight = 0;
+        lastPageWidth = 0;
+        lastPageUsedSize =0;
+        prevZoom = 1;
+        landscape = false;
+        delegateRotation = 0;
+        pageIndToPreserveWhenZoom =0;
         pdfModel.setSource(source)
         if (sourceIsTmp) {
             pdfModel.deleteFileLater(source)
         }
-        setZoom(-1)
-
-        delegateRotation = 0
+        setZoom(-1)        
         if (leftSideBar.sigCount === 0) {
             leftSideBar.showPreviews()
         } else {
@@ -256,12 +333,56 @@ ListView {
         if (source.length > 0) {
             root_window.title = source
         }
-        forceActiveFocus()
+        scrollToPage(1);
+        currPageChanged(1)
+        forceActiveFocus()        
     }
 
-    onZoomPageFactChanged: {
-        zoomFactorUpdate(zoomPageFact)
+    onZoomPageFactChanged: {        
+        // preserve the position
+        let pos = preservePosition()
         pdfModel.redrawAll()
+        zoomFactorUpdate(zoomPageFact)
+        positionViewAtIndex(pos.index, ListView.Beginning)
+        // move the contentY to the old position
+        let currPage = currentPage()
+        let usedPageSize = 0
+        let rotated90 = delegateRotation == 90 || delegateRotation == 270
+        let currZoom = zoomPageFact
+        if (currPage) {
+            usedPageSize = rotated90 ? currPage.pWidth : currPage.pHeight
+            if (currPage.zoomLast > 0 && currPage.zoomLast !== 1) {
+                currZoom = currPage.zoomLast
+            }
+        } else {
+            usedPageSize = rotated90 ? root.lastPageWidth : root.lastPageHeight
+        }
+        let zoomRatio = currZoom / pos.zoom_last
+        let pos_mode = ListView.Beginning
+        if (pos.ratio > 0.7) {
+            pos_mode = ListView.End
+        } else if (pos.ratio > 0.3) {
+            pos_mode = ListView.Center
+        }
+        let targetYScroll = 0
+        if (zoomRatio > 0) {
+            targetYScroll = pos.ratio * usedPageSize
+                    * (rotated90 && zoomRatio>1 ? 1 : zoomRatio) - root.height / 2
+        }
+        // Convert the negative value to a positive scroll from the previous page.
+        if (targetYScroll < 0) {
+            if (pos.index > 0) {
+                positionViewAtIndex((pos.index) - 1, ListView.Beginning)
+                targetYScroll += usedPageSize * zoomRatio + root.spacing
+            }
+        }
+        if (targetYScroll > 0) {
+            contentY += targetYScroll
+        } else {
+            // if failed to calculate the exact scroll, use jump mode ( beginning | middle | end )
+            positionViewAtIndex(pos.index, pos_mode)
+        }
+        root.lastPageUsedSize = usedPageSize
     }
 
     onFlickEnded: {
@@ -273,49 +394,37 @@ ListView {
     }
 
     onContentYChanged: {
-        var currentIndexAtTop = indexAt(50, contentY)
+        var currentIndexAtTop = currentPageIndex()
         if (currentIndexAtTop > -1) {
+            pageIndToPreserveWhenZoom = currentIndexAtTop
             currPageChanged(currentIndexAtTop + 1)
         }
-    }
-
-    onZoomAutoChanged: {
-
-        pdfModel.redrawAll()
     }
 
     model: pdfModel
 
     delegate: Column {
-        //width: root.width - verticalScroll.width * 2
         width: root.width - verticalScroll.width
-
         property alias zoomLast: pdfPage.zoomLast
-
-
-        onWidthChanged: {
-            if (root.zoomAuto) {
-                pdfPage.widthGoal = width
-                pdfPage.width = width
-                pdfPage.height = width / pdfPage.pageRatio
-            }
-        }
+        property alias pWidth: pdfPage.width
+        property alias pHeight: pdfPage.height
 
         PdfPageRender {
             id: pdfPage
 
             property int aimResizeStatus: root.aimIsAlreadyResized
             property bool sizeKnown: false
-            property int defaultWidth: root.pageWidth > 0 && !sizeKnown ? root.pageWidth : root.width
+            property int defaultWidth: root.pageWidth > 0
+                                       && !sizeKnown ? root.pageWidth : root.width
 
             customRotation: root.delegateRotation
             anchors.horizontalCenter: width < parent.width ? parent.horizontalCenter : undefined
             anchors.rightMargin: verticalScroll.width
             width: defaultWidth
-            height: width * 1.42
-
+            height: defaultWidth * 1.42
+            // utilized,if zoomAuto == false
             zoomGoal: zoomPageFact
-            // set goal width only if autoZoom
+            // set goal width only if autoZoom; if autoZoom==true,zoomGoal will be ignored
             widthGoal: zoomAuto ? root.width : 0
             currScreenDpi: pdfModel.screenDpi
 
@@ -342,8 +451,7 @@ ListView {
                             "stamp_y": cross.y,
                             "stamp_width": cross.width,
                             "stamp_height": cross.height
-                        }
-                        console.warn("Call stamp size calculation")
+                        }                        
                         aimResizeInProgress = true
                         sigCreator.resizeAim(location_data)
                     }
@@ -363,15 +471,22 @@ ListView {
             onWidthChanged: {
                 root.pageWidth = width
                 updateCrossSize()
+                if (width > 0) {
+                    lastPageWidth = width
+                }
             }
 
             onZoomLastChanged: {
+                // size is known after render
                 sizeKnown = true
             }
 
             onHeightChanged: {
                 updateCrossSize()
                 landscape = pdfPage.width > pdfPage.height
+                if (height > 0) {
+                    root.lastPageHeight = height
+                }
             }
 
             onAimResizeStatusChanged: {
@@ -411,7 +526,6 @@ ListView {
                     cursorShape = Qt.ArrowCursor
                 }
                 onClicked: {
-                    console.warn("click")
                     if (root.signMode && !root.signInProgress
                             && cross.valid_position) {
                         let location_data = {
@@ -521,8 +635,7 @@ ListView {
                                           pdfListView.count,
                                           pdfListView.landscape)
                         }
-                        let currentIndexAtTop = root.indexAt(50,
-                                                             contentY + 10) + 1
+                        let currentIndexAtTop = currentPageIndex() + 1
                         if (!currentIndexAtTop) {
                             return
                         }
