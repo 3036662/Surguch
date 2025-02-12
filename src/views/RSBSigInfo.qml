@@ -7,19 +7,20 @@ Flickable {
     contentHeight: sigInfoContentColumn.height+20
     leftMargin: 10
     rightMargin: 10
+    topMargin: 10
 
 
 
+    Item{
+        width:parent.width
+        height:40
+        RSBCloseButton {}
+    }
 
     Column {
         id : sigInfoContentColumn
         width: parent.width
 
-        Item{
-            width:parent.width
-            height:40
-            RSBCloseButton {}
-        }
 
         Text {
             text: qsTr("Signature")

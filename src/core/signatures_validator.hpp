@@ -26,6 +26,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace core {
 
+/*
 /**
  * @brief Describes suggested trust level for the document
  * @details wrapped into QObject to be seen from QML
@@ -42,8 +43,28 @@ class DocStatusEnum : public QObject {
     };
     Q_ENUM(CommonDocCoverageStatus);
 
+    static QString toString(CommonDocCoverageStatus stat){
+        switch (stat) {
+        case CommonDocCoverageStatus::kEverythingIsFine:
+            return "kEverythingIsFine";
+            break;
+        case CommonDocCoverageStatus::kDocCanBeRecovered:
+            return "kDocCanBeRecovered";
+            break;
+        case CommonDocCoverageStatus::kDocSuspiciousPrevious:
+            return "kDocSuspiciousPrevious";
+            break;
+        case CommonDocCoverageStatus::kDocCanBeRecoveredButSuspicious:
+            return "kDocCanBeRecoveredButSuspicious";
+            break;
+        default:
+            return "kDocCantBeTrusted";
+            break;
+        }
+    }
     explicit DocStatusEnum(QObject *parent = nullptr) : QObject(parent) {}
 };
+
 
 /**
  * @brief Class for signatures validation
@@ -79,6 +100,9 @@ class SignaturesValidator : public QObject {
                             const QString &file_source);
 
    signals:
+
+    //void validationFinished(QString coverage_status);
+
     /// @brief Validation was finished for all signatures.
     void validationFinished(DocStatusEnum::CommonDocCoverageStatus);
 

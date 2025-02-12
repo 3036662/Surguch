@@ -137,7 +137,8 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
          worker_thread](core::DocStatusEnum::CommonDocCoverageStatus status) {
             if (curr_worker_index_ < worker_threads_.size() &&
                 worker_thread == worker_threads_[curr_worker_index_].get()) {
-                emit commonDocStatus(status);
+                //qWarning()<<"status"<<status;
+                emit commonDocStatus(core::DocStatusEnum::toString(status));
             }
             qWarning() << "Finished validation";
             worker_thread->quit();

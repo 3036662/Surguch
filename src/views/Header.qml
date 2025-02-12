@@ -40,6 +40,7 @@ RowLayout {
         dlg.open();
     }
 
+
     spacing: 5
 
     Row {
@@ -194,7 +195,7 @@ RowLayout {
             icon.height: 25
             icon.width: 25
             anchors.top: parent.top
-            anchors.bottom: parent.bottom
+            anchors.bottom: parent.bottom            
 
             onClicked: {
                 if (profileComboBox.currentValue === "new"
@@ -239,6 +240,7 @@ RowLayout {
         currentFolder: StandardPaths.writableLocation(
                            StandardPaths.DocumentsLocation)
         onAccepted: {
+            enableSignMode();
             // source is chosen by user, not a temporary file
             pdfListView.openFile(currentFile)
             leftSideBar.source = currentFile
@@ -275,6 +277,7 @@ RowLayout {
         nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
         folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
         onAccepted: {
+            enableSignMode();
             // source is chosen by user, not a temporary file
             pdfListView.openFile(currentFile)
             leftSideBar.source = currentFile
