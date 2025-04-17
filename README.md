@@ -1,4 +1,4 @@
-Summary: Verification and creation of digitally signed pdf documents.
+Summary: Verification and creation of digitally signed PDF documents.
 
 Package home: https://gitlab.basealt.space/proskurinov/surguch
 
