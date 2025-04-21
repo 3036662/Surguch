@@ -70,14 +70,6 @@ RowLayout {
                                                 ) : saveFileDialog.open()
         }
 
-        TopBarButton {
-            icon.source: "qrc:/icons/printer_sm.svg"
-            text: qsTr("Print")
-            enabled: pdfListView.source.length > 0
-            onClicked: printer.print(pdfListView.source, pdfListView.count,
-                                     pdfListView.landscape)
-        }
-
         Row {
             spacing: 2
             id: comboBox_row

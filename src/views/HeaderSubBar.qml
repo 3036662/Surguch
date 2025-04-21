@@ -94,6 +94,23 @@ ColumnLayout {
         ToolButton {
             flat: true
             display: AbstractButton.IconOnly
+            icon.source: "qrc:/icons/printer_sm.svg"
+            icon.width: 20
+            icon.height: 20
+            leftPadding: 40
+            rightPadding: 40
+
+            onClicked: {
+                printer.print(pdfListView.source, pdfListView.count,
+                                                     pdfListView.landscape)
+            }
+        }
+
+        HeaderToolSeparator {}
+
+        ToolButton {
+            flat: true
+            display: AbstractButton.IconOnly
             icon.source: "qrc:/icons/arrow-circle-down.svg"
             icon.width: 20
             icon.height: 20
