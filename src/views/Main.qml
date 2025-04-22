@@ -15,6 +15,7 @@ ApplicationWindow {
     width: 1000
     height: 480
     visible: true
+    visibility: Window.Maximized
     title: qsTr("Surguch")
 
     // --------------------------------------
