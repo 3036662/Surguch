@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import StyleSheet
 
 ColumnLayout {
 
@@ -62,7 +63,7 @@ ColumnLayout {
         ToolButton {
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/book.svg"
+            icon.source: StyleSheet.book_icon
             icon.width: 20
             icon.height: 20
             leftPadding: 40
@@ -78,7 +79,7 @@ ColumnLayout {
         ToolButton {
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/pen_tool.svg"
+            icon.source: StyleSheet.pen_tool_icon
             icon.width: 20
             icon.height: 20
             leftPadding: 40
@@ -94,7 +95,7 @@ ColumnLayout {
         ToolButton {
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/printer_sm.svg"
+            icon.source: StyleSheet.printer_icon
             icon.width: 20
             icon.height: 20
             leftPadding: 40
@@ -111,7 +112,7 @@ ColumnLayout {
         ToolButton {
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/arrow-circle-down.svg"
+            icon.source: StyleSheet.arrow_down_icon
             icon.width: 20
             icon.height: 20
             leftPadding: 5
@@ -128,7 +129,7 @@ ColumnLayout {
 
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/arrow-circle-up.svg"
+            icon.source: StyleSheet.arrow_up_icon
             icon.width: 20
             icon.height: 20
             leftPadding: 5
@@ -170,6 +171,7 @@ ColumnLayout {
             text: currPage + qsTr(" of ") + pageCount
             anchors.margins: 10
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         HeaderToolSeparator {}
@@ -177,7 +179,7 @@ ColumnLayout {
         ToolButton {
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/arrow_back_curve.svg"
+            icon.source: StyleSheet.arrow_back_icon
             icon.width: 20
             icon.height: 20
             leftPadding: 5
@@ -191,7 +193,7 @@ ColumnLayout {
         ToolButton {
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/arrow_forward_curve.svg"
+            icon.source: StyleSheet.arrow_forward_icon
             icon.width: 20
             icon.height: 20
             leftPadding: 5
@@ -211,7 +213,7 @@ ColumnLayout {
             }
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/minus-circle.svg"
+            icon.source: StyleSheet.minus_circle_icon
             icon.width: 20
             icon.height: 20
             leftPadding: 5
@@ -225,7 +227,7 @@ ColumnLayout {
             }
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/plus-circle.svg"
+            icon.source: StyleSheet.plus_circle_icon
             icon.width: 20
             icon.height: 20
             leftPadding: 5

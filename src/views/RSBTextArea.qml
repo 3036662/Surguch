@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import StyleSheet
 
 TextArea {
     id: root
@@ -11,5 +12,6 @@ TextArea {
     wrapMode: Text.WordWrap
     placeholderText: qsTr("Placeholder text")
     placeholderTextColor: "grey"
+    color: StyleSheet.font_color
     font.family: "Noto Sans"
 }

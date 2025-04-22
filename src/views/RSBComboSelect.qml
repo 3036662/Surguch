@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import StyleSheet
 
 ComboBox {
     id: control
@@ -41,7 +42,7 @@ ComboBox {
                 font: control.font
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter
-
+                color: StyleSheet.font_color_extra
             }
         }
         highlighted: control.highlightedIndex === index

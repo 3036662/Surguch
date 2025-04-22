@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import StyleSheet
 
 RowLayout {
     width: parent.width
@@ -21,6 +22,6 @@ RowLayout {
         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
         Layout.rightMargin: 40
         Layout.topMargin: 5
-        source: value ? "qrc:/icons/medal-ribbon-green.svg" : "qrc:/icons/medal-ribbon-pink.svg"
+        source: value ? StyleSheet.medal_green_icon : StyleSheet.medal_pink_icon
     }
 }

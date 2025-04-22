@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import Qt.labs.platform
 import QtCore
+import StyleSheet
 
 Flickable {
     id: root
@@ -104,6 +105,7 @@ Flickable {
             text: qsTr("Profile name")
             bottomPadding: 5
             font.family: "Noto Sans"
+            color: StyleSheet.font_color
         }
 
         RSBTextArea {

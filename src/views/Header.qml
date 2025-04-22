@@ -5,6 +5,7 @@ import Qt.labs.platform as LabsDialogs
 
 import QtQuick.Dialogs as CommonDialods
 import QtCore
+import StyleSheet
 
 RowLayout {
     id: toolbar_layout
@@ -48,7 +49,7 @@ RowLayout {
         Layout.fillWidth: true
 
         TopBarButton {
-            icon.source: "qrc:/icons/file_plus.svg"
+            icon.source: StyleSheet.file_plus_icon
             text: qsTr("Open")
             onClicked: kdeVersion === "5" ? labsFileDialog.open(
                                                 ) : fileDialog.open()
@@ -56,14 +57,14 @@ RowLayout {
         }
 
         TopBarButton {
-            icon.source: "qrc:/icons/file_simple.svg"
+            icon.source: StyleSheet.file_simple_icon
             text: qsTr("Show in folder")
             enabled: pdfListView.source.length > 0 && !pdfListView.sourceIsTmp
             onClicked: pdfListView.showInFolder()
         }
 
         TopBarButton {
-            icon.source: "qrc:/icons/folder_plus.svg"
+            icon.source: StyleSheet.folder_plus_icon
             text: qsTr("Save as ...")
             enabled: pdfListView.source.length > 0
             onClicked: kdeVersion === "5" ? labsSaveFileDialog.open(
@@ -80,7 +81,7 @@ RowLayout {
                 color: "transparent"
             }
             TopBarButton {
-                icon.source: "qrc:/icons/wrench.svg"
+                icon.source: StyleSheet.wrench_icon
                 enabled: profileComboBox.currentValue !== "new"
 
                 onClicked: {
@@ -182,7 +183,7 @@ RowLayout {
         }
         TopBarButton {
             id: signModeButton
-            icon.source: "qrc:/icons/pencil_line.svg"
+            icon.source: StyleSheet.pencil_line_icon
             text: qsTr("Sign")
             icon.height: 25
             icon.width: 25

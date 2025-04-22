@@ -24,6 +24,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QTranslator>
+#include <QPalette>
 
 #include "core/signature_creator.hpp"
 #include "cpp_views/pdf_page_render.hpp"
@@ -58,6 +59,7 @@ int main(int argc, char *argv[]) {
                                             "SignatureCreator");
     qmlRegisterType<core::PrinterLauncher>("alt.pdfcsp.printerLauncher", 0, 1,
                                            "PrinterLauncher");
+    qmlRegisterSingletonType(QUrl("qrc:/StyleSheet.qml"), "StyleSheet", 0, 1, "StyleSheet");
     // run the app
     QQmlApplicationEngine engine;
     const QStringList args = QApplication::arguments();
@@ -70,10 +72,21 @@ int main(int argc, char *argv[]) {
 
     // determine the KDE version
     QString kde_version = "";
+    QString theme_style = "";
     if (qEnvironmentVariable("XDG_CURRENT_DESKTOP") == "KDE") {
         kde_version = qEnvironmentVariable("KDE_SESSION_VERSION");
     }
     engine.rootContext()->setContextProperty("kdeVersion", kde_version);
+    const QPalette defaultPalette;
+    const auto text = defaultPalette.color(QPalette::WindowText);
+    const auto window = defaultPalette.color(QPalette::Window);
+    if (text.lightness() > window.lightness()) {
+        theme_style = "dark";
+    }
+    else {
+        theme_style = "light";
+    }
+    engine.rootContext()->setContextProperty("themeStyle", theme_style);
 
 #if QT_LOAD_FROM_MODULE == 1
     engine.loadFromModule("gui_pdf_csp", "Main");

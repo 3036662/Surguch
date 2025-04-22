@@ -7,6 +7,7 @@ import alt.pdfcsp.signatureCreator
 import alt.pdfcsp.profilesModel
 import alt.pdfcsp.signaturesListModel
 import alt.pdfcsp.printerLauncher
+import StyleSheet
 
 ApplicationWindow {
     id: root_window
@@ -351,6 +352,8 @@ ApplicationWindow {
             // disable signing for damaged document
             header.disableSignMode()
         })
+        // set themes
+        StyleSheet.state = themeStyle
     }
 
     // ---------------------------------------------
