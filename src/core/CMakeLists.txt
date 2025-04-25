@@ -12,6 +12,7 @@ add_library(appcore OBJECT
     printer_launcher.hpp printer_launcher.cpp
 )
 
+
 add_subdirectory(csp_c_bridge)
 
 target_include_directories(appcore PUBLIC

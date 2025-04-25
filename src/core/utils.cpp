@@ -29,39 +29,97 @@ namespace core::utils {
  */
 std::vector<unsigned char> hexStringToByteArray(const char *str,
                                                 size_t size) noexcept {
-    std::vector<unsigned char> res;
-    if (size == 0 || str == nullptr) {
-        return res;
-    }
-    std::string copy(str, str + size);
-    if (copy.empty()) {
-        return res;
-    }
-    if (copy.front() == '<') {
-        copy.erase(copy.begin());
-    }
-    if (copy.back() == '>') {
-        copy.pop_back();
-    }
-    if (copy.size() % 2 != 0) {
-        copy.push_back('0');
-    }
-    for (size_t i = 0; i < copy.size(); i += 2) {
-        const std::string tmp = copy.substr(i, 2);
-        size_t pos = 0;
-        try {
-            int val = std::stoi(tmp, &pos, 16);
-            if (pos != tmp.size()) {
-                throw std::runtime_error("parse error");
-            }
-            res.push_back(static_cast<uint8_t>(val));
-        } catch (const std::exception &ex) {
-            qWarning() << "[hexStringToByteArray] error parsing hexstring "
-                       << ex.what();
-            return {};
-        }
-    }
+  std::vector<unsigned char> res;
+  if (size == 0 || str == nullptr) {
     return res;
+  }
+  std::string copy(str, str + size);
+  if (copy.empty()) {
+    return res;
+  }
+  if (copy.front() == '<') {
+    copy.erase(copy.begin());
+  }
+  if (copy.back() == '>') {
+    copy.pop_back();
+  }
+  if (copy.size() % 2 != 0) {
+    copy.push_back('0');
+  }
+  for (size_t i = 0; i < copy.size(); i += 2) {
+    const std::string tmp = copy.substr(i, 2);
+    size_t pos = 0;
+    try {
+      int val = std::stoi(tmp, &pos, 16);
+      if (pos != tmp.size()) {
+        throw std::runtime_error("parse error");
+      }
+      res.push_back(static_cast<uint8_t>(val));
+    } catch (const std::exception &ex) {
+      qWarning() << "[hexStringToByteArray] error parsing hexstring "
+                 << ex.what();
+      return {};
+    }
+  }
+  return res;
+}
+
+QString pageToQString(fz_context *fzctx, fz_document *fzdoc, int page_index) {
+  if (fzctx == nullptr || fzdoc == nullptr) {
+    throw std::invalid_argument(
+        "[core::utils::pageToQString] nullptr recieved");
+  }
+  QString extracted_string;
+  extracted_string.reserve(256);
+  bool mu_exception_catched = false;
+
+  fz_stext_page *stpage = nullptr;
+  fz_device *stext_dev = nullptr;
+  fz_page *page = nullptr;
+
+  fz_var(stpage);
+  fz_var(stext_dev);
+  fz_var(page);
+  fz_try(fzctx) {
+    page = fz_load_page(fzctx, fzdoc, page_index);
+    stpage = fz_new_stext_page(fzctx, fz_bound_page(fzctx, page));
+    const fz_stext_options opts = {FZ_STEXT_DEHYPHENATE, 1.0f};
+    stext_dev = fz_new_stext_device(fzctx, stpage, &opts);
+    fz_run_page_contents(fzctx, page, stext_dev, fz_identity, nullptr);
+    fz_close_device(fzctx, stext_dev);
+    // for each block
+    for (fz_stext_block *block = stpage->first_block; block != nullptr;
+         block = block->next) {
+      if (block->type != FZ_STEXT_BLOCK_TEXT) {
+        continue;
+      }
+      // for each line
+      for (fz_stext_line *line = block->u.t.first_line; line != nullptr;
+           line = line->next) {
+        for (fz_stext_char *symbol = line->first_char; symbol != nullptr;
+             symbol = symbol->next) {
+          extracted_string.append(QChar(symbol->c));
+        }
+        extracted_string.append(QChar('\n'));
+      }
+      extracted_string.append(QChar('\n'));
+    }
+  }
+  fz_always(fzctx) {
+    fz_drop_page(fzctx, page);
+    fz_drop_stext_page(fzctx, stpage);
+    fz_drop_device(fzctx, stext_dev);
+  }
+  fz_catch(fzctx) {
+    mu_exception_catched = true;
+    fz_report_error(fzctx);
+  }
+
+  if (mu_exception_catched) {
+    throw std::runtime_error("[core::utils::pageToQString] MuPdf error");
+  }
+
+  return extracted_string;
 }
 
 }  // namespace core::utils

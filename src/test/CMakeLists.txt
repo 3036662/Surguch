@@ -45,10 +45,11 @@ target_link_libraries(test1 PRIVATE ${MUPDF_LINK_PATH})
 
 add_compile_definitions(test1 PUBLIC -DTEST_FILES_DIR="${CMAKE_SOURCE_DIR}/test_files/")
 
-target_link_libraries(test_search PUBLIC Qt::Test)
+target_link_libraries(test_search PUBLIC Qt::Test )
+target_link_libraries(test_search PUBLIC appcore csp_c_bridge_qt)
 
 target_link_libraries(test_search
-     PUBLIC ${MUPDF_LINK_PATH}
+     PUBLIC ${MUPDF_LINK_PATH}  PRIVATE ${PDFCSP_LINK_PATH}
 )
 
 

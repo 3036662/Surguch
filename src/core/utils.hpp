@@ -17,9 +17,11 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #ifndef UTILS_HPP
 #define UTILS_HPP
+#include <QString>
 #include <cstddef>
 #include <vector>
 
+#include "mupdf/fitz.h"
 
 namespace core::utils {
 
@@ -30,8 +32,10 @@ namespace core::utils {
  * @param size size of the data
  * @return std::vector<unsigned char>
  */
-std::vector<unsigned char> hexStringToByteArray(const char *str,
+std::vector<unsigned char> hexStringToByteArray(const char* str,
                                                 size_t size) noexcept;
+
+QString pageToQString(fz_context* fzctx, fz_document* fzdoc, int page_index);
 
 }  // namespace core::utils
 

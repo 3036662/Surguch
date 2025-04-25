@@ -5,6 +5,8 @@
 #include <QTest>
 #include <iostream>
 
+#include "core/utils.hpp"
+
 TSearch::TSearch(QObject *parent) : QObject{parent} {}
 
 void TSearch::BaseTest() {
@@ -61,13 +63,17 @@ void TSearch::BaseTest() {
     const char *str_buffer = fz_string_from_buffer(fzctx, buffer);
     QVERIFY(str_buffer != nullptr);
 
+    // use function
+    auto extracted = core::utils::pageToQString(fzctx, fzdoc, 0);
+    QVERIFY(extracted == extracted_string);
+
     // std::cout << "\n\n";
     // std::cout << str_buffer << "\n";
     // std::cout << "\n\n";
     // std::cout << "\n\n";
     // std::cout << extracted_string.toStdString();
     QVERIFY(str_buffer == extracted_string.toStdString());
-
+    QVERIFY(extracted_string == QString::fromUtf8(str_buffer, buffer->len));
     // cleanup
     fz_drop_buffer(fzctx, buffer);
     fz_drop_page(fzctx, page);
