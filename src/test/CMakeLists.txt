@@ -7,22 +7,27 @@ enable_testing(true)
 qt_add_executable(test1 test_common.cpp
     t_signature.hpp t_signature.cpp)
 
-add_test(NAME test1 COMMAND mytest)
+qt_add_executable(test_search
+      test_search.cpp
+      tsearch.hpp tsearch.cpp)
 
-target_include_directories(test1 PUBLIC ${CMAKE_SOURCE_DIR}/src/)
-target_include_directories(test1 PRIVATE ${MUPDF_INCLUDE_DIR})
+add_test(NAME test1 COMMAND test1)
+add_test(NAME test_search COMMAND test_search)
 
-target_include_directories(test1 PUBLIC ${CMAKE_SOURCE_DIR}/src/core/csp_c_bridge)
+include_directories(test1 PUBLIC ${CMAKE_SOURCE_DIR}/src/)
+include_directories(test1 PUBLIC ${MUPDF_INCLUDE_DIR})
 
-target_include_directories(test1 PUBLIC
+include_directories(test1 PUBLIC ${CMAKE_SOURCE_DIR}/src/core/csp_c_bridge)
+
+include_directories(test1 PUBLIC
     ${PDFCSP_INCLUDE_DIR}
 )
 
-target_include_directories(test1 PUBLIC
+include_directories(test1 PUBLIC
     ${PDFCSP_INCLUDE_DIR}csp/checks
 )
 
-target_include_directories(test1 PUBLIC
+include_directories(test1 PUBLIC
     ${PDFCSP_INCLUDE_DIR}csp
 )
 
@@ -38,4 +43,12 @@ target_link_libraries(test1
 # harcoded mupdf linkage
 target_link_libraries(test1 PRIVATE ${MUPDF_LINK_PATH})
 
-target_compile_definitions(test1 PUBLIC -DTEST_FILES_DIR="${CMAKE_SOURCE_DIR}/test_files/")
+add_compile_definitions(test1 PUBLIC -DTEST_FILES_DIR="${CMAKE_SOURCE_DIR}/test_files/")
+
+target_link_libraries(test_search PUBLIC Qt::Test)
+
+target_link_libraries(test_search
+     PUBLIC ${MUPDF_LINK_PATH}
+)
+
+
