@@ -154,7 +154,7 @@ PagesTextCache extractTextAllPages(fz_context *fzctx,
   }
   bool exception_catched = false;
   PagesTextCache result =
-      std::make_unique<std::vector<std::pair<size_t, QString>>>();
+      std::make_unique<std::vector<PagesTextCacheSinglePage>>();
   int page_count = 0;
   fz_try(fzctx) { page_count = fz_count_pages(fzctx, fzdoc); }
   fz_catch(fzctx) {
@@ -175,5 +175,30 @@ PagesTextCache extractTextAllPages(fz_context *fzctx,
   }
   return result;
 };
+
+/**
+ * @brief findPageWithText
+ * @param needle
+ * @param haystack
+ * @return vector of page indexes
+ */
+std::vector<size_t> findPagesWithText(const QString &needle,
+                                      const PagesTextCache &haystack,
+                                      bool case_sensitive) {
+  std::vector<size_t> res;
+  if (!haystack && haystack->empty()) {
+    return res;
+  }
+  Qt::CaseSensitivity cs =
+      case_sensitive ? Qt::CaseSensitive : Qt::CaseInsensitive;
+  std::for_each(
+      haystack->cbegin(), haystack->cend(),
+      [&res, &needle, &cs](const PagesTextCacheSinglePage &page_cached) {
+        if (page_cached.second.contains(needle, cs)) {
+          res.push_back(page_cached.first);
+        }
+      });
+  return res;
+}
 
 }  // namespace core::utils

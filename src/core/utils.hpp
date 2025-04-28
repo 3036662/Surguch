@@ -44,7 +44,8 @@ std::vector<unsigned char> hexStringToByteArray(const char* str,
  */
 QString pageToQString(fz_context* fzctx, fz_document* fzdoc, int page_index);
 
-using PagesTextCache = std::unique_ptr<std::vector<std::pair<size_t, QString>>>;
+using PagesTextCacheSinglePage = std::pair<size_t, QString>;
+using PagesTextCache = std::unique_ptr<std::vector<PagesTextCacheSinglePage>>;
 
 /**
  * @brief Extract all text from all pages in the document.
@@ -56,6 +57,16 @@ using PagesTextCache = std::unique_ptr<std::vector<std::pair<size_t, QString>>>;
  */
 PagesTextCache extractTextAllPages(fz_context* fzctx,
                                    fz_document* fzdoc) noexcept;
+
+/**
+ * @brief findPageWithText
+ * @param needle
+ * @param haystack
+ * @return vector of page indexes
+ */
+std::vector<size_t> findPagesWithText(const QString& needle,
+                                      const PagesTextCache& haystack,
+                                      bool case_sensitive);
 
 }  // namespace core::utils
 

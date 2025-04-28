@@ -129,4 +129,11 @@ void TSearch::CacheText() {
                     return !val.second.isEmpty();
                   });
   QVERIFY(all_not_empty);
+  {
+    const QString needle1 = "положения";
+    auto pages = core::utils::findPagesWithText(needle1, cache, true);
+    QVERIFY(pages.size() == 5);
+    std::vector<size_t> expected{1, 2, 7, 30, 31};
+    QVERIFY(pages == expected);
+  }
 }
