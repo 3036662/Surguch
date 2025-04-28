@@ -68,6 +68,22 @@ std::vector<size_t> findPagesWithText(const QString& needle,
                                       const PagesTextCache& haystack,
                                       bool case_sensitive);
 
+using NeedleRectsOnPage = std::unique_ptr<std::vector<fz_rect>>;
+
+/**
+ * @brief Find a rectangle for each needle on the given page.
+ * @param needle
+ * @param page_index
+ * @param case_sensitive
+ * @return an array of rects
+ * @throws does not throw
+ * @details This function is supposed to be run as an async function.
+ */
+NeedleRectsOnPage findNeedleRectsOnPage(const QString& needle,
+                                        size_t page_index, bool case_sensitive,
+                                        fz_context* fzctx,
+                                        fz_document* fzdoc) noexcept;
+
 }  // namespace core::utils
 
 #endif  // UTILS_HPP
