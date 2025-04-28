@@ -13,6 +13,7 @@ class TSearch : public QObject {
 
  private slots:
   void BaseTest();
+  void CacheText();
 
  private:
   const std::string test_files_dir_ = TEST_FILES_DIR;

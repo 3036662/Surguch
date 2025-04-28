@@ -51,7 +51,15 @@ void TSearch::BaseTest() {
       for (line = block->u.t.first_line; line != nullptr; line = line->next) {
         for (symbol = line->first_char; symbol != nullptr;
              symbol = symbol->next) {
-          extracted_string.append(QChar(symbol->c));
+          if (symbol->c <= 0xFFFF) {
+            extracted_string.append(QChar(symbol->c));
+          } else {
+            auto arr = QChar::fromUcs4(symbol->c);
+            std::for_each(arr.begin(), arr.end(),
+                          [&extracted_string](char16_t ch) {
+                            extracted_string.append(QChar(ch));
+                          });
+          }
         }
         extracted_string.append(QChar('\n'));
       }
@@ -64,14 +72,15 @@ void TSearch::BaseTest() {
     QVERIFY(str_buffer != nullptr);
 
     // use function
-    auto extracted = core::utils::pageToQString(fzctx, fzdoc, 0);
+    auto extracted = core::utils::pageToQString(fzctx, fzdoc, page_number);
     QVERIFY(extracted == extracted_string);
 
     // std::cout << "\n\n";
+    // std::cout << extracted_string.toStdString();
+    // std::cout << "\n\n";
     // std::cout << str_buffer << "\n";
     // std::cout << "\n\n";
-    // std::cout << "\n\n";
-    // std::cout << extracted_string.toStdString();
+
     QVERIFY(str_buffer == extracted_string.toStdString());
     QVERIFY(extracted_string == QString::fromUtf8(str_buffer, buffer->len));
     // cleanup
@@ -86,3 +95,38 @@ void TSearch::BaseTest() {
   fz_drop_document(fzctx, fzdoc);
   fz_drop_context(fzctx);
 };
+
+void TSearch::CacheText() {
+  const std::string src_file = test_files_dir_ + "gost-34.10-2012.pdf";
+
+  // context
+  fz_context *fzctx = fz_new_context(nullptr, nullptr, 500000000);
+  QVERIFY(fzctx != nullptr);
+  // handlers
+  fz_register_document_handlers(fzctx);
+  // doc
+  fz_document *fzdoc = nullptr;
+  core::utils::PagesTextCache cache;
+  fz_try(fzctx) {
+    fzdoc = fz_open_document(fzctx, src_file.c_str());
+    QVERIFY(fzdoc != nullptr);
+    QVERIFY_THROWS_NO_EXCEPTION(
+        cache = core::utils::extractTextAllPages(fzctx, fzdoc));
+    QVERIFY(cache);
+    QVERIFY(!cache->empty());
+  }
+  fz_catch(fzctx) { fz_report_error(fzctx); }
+
+  // cleanup
+  fz_drop_document(fzctx, fzdoc);
+  fz_drop_context(fzctx);
+
+  std::cout << "cached pages count = " << cache->size() << "\n";
+  const bool all_not_empty =
+      std::all_of(cache->cbegin(), cache->cend(),
+                  [](const std::pair<size_t, QString> &val) {
+                    // std::cout << val.second.toStdString() << "\n";
+                    return !val.second.isEmpty();
+                  });
+  QVERIFY(all_not_empty);
+}

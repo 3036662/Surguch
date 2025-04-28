@@ -35,7 +35,27 @@ namespace core::utils {
 std::vector<unsigned char> hexStringToByteArray(const char* str,
                                                 size_t size) noexcept;
 
+/**
+ * @brief Extract text from the given page.
+ * @param fzctx the MuPDF context
+ * @param fzdoc the MuPdf document context
+ * @param page_index
+ * @return QString text
+ */
 QString pageToQString(fz_context* fzctx, fz_document* fzdoc, int page_index);
+
+using PagesTextCache = std::unique_ptr<std::vector<std::pair<size_t, QString>>>;
+
+/**
+ * @brief Extract all text from all pages in the document.
+ * @param fzctx the MuPDF context
+ * @param fzdoc the MuPdf document context
+ * @return @see PagesTextCache, null on error
+ * @throws does not throw
+ * @details This function is supposed to be run as an async function.
+ */
+PagesTextCache extractTextAllPages(fz_context* fzctx,
+                                   fz_document* fzdoc) noexcept;
 
 }  // namespace core::utils
 

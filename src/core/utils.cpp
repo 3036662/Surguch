@@ -18,6 +18,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "utils.hpp"
 
 #include <QDebug>
+#include <iostream>
 
 namespace core::utils {
 
@@ -64,6 +65,13 @@ std::vector<unsigned char> hexStringToByteArray(const char *str,
   return res;
 }
 
+/**
+ * @brief Extract text from the given page.
+ * @param fzctx the MuPDF context
+ * @param fzdoc the MuPdf document context
+ * @param page_index
+ * @return QString text
+ */
 QString pageToQString(fz_context *fzctx, fz_document *fzdoc, int page_index) {
   if (fzctx == nullptr || fzdoc == nullptr) {
     throw std::invalid_argument(
@@ -98,7 +106,15 @@ QString pageToQString(fz_context *fzctx, fz_document *fzdoc, int page_index) {
            line = line->next) {
         for (fz_stext_char *symbol = line->first_char; symbol != nullptr;
              symbol = symbol->next) {
-          extracted_string.append(QChar(symbol->c));
+          if (symbol->c <= 0xFFFF) {
+            extracted_string.append(QChar(symbol->c));
+          } else {
+            auto arr = QChar::fromUcs4(symbol->c);
+            std::for_each(arr.begin(), arr.end(),
+                          [&extracted_string](char16_t ch) {
+                            extracted_string.append(QChar(ch));
+                          });
+          }
         }
         extracted_string.append(QChar('\n'));
       }
@@ -121,5 +137,43 @@ QString pageToQString(fz_context *fzctx, fz_document *fzdoc, int page_index) {
 
   return extracted_string;
 }
+
+/**
+ * @brief Extract all text from all pages in the document.
+ * @param fzctx the MuPDF context
+ * @param fzdoc the MuPdf document context
+ * @return @see PagesTextCache, null on error
+ * @throws does not throw
+ * @details This function is supposed to be run as an async function.
+ */
+PagesTextCache extractTextAllPages(fz_context *fzctx,
+                                   fz_document *fzdoc) noexcept {
+  if (fzctx == nullptr || fzdoc == nullptr) {
+    qWarning() << "[extractTextAllPages] nullptr recieved\n";
+    return nullptr;
+  }
+  bool exception_catched = false;
+  PagesTextCache result =
+      std::make_unique<std::vector<std::pair<size_t, QString>>>();
+  int page_count = 0;
+  fz_try(fzctx) { page_count = fz_count_pages(fzctx, fzdoc); }
+  fz_catch(fzctx) {
+    exception_catched = true;
+    fz_report_error(fzctx);
+  }
+  for (int i = 0; i < page_count; ++i) {
+    try {
+      result->emplace_back(i, pageToQString(fzctx, fzdoc, i));
+    } catch (const std::exception &ex) {
+      qWarning() << ex.what();
+      exception_catched = true;
+    }
+  }
+  if (exception_catched) {
+    qWarning() << "[extractTextAllPages] error occured";
+    return nullptr;
+  }
+  return result;
+};
 
 }  // namespace core::utils
