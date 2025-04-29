@@ -10,6 +10,7 @@ add_library(appcore OBJECT
     sign_worker.hpp sign_worker.cpp
     file_recover_worker.hpp file_recover_worker.cpp
     printer_launcher.hpp printer_launcher.cpp
+    text_extractor.hpp text_extractor.cpp
 )
 
 
@@ -34,5 +35,5 @@ target_link_libraries(appcore
 
 target_link_libraries(appcore PUBLIC csp_c_bridge_qt)
 target_link_libraries(appcore PRIVATE Qt6::Core)
-
+target_link_libraries(appcore PRIVATE Qt6::Concurrent)
 target_link_libraries(appcore PRIVATE Qt6::PrintSupport)

@@ -15,6 +15,7 @@ class TSearch : public QObject {
   void BaseTest();
   void CacheText();
   void SearchTest1();
+  void TextExtractorClass();
 
  private:
   const std::string test_files_dir_ = TEST_FILES_DIR;

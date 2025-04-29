@@ -4,6 +4,7 @@
 #include <QString>
 #include <QTest>
 #include <iostream>
+#include <text_extractor.hpp>
 
 #include "core/utils.hpp"
 
@@ -200,6 +201,36 @@ void TSearch::SearchTest1() {
   std::cout << "total needles found " << total_needles << " \n";
   QVERIFY(total_needles == 39);
   // cleanup
+  fz_drop_document(fzctx, fzdoc);
+  fz_drop_context(fzctx);
+}
+
+void TSearch::TextExtractorClass() {
+  const std::string src_file = test_files_dir_ + "gost-34.10-2012.pdf";
+  // context
+  fz_context *fzctx = fz_new_context(nullptr, nullptr, 500000000);
+  QVERIFY(fzctx != nullptr);
+  // handlers
+  fz_register_document_handlers(fzctx);
+  // doc
+  fz_document *fzdoc = nullptr;
+  size_t total_needles = 0;
+
+  total_needles = 0;
+  fz_var(fzdoc);
+  fz_try(fzctx) {
+    fzdoc = fz_open_document(fzctx, src_file.c_str());
+    QVERIFY(fzdoc != nullptr);
+  }
+  fz_catch(fzctx) { fz_report_error(fzctx); }
+  core::TextExtractor extractor(fzctx, fzdoc);
+  extractor.updateCache();
+  extractor.waitForCacheReady();
+  QCoreApplication::processEvents();
+  QVERIFY(extractor.getCache());
+  QVERIFY(!extractor.getCache()->empty());
+
+  //   cleanup
   fz_drop_document(fzctx, fzdoc);
   fz_drop_context(fzctx);
 }
