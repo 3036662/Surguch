@@ -162,7 +162,6 @@ PagesTextCache extractTextAllPages(fz_context *fzctx,
     exception_catched = true;
     fz_report_error(fzctx);
   }
-  std::cout << "[extractTextAllPages] pages_count = " << page_count << "\n";
   for (int i = 0; i < page_count; ++i) {
     try {
       result->emplace_back(i, pageToQString(fzctx, fzdoc, i));
@@ -228,7 +227,6 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
     mu_exception_catched = true;
     fz_report_error(fzctx);
   }
-  std::cout << "[findNeedleRectsOnPage] pages count :" << page_count << "\n";
   if (page_index >= page_count ||
       page_index > std::numeric_limits<int>::max()) {
     qWarning() << "[findNeedleRectsOnPage] invalid page_index";

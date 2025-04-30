@@ -216,9 +216,7 @@ void TSearch::TextExtractorClass() {
   fz_register_document_handlers(fzctx);
   // doc
   fz_document *fzdoc = nullptr;
-  size_t total_needles = 0;
 
-  total_needles = 0;
   fz_var(fzdoc);
   fz_try(fzctx) {
     fzdoc = fz_open_document(fzctx, src_file.c_str());

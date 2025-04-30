@@ -35,7 +35,6 @@ void TextExtractor::updateCache() {
 }
 
 void TextExtractor::saveCache() {
-  std::cout << "saveCache\n";
   if (cache_future_ && cache_future_->isValid()) {
     cache_ = cache_future_->takeResult();
   }
@@ -43,7 +42,6 @@ void TextExtractor::saveCache() {
 }
 
 void TextExtractor::saveSearchContext() {
-  std::cout << "save search\n";
   if (search_future_ && search_future_->isValid()) {
     search_context_ = search_future_->takeResult();
     needles_count_ = std::accumulate(
@@ -55,7 +53,6 @@ void TextExtractor::saveSearchContext() {
   }
 
   search_mtx_.unlock();
-  std::cout << "needles total " << needles_count_ << "\n";
 }
 
 /// @brief blocks until the cache is ready
@@ -104,12 +101,10 @@ TextExtractor::SearchContext TextExtractor::buildSearchContext(
   auto pages_with_needle =
       core::utils::findPagesWithText(needle, cache_, case_sensitive);
   mtx.unlock();
-  std::cout << "pages_with_needle" << pages_with_needle.size() << "\n";
   auto res = std::make_unique<std::map<size_t, utils::NeedleRectsOnPage>>();
   std::for_each(pages_with_needle.cbegin(), pages_with_needle.cend(),
                 [fzctx = fzctx_, fzdoc = fzdoc_, &needle, &res,
                  case_sensitive](size_t page_index) {
-                  std::cout << "page_index: " << page_index << "\n";
                   core::utils::NeedleRectsOnPage needle_rects =
                       core::utils::findNeedleRectsOnPage(
                           needle, page_index, case_sensitive, fzctx, fzdoc);
