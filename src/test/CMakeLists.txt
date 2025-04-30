@@ -11,6 +11,9 @@ qt_add_executable(test_search
       test_search.cpp
       tsearch.hpp tsearch.cpp)
 
+qt_add_executable(test_search2
+          tsearch_multhreaded.cpp)
+
 add_test(NAME test1 COMMAND test1)
 add_test(NAME test_search COMMAND test_search)
 
@@ -44,6 +47,7 @@ target_link_libraries(test1
 target_link_libraries(test1 PRIVATE ${MUPDF_LINK_PATH})
 
 add_compile_definitions(test1 PUBLIC -DTEST_FILES_DIR="${CMAKE_SOURCE_DIR}/test_files/")
+add_compile_definitions(test_search2 PUBLIC -DTEST_FILES_DIR="${CMAKE_SOURCE_DIR}/test_files/")
 
 target_link_libraries(test_search PUBLIC Qt::Test )
 target_link_libraries(test_search PUBLIC appcore csp_c_bridge_qt)
@@ -52,4 +56,8 @@ target_link_libraries(test_search
      PUBLIC ${MUPDF_LINK_PATH}  PRIVATE ${PDFCSP_LINK_PATH}
 )
 
+target_link_libraries(test_search2 PUBLIC appcore csp_c_bridge_qt)
+target_link_libraries(test_search2
+     PUBLIC ${MUPDF_LINK_PATH}  PRIVATE ${PDFCSP_LINK_PATH}
+)
 

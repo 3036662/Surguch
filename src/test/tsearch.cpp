@@ -206,6 +206,8 @@ void TSearch::SearchTest1() {
 }
 
 void TSearch::TextExtractorClass() {
+  QEventLoop ev_loop;
+
   const std::string src_file = test_files_dir_ + "gost-34.10-2012.pdf";
   // context
   fz_context *fzctx = fz_new_context(nullptr, nullptr, 500000000);
@@ -223,12 +225,23 @@ void TSearch::TextExtractorClass() {
     QVERIFY(fzdoc != nullptr);
   }
   fz_catch(fzctx) { fz_report_error(fzctx); }
-  core::TextExtractor extractor(fzctx, fzdoc);
-  extractor.updateCache();
-  extractor.waitForCacheReady();
-  QCoreApplication::processEvents();
-  QVERIFY(extractor.getCache());
-  QVERIFY(!extractor.getCache()->empty());
+  auto extractor = std::make_unique<core::TextExtractor>(fzctx, fzdoc);
+  extractor->updateCache();
+  extractor->waitForCacheReady();
+  QTest::qWait(100);
+  extractor->updateCache();
+  extractor->waitForCacheReady();
+  QTest::qWait(100);
+  extractor->performSearch("ГОСТ", false);
+  extractor->waitForSearchReady();
+  QTest::qWait(100);
+  std::cout << "total needles: " << extractor->getNeedlesTotal();
+  QVERIFY(extractor->getNeedlesTotal() == 39);
+  const auto &needles = extractor->getSearchContext();
+  QVERIFY(needles);
+  QVERIFY(!needles->empty());
+  QVERIFY(extractor->getCache());
+  QVERIFY(!extractor->getCache()->empty());
 
   //   cleanup
   fz_drop_document(fzctx, fzdoc);
