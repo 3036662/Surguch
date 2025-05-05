@@ -185,10 +185,14 @@ void PdfDocModel::setSource(const QString &path) {
   if (process_signatures_) {
     processSignatures();
   }
+  // Extract text
   if (extract_text_) {
     fz_drop_document(fzctx_text_, fzdoc_text_);
     fz_drop_context(fzctx_text_);
     fzctx_text_ = fz_new_context(nullptr, nullptr, 100000000);
+    bool text_ctx_err_catched = false;
+    fz_var(fzdoc_text_);
+    fz_var(text_ctx_err_catched);
     fz_try(fzctx_text_) {
       fz_set_aa_level(fzctx_text_, 0);
       fz_register_document_handlers(fzctx_text_);
@@ -197,11 +201,25 @@ void PdfDocModel::setSource(const QString &path) {
         qWarning("Can't open file");
       }
     }
-    fz_catch(fzctx_text_) { fz_report_error(fzctx_text_); }
-    text_extractor_ =
-        std::make_unique<core::TextExtractor>(fzctx_text_, fzdoc_text_);
-    text_extractor_->updateCache();
-    qWarning() << "UPDATE CACHE";
+    fz_catch(fzctx_text_) {
+      text_ctx_err_catched = true;
+      fz_report_error(fzctx_text_);
+    }
+    if (!text_ctx_err_catched) {
+      text_extractor_ =
+          std::make_unique<core::TextExtractor>(fzctx_text_, fzdoc_text_);
+      text_extractor_->updateCache();
+      // TODO(Oleg) remove this
+      if (text_extractor_) {
+        text_extractor_->performSearch(",", false);
+        QObject::connect(text_extractor_.get(),
+                         &core::TextExtractor::searchCompleted, [this]() {
+                           qWarning() << "search completed\n";
+                           qWarning() << "total needles: "
+                                      << text_extractor_->getNeedlesTotal();
+                         });
+      }
+    }
   }
 }
 

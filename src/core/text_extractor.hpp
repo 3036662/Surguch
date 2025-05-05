@@ -41,9 +41,9 @@ class TextExtractor : public QObject {
    */
   void performSearch(const QString& needle, bool case_sensitive);
 
-  /// @brief blocks until the cache is ready
+  /// @brief blocks until the cache is ready (for testing purposes)
   void waitForCacheReady();
-  /// @brief blocks until the search is finished
+  /// @brief blocks until the search is finished (for testing purposes)
   void waitForSearchReady();
 
   [[nodiscard]] const TextCache& getCache() const& { return cache_; };
@@ -51,6 +51,11 @@ class TextExtractor : public QObject {
   [[nodiscard]] const SearchContext& getSearchContext() const& {
     return search_context_;
   }
+
+ signals:
+
+  void searchCompleted();
+  void cacheReady();
 
  private slots:
   void saveCache();

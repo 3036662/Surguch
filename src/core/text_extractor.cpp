@@ -39,6 +39,7 @@ void TextExtractor::saveCache() {
     cache_ = cache_future_->takeResult();
   }
   cach_mtx_.unlock();
+  emit cacheReady();
 }
 
 void TextExtractor::saveSearchContext() {
@@ -51,8 +52,8 @@ void TextExtractor::saveSearchContext() {
           return acc + pair.second->size();
         });
   }
-
   search_mtx_.unlock();
+  emit searchCompleted();
 }
 
 /// @brief blocks until the cache is ready
@@ -82,8 +83,10 @@ void TextExtractor::performSearch(const QString &needle, bool case_sensitive) {
     needles_count_ = 0;
     return;
   }
-  if (!cache_) {
-    updateCache();
+  if (!cache_) {                      // if no cache exists
+    if (!cache_future_->isValid()) {  // if caching is not in progress
+      updateCache();
+    }
     waitForCacheReady();
   }
   search_mtx_.lock();
