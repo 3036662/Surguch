@@ -379,9 +379,9 @@
         <translation>Сургуч</translation>
     </message>
     <message>
-        <location line="+113"/>
+        <location line="+114"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+113"/>
-        <location filename="../../src/views/Main.qml" line="+113"/>
+        <location filename="../../src/views/Main.qml" line="+114"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
@@ -542,7 +542,7 @@
 <context>
     <name>PdfDocModel</name>
     <message>
-        <location filename="../../src/models/pdf_doc_model.cpp" line="+130"/>
+        <location filename="../../src/models/pdf_doc_model.cpp" line="+136"/>
         <source>File does not exist</source>
         <translation>Файл не существует</translation>
     </message>

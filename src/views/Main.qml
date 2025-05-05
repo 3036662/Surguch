@@ -100,6 +100,7 @@ ApplicationWindow {
         id: pdfModel
         mustProcessSignatures: true
         mustDeleteTmpFiles: true
+        mustExtractText: true
     }
 
     ProfilesModel {

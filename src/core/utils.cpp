@@ -128,7 +128,7 @@ QString pageToQString(fz_context *fzctx, fz_document *fzdoc, int page_index) {
   }
   fz_catch(fzctx) {
     mu_exception_catched = true;
-    fz_report_error(fzctx);
+    qWarning() << fz_caught_message(fzctx);
   }
 
   if (mu_exception_catched) {
