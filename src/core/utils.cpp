@@ -234,7 +234,7 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
   }
   const Qt::CaseSensitivity case_sens =
       case_sensitive ? Qt::CaseSensitive : Qt::CaseInsensitive;
-  NeedleRectsOnPage res = std::make_unique<std::vector<fz_rect>>();
+  NeedleRectsOnPage res = std::make_shared<std::vector<fz_rect>>();
   fz_stext_page *stpage = nullptr;
   fz_device *stext_dev = nullptr;
   fz_page *page = nullptr;
@@ -299,7 +299,8 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
                         });
           // push the resulting rect to the res
           if (fz_is_empty_rect(single_needle_rect) == 0 &&
-              fz_is_infinite_rect(single_needle_rect) == 0) {
+              fz_is_infinite_rect(single_needle_rect) == 0 &&
+              fz_is_valid_rect(single_needle_rect)) {
             res->push_back(single_needle_rect);
           }
         }

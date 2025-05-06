@@ -27,6 +27,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 class PdfDocModel : public QAbstractListModel {
   Q_OBJECT
+  using NeedleRectsOnPage = core::utils::NeedleRectsOnPage;
 
  public:
   explicit PdfDocModel(QObject *parent = nullptr);
@@ -84,6 +85,10 @@ class PdfDocModel : public QAbstractListModel {
   [[nodiscard]] Q_INVOKABLE fz_document *getDoc() const;
   [[nodiscard]] Q_INVOKABLE fz_context *getCtx() const;
   [[nodiscard]] Q_INVOKABLE pdf_document *getPdfDoc() const;
+
+  /// @brief returns a vector of rectangles to highligt
+  [[nodiscard]] Q_INVOKABLE NeedleRectsOnPage
+  getNeedlesForPage(size_t page_index);
 
  signals:
 

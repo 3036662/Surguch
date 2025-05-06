@@ -70,6 +70,11 @@ void TextExtractor::waitForSearchReady() {
   }
 }
 
+bool TextExtractor::isReady() {
+  return search_future_ && search_future_->isFinished() && cache_future_ &&
+         cache_future_->isFinished();
+}
+
 /**
  * @brief search all pages for the needle, create
  * @param needle

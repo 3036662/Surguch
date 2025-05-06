@@ -497,6 +497,8 @@ ListView {
                 setCtx(pdfModel.getCtx())
                 setDoc(pdfModel.getDoc())
                 setPageNumber(model.display)
+                // highlight the needles
+                setNeedleHighlightRects(pdfModel.getNeedlesForPage(model.display));
                 if (width > 0 && root.hScrollPos > 0 && root.hScrollPos < 1) {
                     root.contentX = width * root.hScrollPos
                 }

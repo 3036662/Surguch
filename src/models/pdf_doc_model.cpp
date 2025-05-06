@@ -324,4 +324,26 @@ void PdfDocModel::showInFolder() {
   QDesktopServices::openUrl(folder_url);
 }
 
+/// @brief returns a vector of rectangles to highligt
+PdfDocModel::NeedleRectsOnPage PdfDocModel::getNeedlesForPage(
+    size_t page_index) {
+  qWarning() << "getNeedlesForPage" << page_index;
+  if (!text_extractor_) {
+    return nullptr;
+  }
+  const auto &search_context = text_extractor_->getSearchContext();
+  if (!search_context || search_context->count(page_index) == 0) {
+    return nullptr;
+  }
+  if (!text_extractor_->isReady()) {
+    return nullptr;
+  }
+  const auto &p_rects = search_context->at(page_index);
+  if (!p_rects || p_rects->empty()) {
+    return nullptr;
+  }
+  qWarning() << "pointer to rects: " << p_rects.get();
+  return p_rects;
+}
+
 // NOLINTEND(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)

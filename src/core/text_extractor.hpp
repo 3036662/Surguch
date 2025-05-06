@@ -43,8 +43,12 @@ class TextExtractor : public QObject {
 
   /// @brief blocks until the cache is ready (for testing purposes)
   void waitForCacheReady();
+
   /// @brief blocks until the search is finished (for testing purposes)
   void waitForSearchReady();
+
+  /// @brief returns true if all operations are completed
+  [[nodiscard]] bool isReady();
 
   [[nodiscard]] const TextCache& getCache() const& { return cache_; };
   [[nodiscard]] size_t getNeedlesTotal() const { return needles_count_; }
