@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 import Qt.labs.platform
 import QtCore
 import StyleSheet
@@ -8,10 +9,13 @@ Flickable {
     id: root
 
     property var cert_data_raw
+    property var stamps_data_raw
     property string profile_data
     property var profile_json
     property var cert_array
     property var cert_combo_model
+    property var stamps_array
+    property var stamps_combo_model
     property var profiles_model
     property int profile_id: -1
 
@@ -39,7 +43,7 @@ Flickable {
                     selectCadesFormatCombo.displayText
                             = selectCadesFormatCombo.model[cades_format_indx].title
                 }
-                const stamp_type_indx = selectStampTypeCombo.indexOfValue(
+                const stamp_type_indx = selectStampTypeCombo.find(
                                           profile_json.stamp_type)
                 selectStampTypeCombo.currentIndex = stamp_type_indx
                 selectStampTypeCombo.item_selected = true
@@ -197,15 +201,83 @@ Flickable {
             font.family: "Noto Sans"
         }
 
-        RSBComboSelect {
-            id: selectStampTypeCombo
-            model: [{
-                    "title": "ГОСТ"
-                }]
-            textRole: "title"
-            valueRole: "title"
-            displayText: displayTextDefault
-            property string displayTextDefault: qsTr("Select stamp type")
+        RowLayout {
+            width: parent.width
+
+
+            RSBComboSelect {
+                id: selectStampTypeCombo
+                Layout.fillWidth: true
+                model: root.stamps_combo_model
+                textRole: "title"
+                valueRole: "value"
+                displayText: displayTextDefault
+                property string displayTextDefault: qsTr("Select stamp type")
+
+                onActivated: {
+                    if (currentValue === "new") {
+                        stampEditor.profiles_model = profiles_model
+                        stampEditor.profile_data = profile_data
+                        stampEditor.stamp_data = null
+                        stampEditor.updateStampForm()
+                        stampEditor.visible = true
+                    }
+                }
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
+            }
+
+            ToolButton{
+                id: editButton
+                Layout.fillWidth: true
+                flat:true
+                display:AbstractButton.TextBesideIcon
+                icon.width: 30
+                icon.height: 30
+                leftPadding: 10
+                rightPadding: 10
+                topPadding: 10
+                bottomPadding: 10
+                font.family: "Noto Sans"
+                icon.source: StyleSheet.wrench_icon
+                enabled: selectStampTypeCombo.currentText !== "ГОСТ"
+
+                onClicked: {
+                    stampEditor.stamp_data = selectStampTypeCombo.currentValue
+                    stampEditor.profiles_model = profiles_model
+                    stampEditor.profile_data = profile_data
+                    stampEditor.updateStampForm()
+                    stampEditor.editState = true
+                    stampEditor.visible = true
+                }
+            }
+        }
+
+        Connections {
+            target: profilesModel
+            // when model has successfully saved the stamp
+            function onStampsSaved(val) {
+                // update stamp combobox
+                rightSideBar.edit_profile.stamps_data_raw
+                        = profiles_model.getUserStampsJSON()
+                // select saved stamp in the header combo
+                console.warn(val)
+                const indx = selectStampTypeCombo.find(val)
+                selectStampTypeCombo.displayText = selectStampTypeCombo.textAt(indx)
+                selectStampTypeCombo.currentIndex = indx
+            }
+
+            function onStampDeleted(title) {
+                if (title !== "") {
+                    // update stamp combobox
+                    rightSideBar.edit_profile.stamps_data_raw
+                            = profiles_model.getUserStampsJSON()
+                    selectStampTypeCombo.currentIndex = 0
+                    selectStampTypeCombo.displayText = selectStampTypeCombo.defaultText
+                }
+            }
         }
 
         // select a logo
@@ -319,7 +391,7 @@ Flickable {
                     profile_json["use_as_default"] = useAsDefaultProfileSwitch.checked
                     profile_json["cert_serial"] = selectCertificateCombo.currentValue
                     profile_json["CADES_format"] = selectCadesFormatCombo.currentValue
-                    profile_json["stamp_type"] = selectStampTypeCombo.currentValue
+                    profile_json["stamp_type"] = selectStampTypeCombo.currentText
                     profile_json["logo_path"] = logoPath.text
                     profile_json["tsp_url"] = tspUrlEdit.text
                     const new_profile_data = JSON.stringify(profile_json)
@@ -377,6 +449,23 @@ Flickable {
                                                       res.tooltip =qsTr("Issuer: ")+ item.issuer_common_name;
                                                       return res
                                                   })
+            } catch (e) {
+                console.error("Error " + e.message)
+            }
+        }
+    }
+
+    onStamps_data_rawChanged: {
+        if (stamps_data_raw) {
+            try {
+                stamps_array = JSON.parse(stamps_data_raw)
+                //console.warn(stamps_data_raw)
+                stamps_combo_model = stamps_array.map(item => {
+                                                          let res = {}
+                                                          res.title = item.title
+                                                          res.value = (item.id === 0) ? "new" : item
+                                                          return res
+                                                      })
             } catch (e) {
                 console.error("Error " + e.message)
             }

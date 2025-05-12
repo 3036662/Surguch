@@ -28,6 +28,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "core/signature_creator.hpp"
 #include "cpp_views/pdf_page_render.hpp"
+#include "cpp_views/preview_render.hpp"
 #include "models/pdf_doc_model.hpp"
 #include "models/profiles_model.hpp"
 #include "models/signatures_list_model.hpp"
@@ -50,6 +51,8 @@ int main(int argc, char *argv[]) {
     // register types
     qmlRegisterType<PdfPageRender>("alt.pdfcsp.pdfRender", 0, 1,
                                    "PdfPageRender");
+    qmlRegisterType<PreviewRender>("alt.pdfcsp.previewRender",0 , 1,
+                                     "PreviewRender");
     qmlRegisterType<PdfDocModel>("alt.pdfcsp.pdfModel", 0, 1, "MuPdfModel");
     qmlRegisterType<SignaturesListModel>("alt.pdfcsp.signaturesListModel", 0, 1,
                                          "SignaturesListModel");

@@ -57,8 +57,18 @@ class SignWorker : public QObject {
 
     using SharedParamWrapper = std::shared_ptr<CSignParamsWrapper>;
 
+    struct RGBColor {
+        quint8 R = 0;
+        quint8 G = 0;
+        quint8 B = 0;
+    };
+
     struct SignParams {
+        bool bg_transparent = true;
+        quint8 bg_opacity = 0;
         int page_index = 0;
+        quint32 border_width = 10;
+        quint32 border_radius = 10;
         qreal page_width = 0;
         qreal page_height = 0;
         qreal stamp_x = 0;
@@ -77,6 +87,8 @@ class SignWorker : public QObject {
         QString cert_serial_prefix;
         QString cert_subject_prefix;
         QString stamp_title;
+        RGBColor text_color;
+        RGBColor border_color;
     };
 
     struct SignResult {

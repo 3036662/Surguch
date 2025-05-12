@@ -5,7 +5,8 @@ set(CMAKE_AUTOMOC ON)
 enable_testing(true)
 
 qt_add_executable(test1 test_common.cpp
-    t_signature.hpp t_signature.cpp)
+    t_signature.hpp t_signature.cpp
+    t_stamp.hpp t_stamp.cpp)
 
 add_test(NAME test1 COMMAND mytest)
 
@@ -26,7 +27,7 @@ target_include_directories(test1 PUBLIC
     ${PDFCSP_INCLUDE_DIR}csp
 )
 
-target_link_libraries(test1 PRIVATE Qt::Test)
+target_link_libraries(test1 PRIVATE Qt::Test Qt6::Quick)
 target_link_libraries(test1  PRIVATE appcore)
 target_link_libraries(test1  PRIVATE models)
 target_link_libraries(test1  PRIVATE csp_c_bridge_qt)

@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
+import StyleSheet
 
 // unsave changed dialog
 // MessageDialog with standard buttons is not utilized because
@@ -28,6 +29,7 @@ Dialog {
         Text{
             text: qsTr("Do you want to save your changes?")
             wrapMode: Text.Wrap
+            color: StyleSheet.font_color_extra
         }
         RowLayout {
             spacing: 10

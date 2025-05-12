@@ -16,6 +16,9 @@ add_compile_definitions(TRANSLATION_DIR="${TRANSLATION_DIR}")
 #target_compile_options(surguch PRIVATE -fsanitize=memory)
 #target_link_libraries(surguch PRIVATE -fsanitize=memory)
 
+
+include_directories(/home/dv/surguch/signatureimg/src/)
+
 IF(NOT DEFINED MUPDF_INCLUDE_DIR)
     SET (MUPDF_INCLUDE_DIR /usr/include/)
 ENDIF()
@@ -102,6 +105,10 @@ ELSE()
         QML_FILES views/RSBComboSelect.qml
         QML_FILES views/RSBTextArea.qml
         QML_FILES views/UnsavedChangesDialog.qml
+        QML_FILES views/StampEditor.qml
+        QML_FILES views/ColorSlider.qml
+        QML_FILES views/StampPreview.qml
+        SOURCES cpp_views/preview_render.hpp cpp_views/preview_render.cpp
     )
 
     qt6_import_qml_plugins(surguch)
@@ -145,6 +152,9 @@ target_link_libraries(surguch
 target_link_libraries(surguch
      PRIVATE Qt6::Svg
 )
+
+target_link_libraries(surguch
+    PRIVATE Qt6::Concurrent)
 
 target_link_libraries(surguch PRIVATE Qt6::Core)
 

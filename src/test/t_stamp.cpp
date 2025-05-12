@@ -1,50 +1,54 @@
-/* File: sign_worker.cpp
-Copyright (C) Basealt LLC,  2024
-Author: Oleg Proskurin, <proskurinov@basealt.ru>
+#include "t_stamp.hpp"
 
-This program is free software: you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation, either version 3 of the License, or (at your option) any later
-version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with
-this program. If not, see <https://www.gnu.org/licenses/>.
-*/
-
-#include "sign_worker.hpp"
-
-#include <QDebug>
+#include <QTest>
+#include <QQuickItem>
+#include <QVariant>
+#include <QFuture>
+#include <QFutureWatcher>
+#include <QImage>
 #include <QStandardPaths>
-#include <QThread>
 
-namespace core {
+#include "cpp_views/preview_render.hpp"
+#include "models/profiles_model.hpp"
+#include "core/csp_c_bridge/bridge_utils.hpp"
 
-SignWorker::SignWorker(QObject *parent)
-    : QObject{parent},
-      // Erase the locale to fix the behavior of the stamp-generating library.
-      locale_(newlocale(LC_ALL_MASK, "POSIX", static_cast<locale_t>(nullptr))) {
-}
+#include "pdf_csp_c.hpp"
 
-SignWorker::~SignWorker() {
-    if (locale_ != nullptr) {
-        freelocale(locale_);
-    }
-}
+TStamp::TStamp(QObject *parent) : QObject{parent} {}
 
-/// @brief perform signing
-void SignWorker::launchSign(SignParams sign_params) {
-    params_ = std::move(sign_params);
-    const SignResult res = preparePdf();
-    emit signCompleted(res);
-}
+void TStamp::createPreview() {
+    PreviewRender::SignParams params_;
+    params_.bg_opacity = 1;
+    params_.bg_transparent = 1;
+    params_.border_color.R = 255;
+    params_.border_color.G = 0;
+    params_.border_color.B = 0;
+    params_.border_radius = 50;
+    params_.border_width = 50;
+    params_.cades_type = "CADES_BES";
+    params_.cert_serial = "7c001e316d0c3296185e9c6902000d001e316d";
+    params_.cert_serial_prefix = "Сертификат: ";
+    params_.cert_subject = "Test Certificate";
+    params_.cert_subject_prefix = "Субъект: ";
+    params_.cert_time_validity = "Действителен: 2025-04-21 08:33:16 UTC по 2025-06-21 08:43:16 UTC";
+    params_.config_path = "/home/dv/.config/csppdf";
+    params_.file_to_sign_path = "/home/dv/Документы/42_pades-xlt1-sertum_pro.pdf";
+    params_.logo_path = "/home/dv/.config/csppdf/profile_3_logo.jpg";
+    params_.page_height = 0;
+    params_.page_index = 0;
+    params_.page_width = 0;
+    params_.stamp_height = 300;
+    params_.stamp_title = "ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ";
+    params_.stamp_type = "test";
+    params_.stamp_width = 150;
+    params_.stamp_x = 0;
+    params_.stamp_y = 0;
+    params_.tsp_url = "";
+    params_.text_color.R = 255;
+    params_.text_color.G = 0;
+    params_.text_color.B = 0;
 
-/// @brief Gather all parameters (pdfcsp::pdf::CSignParam)
-SignWorker::SharedParamWrapper SignWorker::createParams() const {
-    auto params_wrapper = std::make_shared<CSignParamsWrapper>();
+    auto params_wrapper = std::make_shared<PreviewRender::CSignParamsWrapper>();
     pdfcsp::pdf::CSignParams &pod_params = params_wrapper->pod_params;
     pod_params.page_index = params_.page_index;
     pod_params.page_width = params_.page_width;
@@ -102,48 +106,7 @@ SignWorker::SharedParamWrapper SignWorker::createParams() const {
     pod_params.border_radius = params_.border_radius;
     pod_params.bg_transparent = params_.bg_transparent;
     pod_params.bg_opacity = params_.bg_opacity;
-    return params_wrapper;
-}
 
-/// @brief calculate the actual stamp size for the given parameters
-void SignWorker::estimateStampSize(SignParams sign_params) {
-    if (locale_ != nullptr) {
-        uselocale(locale_);
-    }
-    params_ = std::move(sign_params);
-    auto params_wrapper = createParams();
-    auto *p_resize_factor =
-        pdfcsp::pdf::GetStampResultingSizeFactor(params_wrapper->pod_params);
-    if (p_resize_factor != nullptr) {
-        qWarning() << "[SignWorker] Resize factor: x=" << p_resize_factor->x
-                   << " y= " << p_resize_factor->y << "\n";
-        AimResizeFactor res{};
-        res.x = p_resize_factor->x;
-        res.y = p_resize_factor->y;
-        pdfcsp::pdf::FreeImgResizeFactorResult(p_resize_factor);
-        emit resizeStampCompleted(res);
-    }
+    auto result = pdfcsp::pdf::BakeSignatureStampImage(pod_params);
+    QVERIFY(result != nullptr);
 }
-
-/// @brief Go to library, execute pdfcsp::pdf::PrepareDoc
-SignWorker::SignResult SignWorker::preparePdf() {
-    if (locale_ != nullptr) {
-        uselocale(locale_);
-    }
-    auto params_wrapper = createParams();
-    auto *result = pdfcsp::pdf::PrepareDoc(params_wrapper->pod_params);
-    SignResult res{};
-    if (result != nullptr) {
-        res.status = result->status;
-        if (result->tmp_file_path != nullptr) {
-            res.tmp_result_file = result->tmp_file_path;
-        }
-        if (result->err_string != nullptr) {
-            res.err_string = result->err_string;
-        }
-    }
-    pdfcsp::pdf::FreePrepareDocResult(result);
-    return res;
-}
-
-}  // namespace core

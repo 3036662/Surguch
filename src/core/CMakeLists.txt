@@ -10,6 +10,7 @@ add_library(appcore OBJECT
     sign_worker.hpp sign_worker.cpp
     file_recover_worker.hpp file_recover_worker.cpp
     printer_launcher.hpp printer_launcher.cpp
+
 )
 
 add_subdirectory(csp_c_bridge)

@@ -26,11 +26,12 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "bridge_utils.hpp"
 
 ProfilesModel::ProfilesModel(QObject *parent)
-    : QAbstractListModel(parent), create_profile_title_{tr("CreateProfile")} {
+    : QAbstractListModel(parent), create_profile_title_{tr("CreateProfile")}, create_stamp_title_{tr("CreateStamp")} {
     role_names_[TitleRole] = "title";
     role_names_[ValueRole] = "value";
     readProfiles();
     readUserCerts();
+    readUserStamps();
 }
 
 QVariant ProfilesModel::headerData(int /*section*/,
@@ -171,10 +172,163 @@ void ProfilesModel::readUserCerts() {
     user_certs_ = json_doc.array();
 }
 
+/// @brief readUserStamps, read stamps details from JSON file in
+/// @details /HOME/USER/.config/pdfscp/stamps.json
+void ProfilesModel::readUserStamps() {
+    config_path_ =
+        QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
+    if (config_path_.isEmpty()) {
+        qWarning() << tr(
+            "Standart config location cannot be determined, using home");
+        config_path_ = QDir::homePath();
+    }
+    if (config_path_.isEmpty()) {
+        const QStringList config_path_list =
+            QStandardPaths::standardLocations(QStandardPaths::ConfigLocation);
+        qWarning() << tr("Cannot determine the user's home folder");
+        if (!config_path_list.empty()) {
+            config_path_ = config_path_list.at(0);
+            qWarning() << tr("using the path ") << config_path_;
+        }
+    }
+    if (!config_path_.isEmpty()) {
+        config_path_ += "/csppdf";
+        const QDir config_dir(config_path_);
+        if (!config_dir.exists()) {
+            if (!config_dir.mkpath(".")) {
+                qWarning() << tr("Can not create folder ") << config_path_;
+            }
+        }
+    }
+    if (config_path_.isEmpty()) {
+        return;
+    }
+    stamps_file_name_ = config_path_ + "/stamps.json";
+    QFile stamps_file(stamps_file_name_);
+    // create empty json array if not exists
+    if (!stamps_file.exists()) {
+        if (!stamps_file.open(
+                QIODeviceBase::WriteOnly,
+                QFileDevice::ReadOwner | QFileDevice::WriteOwner)) {
+            qWarning() << tr("Can not create file ") << stamps_file_name_;
+            return;
+        }
+        QTextStream out(&stamps_file);
+        out << "[{\"id\":1,\"title\": \"ГОСТ\"}]";
+        stamps_file.close();
+    }
+    if (!stamps_file.exists()) {
+        return;
+    }
+    // read the file
+    if (!stamps_file.open(QIODevice::ReadOnly)) {
+        qWarning() << tr("Can not open file ") << stamps_file_name_;
+        return;
+    }
+    const QByteArray file_data = stamps_file.readAll();
+    stamps_file.close();
+    const QJsonDocument json_doc = QJsonDocument::fromJson(file_data);
+    if (json_doc.isNull() || !json_doc.isArray()) {
+        qWarning() << tr("Error parsing JSON from file ")
+                   << stamps_file_name_;
+    }
+    const QJsonObject create_stamp_field{{"id" ,0} ,{"title", create_stamp_title_}};
+    user_stamps_ = json_doc.array();
+    user_stamps_.append(create_stamp_field);
+}
+
 ///@brief get a json array with user certificates
 QString ProfilesModel::getUserCertsJSON() const {
     const QJsonDocument json_doc(user_certs_);
     return json_doc.toJson();
+}
+
+///@brief get a json array with user stamps
+QString ProfilesModel::getUserStampsJSON() const {
+    const QJsonDocument json_doc(user_stamps_);
+    return json_doc.toJson();
+}
+
+/// @brief check if the given stamp name is unique
+Q_INVOKABLE bool ProfilesModel::uniqueStampName(QString stamp_name) {
+    return !stamp_name.isEmpty() &&
+           std::none_of(user_stamps_.begin(), user_stamps_.end(),
+                        [&stamp_name](const QJsonValue &val) {
+                            return stamp_name ==
+                                   val.toObject().value("title").toString();
+                        });
+}
+
+///@brief save user's stamp
+Q_INVOKABLE bool ProfilesModel::saveStamp(const QString &stamp_json){
+    if (stamp_json.isEmpty()) {
+        return false;
+    }
+    const QByteArray stamp_data = stamp_json.toUtf8();
+    const QJsonDocument json_doc = QJsonDocument::fromJson(stamp_data);
+    if (json_doc.isNull() || !json_doc.isObject()) {
+        qWarning()
+            << "[ProfilesModel] error parsing JSON,can not save the stamp";
+    }
+    QJsonObject stamp_object = json_doc.object();
+    // if new profile - create a new id
+    if (stamp_object.value("id").toInt() == -1) {
+        const bool unique_name =
+            stamp_object.contains("title") &&
+            uniqueName(stamp_object.value("title").toString());
+        if (!unique_name) {
+            qWarning()
+                << "Can't create stamp,stamp with this name already exists";
+            return false;
+        }
+
+        auto it_max_current = std::max_element(
+            user_stamps_.cbegin(), user_stamps_.cend(),
+            [](const QJsonValue &left, const QJsonValue &right) {
+                return left.toObject().value("id").toInt() <
+                       right.toObject().value("id").toInt();
+            });
+        const int new_id =
+            it_max_current == user_stamps_.cend()
+                ? 0
+                : it_max_current->toObject().value("id").toInt() + 1;
+        stamp_object.insert("id", new_id);
+    }
+    // existing profile
+    else {
+        auto it_old_value = std::find_if(
+            user_stamps_.begin(), user_stamps_.end(),
+            [&stamp_object](const QJsonValue &val) {
+                return val.toObject().value("id") == stamp_object.value("id");
+            });
+        if (it_old_value != user_stamps_.cend()) {
+            user_stamps_.erase(it_old_value);
+        }
+    }
+    user_stamps_.push_back(stamp_object);
+    // save profiles
+    QJsonArray stamps;
+    std::copy_if(user_stamps_.cbegin(), user_stamps_.cend(),
+                 std::back_inserter(stamps), [this](const QJsonValue &val) {
+                     return val.toObject().value("title").toString() !=
+                            create_stamp_title_;
+                 });
+    QFile file(stamps_file_name_);
+    const QString stamps_data = QJsonDocument(stamps).toJson();
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        out << stamps_data;
+        file.close();
+        beginResetModel();
+        readUserStamps();
+        endResetModel();
+        const QString saved_name = stamp_object.value("title").toString();
+        stampsSaved(saved_name);
+        return true;
+    }
+    endResetModel();
+    qWarning() << "[ProfilesModel] failed to save stamps";
+    return false;
 }
 
 /// @brief check if the given name is unique
@@ -281,6 +435,34 @@ Q_INVOKABLE bool ProfilesModel::saveProfile(const QString &profile_json) {
     return false;
 }
 
+/// @brief Update profiles if their stamp model was deleted
+Q_INVOKABLE void ProfilesModel::updateProfiles(QString stamp_name) {
+    qsizetype create_title_pos = 0;
+    for (int i = 0; i < profiles_.size(); ++i) {
+        const QJsonObject profile_obj = profiles_.at(i).toObject();
+        if (profile_obj.value("title").toString() == create_profile_title_) {
+            create_title_pos =i;
+        }
+        if (profile_obj.contains("stamp_type") && profile_obj.value("stamp_type").toString() == stamp_name) {
+            QJsonObject updated_obj = profile_obj;
+            updated_obj["stamp_type"] = "ГОСТ";
+            profiles_[i] = updated_obj;
+        }
+    }
+    profiles_.removeAt(create_title_pos);
+    QFile file(profiles_file_name_);
+    const QString profiles_data = QJsonDocument(profiles_).toJson();
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        out << profiles_data;
+        file.close();
+        beginResetModel();
+        readProfiles();
+        endResetModel();
+        profilesUpdated();
+    }
+}
+
 /**
  * @brief Save logo image
  *
@@ -352,6 +534,38 @@ QString ProfilesModel::getDetDefaultProfileVal() {
         }
     }
     return {};
+}
+
+/// @brief delete the user's stamp
+bool ProfilesModel::deleteStamp(int id_stamp) {
+    QString stamp_title;
+    QJsonArray stamps_new;
+    for (qsizetype i = 0; i < user_stamps_.count(); ++i) {
+        if (!user_stamps_[i].isObject()) {
+            continue;
+        }
+        if (user_stamps_[i].toObject().value("id").toInt() == id_stamp) {
+            stamp_title = user_stamps_[i].toObject().value("title").toString();
+        } else if (user_stamps_[i].toObject().value("title").toString() !=
+                   create_stamp_title_) {
+            stamps_new.append(user_stamps_[i]);
+        }
+    }
+    QFile file(stamps_file_name_);
+    const QString stamp_data = QJsonDocument(stamps_new).toJson();
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        out << stamp_data;
+        file.close();
+        beginResetModel();
+        readUserStamps();
+        endResetModel();
+        stampDeleted(stamp_title);
+        return true;
+    }
+    endResetModel();
+    qWarning() << "[ProfilesModel] failed to delete stamp";
+    return false;
 }
 
 /// @brief delete the user's profile

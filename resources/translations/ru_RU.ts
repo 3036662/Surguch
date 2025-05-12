@@ -126,9 +126,9 @@
 <context>
     <name>EditProfile</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/EditProfile.qml" line="+89"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/EditProfile.qml" line="+94"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+89"/>
-        <location filename="../../src/views/EditProfile.qml" line="+89"/>
+        <location filename="../../src/views/EditProfile.qml" line="+94"/>
         <source>Profile settings</source>
         <translation>Настройки профиля</translation>
     </message>
@@ -147,9 +147,9 @@
         <translation>Название профиля</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+7"/>
-        <location filename="../../src/views/EditProfile.qml" line="+7"/>
+        <location filename="../../src/views/EditProfile.qml" line="+8"/>
         <source>Enter profile name</source>
         <translation>Введите название профиля</translation>
     </message>
@@ -203,16 +203,16 @@
         <translation>Вид штампа</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+16"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+13"/>
-        <location filename="../../src/views/EditProfile.qml" line="+13"/>
+        <location filename="../../src/views/EditProfile.qml" line="+16"/>
         <source>Select stamp type</source>
         <translation>Выберите тип штампа</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+71"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+6"/>
-        <location filename="../../src/views/EditProfile.qml" line="+6"/>
+        <location filename="../../src/views/EditProfile.qml" line="+71"/>
         <source>Company logo</source>
         <translation>Логотип компании</translation>
     </message>
@@ -269,9 +269,9 @@
 <context>
     <name>Header</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+52"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+53"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+52"/>
-        <location filename="../../src/views/Header.qml" line="+52"/>
+        <location filename="../../src/views/Header.qml" line="+53"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
@@ -290,23 +290,21 @@
         <translation>Сохранить как ...</translation>
     </message>
     <message>
-        <location line="+8"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+8"/>
-        <location filename="../../src/views/Header.qml" line="+8"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+43"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+40"/>
-        <location filename="../../src/views/Header.qml" line="+40"/>
+        <location filename="../../src/views/Header.qml" line="+43"/>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>
     <message>
-        <location line="+79"/>
+        <location line="+89"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+79"/>
-        <location filename="../../src/views/Header.qml" line="+79"/>
+        <location filename="../../src/views/Header.qml" line="+89"/>
         <source>Sign</source>
         <translation>Подписать</translation>
     </message>
@@ -341,16 +339,16 @@
 <context>
     <name>HeaderSubBar</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+153"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+171"/>
         <location filename="../../build/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+153"/>
-        <location filename="../../src/views/HeaderSubBar.qml" line="+153"/>
+        <location filename="../../src/views/HeaderSubBar.qml" line="+171"/>
         <source> of </source>
         <translation> из </translation>
     </message>
     <message>
-        <location line="+98"/>
+        <location line="+99"/>
         <location filename="../../build/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+98"/>
-        <location filename="../../src/views/HeaderSubBar.qml" line="+98"/>
+        <location filename="../../src/views/HeaderSubBar.qml" line="+99"/>
         <source>Automatic</source>
         <translation>Авто</translation>
     </message>
@@ -372,23 +370,23 @@
 <context>
     <name>Main</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="+17"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="+19"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+17"/>
-        <location filename="../../src/views/Main.qml" line="+17"/>
+        <location filename="../../src/views/Main.qml" line="+19"/>
         <source>Surguch</source>
         <translation>Сургуч</translation>
     </message>
     <message>
-        <location line="+113"/>
+        <location line="+120"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+113"/>
-        <location filename="../../src/views/Main.qml" line="+113"/>
+        <location filename="../../src/views/Main.qml" line="+120"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+21"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+17"/>
-        <location filename="../../src/views/Main.qml" line="+17"/>
+        <location filename="../../src/views/Main.qml" line="+21"/>
         <source>Certificate: </source>
         <translation>Сертификат: </translation>
     </message>
@@ -421,9 +419,9 @@
         <translation>ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+52"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+41"/>
-        <location filename="../../src/views/Main.qml" line="+41"/>
+        <location filename="../../src/views/Main.qml" line="+52"/>
         <source>Your certificate is expired.</source>
         <translation>Истек срок действия сертификата.</translation>
     </message>
@@ -512,9 +510,9 @@
         <translation>При открытии в документе были обнаружены ошибки. Возможно, документ будет отображён неверно.</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+40"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+38"/>
-        <location filename="../../src/views/Main.qml" line="+38"/>
+        <location filename="../../src/views/Main.qml" line="+40"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -583,42 +581,54 @@
         <translation>Создать профиль</translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+0"/>
+        <source>CreateStamp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+62"/>
+        <location line="+90"/>
         <source>Standart config location cannot be determined, using home</source>
         <translation>Не удалось определить расположение конфигурационных файлов пользователя, будет использована домашняя директория</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="-83"/>
+        <location line="+90"/>
         <source>Cannot determine the user&apos;s home folder</source>
         <translation>Не удалось определить домашнюю директорию пользователя</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="-87"/>
+        <location line="+90"/>
         <source>using the path </source>
         <translation>использован путь </translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="-82"/>
+        <location line="+90"/>
         <source>Can not create folder </source>
         <translation>Не удалось создать директорию </translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="-76"/>
+        <location line="+90"/>
         <source>Can not create file </source>
         <translation>Не удалось создать файл </translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="-78"/>
+        <location line="+90"/>
         <source>Can not open file </source>
         <translation>Не удалось открыть файл </translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="-83"/>
+        <location line="+90"/>
         <source>Error parsing JSON from file </source>
         <translation>Ошибка чтения файла профиля </translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-77"/>
         <source>Failed getting the user&apos;s certificates list</source>
         <translation>Не удалось получить список сертификатов пользователя</translation>
     </message>
@@ -782,9 +792,9 @@
 <context>
     <name>RSBTextArea</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/RSBTextArea.qml" line="+12"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/RSBTextArea.qml" line="+13"/>
         <location filename="../../build/src/gui_pdf_csp/views/RSBTextArea.qml" line="+12"/>
-        <location filename="../../src/views/RSBTextArea.qml" line="+12"/>
+        <location filename="../../src/views/RSBTextArea.qml" line="+13"/>
         <source>Placeholder text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -802,11 +812,146 @@
 <context>
     <name>SignaturesList</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/SignaturesList.qml" line="+50"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/SignaturesList.qml" line="+52"/>
         <location filename="../../build/src/gui_pdf_csp/views/SignaturesList.qml" line="+50"/>
-        <location filename="../../src/views/SignaturesList.qml" line="+50"/>
+        <location filename="../../src/views/SignaturesList.qml" line="+52"/>
         <source>Unsigned (empty)</source>
         <translation>Неподписанная (пустая)</translation>
+    </message>
+</context>
+<context>
+    <name>StampEditor</name>
+    <message>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/StampEditor.qml" line="+82"/>
+        <location filename="../../src/views/StampEditor.qml" line="+82"/>
+        <source>Stamp editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <location filename="../../src/views/StampEditor.qml" line="+26"/>
+        <source>Stamp name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <location filename="../../src/views/StampEditor.qml" line="+9"/>
+        <source>Enter stamp name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <location filename="../../src/views/StampEditor.qml" line="+9"/>
+        <source>Preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <location filename="../../src/views/StampEditor.qml" line="+17"/>
+        <source>Transparency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <location filename="../../src/views/StampEditor.qml" line="+16"/>
+        <source>Stamp border width: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <location line="+20"/>
+        <location filename="../../src/views/StampEditor.qml" line="+26"/>
+        <location line="+20"/>
+        <source>Stamp border radius: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location filename="../../src/views/StampEditor.qml" line="+6"/>
+        <source>Stamp&apos;s color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+106"/>
+        <location filename="../../src/views/StampEditor.qml" line="+106"/>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-28"/>
+        <location filename="../../src/views/StampEditor.qml" line="-28"/>
+        <source>Stamp with this name already exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-7"/>
+        <location filename="../../src/views/StampEditor.qml" line="-7"/>
+        <source>Save</source>
+        <translation type="unfinished">Сохранить</translation>
+    </message>
+    <message>
+        <source>Profile with this name already exists</source>
+        <translation type="obsolete">Профиль с таким именем уже существует</translation>
+    </message>
+</context>
+<context>
+    <name>StampPreview</name>
+    <message>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/StampPreview.qml" line="+23"/>
+        <location filename="../../src/views/StampPreview.qml" line="+23"/>
+        <source>Certificate not found, looks like it was deleted.﻿</source>
+        <translation type="unfinished">Сертификат не найден, возможно он был удален</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <location line="+36"/>
+        <location filename="../../src/views/StampPreview.qml" line="+18"/>
+        <location line="+36"/>
+        <source>Certificate: </source>
+        <translation type="unfinished">Сертификат: </translation>
+    </message>
+    <message>
+        <location line="-34"/>
+        <location line="+36"/>
+        <location filename="../../src/views/StampPreview.qml" line="-34"/>
+        <location line="+36"/>
+        <source>Subject: </source>
+        <translation type="unfinished">Субъект: </translation>
+    </message>
+    <message>
+        <location line="-35"/>
+        <location line="+36"/>
+        <location filename="../../src/views/StampPreview.qml" line="-35"/>
+        <location line="+36"/>
+        <source>Vaildity: </source>
+        <translation type="unfinished">Действителен: </translation>
+    </message>
+    <message>
+        <location line="-35"/>
+        <location line="+36"/>
+        <location filename="../../src/views/StampPreview.qml" line="-35"/>
+        <location line="+36"/>
+        <source> till </source>
+        <translation type="unfinished"> по </translation>
+    </message>
+    <message>
+        <location line="-34"/>
+        <location line="+36"/>
+        <location filename="../../src/views/StampPreview.qml" line="-34"/>
+        <location line="+36"/>
+        <source>THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE</source>
+        <translation type="unfinished">ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ</translation>
+    </message>
+</context>
+<context>
+    <name>TStamp</name>
+    <message>
+        <source>Failed getting the user&apos;s certificates list</source>
+        <translation type="obsolete">Не удалось получить список сертификатов пользователя</translation>
+    </message>
+    <message>
+        <source>Failed to parse the certificates list from the JSON string</source>
+        <translation type="obsolete">Не удалось прочитать список сертификатов из JSON</translation>
     </message>
 </context>
 <context>
@@ -867,9 +1012,9 @@
 <context>
     <name>UnsavedChangesDialog</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+16"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+17"/>
         <location filename="../../build/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+16"/>
-        <location filename="../../src/views/UnsavedChangesDialog.qml" line="+16"/>
+        <location filename="../../src/views/UnsavedChangesDialog.qml" line="+17"/>
         <source>Unsaved Changes</source>
         <translation>Файл не сохранен</translation>
     </message>
@@ -881,9 +1026,9 @@
         <translation>Сохранить текущий файл?</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <location filename="../../build/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+8"/>
-        <location filename="../../src/views/UnsavedChangesDialog.qml" line="+8"/>
+        <location filename="../../src/views/UnsavedChangesDialog.qml" line="+9"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>

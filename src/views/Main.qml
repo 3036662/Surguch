@@ -97,6 +97,13 @@ ApplicationWindow {
     }
 
     // --------------------------------------
+    // modal
+
+    StampEditor {
+        id: stampEditor
+    }
+
+    // --------------------------------------
     // instantinate cpp models
     MuPdfModel {
         id: pdfModel
@@ -134,6 +141,10 @@ ApplicationWindow {
                 errorMessageDialog.open()
                 throw new Error('Certificate data not found')
             }
+            let stamps_json = JSON.parse(profilesModel.getUserStampsJSON())
+            let user_stamp = stamps_json.find(stamp => {
+                                                 return curr_profile.stamp_type === stamp.title;
+                                             })
             // gather all information needed to create a signature visual representation
             let params = {
                 "page_index": location_data.page_index,
@@ -154,11 +165,22 @@ ApplicationWindow {
                     " till ") + cert_array[cert_index].not_after_readable,
                 "stamp_title": qsTr("THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE"),
                 "stamp_type": curr_profile.stamp_type,
+                "text_color_red": user_stamp.R,
+                "text_color_green": user_stamp.G,
+                "text_color_blue": user_stamp.B,
+                "border_color_red": user_stamp.R,
+                "border_color_green": user_stamp.G,
+                "border_color_blue": user_stamp.B,
+                "border_width": user_stamp.border_width,
+                "border_radius": user_stamp.border_radius,
+                "bg_transparent": user_stamp.transparent,
+                "bg_opacity": 1,
                 "cades_type": curr_profile.CADES_format,
                 "tsp_url": curr_profile.tsp_url,
                 "file_to_sign_path": pdfModel.getSource()
             }
-            //console.warn(JSON.stringify(params))
+            console.warn("PARAMS");
+            console.warn(JSON.stringify(params))
             return params
         }
 

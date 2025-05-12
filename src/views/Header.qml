@@ -90,6 +90,9 @@ RowLayout {
                     // set the certificates for select
                     rightSideBar.edit_profile.cert_data_raw
                             = profileComboBox.model.getUserCertsJSON()
+                    //set the stamps for select
+                    rightSideBar.edit_profile.stamps_data_raw
+                            = profileComboBox.model.getUserStampsJSON()
                     // set a reference to this model
                     rightSideBar.edit_profile.profiles_model = profileComboBox.model
                     rightSideBar.edit_profile.profile_data = profileComboBox.currentValue
@@ -128,6 +131,9 @@ RowLayout {
                     // set the certificates for select
                     rightSideBar.edit_profile.cert_data_raw
                             = profileComboBox.model.getUserCertsJSON()
+                    //set the stamps for select
+                    rightSideBar.edit_profile.stamps_data_raw
+                            = profileComboBox.model.getUserStampsJSON()
                     // set a reference to this model
                     rightSideBar.edit_profile.profiles_model = profileComboBox.model
                     // if create a new profile, set an empty data
@@ -144,6 +150,7 @@ RowLayout {
                     let def_profile = profilesModel.getDetDefaultProfileVal()
                     if (def_profile !== "") {
                         const indx = profileComboBox.indexOfValue(def_profile)
+                        console.warn(indx)
                         profileComboBox.displayText = profileComboBox.textAt(
                                     indx)
                         profileComboBox.currentIndex = indx
@@ -172,6 +179,12 @@ RowLayout {
                         profileComboBox.currentIndex = 0
                         profileComboBox.displayText = profileComboBox.defaultText
                     }
+                }
+
+                function onProfilesUpdated() {
+                    // update profile in right side bar
+                    rightSideBar.edit_profile.profile_data = profileComboBox.currentValue
+                    rightSideBar.edit_profile.updateProfileForm()
                 }
             }
 

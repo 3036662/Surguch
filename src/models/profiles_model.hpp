@@ -46,6 +46,12 @@ class ProfilesModel : public QAbstractListModel {
     ///@brief get a json array with user certificates
     [[nodiscard]] Q_INVOKABLE QString getUserCertsJSON() const;
 
+    ///@brief get a json array with user stamps
+    [[nodiscard]] Q_INVOKABLE QString getUserStampsJSON() const;
+
+    ///@brief save user's stamp
+    [[nodiscard]] Q_INVOKABLE bool saveStamp(const QString &stamp_json);
+
     /// @brief save user's profile
     [[nodiscard]] Q_INVOKABLE bool saveProfile(const QString &profile_json);
 
@@ -55,8 +61,17 @@ class ProfilesModel : public QAbstractListModel {
     /// @brief delete the user's profile
     [[nodiscard]] Q_INVOKABLE bool deleteProfile(int id_profile);
 
+    /// @brief delete the user's stamp
+    [[nodiscard]] Q_INVOKABLE bool deleteStamp(int id_stamp);
+
     /// @brief check if the given name is unique
     [[nodiscard]] Q_INVOKABLE bool uniqueName(QString profile_name);
+
+    /// @brief check if the given stamp name is unique
+    [[nodiscard]] Q_INVOKABLE bool uniqueStampName(QString stamp_name);
+
+    /// @brief update profiles if their stamp if stamp model was deleted
+    Q_INVOKABLE void updateProfiles(QString stamp_name);
 
     /// @brief path to config directory (/home/$user/.config)
     [[nodiscard]] Q_INVOKABLE QString getConfigPath() const;
@@ -71,6 +86,9 @@ class ProfilesModel : public QAbstractListModel {
    signals:
     void profileSaved(QString);    // value of saved profile
     void profileDeleted(QString);  // title of deleted profile
+    void profilesUpdated();          // profiles with deleted stamps updated
+    void stampsSaved(QString);     // value of saved stamp
+    void stampDeleted(QString);    //title of deleted stamp
     void errNoCspLib();            // no cryptoPro lib error
 
    private:
@@ -80,6 +98,10 @@ class ProfilesModel : public QAbstractListModel {
 
     /// @brief readUserCerts, read certificates for current uset from CryptoApi
     void readUserCerts();
+
+    /// @brief readUserStamps, read stamps details from JSON file in
+    /// @details /HOME/USER/.config/pdfscp/stamps.json
+    void readUserStamps();
 
     /**
      * @brief Save logo image
@@ -96,11 +118,14 @@ class ProfilesModel : public QAbstractListModel {
     bool deleteLogoImage(const QString &path);
 
     const QString create_profile_title_;
+    const QString create_stamp_title_;
     QHash<int, QByteArray> role_names_;
     QJsonArray profiles_;
     QJsonArray user_certs_;
+    QJsonArray user_stamps_;
     QString config_path_;
     QString profiles_file_name_;
+    QString stamps_file_name_;
 
     bool error_status_ = false;
     QString err_string_;
