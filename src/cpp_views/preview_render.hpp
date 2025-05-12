@@ -11,6 +11,12 @@
 
 #include "pdf_csp_c.hpp"
 
+
+struct BakeResult {
+    std::unique_ptr<pdfcsp::pdf::BakeSignatureStampResult, void (*)(pdfcsp::pdf::BakeSignatureStampResult *)> data_;
+    std::unique_ptr<QImage> image_;
+};
+
 /**
  * @brief QML Item for rendering preview images
  */
@@ -25,8 +31,8 @@ class PreviewRender : public QQuickItem {
     PreviewRender &operator=(const PreviewRender &) = delete;
     PreviewRender &operator=(PreviewRender &&) = delete;
 
-    using ImageFuture = QFuture<QImage>;
-    using ImageFutureWatcher = QFutureWatcher<QImage>;
+    using ImageFuture = QFuture<std::unique_ptr<BakeResult>>;
+    using ImageFutureWatcher = QFutureWatcher<std::unique_ptr<BakeResult>>;
 
     struct RGBColor {
         quint8 R = 0;
@@ -123,13 +129,13 @@ class PreviewRender : public QQuickItem {
 
     SignParams params_;
     float dev_pix_ratio_ = 2;
-    std::unique_ptr<QImage> image_ = nullptr;
+    std::unique_ptr<BakeResult> result_;
     std::unique_ptr<ImageFuture> image_future_;
     std::unique_ptr<ImageFutureWatcher> image_watcher_;
 };
 
 
 /// @brief concurrent function to make QImage
-QImage prepareImage(PreviewRender::SharedParamWrapper params);
+std::unique_ptr<BakeResult> prepareImage(PreviewRender::SharedParamWrapper params);
 
 #endif  // PREVIEWRENDERER_HPP

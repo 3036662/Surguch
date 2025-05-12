@@ -40,12 +40,12 @@ QSGNode *PreviewRender::updatePaintNode(
         rectNode->setOwnsTexture(true);
     }
 
-    if (!image_) {
-        image_ = std::make_unique<QImage>(size().toSize(),
+    if (result_->image_ == nullptr) {
+        result_->image_ = std::make_unique<QImage>(size().toSize(),
                                           QImage::Format_RGB888);
-        image_->fill(Qt::white);  // Fill the image with white color
+        result_->image_->fill(Qt::white);  // Fill the image with white color
     }
-    QSGTexture *texture = window()->createTextureFromImage(*image_);
+    QSGTexture *texture = window()->createTextureFromImage(*result_->image_);
     if (texture != nullptr) {
         rectNode->setTexture(texture);
         rectNode->setRect(QRectF(0, 0, width(), height()));
@@ -65,34 +65,36 @@ void PreviewRender::createImage(const QVariantMap &qvparams) {
 
 void PreviewRender::saveImage(){
     if (image_future_ && image_future_->isValid()) {
-        image_ = std::make_unique<QImage>(image_future_->takeResult());
+        result_ = image_future_->takeResult();
     }
-    if (image_.get()->width() != 0) {
+    if (result_->image_->width() != 0) {
         qWarning()<< "width "<< width();
-        qWarning()<< "result->resolution_y "<< image_.get()->height();
-        qWarning()<< "result->resolution_x "<< image_.get()->width();
-        setHeight(static_cast<double>(image_.get()->height())/ image_.get()->width() * width());
-        qWarning()<<static_cast<double>(image_.get()->height())/ image_.get()->width() *width();
+        qWarning()<< "result->resolution_y "<< result_->image_->height();
+        qWarning()<< "result->resolution_x "<< result_->image_->width();
+        setHeight(static_cast<double>(result_->image_->height())/ result_->image_->width() * width());
+        qWarning()<<static_cast<double>(result_->image_->height())/ result_->image_->width() *width();
     }
     imageReady();
 }
 
-QImage prepareImage(PreviewRender::SharedParamWrapper params) {
-    pdfcsp::pdf::BakeSignatureStampResult * result=nullptr;
-    result = pdfcsp::pdf::BakeSignatureStampImage(params->pod_params);
-    if (result != nullptr && result->img != nullptr && result->img_size > 0) {
-        printf("all ok\n");
-        QImage image = QImage(result->img ,result->resolution_x, result->resolution_y, result->resolution_x * 3,
-            QImage::Format_RGB888,
-            [](void *vbuf) {
-                auto *buff = static_cast<pdfcsp::pdf::BakeSignatureStampResult *>(vbuf);
-                pdfcsp::pdf::FreeBakedSigStampImage(buff);
-            },
-            result);
-        return image;
+std::unique_ptr<BakeResult> prepareImage(
+    PreviewRender::SharedParamWrapper params) {
+    auto result = std::make_unique<BakeResult>(BakeResult{
+                                                          std::unique_ptr<pdfcsp::pdf::BakeSignatureStampResult ,
+                                                                          void (*)(pdfcsp::pdf::BakeSignatureStampResult *)>(
+                                                              pdfcsp::pdf::BakeSignatureStampImage(params->pod_params),
+                                                              pdfcsp::pdf::FreeBakedSigStampImage),
+                                                          std::unique_ptr<QImage>()});
+    if (result && result->data_ && result->data_->img != nullptr &&
+        result->data_->img_size > 0) {
+        result->image_ = std::make_unique<QImage>(
+            result->data_->img, result->data_->resolution_x,
+            result->data_->resolution_y, result->data_->resolution_x * 3,
+            QImage::Format_RGB888);
     }
-    return QImage();
+    return result;
 }
+
 
 /// @brief prepare preview params for later use
 void PreviewRender::preparePreviewParams(const QVariantMap &qvparams) {

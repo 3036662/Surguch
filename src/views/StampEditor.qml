@@ -220,6 +220,10 @@ Dialog {
                 id: redColor
 
                 Layout.fillWidth: true
+                snapMode: Slider.SnapOnRelease
+                from: 0
+                to: 255
+                stepSize: 1
                 back_color: "red"
 
                 onValueChanged: {
@@ -241,7 +245,11 @@ Dialog {
                 id: greenColor
 
                 Layout.fillWidth: true
-                back_color: "blue"
+                snapMode: Slider.SnapOnRelease
+                from: 0
+                to: 255
+                stepSize: 1
+                back_color: "green"
 
                 onValueChanged: {
                     updatePreview()
@@ -250,7 +258,7 @@ Dialog {
             }
 
             Text {
-                text: "G" + greenColor.value
+                text: "G " + greenColor.value
                 font.family: "Noto Sans"
                 color: StyleSheet.font_color_extra
             }
@@ -263,7 +271,11 @@ Dialog {
                 id: blueColor
 
                 Layout.fillWidth: true
-                back_color: "green"
+                snapMode: Slider.SnapOnRelease
+                from: 0
+                to: 255
+                stepSize: 1
+                back_color: "blue"
 
                 onValueChanged: {
                     updatePreview()
