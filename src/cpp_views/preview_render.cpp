@@ -40,10 +40,16 @@ QSGNode *PreviewRender::updatePaintNode(
         rectNode->setOwnsTexture(true);
     }
 
-    if (result_->image_ == nullptr) {
-        result_->image_ = std::make_unique<QImage>(size().toSize(),
-                                          QImage::Format_RGB888);
-        result_->image_->fill(Qt::white);  // Fill the image with white color
+    if (result_ == nullptr || result_->image_ == nullptr) {
+        auto img =
+            std::make_unique<QImage>(size().toSize(), QImage::Format_RGB888);
+        img->fill(Qt::white);  // Fill the image with white color
+        QSGTexture *texture = window()->createTextureFromImage(*img);
+        if (texture != nullptr) {
+            rectNode->setTexture(texture);
+            rectNode->setRect(QRectF(0, 0, width(), height()));
+        }
+        return rectNode;
     }
     QSGTexture *texture = window()->createTextureFromImage(*result_->image_);
     if (texture != nullptr) {
@@ -68,11 +74,13 @@ void PreviewRender::saveImage(){
         result_ = image_future_->takeResult();
     }
     if (result_->image_->width() != 0) {
-        qWarning()<< "width "<< width();
-        qWarning()<< "result->resolution_y "<< result_->image_->height();
-        qWarning()<< "result->resolution_x "<< result_->image_->width();
-        setHeight(static_cast<double>(result_->image_->height())/ result_->image_->width() * width());
-        qWarning()<<static_cast<double>(result_->image_->height())/ result_->image_->width() *width();
+        // qWarning() << "width " << width();
+        // qWarning() << "result->resolution_y " << result_->image_->height();
+        // qWarning() << "result->resolution_x " << result_->image_->width();
+        setHeight(static_cast<double>(result_->image_->height()) /
+                  result_->image_->width() * width());
+        // qWarning() << static_cast<double>(result_->image_->height()) /
+        //                   result_->image_->width() * width();
     }
     imageReady();
 }
@@ -80,11 +88,11 @@ void PreviewRender::saveImage(){
 std::unique_ptr<BakeResult> prepareImage(
     PreviewRender::SharedParamWrapper params) {
     auto result = std::make_unique<BakeResult>(BakeResult{
-                                                          std::unique_ptr<pdfcsp::pdf::BakeSignatureStampResult ,
-                                                                          void (*)(pdfcsp::pdf::BakeSignatureStampResult *)>(
-                                                              pdfcsp::pdf::BakeSignatureStampImage(params->pod_params),
-                                                              pdfcsp::pdf::FreeBakedSigStampImage),
-                                                          std::unique_ptr<QImage>()});
+        std::unique_ptr<pdfcsp::pdf::BakeSignatureStampResult,
+                        void (*)(pdfcsp::pdf::BakeSignatureStampResult *)>(
+            pdfcsp::pdf::BakeSignatureStampImage(params->pod_params),
+            pdfcsp::pdf::FreeBakedSigStampImage),
+        std::unique_ptr<QImage>()});
     if (result && result->data_ && result->data_->img != nullptr &&
         result->data_->img_size > 0) {
         result->image_ = std::make_unique<QImage>(
@@ -94,7 +102,6 @@ std::unique_ptr<BakeResult> prepareImage(
     }
     return result;
 }
-
 
 /// @brief prepare preview params for later use
 void PreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
@@ -127,11 +134,11 @@ void PreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
     }
     if (qvparams.contains("stamp_width")) {
         //params_.stamp_width = qvparams.value("stamp_width").toReal();
-        params_.stamp_width = 0;
+        params_.stamp_width = 900;
     }
     if (qvparams.contains("stamp_height")) {
         //params_.stamp_height = qvparams.value("stamp_height").toReal();
-         params_.stamp_height = 0;
+        params_.stamp_height = 300;
     }
     if (qvparams.contains("logo_path")) {
         params_.logo_path = qvparams.value("logo_path").toString();

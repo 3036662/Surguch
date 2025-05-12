@@ -419,9 +419,9 @@
         <translation>ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+51"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+41"/>
-        <location filename="../../src/views/Main.qml" line="+52"/>
+        <location filename="../../src/views/Main.qml" line="+51"/>
         <source>Your certificate is expired.</source>
         <translation>Истек срок действия сертификата.</translation>
     </message>
@@ -872,8 +872,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+106"/>
-        <location filename="../../src/views/StampEditor.qml" line="+106"/>
+        <location line="+118"/>
+        <location filename="../../src/views/StampEditor.qml" line="+118"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>

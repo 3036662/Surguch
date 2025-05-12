@@ -179,8 +179,7 @@ ApplicationWindow {
                 "tsp_url": curr_profile.tsp_url,
                 "file_to_sign_path": pdfModel.getSource()
             }
-            console.warn("PARAMS");
-            console.warn(JSON.stringify(params))
+            //console.warn(JSON.stringify(params))
             return params
         }
 
