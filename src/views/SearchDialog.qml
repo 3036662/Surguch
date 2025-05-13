@@ -7,6 +7,23 @@ Dialog {
 
     property bool needNewSearch: false
     property bool searchInProgress: false
+    property int  needlesCount: 0
+    property string prev_needle
+
+
+    signal searchRequired(needle: string)
+
+    function searchCompleded(first_needle_page,total_needles){
+         console.warn("QML search completed")
+        searchInProgress=false;
+        needlesCount=total_needles;
+        searchInput.focus=true;
+        if (needNewSearch){
+            console.warn("QML need new search")
+            searchInProgress=true;
+            searchRequired(searchInput.text)
+        }
+    }
 
     width: 300
     height: 50
@@ -28,15 +45,28 @@ Dialog {
             border.width: 1
             radius: 4
             TextInput {
+                id: searchInput
                 clip: true
                 anchors.fill: parent
                 anchors.margins: 4
                 maximumLength: 100
                 horizontalAlignment: TextInput.AlignHLeft
                 verticalAlignment: TextInput.AlignVCenter
+                focus: true
 
                 onTextEdited:{
-                    console.warn("EDITED");
+                    if (text===prev_needle){
+                        return;
+                    }
+                    prev_needle=text
+                    console.warn("QML edited")
+                    console.warn("searchInProgress:"+searchDialog.searchInProgress)
+                    if (!searchDialog.searchInProgress){
+                        searchDialog.searchInProgress=true;
+                        searchDialog.searchRequired(text);
+                    } else{
+                        searchDialog.needNewSearch=true;
+                    }
                 }
             }
         }
@@ -50,7 +80,7 @@ Dialog {
             height: parent.height
             width: childrenRect.width
             Text {
-                text: "0/0"
+                text: "0/"+needlesCount
                 anchors.verticalCenter: parent.verticalCenter
                 verticalAlignment: Text.AlignVCenter
             }

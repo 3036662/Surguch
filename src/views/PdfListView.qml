@@ -227,6 +227,8 @@ ListView {
     }
 
 
+
+
     /* Get the current view position at page: page index, ratio.
      * The ratio value means how far away the view is from the beginning of the page.
      * Returns object {value,ratio}
@@ -288,6 +290,16 @@ ListView {
                             contentY + height / 2 - spacing * iterCount)
         }
         return index
+    }
+
+    function searchCompleted(first_needle_page_index,total_needles){
+        let curr_page= currentPage();
+        model.redrawAll();
+        if(total_needles>0){
+            scrollToPage(first_needle_page_index+1)
+        }else{
+          scrollToPage(curr_page)
+        }
     }
 
     Layout.fillHeight: true
@@ -403,7 +415,7 @@ ListView {
 
     model: pdfModel
 
-    delegate: Column {
+    delegate: Column {    
         width: root.width - verticalScroll.width
         property alias zoomLast: pdfPage.zoomLast
         property alias pWidth: pdfPage.width
@@ -583,6 +595,7 @@ ListView {
                         font.family: "Noto Sans"
                     }
                 }
+
             }
         }
     }

@@ -293,8 +293,8 @@
 <context>
     <name>HeaderSubBar</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+153"/>
-        <location filename="../../src/views/HeaderSubBar.qml" line="+153"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+155"/>
+        <location filename="../../src/views/HeaderSubBar.qml" line="+155"/>
         <source> of </source>
         <translation> из </translation>
     </message>
@@ -393,8 +393,8 @@
         <translation>Общая ошибка</translation>
     </message>
     <message>
-        <location line="+76"/>
-        <location filename="../../src/views/Main.qml" line="+76"/>
+        <location line="+82"/>
+        <location filename="../../src/views/Main.qml" line="+82"/>
         <source>The document was changed after signing, but can be restored</source>
         <translation>Документ был изменен после подписи! Присутствует возможность восстановить подписанную версию</translation>
     </message>
@@ -489,8 +489,8 @@
 <context>
     <name>PdfListView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+566"/>
-        <location filename="../../src/views/PdfListView.qml" line="+566"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+578"/>
+        <location filename="../../src/views/PdfListView.qml" line="+578"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>

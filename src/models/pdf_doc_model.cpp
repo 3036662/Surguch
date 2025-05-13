@@ -210,18 +210,10 @@ void PdfDocModel::setSource(const QString &path) {
             text_extractor_ =
                 std::make_unique<core::TextExtractor>(fzctx_text_, fzdoc_text_);
             text_extractor_->updateCache();
-            // TODO(Oleg) remove this
-            if (text_extractor_) {
-                text_extractor_->performSearch(",", false);
-                QObject::connect(
-                    text_extractor_.get(),
-                    &core::TextExtractor::searchCompleted, [this]() {
-                        qWarning() << "search completed\n";
-                        qWarning() << "total needles: "
-                                   << text_extractor_->getNeedlesTotal();
-                    });
-            }
-        }
+            QObject::connect(text_extractor_.get(),
+                             &core::TextExtractor::searchCompleted, this,
+                             &PdfDocModel::handleSearchCompleted);
+        };
     }
 }
 
@@ -344,7 +336,34 @@ PdfDocModel::NeedleRectsOnPage PdfDocModel::getNeedlesForPage(
     if (!p_rects || p_rects->empty()) {
         return nullptr;
     }
+    qWarning() << "[PdfDocModel::NeedleRectsOnPage] result";
     return p_rects;
+}
+
+/// @brief search for text
+void PdfDocModel::performSearch(QString needle) {
+    qWarning() << "search for " << needle;
+    if (text_extractor_) {
+        text_extractor_->performSearch(needle, false);
+    }
+}
+
+void PdfDocModel::handleSearchCompleted() {
+    if (!text_extractor_) {
+        return;
+    }
+    const auto needles_total = text_extractor_->getNeedlesTotal();
+    if (needles_total > std::numeric_limits<int>::max()) {
+        qWarning() << "[PdfDocModel] needles_total is too big";
+        return;
+    }
+    const auto &search_context = text_extractor_->getSearchContext();
+    const int index_first =
+        search_context && !search_context->empty()
+            ? static_cast<int>(search_context->begin()->first)
+            : 0;
+    qWarning() << "first needle was found on page" << index_first;
+    emit searchCompleted(index_first, static_cast<int>(needles_total));
 }
 
 // NOLINTEND(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)

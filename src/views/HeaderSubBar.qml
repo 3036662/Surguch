@@ -4,6 +4,8 @@ import QtQuick.Layouts
 
 ColumnLayout {
 
+    property alias searchDialog: searchDialog
+
     signal zoomInClicked
     signal zoomOutClicked
     signal zoomSelected(int newZoom)
