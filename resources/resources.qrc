@@ -23,5 +23,7 @@
         <file>icons/close_icon.svg</file>
         <file>translations/ru_RU.qm</file>
         <file>app_icons/SealWax-1_32.png</file>
+        <file>icons/search-next.svg</file>
+        <file>icons/search-previous.svg</file>
     </qresource>
 </RCC>

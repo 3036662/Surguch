@@ -102,6 +102,7 @@ ELSE()
         QML_FILES views/RSBComboSelect.qml
         QML_FILES views/RSBTextArea.qml
         QML_FILES views/UnsavedChangesDialog.qml
+        QML_FILES views/SearchDialog.qml
     )
 
     qt6_import_qml_plugins(surguch)

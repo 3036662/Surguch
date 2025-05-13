@@ -24,5 +24,6 @@
         <file>TextPairStatus.qml</file>
         <file>TopBarButton.qml</file>
         <file>UnsavedChangesDialog.qml</file>
+        <file>SearchDialog.qml</file>
     </qresource>
 </RCC>
