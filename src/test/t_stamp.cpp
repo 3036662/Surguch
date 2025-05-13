@@ -24,11 +24,11 @@ void TStamp::checkParams() {
     QVERIFY(profiles.exists());
     QVERIFY(stamps.exists());
     const QString stamp_json =
-        "{\"id\":1,\"title\":\"test\",\"border_width\":20,\"border_radius\":"
+        "{\"id\":999,\"title\":\"test\",\"border_width\":20,\"border_radius\":"
         "70,"
         "\"R\":255,\"G\":0,\"B\":0,\"transparent\":1}";
     QVERIFY(test_profile.saveStamp(stamp_json));
-    QVERIFY(test_profile.deleteStamp(1));
+    QVERIFY(test_profile.deleteStamp(999));
 }
 
 void TStamp::createPreview() {

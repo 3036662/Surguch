@@ -21,10 +21,11 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QGuiApplication>
 #include <QIcon>
 #include <QLocale>
+#include <QPalette>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QTranslator>
-#include <QPalette>
+#include <QtConcurrent>
 
 #include "core/signature_creator.hpp"
 #include "cpp_views/pdf_page_render.hpp"

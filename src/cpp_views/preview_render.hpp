@@ -1,12 +1,11 @@
 #ifndef PREVIEWRENDERER_HPP
 #define PREVIEWRENDERER_HPP
 
-#include <QQuickItem>
-#include <QVariant>
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QImage>
-
+#include <QQuickItem>
+#include <QVariant>
 #include <memory>
 
 #include "pdf_csp_c.hpp"

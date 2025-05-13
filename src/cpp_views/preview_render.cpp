@@ -1,6 +1,5 @@
 #include "preview_render.hpp"
 
-#include <QtConcurrent>
 #include <QFuture>
 #include <QPainter>
 #include <QSGGeometryNode>
@@ -8,6 +7,7 @@
 #include <QSGSimpleTextureNode>
 #include <QScreen>
 #include <QThread>
+#include <QtConcurrent>
 #include <QtMath>
 #include <memory>
 
