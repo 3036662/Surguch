@@ -19,6 +19,7 @@ Dialog {
     function updateStampForm() {
         if (stamp_data) {
             try {
+                editState = true
                 stamp_json = stamp_data
                 stamp_id = stamp_json.id
                 stampName.text = stamp_json.title
@@ -32,23 +33,28 @@ Dialog {
                 console.error("Error parsing JSON " + e.message)
             }
         } else {
-            editState = false
-            stamp_id = -1
-            stampName.text = ""
-            transparencySwitch.state = false
-            borderWidth.value = 7
-            borderRadius.value = 50
-            redColor.value = 50
-            greenColor.value = 62
-            blueColor.value = 168
+            resetData()
         }
-        //console.warn("edit" + profile_data)
         stampPreview.profile_data = profile_data
         stampPreview.createPreview()
     }
 
-    function updatePreview(){
+    function resetData() {
+        //console.warn("Reset data called")
+        editState = false
+        stamp_id = -1
+        stampName.text = ""
+        transparencySwitch.state = false
+        borderWidth.value = 7
+        borderRadius.value = 50
+        redColor.value = 50
+        greenColor.value = 62
+        blueColor.value = 168
+    }
+
+    function updatePreview() {
         let stamp_params = {
+            "stamp_name": stampName.text,
             "text_color_red": redColor.value,
             "text_color_green": greenColor.value,
             "text_color_blue": blueColor.value,
@@ -89,8 +95,8 @@ Dialog {
             ToolButton{
                 flat:true
                 display:AbstractButton.TextBesideIcon
-                icon.width: 30
-                icon.height: 30
+                icon.width: 20
+                icon.height: 20
                 leftPadding: 10
                 rightPadding: 10
                 topPadding: 10
@@ -98,8 +104,10 @@ Dialog {
                 font.family: "Noto Sans"
                 icon.source: StyleSheet.close_icon
 
+
                 onClicked: {
                     stampEditor.visible = false
+                    resetData()
                 }
             }
         }
@@ -111,7 +119,7 @@ Dialog {
             color: StyleSheet.font_color_extra
         }
 
-        TextArea{
+        TextArea {
             id: stampName
             Layout.fillWidth: true
             placeholderText: qsTr("Enter stamp name")
@@ -292,9 +300,12 @@ Dialog {
         Button {
             Layout.fillWidth: true
             text: qsTr("Save")
+            display: AbstractButton.TextBesideIcon
+            icon.source: StyleSheet.save_icon
+            icon.width: 20
+            icon.height: 20
 
             onClicked: {
-                console.warn(transparencySwitch.checked)
                 if (stamp_id<0 &&
                     !profiles_model.uniqueStampName(stampName.text)){
                     stampName.forceActiveFocus()
@@ -327,6 +338,10 @@ Dialog {
 
             Layout.fillWidth: true
             text: qsTr("Delete")
+            display: AbstractButton.TextBesideIcon
+            icon.source: StyleSheet.trash_icon
+            icon.width: 20
+            icon.height: 20
             enabled: editState
 
             onClicked: {

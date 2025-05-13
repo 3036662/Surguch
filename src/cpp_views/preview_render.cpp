@@ -133,7 +133,8 @@ void PreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
         params_.stamp_y = qvparams.value("stamp_y").toReal();
     }
     if (qvparams.contains("stamp_width")) {
-        //params_.stamp_width = qvparams.value("stamp_width").toReal();
+        // params_.stamp_width = qvparams.value("stamp_width").toReal();
+        // we only need height/width ration so hardcode params
         params_.stamp_width = 900;
     }
     if (qvparams.contains("stamp_height")) {

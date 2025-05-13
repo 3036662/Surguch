@@ -150,7 +150,7 @@ RowLayout {
                     let def_profile = profilesModel.getDetDefaultProfileVal()
                     if (def_profile !== "") {
                         const indx = profileComboBox.indexOfValue(def_profile)
-                        console.warn(indx)
+                        //console.warn(indx)
                         profileComboBox.displayText = profileComboBox.textAt(
                                     indx)
                         profileComboBox.currentIndex = indx

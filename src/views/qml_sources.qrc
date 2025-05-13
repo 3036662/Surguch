@@ -24,5 +24,8 @@
         <file>TextPairStatus.qml</file>
         <file>TopBarButton.qml</file>
         <file>UnsavedChangesDialog.qml</file>
+        <file>StampPreview.qml</file>
+        <file>StampEditor.qml</file>
+        <file>ColorSlider.qml</file>
     </qresource>
 </RCC>

@@ -18,7 +18,5 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QTest>
 
 #include "t_signature.hpp"
-#include "t_stamp.hpp"
 
 QTEST_MAIN(TSignature)
-//QTEST_MAIN(TStamp)

@@ -1,20 +1,35 @@
 #include "t_stamp.hpp"
 
-#include <QTest>
-#include <QQuickItem>
-#include <QVariant>
+#include <QFile>
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QImage>
+#include <QJsonDocument>
+#include <QQuickItem>
 #include <QStandardPaths>
+#include <QTest>
+#include <QVariant>
 
+#include "core/csp_c_bridge/bridge_utils.hpp"
 #include "cpp_views/preview_render.hpp"
 #include "models/profiles_model.hpp"
-#include "core/csp_c_bridge/bridge_utils.hpp"
-
 #include "pdf_csp_c.hpp"
 
 TStamp::TStamp(QObject *parent) : QObject{parent} {}
+
+void TStamp::checkParams() {
+    ProfilesModel test_profile;
+    QFile profiles(profile_file_);
+    QFile stamps(stamps_file_);
+    QVERIFY(profiles.exists());
+    QVERIFY(stamps.exists());
+    const QString stamp_json =
+        "{\"id\":1,\"title\":\"test\",\"border_width\":20,\"border_radius\":"
+        "70,"
+        "\"R\":255,\"G\":0,\"B\":0,\"transparent\":1}";
+    QVERIFY(test_profile.saveStamp(stamp_json));
+    QVERIFY(test_profile.deleteStamp(1));
+}
 
 void TStamp::createPreview() {
     PreviewRender::SignParams params_;
@@ -31,16 +46,16 @@ void TStamp::createPreview() {
     params_.cert_subject = "Test Certificate";
     params_.cert_subject_prefix = "Субъект: ";
     params_.cert_time_validity = "Действителен: 2025-04-21 08:33:16 UTC по 2025-06-21 08:43:16 UTC";
-    params_.config_path = "/home/dv/.config/csppdf";
-    params_.file_to_sign_path = "/home/dv/Документы/42_pades-xlt1-sertum_pro.pdf";
-    params_.logo_path = "/home/dv/.config/csppdf/profile_3_logo.jpg";
+    params_.config_path = config_dir_;
+    params_.file_to_sign_path = file1_;
+    params_.logo_path = logo_;
     params_.page_height = 0;
     params_.page_index = 0;
     params_.page_width = 0;
-    params_.stamp_height = 300;
+    params_.stamp_height = 900;
     params_.stamp_title = "ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ";
     params_.stamp_type = "test";
-    params_.stamp_width = 150;
+    params_.stamp_width = 300;
     params_.stamp_x = 0;
     params_.stamp_y = 0;
     params_.tsp_url = "";
@@ -107,6 +122,17 @@ void TStamp::createPreview() {
     pod_params.bg_transparent = params_.bg_transparent;
     pod_params.bg_opacity = params_.bg_opacity;
 
-    auto result = pdfcsp::pdf::BakeSignatureStampImage(pod_params);
+    auto *result = pdfcsp::pdf::BakeSignatureStampImage(pod_params);
     QVERIFY(result != nullptr);
+    QVERIFY(result->img != nullptr);
+    QVERIFY(result->img_size > 0);
+
+    QImage img = QImage(result->img, result->resolution_x, result->resolution_y,
+                        result->resolution_x * 3, QImage::Format_RGB888);
+
+    QVERIFY(!img.isNull());
+    QColor test_pixel = img.pixelColor(20, result->resolution_y / 2).toRgb();
+    qWarning() << test_pixel;
+    QVERIFY(test_pixel == QColor(255, 0, 0));
+    pdfcsp::pdf::FreeBakedSigStampImage(result);
 }

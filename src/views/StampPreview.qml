@@ -26,79 +26,41 @@ Item {
             throw new Error('Certificate data not found')
         }
         // gather all information needed to create a signature visual representation
-        if (curr_profile.stamp_type === "ГОСТ") {
-            let params = {
-                "page_index": 0,//location_data.page_index,
-                "page_width": 0,//location_data.page_width,
-                "page_height": 0,//location_data.page_height,
-                "stamp_x": 0,//location_data.stamp_x,
-                "stamp_y": 0,//location_data.stamp_y,
-                "stamp_width": stampPreview.width,//location_data.stamp_width,
-                "stamp_height": stampPreview.height,//location_data.stamp_height,
-                "logo_path": curr_profile.logo_path,
-                "config_path": profilesModel.getConfigPath(),
-                "cert_serial": curr_profile.cert_serial,
-                "cert_serial_prefix": qsTr("Certificate: "),
-                "cert_subject": cert_array[cert_index].subject_common_name,
-                "cert_subject_prefix": qsTr("Subject: "),
-                "cert_time_validity": qsTr("Vaildity: ")
-                                      + cert_array[cert_index].not_before_readable + qsTr(
-                    " till ") + cert_array[cert_index].not_after_readable,
-                "stamp_title": qsTr("THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE"),
-                "stamp_type": curr_profile.stamp_type,
-                "text_color_red": 50,
-                "text_color_green": 62,
-                "text_color_blue": 168,
-                "border_color_red": 50,
-                "border_color_green": 62,
-                "border_color_blue": 168,
-                "border_wdith": 7,
-                "border_radius": 50,
-                "bg_transparent": 0,
-                "bg_opacity": 0,
-                "cades_type": curr_profile.CADES_format,
-                "tsp_url": curr_profile.tsp_url,
-                "file_to_sign_path": pdfModel.getSource()
-            }
-            //console.warn(JSON.stringify(params))
-            return params
-        } else {
-            let params = {
-                "page_index": 0,//location_data.page_index,
-                "page_width": 0,//location_data.page_width,
-                "page_height": 0,//location_data.page_height,
-                "stamp_x": 0,//location_data.stamp_x,
-                "stamp_y": 0,//location_data.stamp_y,
-                "stamp_width": 0,//location_data.stamp_width,
-                "stamp_height": 0,//location_data.stamp_height,
-                "logo_path": curr_profile.logo_path,
-                "config_path": profilesModel.getConfigPath(),
-                "cert_serial": curr_profile.cert_serial,
-                "cert_serial_prefix": qsTr("Certificate: "),
-                "cert_subject": cert_array[cert_index].subject_common_name,
-                "cert_subject_prefix": qsTr("Subject: "),
-                "cert_time_validity": qsTr("Vaildity: ")
-                                      + cert_array[cert_index].not_before_readable + qsTr(
-                    " till ") + cert_array[cert_index].not_after_readable,
-                "stamp_title": qsTr("THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE"),
-                "stamp_type": curr_profile.stamp_type,
-                "text_color_red": stamp_data.text_color_red,
-                "text_color_green": stamp_data.text_color_green,
-                "text_color_blue": stamp_data.text_color_blue,
-                "border_color_red": stamp_data.border_color_red,
-                "border_color_green": stamp_data.border_color_green,
-                "border_color_blue": stamp_data.border_color_blue,
-                "border_width": stamp_data.border_width,
-                "border_radius": stamp_data.border_radius,
-                "bg_transparent": stamp_data.bg_transparent,
-                "bg_opacity": 1,
-                "cades_type": curr_profile.CADES_format,
-                "tsp_url": curr_profile.tsp_url,
-                "file_to_sign_path": pdfModel.getSource()
-            }
-            //console.warn(JSON.stringify(params))
-            return params
+        let params = {
+            "page_index": 0,//location_data.page_index,
+            "page_width": 0,//location_data.page_width,
+            "page_height": 0,//location_data.page_height,
+            "stamp_x": 0,//location_data.stamp_x,
+            "stamp_y": 0,//location_data.stamp_y,
+            "stamp_width": 0,//location_data.stamp_width,
+            "stamp_height": 0,//location_data.stamp_height,
+            "logo_path": curr_profile.logo_path,
+            "config_path": profilesModel.getConfigPath(),
+            "cert_serial": curr_profile.cert_serial,
+            "cert_serial_prefix": qsTr("Certificate: "),
+            "cert_subject": cert_array[cert_index].subject_common_name,
+            "cert_subject_prefix": qsTr("Subject: "),
+            "cert_time_validity": qsTr("Vaildity: ")
+                                  + cert_array[cert_index].not_before_readable + qsTr(
+                " till ") + cert_array[cert_index].not_after_readable,
+            "stamp_title": qsTr("THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE"),
+            "stamp_type": stamp_data.stamp_name,
+            "text_color_red": stamp_data.text_color_red,
+            "text_color_green": stamp_data.text_color_green,
+            "text_color_blue": stamp_data.text_color_blue,
+            "border_color_red": stamp_data.border_color_red,
+            "border_color_green": stamp_data.border_color_green,
+            "border_color_blue": stamp_data.border_color_blue,
+            "border_width": stamp_data.border_width,
+            "border_radius": stamp_data.border_radius,
+            "bg_transparent": stamp_data.bg_transparent,
+            "bg_opacity": 1,
+            "cades_type": curr_profile.CADES_format,
+            "tsp_url": curr_profile.tsp_url,
+            "file_to_sign_path": pdfModel.getSource()
         }
+        //console.warn(JSON.stringify(params))
+        return params
     }
 
     function createPreview() {

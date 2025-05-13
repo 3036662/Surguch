@@ -28,6 +28,8 @@ Item {
     property string printer_icon
     property string search_icon
     property string wrench_icon
+    property string save_icon
+    property string trash_icon
     states: [
         State {
             name: "dark"
@@ -56,6 +58,8 @@ Item {
                 printer_icon: "qrc:/icons/dark/printer_sm.svg"
                 search_icon: "qrc:/icons/dark/search-custom.svg"
                 wrench_icon: "qrc:/icons/dark/wrench.svg"
+                trash_icon: "qrc:/icons/dark/trash.svg"
+                save_icon: "qrc:/icons/dark/save.svg"
             }
         },
         State {
@@ -85,6 +89,8 @@ Item {
                 printer_icon: "qrc:/icons/light/printer_sm.svg"
                 search_icon: "qrc:/icons/light/search-custom.svg"
                 wrench_icon: "qrc:/icons/light/wrench.svg"
+                trash_icon: "qrc:/icons/light/trash.svg"
+                save_icon: "qrc:/icons/light/save.svg"
             }
         }
     ]

@@ -11,7 +11,7 @@
 
 #include "pdf_csp_c.hpp"
 
-
+/// @brief strucute for holding image data and contructed image for renderring
 struct BakeResult {
     std::unique_ptr<pdfcsp::pdf::BakeSignatureStampResult, void (*)(pdfcsp::pdf::BakeSignatureStampResult *)> data_;
     std::unique_ptr<QImage> image_;
@@ -87,17 +87,6 @@ class PreviewRender : public QQuickItem {
         QString stamp_title;
         RGBColor text_color;
         RGBColor border_color;
-    };
-
-    struct SignResult {
-        bool status = false;
-        QString tmp_result_file;
-        QString err_string;
-    };
-
-    struct AimResizeFactor {
-        double x = 1;
-        double y = 1;
     };
 
     /// @brief create image with user settings

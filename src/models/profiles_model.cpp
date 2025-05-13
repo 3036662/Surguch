@@ -47,7 +47,7 @@ int ProfilesModel::rowCount(const QModelIndex &parent) const {
         return 0;
     }
     if (profiles_.count() > std::numeric_limits<int>::max()) {
-        qWarning() << "[rofilesModel::rowCount] can not cast to integer";
+        qWarning() << "[profilesModel::rowCount] can not cast to integer";
         return 0;
     }
     return static_cast<int>(profiles_.count());
@@ -260,7 +260,7 @@ Q_INVOKABLE bool ProfilesModel::uniqueStampName(QString stamp_name) {
 }
 
 ///@brief save user's stamp
-Q_INVOKABLE bool ProfilesModel::saveStamp(const QString &stamp_json){
+Q_INVOKABLE bool ProfilesModel::saveStamp(const QString &stamp_json) {
     if (stamp_json.isEmpty()) {
         return false;
     }

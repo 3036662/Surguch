@@ -583,7 +583,7 @@
     <message>
         <location line="+0"/>
         <source>CreateStamp</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить</translation>
     </message>
     <message>
         <location line="+62"/>
@@ -822,40 +822,40 @@
 <context>
     <name>StampEditor</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/StampEditor.qml" line="+82"/>
-        <location filename="../../src/views/StampEditor.qml" line="+82"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/StampEditor.qml" line="+88"/>
+        <location filename="../../src/views/StampEditor.qml" line="+88"/>
         <source>Stamp editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройка штампа</translation>
     </message>
     <message>
-        <location line="+26"/>
-        <location filename="../../src/views/StampEditor.qml" line="+26"/>
+        <location line="+28"/>
+        <location filename="../../src/views/StampEditor.qml" line="+28"/>
         <source>Stamp name</source>
-        <translation type="unfinished"></translation>
+        <translation>Название</translation>
     </message>
     <message>
         <location line="+9"/>
         <location filename="../../src/views/StampEditor.qml" line="+9"/>
         <source>Enter stamp name</source>
-        <translation type="unfinished"></translation>
+        <translation>Мой штамп</translation>
     </message>
     <message>
         <location line="+9"/>
         <location filename="../../src/views/StampEditor.qml" line="+9"/>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Предпросмотр</translation>
     </message>
     <message>
         <location line="+17"/>
         <location filename="../../src/views/StampEditor.qml" line="+17"/>
         <source>Transparency</source>
-        <translation type="unfinished"></translation>
+        <translation>Прозрачность фона</translation>
     </message>
     <message>
         <location line="+16"/>
         <location filename="../../src/views/StampEditor.qml" line="+16"/>
         <source>Stamp border width: </source>
-        <translation type="unfinished"></translation>
+        <translation>Толщина рамки: </translation>
     </message>
     <message>
         <location line="+26"/>
@@ -863,31 +863,31 @@
         <location filename="../../src/views/StampEditor.qml" line="+26"/>
         <location line="+20"/>
         <source>Stamp border radius: </source>
-        <translation type="unfinished"></translation>
+        <translation>Скругление рамки: </translation>
     </message>
     <message>
         <location line="+6"/>
         <location filename="../../src/views/StampEditor.qml" line="+6"/>
         <source>Stamp&apos;s color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет</translation>
     </message>
     <message>
-        <location line="+118"/>
-        <location filename="../../src/views/StampEditor.qml" line="+118"/>
+        <location line="+121"/>
+        <location filename="../../src/views/StampEditor.qml" line="+121"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location line="-28"/>
         <location filename="../../src/views/StampEditor.qml" line="-28"/>
         <source>Stamp with this name already exists</source>
-        <translation type="unfinished"></translation>
+        <translation>Штамп с выбранным именем уже существует</translation>
     </message>
     <message>
-        <location line="-7"/>
-        <location filename="../../src/views/StampEditor.qml" line="-7"/>
+        <location line="-10"/>
+        <location filename="../../src/views/StampEditor.qml" line="-10"/>
         <source>Save</source>
-        <translation type="unfinished">Сохранить</translation>
+        <translation>Сохранить</translation>
     </message>
     <message>
         <source>Profile with this name already exists</source>
@@ -903,42 +903,32 @@
         <translation type="unfinished">Сертификат не найден, возможно он был удален</translation>
     </message>
     <message>
-        <location line="+18"/>
-        <location line="+36"/>
-        <location filename="../../src/views/StampPreview.qml" line="+18"/>
-        <location line="+36"/>
+        <location line="+17"/>
+        <location filename="../../src/views/StampPreview.qml" line="+17"/>
         <source>Certificate: </source>
         <translation type="unfinished">Сертификат: </translation>
     </message>
     <message>
-        <location line="-34"/>
-        <location line="+36"/>
-        <location filename="../../src/views/StampPreview.qml" line="-34"/>
-        <location line="+36"/>
+        <location line="+2"/>
+        <location filename="../../src/views/StampPreview.qml" line="+2"/>
         <source>Subject: </source>
         <translation type="unfinished">Субъект: </translation>
     </message>
     <message>
-        <location line="-35"/>
-        <location line="+36"/>
-        <location filename="../../src/views/StampPreview.qml" line="-35"/>
-        <location line="+36"/>
+        <location line="+1"/>
+        <location filename="../../src/views/StampPreview.qml" line="+1"/>
         <source>Vaildity: </source>
         <translation type="unfinished">Действителен: </translation>
     </message>
     <message>
-        <location line="-35"/>
-        <location line="+36"/>
-        <location filename="../../src/views/StampPreview.qml" line="-35"/>
-        <location line="+36"/>
+        <location line="+1"/>
+        <location filename="../../src/views/StampPreview.qml" line="+1"/>
         <source> till </source>
         <translation type="unfinished"> по </translation>
     </message>
     <message>
-        <location line="-34"/>
-        <location line="+36"/>
-        <location filename="../../src/views/StampPreview.qml" line="-34"/>
-        <location line="+36"/>
+        <location line="+2"/>
+        <location filename="../../src/views/StampPreview.qml" line="+2"/>
         <source>THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE</source>
         <translation type="unfinished">ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ</translation>
     </message>
@@ -952,6 +942,14 @@
     <message>
         <source>Failed to parse the certificates list from the JSON string</source>
         <translation type="obsolete">Не удалось прочитать список сертификатов из JSON</translation>
+    </message>
+    <message>
+        <source>Can not open file </source>
+        <translation type="obsolete">Не удалось открыть файл </translation>
+    </message>
+    <message>
+        <source>Error parsing JSON from file </source>
+        <translation type="obsolete">Ошибка чтения файла профиля </translation>
     </message>
 </context>
 <context>

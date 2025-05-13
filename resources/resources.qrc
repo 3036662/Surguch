@@ -45,5 +45,9 @@
         <file>icons/dark/close_icon.svg</file>
         <file>icons/dark/book.svg</file>
         <file>icons/dark/arrow_back_curve.svg</file>
+        <file>icons/light/save.svg</file>
+        <file>icons/light/trash.svg</file>
+        <file>icons/dark/trash.svg</file>
+        <file>icons/dark/save.svg</file>
     </qresource>
 </RCC>

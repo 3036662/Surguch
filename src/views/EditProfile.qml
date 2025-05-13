@@ -221,6 +221,7 @@ Flickable {
                         stampEditor.stamp_data = null
                         stampEditor.updateStampForm()
                         stampEditor.visible = true
+
                     }
                 }
             }
@@ -263,7 +264,6 @@ Flickable {
                 rightSideBar.edit_profile.stamps_data_raw
                         = profiles_model.getUserStampsJSON()
                 // select saved stamp in the header combo
-                console.warn(val)
                 const indx = selectStampTypeCombo.find(val)
                 selectStampTypeCombo.displayText = selectStampTypeCombo.textAt(indx)
                 selectStampTypeCombo.currentIndex = indx
