@@ -16,6 +16,8 @@ ApplicationWindow {
     visible: true
     title: qsTr("Surguch")
 
+    property string focusOwnerId
+
     // --------------------------------------
     // header
     header: ToolBar {

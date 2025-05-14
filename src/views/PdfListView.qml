@@ -51,7 +51,7 @@ ListView {
 
     function zoomIn() {
         prevZoom = zoomPageFact
-        forceActiveFocus()
+       tryToGetFocus()
         if (zoomAuto) {
             let zoom_fact_goal = currentPage().zoomLast + 0.2
             zoomPageFact = zoom_fact_goal
@@ -73,7 +73,7 @@ ListView {
     function zoomInWheel() {
         prevZoom = zoomPageFact
         let step = 0.10
-        forceActiveFocus()
+        tryToGetFocus()
         if (zoomAuto) {
             let zoom_fact_goal = currentPage().zoomLast + step
             if (zoom_fact_goal < root.maxZoom) {
@@ -96,7 +96,7 @@ ListView {
 
     function zoomOut() {
         prevZoom = zoomPageFact
-        forceActiveFocus()
+        tryToGetFocus()
         if (zoomAuto) {
             let zoom_fact_goal = currentPage().zoomLast - 0.2
             if (zoom_fact_goal <= 0) {
@@ -121,7 +121,7 @@ ListView {
     function zoomOutWheel() {
         prevZoom = zoomPageFact
         let step = 0.10
-        forceActiveFocus()
+        tryToGetFocus()
         if (zoomAuto) {
             let zoom_fact_goal = currentPage().zoomLast - step
             if (zoom_fact_goal > minZoom) {
@@ -144,7 +144,7 @@ ListView {
 
     function setZoom(newZoom) {
         prevZoom = zoomPageFact
-        forceActiveFocus()
+        tryToGetFocus()
         if (newZoom <= 0) {
             //auto zoom
             zoomPageFact = -1
@@ -164,12 +164,12 @@ ListView {
     }
 
     function scrollToPage(newIndex) {
-        forceActiveFocus()
+        tryToGetFocus()
         positionViewAtIndex(newIndex - 1, ListView.Beginning)
     }
 
     function reserRotation() {
-        forceActiveFocus()
+        tryToGetFocus()
         if (delegateRotation !== 0) {
             delegateRotation = 0
             model.redrawAll()
@@ -178,7 +178,7 @@ ListView {
     }
 
     function rotateClockWise() {
-        forceActiveFocus()
+        tryToGetFocus()
         let currentPage = currentPageIndex() + 1
         delegateRotation = delegateRotation == 270 ? 0 : delegateRotation + 90
         model.redrawAll()
@@ -186,7 +186,7 @@ ListView {
     }
 
     function rotateCounterClockWise() {
-        forceActiveFocus()
+        tryToGetFocus()
         let currentPage = currentPageIndex() + 1
         delegateRotation = delegateRotation == 0 ? 270 : delegateRotation - 90
         model.redrawAll()
@@ -226,7 +226,12 @@ ListView {
         }
     }
 
-
+    function tryToGetFocus(){
+        if (root_window.focusOwnerId!=="searchDialog"){
+            root_window.focusOwnerId="pdfListView";
+            forceActiveFocus();
+        }
+    }
 
 
     /* Get the current view position at page: page index, ratio.
@@ -293,8 +298,10 @@ ListView {
     }
 
     function searchCompleted(first_needle_page_index,total_needles){
-        let curr_page= currentPage();
+        let curr_page= currentPageIndex();
         model.redrawAll();
+        console.warn("QML curr_page: "+curr_page);
+        console.warn("QML Total needles:"+total_needles);
         if(total_needles>0){
             scrollToPage(first_needle_page_index+1)
         }else{
@@ -347,7 +354,7 @@ ListView {
         }
         scrollToPage(1);
         currPageChanged(1)
-        forceActiveFocus()        
+        tryToGetFocus()
     }
 
     onZoomPageFactChanged: {        

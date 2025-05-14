@@ -14,13 +14,13 @@ Dialog {
     signal searchRequired(needle: string)
 
     function searchCompleded(first_needle_page,total_needles){
-         console.warn("QML search completed")
+        console.warn("QML search completed")
         searchInProgress=false;
         needlesCount=total_needles;
-        searchInput.focus=true;
         if (needNewSearch){
             console.warn("QML need new search")
             searchInProgress=true;
+            needNewSearch=false;
             searchRequired(searchInput.text)
         }
     }
@@ -31,6 +31,8 @@ Dialog {
     y: parent.y
     modal: false
     closePolicy: Popup.CloseOnEscape
+
+    onClosed: root_window.focusOwnerId="";
 
     Row {
         anchors.verticalCenter: parent.verticalCenter
@@ -67,6 +69,8 @@ Dialog {
                     } else{
                         searchDialog.needNewSearch=true;
                     }
+                    root_window.focusOwnerId="searchDialog";
+                    forceActiveFocus();
                 }
             }
         }

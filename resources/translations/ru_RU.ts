@@ -327,8 +327,8 @@
         <translation>Сургуч</translation>
     </message>
     <message>
-        <location line="+114"/>
-        <location filename="../../src/views/Main.qml" line="+114"/>
+        <location line="+116"/>
+        <location filename="../../src/views/Main.qml" line="+116"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
@@ -489,8 +489,8 @@
 <context>
     <name>PdfListView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+578"/>
-        <location filename="../../src/views/PdfListView.qml" line="+578"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+585"/>
+        <location filename="../../src/views/PdfListView.qml" line="+585"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>

@@ -2,6 +2,7 @@
 #define TEXT_EXTRACTOR_HPP
 #include <QFuture>
 #include <QFutureWatcher>
+#include <shared_mutex>
 
 #include "mupdf/fitz.h"
 #include "utils.hpp"
@@ -15,71 +16,83 @@ namespace core {
  */
 
 class TextExtractor : public QObject {
-  Q_OBJECT
+    Q_OBJECT
 
- public:
-  using CacheFuture = QFuture<utils::PagesTextCache>;
-  using CacheFutureWatcher = QFutureWatcher<utils::PagesTextCache>;
-  using TextCache = utils::PagesTextCache;
-  using SearchContext =
-      std::unique_ptr<std::map<size_t, utils::NeedleRectsOnPage>>;
-  using SearchContextWatcher = QFutureWatcher<SearchContext>;
-  using SearchFuture = QFuture<SearchContext>;
+   public:
+    using CacheFuture = QFuture<utils::PagesTextCache>;
+    using CacheFutureWatcher = QFutureWatcher<utils::PagesTextCache>;
+    using TextCache = utils::PagesTextCache;
+    using SearchContext =
+        std::unique_ptr<std::map<size_t, utils::NeedleRectsOnPage>>;
+    using SearchContextWatcher = QFutureWatcher<SearchContext>;
+    using SearchFuture = QFuture<SearchContext>;
 
-  TextExtractor(fz_context* fzctx, fz_document* fzdoc,
-                QObject* parent = nullptr);
+    TextExtractor(fz_context* fzctx, fz_document* fzdoc,
+                  QObject* parent = nullptr);
 
-  /// @brief update the cache for the current document
-  /// @return async under the hood, returns immediately
-  void updateCache();
+    /// @brief update the cache for the current document
+    /// @return async under the hood, returns immediately
+    void updateCache();
 
-  /**
-   * @brief search all pages for the needle, create
-   * @param needle
-   * @param case_sensitive
-   * @details async under the hood, returns immediately
-   */
-  void performSearch(const QString& needle, bool case_sensitive);
+    /**
+     * @brief search all pages for the needle, create
+     * @param needle
+     * @param case_sensitive
+     * @details async under the hood, returns immediately
+     */
+    void performSearch(const QString& needle, bool case_sensitive);
 
-  /// @brief blocks until the cache is ready (for testing purposes)
-  void waitForCacheReady();
+    /// @brief blocks until the cache is ready (for testing purposes)
+    void waitForCacheReady();
 
-  /// @brief blocks until the search is finished (for testing purposes)
-  void waitForSearchReady();
+    /// @brief blocks until the search is finished (for testing purposes)
+    void waitForSearchReady();
 
-  /// @brief returns true if all operations are completed
-  [[nodiscard]] bool isReady();
+    /// @brief returns true if all operations are completed
+    [[nodiscard]] bool isReady();
 
-  [[nodiscard]] const TextCache& getCache() const& { return cache_; };
-  [[nodiscard]] size_t getNeedlesTotal() const { return needles_count_; }
-  [[nodiscard]] const SearchContext& getSearchContext() const& {
-    return search_context_;
-  }
+    // [[nodiscard]] const TextCache& getCache() const& { return cache_; };
 
- signals:
+    [[nodiscard]] size_t getNeedlesTotal();
+    [[nodiscard]] size_t getFirstNeedlePage();
 
-  void searchCompleted();
-  void cacheReady();
+    /// @details returns a copy of the search context
+    [[nodiscard]] SearchContext getSearchContext();
 
- private slots:
-  void saveCache();
-  void saveSearchContext();
+    /**
+     * @brief returns a copy of needls for page
+     * @details Creates a copy to make sure the access is thread-safe.
+     */
+    [[nodiscard]] core::utils::NeedleRectsOnPage getNeedlesForPage(
+        size_t page_index);
 
- private:
-  SearchContext buildSearchContext(const QString& needle, bool case_sensitive);
+   signals:
 
-  fz_context* fzctx_ = nullptr;
-  fz_document* fzdoc_ = nullptr;
-  std::unique_ptr<CacheFutureWatcher> cache_watcher_;
-  std::unique_ptr<CacheFuture> cache_future_;
-  TextCache cache_;
-  std::mutex cach_mtx_;
+    void searchCompleted();
+    void cacheReady();
 
-  SearchContext search_context_;
-  size_t needles_count_ = 0;
-  std::unique_ptr<SearchFuture> search_future_;
-  std::unique_ptr<SearchContextWatcher> search_watcher_;
-  std::mutex search_mtx_;
+   private slots:
+    void saveCache();
+    void saveSearchContext();
+
+   private:
+    SearchContext buildSearchContext(const QString& needle,
+                                     bool case_sensitive);
+
+    fz_context* fzctx_ = nullptr;
+    fz_document* fzdoc_ = nullptr;
+    std::unique_ptr<CacheFutureWatcher> cache_watcher_;
+    std::unique_ptr<CacheFuture> cache_future_;
+    TextCache cache_;
+    std::shared_mutex cach_mtx_;
+
+    SearchContext search_context_;
+    size_t needles_count_ = 0;
+    std::unique_ptr<SearchFuture> search_future_;
+    std::unique_ptr<SearchContextWatcher> search_watcher_;
+    std::shared_mutex search_mtx_;
+    QString needle_;
+    bool case_sensitive_;
 };
 
 }  // namespace core

@@ -325,19 +325,7 @@ PdfDocModel::NeedleRectsOnPage PdfDocModel::getNeedlesForPage(
     if (!text_extractor_) {
         return nullptr;
     }
-    const auto &search_context = text_extractor_->getSearchContext();
-    if (!search_context || search_context->count(page_index) == 0) {
-        return nullptr;
-    }
-    if (!text_extractor_->isReady()) {
-        return nullptr;
-    }
-    const auto &p_rects = search_context->at(page_index);
-    if (!p_rects || p_rects->empty()) {
-        return nullptr;
-    }
-    qWarning() << "[PdfDocModel::NeedleRectsOnPage] result";
-    return p_rects;
+    return text_extractor_->getNeedlesForPage(page_index);
 }
 
 /// @brief search for text
@@ -357,11 +345,7 @@ void PdfDocModel::handleSearchCompleted() {
         qWarning() << "[PdfDocModel] needles_total is too big";
         return;
     }
-    const auto &search_context = text_extractor_->getSearchContext();
-    const int index_first =
-        search_context && !search_context->empty()
-            ? static_cast<int>(search_context->begin()->first)
-            : 0;
+    const int index_first = text_extractor_->getFirstNeedlePage();
     qWarning() << "first needle was found on page" << index_first;
     emit searchCompleted(index_first, static_cast<int>(needles_total));
 }
