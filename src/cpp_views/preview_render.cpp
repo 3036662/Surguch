@@ -63,17 +63,21 @@ void PreviewRender::createImage(const QVariantMap &qvparams) {
     preparePreviewParams(qvparams);
     auto params_wrapper = createParams();
     image_watcher_ = std::make_unique<ImageFutureWatcher>();
-    QObject::connect(image_watcher_.get(), &ImageFutureWatcher::finished, this, &PreviewRender::saveImage);
+    QObject::connect(image_watcher_.get(), &ImageFutureWatcher::finished,
+                     [this]() {
+                         qWarning() << "finished";
+                         saveImage();
+                     });
     image_future_ = std::make_unique<ImageFuture>(
         QtConcurrent::run(prepareImage, params_wrapper));
     image_watcher_->setFuture(*image_future_);
 }
 
-void PreviewRender::saveImage(){
+void PreviewRender::saveImage() {
     if (image_future_ && image_future_->isValid()) {
         result_ = image_future_->takeResult();
     }
-    if (result_->image_->width() != 0) {
+    if (result_ && result_->image_ && result_->image_->width() != 0) {
         // qWarning() << "width " << width();
         // qWarning() << "result->resolution_y " << result_->image_->height();
         // qWarning() << "result->resolution_x " << result_->image_->width();
@@ -82,7 +86,7 @@ void PreviewRender::saveImage(){
         // qWarning() << static_cast<double>(result_->image_->height()) /
         //                   result_->image_->width() * width();
     }
-    imageReady();
+    emit imageReady();
 }
 
 std::unique_ptr<BakeResult> prepareImage(
@@ -93,6 +97,7 @@ std::unique_ptr<BakeResult> prepareImage(
             pdfcsp::pdf::BakeSignatureStampImage(params->pod_params),
             pdfcsp::pdf::FreeBakedSigStampImage),
         std::unique_ptr<QImage>()});
+    qWarning() << "result pointer:" << result.get();
     if (result && result->data_ && result->data_->img != nullptr &&
         result->data_->img_size > 0) {
         result->image_ = std::make_unique<QImage>(
@@ -138,7 +143,7 @@ void PreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
         params_.stamp_width = 900;
     }
     if (qvparams.contains("stamp_height")) {
-        //params_.stamp_height = qvparams.value("stamp_height").toReal();
+        // params_.stamp_height = qvparams.value("stamp_height").toReal();
         params_.stamp_height = 300;
     }
     if (qvparams.contains("logo_path")) {
@@ -201,8 +206,9 @@ void PreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
     }
 }
 
-        /// @brief Gather all parameters (pdfcsp::pdf::CSignParam)
-[[nodiscard]] PreviewRender::SharedParamWrapper PreviewRender::createParams() const {
+/// @brief Gather all parameters (pdfcsp::pdf::CSignParam)
+[[nodiscard]] PreviewRender::SharedParamWrapper PreviewRender::createParams()
+    const {
     auto params_wrapper = std::make_shared<CSignParamsWrapper>();
     pdfcsp::pdf::CSignParams &pod_params = params_wrapper->pod_params;
     pod_params.page_index = params_.page_index;

@@ -17,6 +17,10 @@ class TStamp : public QObject {
 
     void createPreview();
 
+    void createImage();
+    void createImage2();
+    void createImage3();
+
    private:
     const QString test_files_dir_ = TEST_FILES_DIR;
     const QString file1_ = test_files_dir_ + "13_cam_CADES-XLT1_1sig.pdf";

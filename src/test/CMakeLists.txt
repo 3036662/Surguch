@@ -8,7 +8,10 @@ qt_add_executable(test1 test_common.cpp
     t_signature.hpp t_signature.cpp)
 
 qt_add_executable(test2 test_common2.cpp
-    t_stamp.hpp t_stamp.cpp)
+    t_stamp.hpp t_stamp.cpp
+    ${CMAKE_SOURCE_DIR}/src/cpp_views/preview_render.hpp
+    ${CMAKE_SOURCE_DIR}/src/cpp_views/preview_render.cpp
+  )
 
 add_test(NAME test1 COMMAND mytest)
 add_test(NAME test2 COMMAND mytest2)
@@ -61,13 +64,13 @@ target_include_directories(test2 PUBLIC
     ${PDFCSP_INCLUDE_DIR}csp
 )
 
-target_link_libraries(test2 PRIVATE Qt::Test Qt6::Quick)
-target_link_libraries(test2  PRIVATE appcore)
-target_link_libraries(test2  PRIVATE models)
-target_link_libraries(test2  PRIVATE csp_c_bridge_qt)
+target_link_libraries(test2 PUBLIC Qt::Test Qt6::Quick Qt6::Concurrent)
+target_link_libraries(test2  PUBLIC appcore)
+target_link_libraries(test2  PUBLIC models)
+target_link_libraries(test2  PUBLIC csp_c_bridge_qt)
 
 target_link_libraries(test2
-     PRIVATE ${PDFCSP_LINK_PATH}
+     PUBLIC ${PDFCSP_LINK_PATH}
 )
 
 # harcoded mupdf linkage

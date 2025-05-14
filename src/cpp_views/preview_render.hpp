@@ -12,7 +12,9 @@
 
 /// @brief strucute for holding image data and contructed image for renderring
 struct BakeResult {
-    std::unique_ptr<pdfcsp::pdf::BakeSignatureStampResult, void (*)(pdfcsp::pdf::BakeSignatureStampResult *)> data_;
+    std::unique_ptr<pdfcsp::pdf::BakeSignatureStampResult,
+                    void (*)(pdfcsp::pdf::BakeSignatureStampResult *)>
+        data_;
     std::unique_ptr<QImage> image_;
 };
 
@@ -114,7 +116,6 @@ class PreviewRender : public QQuickItem {
     /// @brief Gather all parameters (pdfcsp::pdf::CSignParam)
     [[nodiscard]] SharedParamWrapper createParams() const;
 
-
     SignParams params_;
     float dev_pix_ratio_ = 2;
     std::unique_ptr<BakeResult> result_;
@@ -122,8 +123,8 @@ class PreviewRender : public QQuickItem {
     std::unique_ptr<ImageFutureWatcher> image_watcher_;
 };
 
-
 /// @brief concurrent function to make QImage
-std::unique_ptr<BakeResult> prepareImage(PreviewRender::SharedParamWrapper params);
+std::unique_ptr<BakeResult> prepareImage(
+    PreviewRender::SharedParamWrapper params);
 
 #endif  // PREVIEWRENDERER_HPP
