@@ -489,8 +489,8 @@
 <context>
     <name>PdfListView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+585"/>
-        <location filename="../../src/views/PdfListView.qml" line="+585"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+601"/>
+        <location filename="../../src/views/PdfListView.qml" line="+601"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>
@@ -718,12 +718,12 @@
 <context>
     <name>StampEditor</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/StampEditor.qml" line="+82"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/StampEditor.qml" line="+88"/>
         <source>Stamp editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+28"/>
         <source>Stamp name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -764,7 +764,7 @@
         <translation type="unfinished">Сохранить</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+10"/>
         <source>Stamp with this name already exists</source>
         <translation type="unfinished"></translation>
     </message>
@@ -782,32 +782,27 @@
         <translation type="unfinished">Сертификат не найден, возможно он был удален</translation>
     </message>
     <message>
-        <location line="+18"/>
-        <location line="+36"/>
+        <location line="+17"/>
         <source>Certificate: </source>
         <translation type="unfinished">Сертификат: </translation>
     </message>
     <message>
-        <location line="-34"/>
-        <location line="+36"/>
+        <location line="+2"/>
         <source>Subject: </source>
         <translation type="unfinished">Субъект: </translation>
     </message>
     <message>
-        <location line="-35"/>
-        <location line="+36"/>
+        <location line="+1"/>
         <source>Vaildity: </source>
         <translation type="unfinished">Действителен: </translation>
     </message>
     <message>
-        <location line="-35"/>
-        <location line="+36"/>
+        <location line="+1"/>
         <source> till </source>
         <translation type="unfinished"> по </translation>
     </message>
     <message>
-        <location line="-34"/>
-        <location line="+36"/>
+        <location line="+2"/>
         <source>THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE</source>
         <translation type="unfinished">ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ</translation>
     </message>

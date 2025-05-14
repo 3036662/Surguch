@@ -227,7 +227,7 @@ ListView {
     }
 
     function tryToGetFocus(){
-        if (root_window.focusOwnerId!=="searchDialog"){
+        if (root_window.focusOwnerId!=="" && root_window.focusOwnerId!=="searchDialog"){
             root_window.focusOwnerId="pdfListView";
             forceActiveFocus();
         }
@@ -275,6 +275,60 @@ ListView {
         return pos
     }
 
+
+    /*
+     *   @brief Try to position the view inside the page
+     *   @param pos should be object like this
+     *
+     *   pos = {
+     *       "index": pageIndToPreserveWhenZoom,  - page index
+     *       "ratio": pageYRatio,                 - float y position on page
+     *       "zoom_last": pageLastZoom
+     *   }
+     */
+    function jumpToPosition(pos){
+        positionViewAtIndex(pos.index, ListView.Beginning)
+        let currPage = currentPage()
+        let rotated90 = delegateRotation == 90 || delegateRotation == 270
+        let currZoom = zoomPageFact
+        let usedPageSize = 0
+        if (currPage) {
+            usedPageSize = rotated90 ? currPage.pWidth : currPage.pHeight
+            if (currPage.zoomLast > 0 && currPage.zoomLast !== 1) {
+                currZoom = currPage.zoomLast
+            }
+        } else {
+            usedPageSize = rotated90 ? root.lastPageWidth : root.lastPageHeight
+        }
+
+        let zoomRatio = currZoom / pos.zoom_last
+        let pos_mode = ListView.Beginning
+        if (pos.ratio > 0.7) {
+            pos_mode = ListView.End
+        } else if (pos.ratio > 0.3) {
+            pos_mode = ListView.Center
+        }
+        let targetYScroll = 0
+        if (zoomRatio > 0) {
+            targetYScroll = pos.ratio * usedPageSize
+                    * (rotated90 && zoomRatio>1 ? 1 : zoomRatio) - root.height / 2
+        }
+        // Convert the negative value to a positive scroll from the previous page.
+        if (targetYScroll < 0) {
+            if (pos.index > 0) {
+                positionViewAtIndex((pos.index) - 1, ListView.Beginning)
+                targetYScroll += usedPageSize * zoomRatio + root.spacing
+            }
+        }
+        if (targetYScroll > 0) {
+            contentY += targetYScroll
+        } else {
+            // if failed to calculate the exact scroll, use jump mode ( beginning | middle | end )
+            positionViewAtIndex(pos.index, pos_mode)
+        }
+        root.lastPageUsedSize = usedPageSize
+    }
+
     function currentPage() {
         let currPage = itemAt(width / 2, contentY + height / 2)
         let iterCount = 0
@@ -305,7 +359,7 @@ ListView {
         if(total_needles>0){
             scrollToPage(first_needle_page_index+1)
         }else{
-          scrollToPage(curr_page)
+          scrollToPage(curr_page+1)
         }
     }
 
@@ -360,48 +414,10 @@ ListView {
     onZoomPageFactChanged: {        
         // preserve the position
         let pos = preservePosition()
+        console.warn(JSON.stringify(pos))
         pdfModel.redrawAll()
         zoomFactorUpdate(zoomPageFact)
-        positionViewAtIndex(pos.index, ListView.Beginning)
-        // move the contentY to the old position
-        let currPage = currentPage()
-        let usedPageSize = 0
-        let rotated90 = delegateRotation == 90 || delegateRotation == 270
-        let currZoom = zoomPageFact
-        if (currPage) {
-            usedPageSize = rotated90 ? currPage.pWidth : currPage.pHeight
-            if (currPage.zoomLast > 0 && currPage.zoomLast !== 1) {
-                currZoom = currPage.zoomLast
-            }
-        } else {
-            usedPageSize = rotated90 ? root.lastPageWidth : root.lastPageHeight
-        }
-        let zoomRatio = currZoom / pos.zoom_last
-        let pos_mode = ListView.Beginning
-        if (pos.ratio > 0.7) {
-            pos_mode = ListView.End
-        } else if (pos.ratio > 0.3) {
-            pos_mode = ListView.Center
-        }
-        let targetYScroll = 0
-        if (zoomRatio > 0) {
-            targetYScroll = pos.ratio * usedPageSize
-                    * (rotated90 && zoomRatio>1 ? 1 : zoomRatio) - root.height / 2
-        }
-        // Convert the negative value to a positive scroll from the previous page.
-        if (targetYScroll < 0) {
-            if (pos.index > 0) {
-                positionViewAtIndex((pos.index) - 1, ListView.Beginning)
-                targetYScroll += usedPageSize * zoomRatio + root.spacing
-            }
-        }
-        if (targetYScroll > 0) {
-            contentY += targetYScroll
-        } else {
-            // if failed to calculate the exact scroll, use jump mode ( beginning | middle | end )
-            positionViewAtIndex(pos.index, pos_mode)
-        }
-        root.lastPageUsedSize = usedPageSize
+        jumpToPosition(pos)
     }
 
     onFlickEnded: {

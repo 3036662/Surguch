@@ -54,7 +54,8 @@ class TextExtractor : public QObject {
     // [[nodiscard]] const TextCache& getCache() const& { return cache_; };
 
     [[nodiscard]] size_t getNeedlesTotal();
-    [[nodiscard]] size_t getFirstNeedlePage();
+    [[nodiscard]] std::pair<size_t, float> getNeedlePageAndY(
+        size_t needle_index);
 
     /// @details returns a copy of the search context
     [[nodiscard]] SearchContext getSearchContext();

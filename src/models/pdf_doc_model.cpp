@@ -345,9 +345,10 @@ void PdfDocModel::handleSearchCompleted() {
         qWarning() << "[PdfDocModel] needles_total is too big";
         return;
     }
-    const int index_first = text_extractor_->getFirstNeedlePage();
-    qWarning() << "first needle was found on page" << index_first;
-    emit searchCompleted(index_first, static_cast<int>(needles_total));
+    const auto needle = text_extractor_->getNeedlePageAndY(0);
+    qWarning() << "first needle was found on page" << needle.first;
+    emit searchCompleted(needle.first, static_cast<int>(needles_total),
+                         needle.second);
 }
 
 // NOLINTEND(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)

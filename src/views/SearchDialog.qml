@@ -13,7 +13,7 @@ Dialog {
 
     signal searchRequired(needle: string)
 
-    function searchCompleded(first_needle_page,total_needles){
+    function searchCompleted(first_needle_page,total_needles){
         console.warn("QML search completed")
         searchInProgress=false;
         needlesCount=total_needles;

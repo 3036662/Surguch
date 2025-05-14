@@ -264,7 +264,7 @@ ApplicationWindow {
         // search
         headerSubBar.searchDialog.searchRequired.connect(pdfModel.performSearch)
         pdfModel.searchCompleted.connect(pdfListView.searchCompleted)
-        pdfModel.searchCompleted.connect(headerSubBar.searchDialog.searchCompleded)
+        pdfModel.searchCompleted.connect(headerSubBar.searchDialog.searchCompleted)
 
         // sign the document
         pdfListView.stampLocationSelected.connect(header.disableSignMode)

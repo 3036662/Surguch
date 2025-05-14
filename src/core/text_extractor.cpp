@@ -134,20 +134,57 @@ TextExtractor::SearchContext TextExtractor::buildSearchContext(
 };
 
 size_t TextExtractor::getNeedlesTotal() {
-    std::shared_lock{search_mtx_};
+    std::shared_lock lock{search_mtx_, std::defer_lock};
+    if (!lock.try_lock()) {
+        return 0;
+    }
     return needles_count_;
 }
 
-size_t TextExtractor::getFirstNeedlePage() {
-    std::shared_lock{search_mtx_};
-    return search_context_ && !search_context_->empty()
-               ? static_cast<int>(search_context_->begin()->first)
-               : 0;
+std::pair<size_t, float> TextExtractor::getNeedlePageAndY(size_t needle_index) {
+    std::shared_lock lock{search_mtx_, std::defer_lock};
+    if (!lock.try_lock()) {
+        return {0, 0};
+    }
+    if (!search_context_ || search_context_->empty()) {
+        return {0, 0};
+    }
+    size_t local_index = needle_index;
+    auto it_page = std::find_if(
+        search_context_->cbegin(), search_context_->cend(),
+        [&local_index](
+            const std::pair<size_t, utils::NeedleRectsOnPage> &page_pair) {
+            const auto &ptr_vector = page_pair.second;
+            if (!ptr_vector || ptr_vector->empty()) {
+                return false;
+            }
+            if (ptr_vector && ptr_vector->size() < local_index) {
+                local_index -= ptr_vector->size();
+                return false;
+            }
+            std::cerr << "local_index=" << local_index << "\n";
+            return true;
+        });
+    if (it_page == search_context_->cend()) {
+        return {0, 0};
+    }
+    const auto &p_vec_rect = it_page->second;
+    std::cerr << local_index << "\n";
+    if (local_index >= p_vec_rect->size()) {
+        return {it_page->first, 0};  // return only page index
+    }
+    const auto &rect = p_vec_rect->at(local_index);
+    std::cerr << rect.y0 << "\n";
+    // TODO implement Y
+    return {it_page->first, 0};
 }
 
 core::utils::NeedleRectsOnPage TextExtractor::getNeedlesForPage(
     size_t page_index) {
-    std::shared_lock lock{search_mtx_};
+    std::shared_lock lock{search_mtx_, std::defer_lock};
+    if (!lock.try_lock()) {
+        return {};
+    }
     if (!search_context_ || search_context_->empty() ||
         search_context_->count(page_index) == 0) {
         return {};
@@ -158,7 +195,10 @@ core::utils::NeedleRectsOnPage TextExtractor::getNeedlesForPage(
 }
 
 TextExtractor::SearchContext TextExtractor::getSearchContext() {
-    std::shared_lock lock{search_mtx_};
+    std::shared_lock lock{search_mtx_, std::defer_lock};
+    if (!lock.try_lock()) {
+        return nullptr;
+    }
     if (!search_context_ || search_context_->empty()) {
         return {};
     }
