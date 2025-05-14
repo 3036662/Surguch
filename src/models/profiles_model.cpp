@@ -26,7 +26,9 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "bridge_utils.hpp"
 
 ProfilesModel::ProfilesModel(QObject *parent)
-    : QAbstractListModel(parent), create_profile_title_{tr("CreateProfile")}, create_stamp_title_{tr("CreateStamp")} {
+    : QAbstractListModel(parent),
+      create_profile_title_{tr("CreateProfile")},
+      create_stamp_title_{tr("CreateStamp")} {
     role_names_[TitleRole] = "title";
     role_names_[ValueRole] = "value";
     readProfiles();
@@ -229,10 +231,10 @@ void ProfilesModel::readUserStamps() {
     stamps_file.close();
     const QJsonDocument json_doc = QJsonDocument::fromJson(file_data);
     if (json_doc.isNull() || !json_doc.isArray()) {
-        qWarning() << tr("Error parsing JSON from file ")
-                   << stamps_file_name_;
+        qWarning() << tr("Error parsing JSON from file ") << stamps_file_name_;
     }
-    const QJsonObject create_stamp_field{{"id" ,0} ,{"title", create_stamp_title_}};
+    const QJsonObject create_stamp_field{{"id", 0},
+                                         {"title", create_stamp_title_}};
     user_stamps_ = json_doc.array();
     user_stamps_.append(create_stamp_field);
 }
@@ -441,9 +443,10 @@ Q_INVOKABLE void ProfilesModel::updateProfiles(QString stamp_name) {
     for (int i = 0; i < profiles_.size(); ++i) {
         const QJsonObject profile_obj = profiles_.at(i).toObject();
         if (profile_obj.value("title").toString() == create_profile_title_) {
-            create_title_pos =i;
+            create_title_pos = i;
         }
-        if (profile_obj.contains("stamp_type") && profile_obj.value("stamp_type").toString() == stamp_name) {
+        if (profile_obj.contains("stamp_type") &&
+            profile_obj.value("stamp_type").toString() == stamp_name) {
             QJsonObject updated_obj = profile_obj;
             updated_obj["stamp_type"] = "ГОСТ";
             profiles_[i] = updated_obj;
@@ -506,7 +509,7 @@ QString ProfilesModel::saveLogoImage(const QString &path,
     if (dest != old_logo_path && old_logo_path != file_path) {
         QFile old_logo_file(old_logo_path);
         if (old_logo_file.exists()) {
-            old_logo_file.remove();
+            std::ignore = old_logo_file.remove();
         }
     }
     QFile dest_file(dest);

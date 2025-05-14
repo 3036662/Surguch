@@ -35,6 +35,7 @@ QSGNode *PreviewRender::updatePaintNode(
         if (!size().isValid()) {
             return node;
         }
+        // NOLINTNEXLINE(cppcoreguidelines-owning-memory)
         rectNode = new QSGSimpleTextureNode();
         rectNode->setFiltering(QSGTexture::Linear);
         rectNode->setOwnsTexture(true);

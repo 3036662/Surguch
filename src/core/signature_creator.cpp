@@ -133,7 +133,9 @@ SignWorker::SignParams SignatureCreator::createWorkerParams(
 bool SignatureCreator::createSignature(const QVariantMap &qvparams) {
     qWarning() << "[SignatureCreator::CreateSignature]";
     auto params = createWorkerParams(qvparams);
+    // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
     p_worker_ = new SignWorker();
+    // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
     p_sign_thread_ = new QThread();
     p_worker_->moveToThread(p_sign_thread_);
     // start job
@@ -180,7 +182,9 @@ void SignatureCreator::estimateStampResizeFactor(const QVariantMap &qvparams) {
         qWarning() << "estimateStampResizeFactor is alreary running";
         return;
     }
+    // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
     p_worker_resize_img_ = new SignWorker();
+    // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
     p_resize_img_thread_ = new QThread();
     p_worker_resize_img_->moveToThread(p_resize_img_thread_);
     // start job

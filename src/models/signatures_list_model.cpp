@@ -137,7 +137,7 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
          worker_thread](core::DocStatusEnum::CommonDocCoverageStatus status) {
             if (curr_worker_index_ < worker_threads_.size() &&
                 worker_thread == worker_threads_[curr_worker_index_].get()) {
-                //qWarning()<<"status"<<status;
+                // qWarning()<<"status"<<status;
                 emit commonDocStatus(core::DocStatusEnum::toString(status));
             }
             qWarning() << "Finished validation";
@@ -220,6 +220,7 @@ void SignaturesListModel::recoverDoc(qint64 sig_index) {
         qWarning() << "recoverDoc is alreary running";
         return;
     }
+    // NOLINTNEXLINE(cppcoreguidelines-owning-memory)
     recover_worker_ = new core::FileRecoverWorker();
     recover_thread_ = new QThread();
     recover_worker_->moveToThread(recover_thread_);

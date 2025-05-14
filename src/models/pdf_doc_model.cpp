@@ -136,7 +136,7 @@ void PdfDocModel::setSource(const QString &path) {
     }
 
     bool mu_exception_caught = false;
-    bool was_repaired=false;
+    bool was_repaired = false;
     fz_try(fzctx_) {
         // open the pdf file
         fzdoc_ = fz_open_document(fzctx_, local_path_std.c_str());
@@ -147,8 +147,8 @@ void PdfDocModel::setSource(const QString &path) {
         if (pdfdoc_ == nullptr) {
             qWarning("Not a pdf document");
         }
-        if( pdf_was_repaired(fzctx_,pdfdoc_)>0){
-            was_repaired=true;
+        if (pdf_was_repaired(fzctx_, pdfdoc_) > 0) {
+            was_repaired = true;
         }
         emit beginResetModel();
         page_count_ = fz_count_pages(fzctx_, fzdoc_);
@@ -161,8 +161,8 @@ void PdfDocModel::setSource(const QString &path) {
         }
         // get the number of pages
         emit endResetModel();
-        if (was_repaired && process_signatures_){
-           emit docWasRepaired();
+        if (was_repaired && process_signatures_) {
+            emit docWasRepaired();
         }
     }
     fz_catch(fzctx_) {
@@ -261,7 +261,7 @@ Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(const QString &path,
     }
     QFile dest_file(dest_path);
     if (dest_file.exists()) {
-        dest_file.remove();
+        std::ignore = dest_file.remove();
     }
 
     if (!src_file.copy(dest_path)) {

@@ -56,6 +56,7 @@ void PrinterLauncher::print(const QString &src_file, int page_count,
     if (print_dialog.exec() == QDialog::Accepted) {
         auto options = createPrintCommand(printer, src_file);
         if (!options.empty()) {
+            // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
             auto *process = new QProcess();
             // finished
             connect(process, &QProcess::finished,
