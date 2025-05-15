@@ -212,12 +212,25 @@ Flickable {
                 textRole: "title"
                 valueRole: "value"
                 displayText: displayTextDefault
+                enabled: selectCertificateCombo.item_selected && selectCadesFormatCombo.item_selected
                 property string displayTextDefault: qsTr("Select stamp type")
 
                 onActivated: {
                     if (currentValue === "new") {
-                        stampEditor.profiles_model = profiles_model
-                        stampEditor.profile_data = profile_data
+                        if (profile_data && profiles_model) {
+                            stampEditor.profiles_model = profiles_model
+                            stampEditor.profile_data = profile_data
+                            console.warn(profile_data)
+                        } else {
+                            let data = {
+                                "CADES_format": selectCadesFormatCombo.currentValue,
+                                "cert_serial": selectCertificateCombo.currentValue,
+                                "logo_path": logoPath.text,
+                                "tsp_url": ""
+                            }
+                            //console.warn(JSON.stringify(data))
+                            stampEditor.profile_data = JSON.stringify(data)
+                        }
                         stampEditor.stamp_data = null
                         stampEditor.updateStampForm()
                         stampEditor.visible = true

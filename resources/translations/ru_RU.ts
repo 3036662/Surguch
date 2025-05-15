@@ -203,16 +203,16 @@
         <translation>Вид штампа</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+17"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+13"/>
-        <location filename="../../src/views/EditProfile.qml" line="+16"/>
+        <location filename="../../src/views/EditProfile.qml" line="+17"/>
         <source>Select stamp type</source>
         <translation>Выберите тип штампа</translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+83"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+6"/>
-        <location filename="../../src/views/EditProfile.qml" line="+71"/>
+        <location filename="../../src/views/EditProfile.qml" line="+83"/>
         <source>Company logo</source>
         <translation>Логотип компании</translation>
     </message>

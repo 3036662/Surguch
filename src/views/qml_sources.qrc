@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <RCC>
     <qresource prefix="/gui_pdf_csp">
         <file>CertInfo.qml</file>
@@ -26,6 +27,6 @@
         <file>UnsavedChangesDialog.qml</file>
         <file>StampPreview.qml</file>
         <file>StampEditor.qml</file>
-        <file>ColorSlider.qml</file>
+        <file>SettingSlider.qml</file>
     </qresource>
 </RCC>
