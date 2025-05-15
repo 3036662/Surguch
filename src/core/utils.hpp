@@ -71,6 +71,8 @@ std::vector<size_t> findPagesWithText(const QString& needle,
 struct PageRects {
     fz_rect page_rect{0, 0, 0, 0};
     std::vector<fz_rect> needle_rects;
+    bool highlight_current = false;
+    fz_rect current{0, 0, 0, 0};
 };
 
 using NeedleRectsOnPage = std::shared_ptr<PageRects>;

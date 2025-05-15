@@ -141,7 +141,7 @@ size_t TextExtractor::getNeedlesTotal() {
     return needles_count_;
 }
 
-std::pair<size_t, std::pair<float, float>> TextExtractor::getNeedlePageAndY(
+std::pair<size_t, std::pair<float, float>> TextExtractor::getNeedlePageAndXY(
     size_t needle_index) {
     std::shared_lock lock{search_mtx_, std::defer_lock};
     if (!lock.try_lock()) {
@@ -173,12 +173,13 @@ std::pair<size_t, std::pair<float, float>> TextExtractor::getNeedlePageAndY(
         return {0, {0, 0}};
     }
     const auto &p_vec_rect = it_page->second->needle_rects;
-    std::cerr << local_index << "\n";
     if (local_index >= p_vec_rect.size()) {
         return {it_page->first, {0, 0}};  // return only page index
     }
     const auto &rect = p_vec_rect.at(local_index);
-    std::cerr << rect.y0 << "\n";
+    // save current rect for the additional highlighting
+    current_rect_to_gighlight_ = std::make_unique<RectToHiglightCurrent>(
+        RectToHiglightCurrent{it_page->first, rect});
     const auto &page_rect = it_page->second->page_rect;
     const float page_height = std::fabs(page_rect.y1 - page_rect.y0);
     float y_relative = page_height > 1 ? rect.y0 / page_height : 0.5;
@@ -204,7 +205,16 @@ core::utils::NeedleRectsOnPage TextExtractor::getNeedlesForPage(
         return {};
     }
     // copy the rects
-    return std::make_shared<utils::PageRects>(*search_context_->at(page_index));
+    auto result =
+        std::make_shared<utils::PageRects>(*search_context_->at(page_index));
+    // if we need to highlight the current item on this page - push it to the
+    // result
+    if (current_rect_to_gighlight_ &&
+        current_rect_to_gighlight_->first == page_index) {
+        result->highlight_current = true;
+        result->current = current_rect_to_gighlight_->second;
+    }
+    return result;
 }
 
 TextExtractor::SearchContext TextExtractor::getSearchContext() {

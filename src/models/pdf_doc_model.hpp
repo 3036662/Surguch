@@ -93,6 +93,8 @@ class PdfDocModel : public QAbstractListModel {
     /// @brief search for text
     Q_INVOKABLE void performSearch(QString needle);
 
+    Q_INVOKABLE void jumpToNeedle(int needle_index);
+
    signals:
 
     /// @brief some signatures found

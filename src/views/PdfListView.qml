@@ -322,17 +322,15 @@ ListView {
         console.warn("zoomRatio: "+zoomRatio )
         if (zoomRatio > 0) {
             console.warn("usedPageSize:"+usedPageSize);
+            console.warn("root height:"+ root.height)
             targetYScroll = pos.ratio * usedPageSize;
             if (lastSizeUsed){
                 console.warn("last size was used")
                 targetYScroll*= zoomRatio;
                 targetYScroll=0;
             }
-            if (targetYScroll>root.height/2){
-                targetYScroll-= root.height/2;
-            }
             else{
-                targetYScroll=0;
+                targetYScroll-= root.height/2;
             }
          }
         console.warn("scrollY "+targetYScroll);
@@ -384,9 +382,15 @@ ListView {
             switch (delegateRotation){
              case 90:
                 pos.ratio=x_rel;
-                 break;
+                 if (pos.ratio>0.7){
+                    pos.ratio=0.7;
+                 }
+                break;
              case 270:
                  pos.ratio=1-x_rel;
+                 if (pos.ratio>0.7){
+                    pos.ratio=0.7;
+                 }
                  break;
             case 180:
                 pos.ratio=1-y_rel;
@@ -398,6 +402,7 @@ ListView {
                 pos.ratio=0.9;
             }
         }
+        console.warn("jump to position:"+JSON.stringify(pos))
         jumpToPosition(pos)
     }
 

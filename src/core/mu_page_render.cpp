@@ -159,6 +159,22 @@ RenderRes MuPageRender::RenderPage(int page_number, float custom_rot_value,
                              color_space, rgb, 0.5, fz_default_color_params);
                 fz_drop_path(fzctx_, path);
             }
+            // additional highlight for current needle
+            if (needles_->highlight_current) {
+                const auto &current = needles_->current;
+                if (!fz_is_empty_rect(current) &&
+                    !fz_is_infinite_rect(current)) {
+                    float rgb[3] = {150, 0, 0};
+                    fz_path *path = fz_new_path(fzctx_);
+                    fz_rectto(fzctx_, path, current.x0, current.y0, current.x1,
+                              current.y1);
+                    fz_stroke_path(fzctx_, draw_device, path,
+                                   &fz_default_stroke_state, transform_run_page,
+                                   color_space, rgb, 0.6,
+                                   fz_default_color_params);
+                    fz_drop_path(fzctx_, path);
+                }
+            }
         }
         // copy pixmap data to buffer, connect this buffer with an QImage
 

@@ -8,15 +8,18 @@ Dialog {
     property bool needNewSearch: false
     property bool searchInProgress: false
     property int  needlesCount: 0
+    property int currentIndex:0
     property string prev_needle
 
 
     signal searchRequired(needle: string)
+    signal jumpToNeedle(needle_index: int)
 
     function searchCompleted(first_needle_page,total_needles){
         console.warn("QML search completed")
         searchInProgress=false;
         needlesCount=total_needles;
+        currentIndex=needlesCount>0 ? 1: 0;
         if (needNewSearch){
             console.warn("QML need new search")
             searchInProgress=true;
@@ -41,6 +44,8 @@ Dialog {
         root_window.focusOwnerId="";
         searchInput.text="";
     }
+
+
 
     Row {
         anchors.verticalCenter: parent.verticalCenter
@@ -92,7 +97,7 @@ Dialog {
             height: parent.height
             width: childrenRect.width
             Text {
-                text: "0/"+needlesCount
+                text: currentIndex+"/"+needlesCount
                 anchors.verticalCenter: parent.verticalCenter
                 verticalAlignment: Text.AlignVCenter
             }
@@ -116,6 +121,13 @@ Dialog {
             rightPadding: 0
             bottomPadding: 0
             width: 25
+
+            onClicked: {
+                if (searchDialog.currentIndex<searchDialog.needlesCount){
+                    searchDialog.currentIndex+=1;
+                    jumpToNeedle(searchDialog.currentIndex);
+                }
+            }
         }
 
         ToolButton {
@@ -150,5 +162,7 @@ Dialog {
                 searchDialog.close()
             }
         }
+
+
     }
 }

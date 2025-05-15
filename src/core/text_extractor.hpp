@@ -26,6 +26,7 @@ class TextExtractor : public QObject {
         std::unique_ptr<std::map<size_t, utils::NeedleRectsOnPage>>;
     using SearchContextWatcher = QFutureWatcher<SearchContext>;
     using SearchFuture = QFuture<SearchContext>;
+    using RectToHiglightCurrent = std::pair<size_t, fz_rect>;
 
     TextExtractor(fz_context* fzctx, fz_document* fzdoc,
                   QObject* parent = nullptr);
@@ -54,7 +55,7 @@ class TextExtractor : public QObject {
     // [[nodiscard]] const TextCache& getCache() const& { return cache_; };
 
     [[nodiscard]] size_t getNeedlesTotal();
-    [[nodiscard]] std::pair<size_t, std::pair<float, float>> getNeedlePageAndY(
+    [[nodiscard]] std::pair<size_t, std::pair<float, float>> getNeedlePageAndXY(
         size_t needle_index);
 
     /// @details returns a copy of the search context
@@ -94,6 +95,8 @@ class TextExtractor : public QObject {
     std::shared_mutex search_mtx_;
     QString needle_;
     bool case_sensitive_;
+
+    std::unique_ptr<RectToHiglightCurrent> current_rect_to_gighlight_;
 };
 
 }  // namespace core
