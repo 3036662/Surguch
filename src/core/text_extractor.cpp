@@ -50,7 +50,7 @@ void TextExtractor::saveSearchContext() {
             search_context_->cbegin(), search_context_->cend(), size_t(0),
             [](size_t acc,
                const std::pair<const size_t, utils::NeedleRectsOnPage> &pair) {
-                return acc + pair.second->size();
+                return acc + pair.second->needle_rects.size();
             });
     }
     search_mtx_.unlock();
@@ -125,7 +125,7 @@ TextExtractor::SearchContext TextExtractor::buildSearchContext(
                       core::utils::NeedleRectsOnPage needle_rects =
                           core::utils::findNeedleRectsOnPage(
                               needle, page_index, case_sensitive, fzctx, fzdoc);
-                      if (needle_rects && !needle_rects->empty()) {
+                      if (needle_rects && !needle_rects->needle_rects.empty()) {
                           res->insert_or_assign(page_index,
                                                 std::move(needle_rects));
                       }
@@ -141,42 +141,56 @@ size_t TextExtractor::getNeedlesTotal() {
     return needles_count_;
 }
 
-std::pair<size_t, float> TextExtractor::getNeedlePageAndY(size_t needle_index) {
+std::pair<size_t, std::pair<float, float>> TextExtractor::getNeedlePageAndY(
+    size_t needle_index) {
     std::shared_lock lock{search_mtx_, std::defer_lock};
     if (!lock.try_lock()) {
-        return {0, 0};
+        return {0, {0, 0}};
     }
     if (!search_context_ || search_context_->empty()) {
-        return {0, 0};
+        return {0, {0, 0}};
     }
     size_t local_index = needle_index;
     auto it_page = std::find_if(
         search_context_->cbegin(), search_context_->cend(),
         [&local_index](
             const std::pair<size_t, utils::NeedleRectsOnPage> &page_pair) {
-            const auto &ptr_vector = page_pair.second;
-            if (!ptr_vector || ptr_vector->empty()) {
+            if (!page_pair.second) {
                 return false;
             }
-            if (ptr_vector && ptr_vector->size() < local_index) {
-                local_index -= ptr_vector->size();
+            const auto &ptr_vector = page_pair.second->needle_rects;
+            if (ptr_vector.empty()) {
+                return false;
+            }
+            if (ptr_vector.size() < local_index) {
+                local_index -= ptr_vector.size();
                 return false;
             }
             std::cerr << "local_index=" << local_index << "\n";
             return true;
         });
     if (it_page == search_context_->cend()) {
-        return {0, 0};
+        return {0, {0, 0}};
     }
-    const auto &p_vec_rect = it_page->second;
+    const auto &p_vec_rect = it_page->second->needle_rects;
     std::cerr << local_index << "\n";
-    if (local_index >= p_vec_rect->size()) {
-        return {it_page->first, 0};  // return only page index
+    if (local_index >= p_vec_rect.size()) {
+        return {it_page->first, {0, 0}};  // return only page index
     }
-    const auto &rect = p_vec_rect->at(local_index);
+    const auto &rect = p_vec_rect.at(local_index);
     std::cerr << rect.y0 << "\n";
-    // TODO implement Y
-    return {it_page->first, 0};
+    const auto &page_rect = it_page->second->page_rect;
+    const float page_height = std::fabs(page_rect.y1 - page_rect.y0);
+    float y_relative = page_height > 1 ? rect.y0 / page_height : 0.5;
+    if (y_relative > 1) {
+        y_relative = 0.5;
+    }
+    const float page_width = std::fabs(page_rect.x1 - page_rect.x0);
+    float x_relative = page_width > 1 ? rect.x0 / page_width : 0.5;
+    if (x_relative > 1) {
+        x_relative = 0.5;
+    }
+    return {it_page->first, {x_relative, y_relative}};
 }
 
 core::utils::NeedleRectsOnPage TextExtractor::getNeedlesForPage(
@@ -189,9 +203,8 @@ core::utils::NeedleRectsOnPage TextExtractor::getNeedlesForPage(
         search_context_->count(page_index) == 0) {
         return {};
     }
-    // copy the vector
-    return std::make_shared<std::vector<fz_rect>>(
-        *search_context_->at(page_index));
+    // copy the rects
+    return std::make_shared<utils::PageRects>(*search_context_->at(page_index));
 }
 
 TextExtractor::SearchContext TextExtractor::getSearchContext() {

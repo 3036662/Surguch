@@ -234,7 +234,7 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
     }
     const Qt::CaseSensitivity case_sens =
         case_sensitive ? Qt::CaseSensitive : Qt::CaseInsensitive;
-    NeedleRectsOnPage res = std::make_shared<std::vector<fz_rect>>();
+    NeedleRectsOnPage res = std::make_shared<PageRects>();
     fz_stext_page *stpage = nullptr;
     fz_device *stext_dev = nullptr;
     fz_page *page = nullptr;
@@ -245,8 +245,9 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
     // extract text from page
     fz_try(fzctx) {
         page = fz_load_page(fzctx, fzdoc, static_cast<int>(page_index));
-
-        stpage = fz_new_stext_page(fzctx, fz_bound_page(fzctx, page));
+        const fz_rect page_rect = fz_bound_page(fzctx, page);
+        res->page_rect = page_rect;
+        stpage = fz_new_stext_page(fzctx, page_rect);
         const fz_stext_options opts = {FZ_STEXT_DEHYPHENATE, 1.0F};
         stext_dev = fz_new_stext_device(fzctx, stpage, &opts);
         fz_run_page_contents(fzctx, page, stext_dev, fz_identity, nullptr);
@@ -305,7 +306,7 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
                     if (fz_is_empty_rect(single_needle_rect) == 0 &&
                         fz_is_infinite_rect(single_needle_rect) == 0 &&
                         fz_is_valid_rect(single_needle_rect)) {
-                        res->push_back(single_needle_rect);
+                        res->needle_rects.push_back(single_needle_rect);
                     }
                 }
             }

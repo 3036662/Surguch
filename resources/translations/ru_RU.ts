@@ -489,8 +489,8 @@
 <context>
     <name>PdfListView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+601"/>
-        <location filename="../../src/views/PdfListView.qml" line="+601"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+639"/>
+        <location filename="../../src/views/PdfListView.qml" line="+639"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>

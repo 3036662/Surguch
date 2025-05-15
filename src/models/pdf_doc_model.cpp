@@ -348,7 +348,7 @@ void PdfDocModel::handleSearchCompleted() {
     const auto needle = text_extractor_->getNeedlePageAndY(0);
     qWarning() << "first needle was found on page" << needle.first;
     emit searchCompleted(needle.first, static_cast<int>(needles_total),
-                         needle.second);
+                         needle.second.first, needle.second.second);
 }
 
 // NOLINTEND(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)

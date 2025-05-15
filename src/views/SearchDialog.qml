@@ -32,7 +32,15 @@ Dialog {
     modal: false
     closePolicy: Popup.CloseOnEscape
 
-    onClosed: root_window.focusOwnerId="";
+    onOpened: {
+        root_window.focusOwnerId="searchDialog";
+        searchInput.forceActiveFocus();
+    }
+
+    onClosed: {
+        root_window.focusOwnerId="";
+        searchInput.text="";
+    }
 
     Row {
         anchors.verticalCenter: parent.verticalCenter

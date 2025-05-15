@@ -140,11 +140,12 @@ void TSearch::CacheText() {
     core::utils::NeedleRectsOnPage needle_rects =
         core::utils::findNeedleRectsOnPage(needle1, 1, false, fzctx, fzdoc);
     QVERIFY(needle_rects);
-    QVERIFY(!needle_rects->empty());
+    QVERIFY(!needle_rects->needle_rects.empty());
     std::cout << "page " << page_index
-              << " needles found: " << needle_rects->size() << "\n";
-    QVERIFY(needle_rects->size() == 1);
-    const fz_rect &rect = (*needle_rects)[0];
+              << " needles found: " << needle_rects->needle_rects.size()
+              << "\n";
+    QVERIFY(needle_rects->needle_rects.size() == 1);
+    const fz_rect &rect = needle_rects->needle_rects[0];
     std::cout << rect.x0 << " , " << rect.y0 << " -> " << rect.x1 << " , "
               << rect.y1 << "\n";
     // cleanup
@@ -197,8 +198,8 @@ void TSearch::SearchTest1() {
                     core::utils::findNeedleRectsOnPage(needle1, page_index,
                                                        false, fzctx, fzdoc);
                 QVERIFY(needle_rects);
-                QVERIFY(!needle_rects->empty());
-                total_needles += needle_rects->size();
+                QVERIFY(!needle_rects->needle_rects.empty());
+                total_needles += needle_rects->needle_rects.size();
             });
     }
     std::cout << "total needles found " << total_needles << " \n";

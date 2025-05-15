@@ -147,12 +147,12 @@ RenderRes MuPageRender::RenderPage(int page_number, float custom_rot_value,
 
         fz_run_page(fzctx_, page, draw_device, transform_run_page, nullptr);
 
-        if (needles_ && !needles_->empty()) {
-            size_t size = needles_->size();
+        if (needles_ && !needles_->needle_rects.empty()) {
+            size_t size = needles_->needle_rects.size();
             for (size_t i = 0; i < size; ++i) {
                 float rgb[3] = {1, 1, 0};
                 fz_path *path = fz_new_path(fzctx_);
-                const auto &needle = (*needles_)[i];
+                const auto &needle = needles_->needle_rects[i];
                 fz_rectto(fzctx_, path, needle.x0, needle.y0, needle.x1,
                           needle.y1);
                 fz_fill_path(fzctx_, draw_device, path, 0, transform_run_page,

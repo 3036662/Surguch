@@ -111,7 +111,7 @@ class PdfDocModel : public QAbstractListModel {
 
     /// @brief search is completed
     void searchCompleted(int first_needle_page_index, int total_needles,
-                         float position);
+                         float x_position, float y_position);
 
    private slots:
     void handleSearchCompleted();

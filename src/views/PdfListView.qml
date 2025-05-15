@@ -272,6 +272,7 @@ ListView {
             "ratio": pageYRatio,
             "zoom_last": pageLastZoom
         }
+        console.warn("QML PreservsPos:"+JSON.stringify(pos));
         return pos
     }
 
@@ -287,44 +288,65 @@ ListView {
      *   }
      */
     function jumpToPosition(pos){
+
         positionViewAtIndex(pos.index, ListView.Beginning)
         let currPage = currentPage()
         let rotated90 = delegateRotation == 90 || delegateRotation == 270
         let currZoom = zoomPageFact
         let usedPageSize = 0
+        let lastSizeUsed = false;
+        console.warn("currPage.pWidth: "+currPage.pWidth+" currPage.pHeight: "+currPage.pHeight);
         if (currPage) {
-            usedPageSize = rotated90 ? currPage.pWidth : currPage.pHeight
+            usedPageSize = rotated90 ? currPage.pWidth: currPage.pHeight;
             if (currPage.zoomLast > 0 && currPage.zoomLast !== 1) {
                 currZoom = currPage.zoomLast
             }
         } else {
+            lastSizeUsed=true;
             usedPageSize = rotated90 ? root.lastPageWidth : root.lastPageHeight
         }
 
         let zoomRatio = currZoom / pos.zoom_last
+        if (zoomRatio<0){
+            zoomRatio=1;
+        }
         let pos_mode = ListView.Beginning
         if (pos.ratio > 0.7) {
+             console.warn("QML pos mode: end");
             pos_mode = ListView.End
         } else if (pos.ratio > 0.3) {
             pos_mode = ListView.Center
+            console.warn("QML pos mode: center");
         }
         let targetYScroll = 0
+        console.warn("zoomRatio: "+zoomRatio )
         if (zoomRatio > 0) {
-            targetYScroll = pos.ratio * usedPageSize
-                    * (rotated90 && zoomRatio>1 ? 1 : zoomRatio) - root.height / 2
-        }
-        // Convert the negative value to a positive scroll from the previous page.
-        if (targetYScroll < 0) {
-            if (pos.index > 0) {
-                positionViewAtIndex((pos.index) - 1, ListView.Beginning)
-                targetYScroll += usedPageSize * zoomRatio + root.spacing
+            console.warn("usedPageSize:"+usedPageSize);
+            targetYScroll = pos.ratio * usedPageSize;
+            if (lastSizeUsed){
+                console.warn("last size was used")
+                targetYScroll*= zoomRatio;
+                targetYScroll=0;
             }
-        }
-        if (targetYScroll > 0) {
+            if (targetYScroll>root.height/2){
+                targetYScroll-= root.height/2;
+            }
+            else{
+                targetYScroll=0;
+            }
+         }
+        console.warn("scrollY "+targetYScroll);
+        if (targetYScroll > 0 && pos.index > 0) {
+            console.warn("targetYScroll > 0")
+            console.warn("pos index: "+pos.index)
+            positionViewAtIndex(pos.index,ListView.Beginning)
             contentY += targetYScroll
+            console.warn("\n");
         } else {
+            console.warn("QML position at index: "+pos.index);
             // if failed to calculate the exact scroll, use jump mode ( beginning | middle | end )
             positionViewAtIndex(pos.index, pos_mode)
+            console.warn("\n");
         }
         root.lastPageUsedSize = usedPageSize
     }
@@ -351,16 +373,32 @@ ListView {
         return index
     }
 
-    function searchCompleted(first_needle_page_index,total_needles){
-        let curr_page= currentPageIndex();
+    function searchCompleted(first_needle_page_index,total_needles,x_rel,y_rel){
+        //let curr_page= currentPageIndex();
+        let pos=preservePosition();
+
         model.redrawAll();
-        console.warn("QML curr_page: "+curr_page);
         console.warn("QML Total needles:"+total_needles);
-        if(total_needles>0){
-            scrollToPage(first_needle_page_index+1)
-        }else{
-          scrollToPage(curr_page+1)
+        if(total_needles>0){            
+            pos.index=first_needle_page_index;
+            switch (delegateRotation){
+             case 90:
+                pos.ratio=x_rel;
+                 break;
+             case 270:
+                 pos.ratio=1-x_rel;
+                 break;
+            case 180:
+                pos.ratio=1-y_rel;
+                break;
+            default:
+                pos.ratio=y_rel;
+            }
+            if (pos.ratio>0.9){
+                pos.ratio=0.9;
+            }
         }
+        jumpToPosition(pos)
     }
 
     Layout.fillHeight: true

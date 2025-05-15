@@ -68,7 +68,12 @@ std::vector<size_t> findPagesWithText(const QString& needle,
                                       const PagesTextCache& haystack,
                                       bool case_sensitive);
 
-using NeedleRectsOnPage = std::shared_ptr<std::vector<fz_rect>>;
+struct PageRects {
+    fz_rect page_rect{0, 0, 0, 0};
+    std::vector<fz_rect> needle_rects;
+};
+
+using NeedleRectsOnPage = std::shared_ptr<PageRects>;
 
 /**
  * @brief Find a rectangle for each needle on the given page.
