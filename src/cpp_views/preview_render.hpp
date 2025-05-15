@@ -125,6 +125,6 @@ class PreviewRender : public QQuickItem {
 
 /// @brief concurrent function to make QImage
 std::unique_ptr<BakeResult> prepareImage(
-    PreviewRender::SharedParamWrapper params);
+    const PreviewRender::SharedParamWrapper &params);
 
 #endif  // PREVIEWRENDERER_HPP

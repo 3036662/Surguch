@@ -1,11 +1,11 @@
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Templates as T
+import StyleSheet
 
-T.Slider {
+Slider {
     id: control
 
-    property color back_color
+    property color back_color: StyleSheet.slider_fill_color
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitHandleWidth + leftPadding + rightPadding)
@@ -20,9 +20,9 @@ T.Slider {
         implicitWidth: 28
         implicitHeight: 28
         radius: width / 2
-        color: control.pressed ? control.palette.light : control.palette.window
-        border.width: control.visualFocus ? 2 : 1
-        border.color: control.visualFocus ? control.palette.highlight : control.enabled ? control.palette.mid : control.palette.midlight
+        color: StyleSheet.slider_handle_color
+        border.width: control.visualFocus ? 4 : 2
+        border.color: StyleSheet.slider_border_color
     }
 
     background: Rectangle {

@@ -71,7 +71,7 @@ class ProfilesModel : public QAbstractListModel {
     [[nodiscard]] Q_INVOKABLE bool uniqueStampName(QString stamp_name);
 
     /// @brief update profiles if their stamp if stamp model was deleted
-    Q_INVOKABLE void updateProfiles(QString stamp_name);
+    Q_INVOKABLE void updateProfiles(const QString &stamp_name);
 
     /// @brief path to config directory (/home/$user/.config)
     [[nodiscard]] Q_INVOKABLE QString getConfigPath() const;
@@ -86,9 +86,9 @@ class ProfilesModel : public QAbstractListModel {
    signals:
     void profileSaved(QString);    // value of saved profile
     void profileDeleted(QString);  // title of deleted profile
-    void profilesUpdated();          // profiles with deleted stamps updated
+    void profilesUpdated();        // profiles with deleted stamps updated
     void stampsSaved(QString);     // value of saved stamp
-    void stampDeleted(QString);    //title of deleted stamp
+    void stampDeleted(QString);    // title of deleted stamp
     void errNoCspLib();            // no cryptoPro lib error
 
    private:

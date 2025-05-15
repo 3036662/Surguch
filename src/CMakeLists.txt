@@ -106,7 +106,7 @@ ELSE()
         QML_FILES views/RSBTextArea.qml
         QML_FILES views/UnsavedChangesDialog.qml
         QML_FILES views/StampEditor.qml
-        QML_FILES views/ColorSlider.qml
+        QML_FILES views/SettingSlider.qml
         QML_FILES views/StampPreview.qml
         SOURCES cpp_views/preview_render.hpp cpp_views/preview_render.cpp
     )

@@ -20,6 +20,7 @@ class TStamp : public QObject {
     void createImage();
     void createImage2();
     void createImage3();
+    void createImage4();
 
    private:
     const QString test_files_dir_ = TEST_FILES_DIR;

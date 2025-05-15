@@ -35,7 +35,7 @@ QSGNode *PreviewRender::updatePaintNode(
         if (!size().isValid()) {
             return node;
         }
-        // NOLINTNEXLINE(cppcoreguidelines-owning-memory)
+        // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
         rectNode = new QSGSimpleTextureNode();
         rectNode->setFiltering(QSGTexture::Linear);
         rectNode->setOwnsTexture(true);
@@ -91,7 +91,7 @@ void PreviewRender::saveImage() {
 }
 
 std::unique_ptr<BakeResult> prepareImage(
-    PreviewRender::SharedParamWrapper params) {
+    const PreviewRender::SharedParamWrapper &params) {
     auto result = std::make_unique<BakeResult>(BakeResult{
         std::unique_ptr<pdfcsp::pdf::BakeSignatureStampResult,
                         void (*)(pdfcsp::pdf::BakeSignatureStampResult *)>(

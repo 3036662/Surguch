@@ -220,8 +220,9 @@ void SignaturesListModel::recoverDoc(qint64 sig_index) {
         qWarning() << "recoverDoc is alreary running";
         return;
     }
-    // NOLINTNEXLINE(cppcoreguidelines-owning-memory)
+    // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
     recover_worker_ = new core::FileRecoverWorker();
+    // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
     recover_thread_ = new QThread();
     recover_worker_->moveToThread(recover_thread_);
 

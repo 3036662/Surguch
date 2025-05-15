@@ -576,12 +576,12 @@
 <context>
     <name>ProfilesModel</name>
     <message>
-        <location filename="../../src/models/profiles_model.cpp" line="+29"/>
+        <location filename="../../src/models/profiles_model.cpp" line="+30"/>
         <source>CreateProfile</source>
         <translation>Создать профиль</translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="+1"/>
         <source>CreateStamp</source>
         <translation>Добавить</translation>
     </message>
@@ -846,34 +846,32 @@
         <translation>Предпросмотр</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <location filename="../../src/views/StampEditor.qml" line="+17"/>
+        <location line="+165"/>
+        <location filename="../../src/views/StampEditor.qml" line="+165"/>
         <source>Transparency</source>
         <translation>Прозрачность фона</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <location filename="../../src/views/StampEditor.qml" line="+16"/>
+        <location line="-149"/>
+        <location filename="../../src/views/StampEditor.qml" line="-149"/>
         <source>Stamp border width: </source>
         <translation>Толщина рамки: </translation>
     </message>
     <message>
-        <location line="+26"/>
-        <location line="+20"/>
-        <location filename="../../src/views/StampEditor.qml" line="+26"/>
-        <location line="+20"/>
+        <location line="+33"/>
+        <location filename="../../src/views/StampEditor.qml" line="+33"/>
         <source>Stamp border radius: </source>
         <translation>Скругление рамки: </translation>
     </message>
     <message>
-        <location line="+6"/>
-        <location filename="../../src/views/StampEditor.qml" line="+6"/>
+        <location line="+31"/>
+        <location filename="../../src/views/StampEditor.qml" line="+31"/>
         <source>Stamp&apos;s color</source>
         <translation>Цвет</translation>
     </message>
     <message>
-        <location line="+121"/>
-        <location filename="../../src/views/StampEditor.qml" line="+121"/>
+        <location line="+145"/>
+        <location filename="../../src/views/StampEditor.qml" line="+145"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>

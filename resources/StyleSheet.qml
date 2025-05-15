@@ -30,6 +30,9 @@ Item {
     property string wrench_icon
     property string save_icon
     property string trash_icon
+    property color slider_fill_color
+    property color slider_border_color
+    property color slider_handle_color
     states: [
         State {
             name: "dark"
@@ -60,6 +63,9 @@ Item {
                 wrench_icon: "qrc:/icons/dark/wrench.svg"
                 trash_icon: "qrc:/icons/dark/trash.svg"
                 save_icon: "qrc:/icons/dark/save.svg"
+                slider_fill_color: "#454A4E"
+                slider_border_color: "#454A4E"
+                slider_handle_color: "#31363B"
             }
         },
         State {
@@ -91,6 +97,9 @@ Item {
                 wrench_icon: "qrc:/icons/light/wrench.svg"
                 trash_icon: "qrc:/icons/light/trash.svg"
                 save_icon: "qrc:/icons/light/save.svg"
+                slider_fill_color: "#DADBDC"
+                slider_border_color: "#DADBDC"
+                slider_handle_color: "#EFF0F1"
             }
         }
     ]

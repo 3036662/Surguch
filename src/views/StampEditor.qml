@@ -145,31 +145,26 @@ Dialog {
         }
 
         RowLayout {
-            width: root.width
 
             Text {
-                text: qsTr("Transparency")
-                Layout.fillWidth: true
-                color: StyleSheet.font_color_extra
+                text: qsTr("Stamp border width: ")
                 font.family: "Noto Sans"
+                color: StyleSheet.font_color_extra
             }
 
             Rectangle {
                 Layout.fillWidth: true
             }
 
-            Switch {
-                id: transparencySwitch
+            Text {
+                id: borderWidthText
+                text: borderWidth.value
+                font.family: "Noto Sans"
+                color: StyleSheet.font_color_extra
             }
         }
 
-        Text {
-            text: qsTr("Stamp border width: ")
-            font.family: "Noto Sans"
-            color: StyleSheet.font_color_extra
-        }
-
-        Slider {
+        SettingSlider {
             id: borderWidth
             Layout.fillWidth: true
             snapMode: Slider.SnapOnRelease
@@ -182,20 +177,27 @@ Dialog {
             }
         }
 
-        Text {
-            id: borderWidthText
-            text: borderWidth.value
-            font.family: "Noto Sans"
-            color: StyleSheet.font_color_extra
+        RowLayout {
+
+            Text {
+                text: qsTr("Stamp border radius: ")
+                font.family: "Noto Sans"
+                color: StyleSheet.font_color_extra
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
+            }
+
+            Text {
+                id: borderRadiusText
+                text: borderRadius.value
+                font.family: "Noto Sans"
+                color: StyleSheet.font_color_extra
+            }
         }
 
-        Text {
-            text: qsTr("Stamp border radius: ")
-            font.family: "Noto Sans"
-            color: StyleSheet.font_color_extra
-        }
-
-        Slider {
+        SettingSlider {
             id: borderRadius
             Layout.fillWidth: true
             snapMode: Slider.SnapOnRelease
@@ -209,13 +211,6 @@ Dialog {
         }
 
         Text {
-            id: borderRadiusText
-            text: qsTr("Stamp border radius: ") + borderRadius.value
-            font.family: "Noto Sans"
-            color: StyleSheet.font_color_extra
-        }
-
-        Text {
             text: qsTr("Stamp's color")
             font.family: "Noto Sans"
             color: StyleSheet.font_color_extra
@@ -224,7 +219,7 @@ Dialog {
         RowLayout {
             width: root.width
 
-            ColorSlider {
+            SettingSlider {
                 id: redColor
 
                 Layout.fillWidth: true
@@ -249,7 +244,7 @@ Dialog {
 
         RowLayout {
             width: root.width
-            ColorSlider {
+            SettingSlider {
                 id: greenColor
 
                 Layout.fillWidth: true
@@ -275,7 +270,7 @@ Dialog {
         RowLayout {
             width: root.width
 
-            ColorSlider {
+            SettingSlider {
                 id: blueColor
 
                 Layout.fillWidth: true
@@ -295,6 +290,30 @@ Dialog {
                 font.family: "Noto Sans"
                 color: StyleSheet.font_color_extra
             }
+        }
+
+        RowLayout {
+            width: root.width
+
+            Text {
+                text: qsTr("Transparency")
+                Layout.fillWidth: true
+                color: StyleSheet.font_color_extra
+                font.family: "Noto Sans"
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
+            }
+
+            Switch {
+                id: transparencySwitch
+                scale: 1.5
+            }
+        }
+
+        Rectangle {
+            height: 8
         }
 
         Button {

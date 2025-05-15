@@ -438,7 +438,7 @@ Q_INVOKABLE bool ProfilesModel::saveProfile(const QString &profile_json) {
 }
 
 /// @brief Update profiles if their stamp model was deleted
-Q_INVOKABLE void ProfilesModel::updateProfiles(QString stamp_name) {
+Q_INVOKABLE void ProfilesModel::updateProfiles(const QString &stamp_name) {
     qsizetype create_title_pos = 0;
     for (int i = 0; i < profiles_.size(); ++i) {
         const QJsonObject profile_obj = profiles_.at(i).toObject();

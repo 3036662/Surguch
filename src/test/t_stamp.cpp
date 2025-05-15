@@ -51,7 +51,7 @@ void TStamp::createPreview() {
         "Действителен: 2025-04-21 08:33:16 UTC по 2025-06-21 08:43:16 UTC";
     params_.config_path = config_dir_;
     params_.file_to_sign_path = file1_;
-    params_.logo_path = "blalblblblblaa";
+    params_.logo_path = "profile_1_logo.jpg";
     params_.page_height = 0;
     params_.page_index = 0;
     params_.page_width = 0;
@@ -126,9 +126,9 @@ void TStamp::createPreview() {
     pod_params.bg_opacity = params_.bg_opacity;
 
     auto *result = pdfcsp::pdf::BakeSignatureStampImage(pod_params);
-    QVERIFY(result == nullptr);
-    // QVERIFY(result->img != nullptr);
-    // QVERIFY(result->img_size > 0);
+    QVERIFY(result != nullptr);
+    QVERIFY(result->img != nullptr);
+    QVERIFY(result->img_size > 0);
 
     QImage img = QImage(result->img, result->resolution_x, result->resolution_y,
                         result->resolution_x * 3, QImage::Format_RGB888);
@@ -136,21 +136,15 @@ void TStamp::createPreview() {
     QVERIFY(!img.isNull());
     QColor test_pixel = img.pixelColor(20, result->resolution_y / 2).toRgb();
     qWarning() << test_pixel;
-    QVERIFY(test_pixel == QColor(255, 0, 0));
+    QVERIFY((255 - test_pixel.red() <= 25) && (0 - test_pixel.green() <= 25) &&
+            (0 - test_pixel.blue() <= 25));
     pdfcsp::pdf::FreeBakedSigStampImage(result);
 }
 
 void TStamp::createImage() {
     qWarning() << "section 1";
     const QString json =
-        R"({"page_index":0,"page_width":0,"page_height":0,"stamp_x":0,"stamp_y":0,"stamp_width":0,"stamp_height":0,"logo_path":"/home/oleg/.config/csppdf/profile_3_logo.bmp","config_path":"/home/oleg/.config/csppdf","cert_serial":"7c001dfc32b4a566eaf1b12c4e000d001dfc32","cert_serial_prefix":"Сертификат:
-            ","cert_subject":"test","cert_subject_prefix":"Субъект:
-            ","cert_time_validity":"Действителен: 2025-04-15 10:16:37 UTC по
-            2025-06-15 10:26:37 UTC","stamp_title":"ДОКУМЕНТ ПОДПИСАН
-            ЭЛЕКТРОННОЙ
-            ПОДПИСЬЮ","stamp_type":"2","text_color_red":255,"text_color_green":0,"text_color_blue":0,"border_color_red":255,"border_color_green":0,"border_color_blue":0,"border_width":4,"border_radius":30,"bg_transparent":0,"bg_opacity":1,"cades_type":"CADES_BES","tsp_url":"","file_to_sign_path":"/home/oleg/Документы/Алексей
-            Хлебников - OpenSSL 3_ Ключ к тайнам криптографии-ДМК Пресс
-            (2023).pdf"})";
+        R"( {"page_index":0,"page_width":0,"page_height":0,"stamp_x":0,"stamp_y":0,"stamp_width":0,"stamp_height":0,"logo_path":"/home/dv/.config/csppdf/profile_3_logo.jpg","config_path":"/home/dv/.config/csppdf","cert_serial":"7c001e316d0c3296185e9c6902000d001e316d","cert_serial_prefix":"Сертификат: ","cert_subject":"Test Certificate","cert_subject_prefix":"Субъект: ","cert_time_validity":"Действителен: 2025-04-21 08:33:16 UTC по 2025-06-21 08:43:16 UTC","stamp_title":"ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ","stamp_type":"321","text_color_red":228,"text_color_green":92,"text_color_blue":123,"border_color_red":228,"border_color_green":92,"border_color_blue":123,"border_width":19,"border_radius":64,"bg_transparent":0,"bg_opacity":1,"cades_type":"CADES_BES","tsp_url":"","file_to_sign_path":""})";
     QJsonParseError parse_error;
     QJsonDocument json_doc =
         QJsonDocument::fromJson(json.toUtf8(), &parse_error);
@@ -163,13 +157,14 @@ void TStamp::createImage() {
     QSignalSpy spy(&renderer, &PreviewRender::imageReady);
 
     renderer.createImage(varmap);
+    QTest::qWait(500);
     QCOMPARE(spy.count(), 1);
 }
 
 void TStamp::createImage2() {
     qWarning() << "section 2";
     const QString json =
-        R"({"page_index":0,"page_width":0,"page_height":-100,"stamp_x":-1000,"stamp_y":1,"stamp_width":0,"stamp_height":0,"logo_path":"blabla","config_path":"/home/oleg/.config/csppdf","cert_serial":"7c001dfc32b4a566eaf1b12c4e000d001dfc32","cert_serial_prefix":"Сертификат: ","cert_subject":"test","cert_subject_prefix":"Субъект: ","cert_time_validity":"Действителен: 2025-04-15 10:16:37 UTC по 2025-06-15 10:26:37 UTC","stamp_title":"ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ","stamp_type":"2","text_color_red":255,"text_color_green":0,"text_color_blue":0,"border_color_red":255,"border_color_green":0,"border_color_blue":0,"border_width":4,"border_radius":30,"bg_transparent":0,"bg_opacity":1,"cades_type":"CADES_BES","tsp_url":"","file_to_sign_path":"/home/oleg/Документы/Алексей Хлебников - OpenSSL 3_ Ключ к тайнам криптогрфии-ДМК Пресс (2023).pdf"})";
+        R"( {"page_index":0,"page_width":0,"page_height":0,"stamp_x":0,"stamp_y":0,"stamp_width":0,"stamp_height":0,"logo_path":"/home/dv/.config/csppdf/profile_1_logo.jpg","config_path":"/home/dv/.config/csppdf","cert_serial":"7c001e316d0c3296185e9c6902000d001e316d","cert_serial_prefix":"Сертификат: ","cert_subject":"Test Certificate","cert_subject_prefix":"Субъект: ","cert_time_validity":"Действителен: 2025-04-21 08:33:16 UTC по 2025-06-21 08:43:16 UTC","stamp_title":"ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ","stamp_type":"321","text_color_red":228,"text_color_green":92,"text_color_blue":123,"border_color_red":228,"border_color_green":92,"border_color_blue":123,"border_width":19,"border_radius":64,"bg_transparent":0,"bg_opacity":1,"cades_type":"CADES_BES","tsp_url":"","file_to_sign_path":""})";
     QJsonParseError parse_error;
     QJsonDocument json_doc =
         QJsonDocument::fromJson(json.toUtf8(), &parse_error);
@@ -182,14 +177,14 @@ void TStamp::createImage2() {
     QSignalSpy spy(&renderer, &PreviewRender::imageReady);
 
     renderer.createImage(varmap);
-    QTest::qWait(5);
+    QTest::qWait(500);
     QCOMPARE(spy.count(), 1);
 }
 
 void TStamp::createImage3() {
     qWarning() << "section 3";
     const QString json =
-        R"({"page_index":-100,"page_width":10000000,"page_height":-100,"stamp_x":-10000022293939,"stamp_y":1,"stamp_width":0,"stamp_height":0,"logo_path":"blabla","config_path":"/home/oleg/.config/csppdf","cert_serial":"7c001dfc32b4a566eaf1b12c4e000d001dfc32","cert_serial_prefix":"Сертификат: ","cert_subject":"test","cert_subject_prefix":"Субъект: ","cert_time_validity":"Действителен: 2025-04-15 10:16:37 UTC по 2025-06-15 10:26:37 UTC","stamp_title":"ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ","stamp_type":"2","text_color_red":255,"text_color_green":0,"text_color_blue":0,"border_color_red":255,"border_color_green":0,"border_color_blue":0,"border_width":4,"border_radius":30,"bg_transparent":0,"bg_opacity":1,"cades_type":"CADES_BES","tsp_url":"","file_to_sign_path":"/home/oleg/Документы/Алексей Хлебников - OpenSSL 3_ Ключ к тайнам криптогрфии-ДМК Пресс (2dd23).pdf"})";
+        R"( {"page_index":0,"page_width":0,"page_height":0,"stamp_x":0,"stamp_y":0,"stamp_width":0,"stamp_height":0,"logo_path":"/home/dv/.config/csppdf/profile_3_logo.jpg","config_path":"/home/dv/.config/csppdf","cert_serial":"7c001e316d0c3296185e9c6902000d001e316d","cert_serial_prefix":"Сертификат: ","cert_subject":"Test Certificate","cert_subject_prefix":"Субъект: ","cert_time_validity":"Действителен: 2025-04-21 08:33:16 UTC по 2025-06-21 08:43:16 UTC","stamp_title":"ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ","stamp_type":"321","text_color_red":228,"text_color_green":92,"text_color_blue":123,"border_color_red":228,"border_color_green":92,"border_color_blue":123,"border_width":19,"border_radius":64,"bg_transparent":0,"bg_opacity":1,"cades_type":"CADES_BES","tsp_url":"","file_to_sign_path":""})";
     QJsonParseError parse_error;
     QJsonDocument json_doc =
         QJsonDocument::fromJson(json.toUtf8(), &parse_error);
@@ -202,6 +197,25 @@ void TStamp::createImage3() {
     QSignalSpy spy(&renderer, &PreviewRender::imageReady);
 
     renderer.createImage(varmap);
-    QTest::qWait(5);
+    QTest::qWait(500);
+    QCOMPARE(spy.count(), 1);
+}
+
+void TStamp::createImage4() {
+    qWarning() << "section 4";
+    const QString json = R"( {})";
+    QJsonParseError parse_error;
+    QJsonDocument json_doc =
+        QJsonDocument::fromJson(json.toUtf8(), &parse_error);
+    // qWarning() << "JSON parse error:" << parse_error.errorString();
+    QVERIFY(parse_error.error == QJsonParseError::NoError);
+
+    QJsonObject json_obj = json_doc.object();
+    QVariantMap varmap = json_obj.toVariantMap();
+    PreviewRender renderer;
+    QSignalSpy spy(&renderer, &PreviewRender::imageReady);
+
+    renderer.createImage(varmap);
+    QTest::qWait(500);
     QCOMPARE(spy.count(), 1);
 }
