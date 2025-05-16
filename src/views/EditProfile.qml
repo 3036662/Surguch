@@ -128,6 +128,24 @@ Flickable {
             }
         }
 
+        // certificate choice
+        Text {
+            text: qsTr("Certificate")
+            bottomPadding: 5
+            font.family: "Noto Sans"
+        }
+
+        RSBComboSelect {
+            id: selectCertificateCombo
+
+            property string displayTextDefault: qsTr("Select the certificate")
+
+            model: root.cert_combo_model
+            textRole: "title"
+            valueRole: "serial"
+            displayText: displayTextDefault
+        }
+
         RightSBHorizontalDelimiter {
             width: parent.width
         }
@@ -145,29 +163,11 @@ Flickable {
         }
 
         Text {
-            text: qsTr("Mandatory settings")
+            text: qsTr("Signature")
             font.weight: Font.DemiBold
             topPadding: 10
             bottomPadding: 10
             font.family: "Noto Sans"
-        }
-
-        // certificate choice
-        Text {
-            text: qsTr("Certificate")
-            bottomPadding: 5
-            font.family: "Noto Sans"
-        }
-
-        RSBComboSelect {
-            id: selectCertificateCombo
-
-            property string displayTextDefault: qsTr("Select the certificate")
-
-            model: root.cert_combo_model
-            textRole: "title"
-            valueRole: "serial"
-            displayText: displayTextDefault
         }
 
         // Cades format
@@ -191,6 +191,48 @@ Flickable {
             valueRole: "title"
             displayText: displayTextDefault
             property string displayTextDefault: qsTr("Select Cades format")
+        }
+
+        // tsp url
+        Column {
+            id: tspUrlWrapper
+            width: parent.width
+            visible: selectCadesFormatCombo.item_selected
+                     && (selectCadesFormatCombo.currentValue === "CADES_T"
+                         || selectCadesFormatCombo.currentValue === "CADES_XLT1")
+            Text {
+                topPadding: 10
+                text: qsTr("TSP server URL")
+                bottomPadding: 5
+                font.family: "Noto Sans"
+            }
+
+            RSBTextArea {
+                id: tspUrlEdit
+                placeholderText: qsTr("Enter TSP service url")
+                inputMethodHints: Qt.ImhUrlCharactersOnly
+                property bool valid_url: false
+
+                onTextChanged: {
+                    try {
+                        new URL(tspUrlEdit.text)
+                        tspUrlEdit.color = "green"
+                        tspUrlEdit.valid_url = true
+                    } catch (err) {
+                        tspUrlEdit.color = "red"
+                        tspUrlEdit.valid_url = false
+                    }
+                }
+            }
+        }
+
+
+        Text {
+            text: qsTr("Stamp")
+            font.weight: Font.DemiBold
+            topPadding: 10
+            bottomPadding: 10
+            font.family: "Noto Sans"
         }
 
         // stamp settings
@@ -217,20 +259,14 @@ Flickable {
 
                 onActivated: {
                     if (currentValue === "new") {
-                        if (profile_data && profiles_model) {
-                            stampEditor.profiles_model = profiles_model
-                            stampEditor.profile_data = profile_data
-                            console.warn(profile_data)
-                        } else {
-                            let data = {
-                                "CADES_format": selectCadesFormatCombo.currentValue,
-                                "cert_serial": selectCertificateCombo.currentValue,
-                                "logo_path": logoPath.text,
-                                "tsp_url": ""
-                            }
-                            //console.warn(JSON.stringify(data))
-                            stampEditor.profile_data = JSON.stringify(data)
+                        stampEditor.profiles_model = profiles_model
+                        let data = {
+                            "CADES_format": selectCadesFormatCombo.currentValue,
+                            "cert_serial": selectCertificateCombo.currentValue,
+                            "logo_path": logoPath.text,
+                            "tsp_url": ""
                         }
+                        stampEditor.profile_data = JSON.stringify(data)
                         stampEditor.stamp_data = null
                         stampEditor.updateStampForm()
                         stampEditor.visible = true
@@ -261,7 +297,14 @@ Flickable {
                 onClicked: {
                     stampEditor.stamp_data = selectStampTypeCombo.currentValue
                     stampEditor.profiles_model = profiles_model
-                    stampEditor.profile_data = profile_data
+                    let data = {
+                        "CADES_format": selectCadesFormatCombo.currentValue,
+                        "cert_serial": selectCertificateCombo.currentValue,
+                        "logo_path": logoPath.text,
+                        "tsp_url": ""
+                    }
+                    //console.warn(JSON.stringify(data))
+                    stampEditor.profile_data = JSON.stringify(data)
                     stampEditor.updateStampForm()
                     stampEditor.editState = true
                     stampEditor.visible = true
@@ -314,39 +357,6 @@ Flickable {
             }
         }
 
-        // tsp url
-        Column {
-            id: tspUrlWrapper
-            width: parent.width
-            visible: selectCadesFormatCombo.item_selected
-                     && (selectCadesFormatCombo.currentValue === "CADES_T"
-                         || selectCadesFormatCombo.currentValue === "CADES_XLT1")
-            Text {
-                topPadding: 10
-                text: qsTr("TSP server URL")
-                bottomPadding: 5
-                font.family: "Noto Sans"
-            }
-
-            RSBTextArea {
-                id: tspUrlEdit
-                placeholderText: qsTr("Enter TSP service url")
-                inputMethodHints: Qt.ImhUrlCharactersOnly
-                property bool valid_url: false
-
-                onTextChanged: {
-                    try {
-                        new URL(tspUrlEdit.text)
-                        tspUrlEdit.color = "green"
-                        tspUrlEdit.valid_url = true
-                    } catch (err) {
-                        tspUrlEdit.color = "red"
-                        tspUrlEdit.valid_url = false
-                    }
-                }
-            }
-        }
-
         // Save button
         Item {
             width: parent.width
@@ -354,8 +364,13 @@ Flickable {
 
             Button {
                 id: saveButton
-                width: text.length
-                       < deleteProfileButton.text.length ? deleteProfileButton.width : 150
+                display: AbstractButton.TextBesideIcon
+                icon.source: StyleSheet.save_icon
+                icon.width: 20
+                icon.height: 20
+                width: root.width
+                //width: text.length
+                  //     < deleteProfileButton.text.length ? deleteProfileButton.width : 150
                 text: qsTr("Save profile")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
@@ -416,12 +431,18 @@ Flickable {
         // delete profile
         Item {
             width: parent.width
+
             height: 50
             Button {
                 id: deleteProfileButton
+                display: AbstractButton.TextBesideIcon
+                icon.source: StyleSheet.trash_icon
+                icon.width: 20
+                icon.height: 20
                 text: qsTr("Delete profile")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
+                width: root.width
                 font.family: "Noto Sans"
 
                 onClicked: {

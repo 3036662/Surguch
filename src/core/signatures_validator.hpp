@@ -43,28 +43,27 @@ class DocStatusEnum : public QObject {
     };
     Q_ENUM(CommonDocCoverageStatus);
 
-    static QString toString(CommonDocCoverageStatus stat){
+    static QString toString(CommonDocCoverageStatus stat) {
         switch (stat) {
-        case CommonDocCoverageStatus::kEverythingIsFine:
-            return "kEverythingIsFine";
-            break;
-        case CommonDocCoverageStatus::kDocCanBeRecovered:
-            return "kDocCanBeRecovered";
-            break;
-        case CommonDocCoverageStatus::kDocSuspiciousPrevious:
-            return "kDocSuspiciousPrevious";
-            break;
-        case CommonDocCoverageStatus::kDocCanBeRecoveredButSuspicious:
-            return "kDocCanBeRecoveredButSuspicious";
-            break;
-        default:
-            return "kDocCantBeTrusted";
-            break;
+            case CommonDocCoverageStatus::kEverythingIsFine:
+                return "kEverythingIsFine";
+                break;
+            case CommonDocCoverageStatus::kDocCanBeRecovered:
+                return "kDocCanBeRecovered";
+                break;
+            case CommonDocCoverageStatus::kDocSuspiciousPrevious:
+                return "kDocSuspiciousPrevious";
+                break;
+            case CommonDocCoverageStatus::kDocCanBeRecoveredButSuspicious:
+                return "kDocCanBeRecoveredButSuspicious";
+                break;
+            default:
+                return "kDocCantBeTrusted";
+                break;
         }
     }
     explicit DocStatusEnum(QObject *parent = nullptr) : QObject(parent) {}
 };
-
 
 /**
  * @brief Class for signatures validation
@@ -101,7 +100,7 @@ class SignaturesValidator : public QObject {
 
    signals:
 
-    //void validationFinished(QString coverage_status);
+    // void validationFinished(QString coverage_status);
 
     /// @brief Validation was finished for all signatures.
     void validationFinished(DocStatusEnum::CommonDocCoverageStatus);

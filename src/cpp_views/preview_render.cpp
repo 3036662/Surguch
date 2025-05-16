@@ -148,7 +148,7 @@ void PreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
         params_.stamp_height = 300;
     }
     if (qvparams.contains("logo_path")) {
-        params_.logo_path = qvparams.value("logo_path").toString();
+        params_.logo_path = qvparams.value("logo_path").toUrl().toLocalFile();
     }
     if (qvparams.contains("config_path")) {
         params_.config_path = qvparams.value("config_path").toString();

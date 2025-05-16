@@ -95,7 +95,7 @@ class PdfDocModel : public QAbstractListModel {
 
     void errorOpenFile(const QString &err_string);
 
-    void  docWasRepaired();
+    void docWasRepaired();
 
    private:
     /// @brief find all signatures

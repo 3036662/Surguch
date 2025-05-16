@@ -154,23 +154,21 @@
         <translation>Введите название профиля</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+41"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+23"/>
-        <location filename="../../src/views/EditProfile.qml" line="+23"/>
+        <location filename="../../src/views/EditProfile.qml" line="+41"/>
         <source>Use this profile by default</source>
         <translation>Использовать по умолчанию</translation>
     </message>
     <message>
-        <location line="+8"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+8"/>
-        <location filename="../../src/views/EditProfile.qml" line="+8"/>
         <source>Mandatory settings</source>
         <translation>Обязательные настройки</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/EditProfile.qml" line="-25"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+9"/>
-        <location filename="../../src/views/EditProfile.qml" line="+9"/>
+        <location filename="../../src/views/EditProfile.qml" line="-25"/>
         <source>Certificate</source>
         <translation>Сертификат</translation>
     </message>
@@ -182,9 +180,15 @@
         <translation>Выберите сертификат</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+25"/>
+        <location filename="../../src/views/EditProfile.qml" line="+25"/>
+        <source>Signature</source>
+        <translation type="unfinished">Электронная подпись</translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+11"/>
-        <location filename="../../src/views/EditProfile.qml" line="+11"/>
+        <location filename="../../src/views/EditProfile.qml" line="+10"/>
         <source>Cades type</source>
         <translation>Тип CADES</translation>
     </message>
@@ -196,9 +200,15 @@
         <translation>Выберите формат CADES</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+38"/>
+        <location filename="../../src/views/EditProfile.qml" line="+38"/>
+        <source>Stamp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+6"/>
-        <location filename="../../src/views/EditProfile.qml" line="+6"/>
+        <location filename="../../src/views/EditProfile.qml" line="+10"/>
         <source>Stamp appearance</source>
         <translation>Вид штампа</translation>
     </message>
@@ -210,9 +220,9 @@
         <translation>Выберите тип штампа</translation>
     </message>
     <message>
-        <location line="+83"/>
+        <location line="+84"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+6"/>
-        <location filename="../../src/views/EditProfile.qml" line="+83"/>
+        <location filename="../../src/views/EditProfile.qml" line="+84"/>
         <source>Company logo</source>
         <translation>Логотип компании</translation>
     </message>
@@ -224,9 +234,9 @@
         <translation>Выберите логотип</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="-144"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+20"/>
-        <location filename="../../src/views/EditProfile.qml" line="+20"/>
+        <location filename="../../src/views/EditProfile.qml" line="-144"/>
         <source>TSP server URL</source>
         <translation>Адрес службы TSP</translation>
     </message>
@@ -238,9 +248,9 @@
         <translation>Введите URL службы TSP</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+162"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+26"/>
-        <location filename="../../src/views/EditProfile.qml" line="+26"/>
+        <location filename="../../src/views/EditProfile.qml" line="+162"/>
         <source>Save profile</source>
         <translation>Сохранить профиль</translation>
     </message>
@@ -252,16 +262,16 @@
         <translation>Профиль с таким именем уже существует</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+58"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+53"/>
-        <location filename="../../src/views/EditProfile.qml" line="+53"/>
+        <location filename="../../src/views/EditProfile.qml" line="+58"/>
         <source>Delete profile</source>
         <translation>Удалить профиль</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+41"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+40"/>
-        <location filename="../../src/views/EditProfile.qml" line="+40"/>
+        <location filename="../../src/views/EditProfile.qml" line="+41"/>
         <source>Issuer: </source>
         <translation>Издатель: </translation>
     </message>
@@ -295,16 +305,16 @@
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+43"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+19"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+40"/>
-        <location filename="../../src/views/Header.qml" line="+43"/>
+        <location filename="../../src/views/Header.qml" line="+19"/>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>
     <message>
-        <location line="+89"/>
+        <location line="+113"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+79"/>
-        <location filename="../../src/views/Header.qml" line="+89"/>
+        <location filename="../../src/views/Header.qml" line="+113"/>
         <source>Sign</source>
         <translation>Подписать</translation>
     </message>

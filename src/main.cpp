@@ -52,8 +52,8 @@ int main(int argc, char *argv[]) {
     // register types
     qmlRegisterType<PdfPageRender>("alt.pdfcsp.pdfRender", 0, 1,
                                    "PdfPageRender");
-    qmlRegisterType<PreviewRender>("alt.pdfcsp.previewRender",0 , 1,
-                                     "PreviewRender");
+    qmlRegisterType<PreviewRender>("alt.pdfcsp.previewRender", 0, 1,
+                                   "PreviewRender");
     qmlRegisterType<PdfDocModel>("alt.pdfcsp.pdfModel", 0, 1, "MuPdfModel");
     qmlRegisterType<SignaturesListModel>("alt.pdfcsp.signaturesListModel", 0, 1,
                                          "SignaturesListModel");
@@ -63,7 +63,8 @@ int main(int argc, char *argv[]) {
                                             "SignatureCreator");
     qmlRegisterType<core::PrinterLauncher>("alt.pdfcsp.printerLauncher", 0, 1,
                                            "PrinterLauncher");
-    qmlRegisterSingletonType(QUrl("qrc:/StyleSheet.qml"), "StyleSheet", 0, 1, "StyleSheet");
+    qmlRegisterSingletonType(QUrl("qrc:/StyleSheet.qml"), "StyleSheet", 0, 1,
+                             "StyleSheet");
     // run the app
     QQmlApplicationEngine engine;
     const QStringList args = QApplication::arguments();
@@ -86,8 +87,7 @@ int main(int argc, char *argv[]) {
     const auto window = defaultPalette.color(QPalette::Window);
     if (text.lightness() > window.lightness()) {
         theme_style = "dark";
-    }
-    else {
+    } else {
         theme_style = "light";
     }
     engine.rootContext()->setContextProperty("themeStyle", theme_style);

@@ -68,8 +68,7 @@ class PdfPageRender : public QQuickItem {
     /// @brief rotation value in degrees
     Q_PROPERTY(float customRotation MEMBER custom_rotation_);
     /// @brief Is utilized to set the page height on page width change.
-    Q_PROPERTY(float pageRatio MEMBER pratio_);        
-
+    Q_PROPERTY(float pageRatio MEMBER pratio_);
 
    signals:
 

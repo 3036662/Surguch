@@ -80,30 +80,6 @@ RowLayout {
                 height: parent.height
                 color: "transparent"
             }
-            TopBarButton {
-                icon.source: StyleSheet.wrench_icon
-                enabled: profileComboBox.currentValue !== "new"
-
-                onClicked: {
-                    //open profile info panel
-                    rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
-                    // set the certificates for select
-                    rightSideBar.edit_profile.cert_data_raw
-                            = profileComboBox.model.getUserCertsJSON()
-                    //set the stamps for select
-                    rightSideBar.edit_profile.stamps_data_raw
-                            = profileComboBox.model.getUserStampsJSON()
-                    // set a reference to this model
-                    rightSideBar.edit_profile.profiles_model = profileComboBox.model
-                    rightSideBar.edit_profile.profile_data = profileComboBox.currentValue
-                }
-            }
-
-            Rectangle {
-                width: 5
-                height: parent.height
-                color: "transparent"
-            }
 
             ComboBox {
                 id: profileComboBox
@@ -157,6 +133,30 @@ RowLayout {
                     } else {
                         profileComboBox.currentIndex = -1
                     }
+                }
+            }
+
+            Rectangle {
+                width: 5
+                height: parent.height
+                color: "transparent"
+            }
+            TopBarButton {
+                icon.source: StyleSheet.wrench_icon
+                enabled: profileComboBox.currentValue !== "new"
+
+                onClicked: {
+                    //open profile info panel
+                    rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
+                    // set the certificates for select
+                    rightSideBar.edit_profile.cert_data_raw
+                            = profileComboBox.model.getUserCertsJSON()
+                    //set the stamps for select
+                    rightSideBar.edit_profile.stamps_data_raw
+                            = profileComboBox.model.getUserStampsJSON()
+                    // set a reference to this model
+                    rightSideBar.edit_profile.profiles_model = profileComboBox.model
+                    rightSideBar.edit_profile.profile_data = profileComboBox.currentValue
                 }
             }
 

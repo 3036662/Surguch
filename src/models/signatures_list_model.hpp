@@ -63,8 +63,9 @@ class SignaturesListModel : public QAbstractListModel {
     /// @brief send common document status to QML
     void commonDocStatus(QString common_coverage_status);
 
-    // TODO(Oleg) Passing the enum works perfect in qt6.8 but does not work in qt6.4
-    //void commonDocStatus(core::DocStatusEnum::CommonDocCoverageStatus);
+    // TODO(Oleg) Passing the enum works perfect in qt6.8 but does not work in
+    // qt6.4
+    // void commonDocStatus(core::DocStatusEnum::CommonDocCoverageStatus);
 
     /// @brief file was recovered
     void fileRecovered(QString path);

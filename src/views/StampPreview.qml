@@ -60,6 +60,8 @@ Item {
             "file_to_sign_path": pdfModel.getSource()
         }
         //console.warn(JSON.stringify(params))
+        console.warn(curr_profile.logo_path)
+        console.warn(profilesModel.getConfigPath())
         return params
     }
 
