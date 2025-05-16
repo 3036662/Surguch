@@ -11,19 +11,18 @@ Item {
     property bool new_requested: false
     property bool window_completed: false
 
-    function setStampData(){
+    function setStampData() {
         //console.warn("preview " + profile_data)
-       // let curr_profile
+        // let curr_profile
         if (!profile_data) {
             return {}
         }
 
-        let curr_profile =JSON.parse(profile_data)
+        let curr_profile = JSON.parse(profile_data)
         let cert_array = JSON.parse(profilesModel.getUserCertsJSON())
         // console.warn(JSON.stringify(rightSideBar.edit_profile.cert_array));
         let cert_index = cert_array.findIndex(cert => {
-                                                  return curr_profile.cert_serial
-                                                  === cert.serial
+                                                  return curr_profile.cert_serial === cert.serial
                                               })
         if (cert_index === -1) {
             errorMessageDialog.text = qsTr(
@@ -33,14 +32,21 @@ Item {
         }
         // gather all information needed to create a signature visual representation
         let params = {
-            "page_index": 0,//location_data.page_index,
-            "page_width": 0,//location_data.page_width,
-            "page_height": 0,//location_data.page_height,
-            "stamp_x": 0,//location_data.stamp_x,
-            "stamp_y": 0,//location_data.stamp_y,
-            "stamp_width": 0,//location_data.stamp_width,
-            "stamp_height": 0,//location_data.stamp_height,
-            "logo_path": curr_profile.logo_path,
+            "page_index": 0,
+            "page_width"//location_data.page_index,
+            : 0,
+            "page_height"//location_data.page_width,
+            : 0,
+            "stamp_x"//location_data.page_height,
+            : 0,
+            "stamp_y"//location_data.stamp_x,
+            : 0,
+            "stamp_width"//location_data.stamp_y,
+            : 0,
+            "stamp_height"//location_data.stamp_width,
+            : 0,
+            "logo_path"//location_data.stamp_height,
+            : curr_profile.logo_path,
             "config_path": profilesModel.getConfigPath(),
             "cert_serial": curr_profile.cert_serial,
             "cert_serial_prefix": qsTr("Certificate: "),
@@ -86,7 +92,7 @@ Item {
                 if (stampPreview.visible === true) {
                     stampPreview.update()
                 } else {
-                    stampPreview.visible =true
+                    stampPreview.visible = true
                 }
                 processing = false
                 if (new_requested) {
@@ -106,6 +112,6 @@ Item {
     }
 
     Component.onCompleted: {
-        window_completed = true;
+        window_completed = true
     }
 }

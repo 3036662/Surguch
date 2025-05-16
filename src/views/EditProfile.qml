@@ -53,7 +53,7 @@ Flickable {
                 }
                 logoPath.text = profile_json.logo_path
                 tspUrlEdit.text = profile_json.tsp_url
-                root.contentY=10;
+                root.contentY = 10
             } catch (e) {
                 console.error("Error parsing JSON" + e.message)
             }
@@ -79,7 +79,7 @@ Flickable {
 
     width: parent.width
     height: parent.height
-    contentHeight: profileColumn.height+30
+    contentHeight: profileColumn.height + 30
     leftMargin: 10
     rightMargin: 10
     topMargin: 10
@@ -87,7 +87,7 @@ Flickable {
     RSBCloseButton {}
 
     Column {
-        id : profileColumn
+        id: profileColumn
         width: parent.width
 
         Text {
@@ -99,9 +99,9 @@ Flickable {
         }
 
         TextPair {
-             visible:false
-             id: profileIdTextPair
-             keyText: qsTr("Profile id")
+            visible: false
+            id: profileIdTextPair
+            keyText: qsTr("Profile id")
         }
 
         // profile name
@@ -118,12 +118,12 @@ Flickable {
 
             onTextChanged: {
                 let validInput = profileName.text.match(/^S+$/)
-                if (!validInput) {                    
+                if (!validInput) {
                     profileName.text = profileName.text.replace(/\s/g, '')
                     profileName.cursorPosition = profileName.text.length
                 }
-                if (profileName.text.length>50){
-                    profileName.text=profileName.text.slice(0,50);
+                if (profileName.text.length > 50) {
+                    profileName.text = profileName.text.slice(0, 50)
                 }
             }
         }
@@ -226,7 +226,6 @@ Flickable {
             }
         }
 
-
         Text {
             text: qsTr("Stamp")
             font.weight: Font.DemiBold
@@ -246,7 +245,6 @@ Flickable {
         RowLayout {
             width: parent.width
 
-
             RSBComboSelect {
                 id: selectStampTypeCombo
                 Layout.fillWidth: true
@@ -254,7 +252,8 @@ Flickable {
                 textRole: "title"
                 valueRole: "value"
                 displayText: displayTextDefault
-                enabled: selectCertificateCombo.item_selected && selectCadesFormatCombo.item_selected
+                enabled: selectCertificateCombo.item_selected
+                         && selectCadesFormatCombo.item_selected
                 property string displayTextDefault: qsTr("Select stamp type")
 
                 onActivated: {
@@ -271,7 +270,6 @@ Flickable {
                         stampEditor.stamp_data = null
                         stampEditor.updateStampForm()
                         stampEditor.visible = true
-
                     }
                 }
             }
@@ -280,11 +278,11 @@ Flickable {
                 Layout.fillWidth: true
             }
 
-            ToolButton{
+            ToolButton {
                 id: editButton
                 Layout.fillWidth: true
-                flat:true
-                display:AbstractButton.TextBesideIcon
+                flat: true
+                display: AbstractButton.TextBesideIcon
                 icon.width: 30
                 icon.height: 30
                 leftPadding: 10
@@ -318,19 +316,18 @@ Flickable {
             // when model has successfully saved the stamp
             function onStampsSaved(val) {
                 // update stamp combobox
-                rightSideBar.edit_profile.stamps_data_raw
-                        = profiles_model.getUserStampsJSON()
+                rightSideBar.edit_profile.stamps_data_raw = profiles_model.getUserStampsJSON()
                 // select saved stamp in the header combo
                 const indx = selectStampTypeCombo.find(val)
-                selectStampTypeCombo.displayText = selectStampTypeCombo.textAt(indx)
+                selectStampTypeCombo.displayText = selectStampTypeCombo.textAt(
+                            indx)
                 selectStampTypeCombo.currentIndex = indx
             }
 
             function onStampDeleted(title) {
                 if (title !== "") {
                     // update stamp combobox
-                    rightSideBar.edit_profile.stamps_data_raw
-                            = profiles_model.getUserStampsJSON()
+                    rightSideBar.edit_profile.stamps_data_raw = profiles_model.getUserStampsJSON()
                     selectStampTypeCombo.currentIndex = 0
                     selectStampTypeCombo.displayText = selectStampTypeCombo.defaultText
                 }
@@ -371,19 +368,20 @@ Flickable {
                 icon.height: 20
                 width: root.width
                 //width: text.length
-                  //     < deleteProfileButton.text.length ? deleteProfileButton.width : 150
+                //     < deleteProfileButton.text.length ? deleteProfileButton.width : 150
                 text: qsTr("Save profile")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
                 font.family: "Noto Sans"
 
                 onClicked: {
-                    if (profile_id<0 &&
-                        !profiles_model.uniqueName(profileName.text)){
+                    if (profile_id < 0 && !profiles_model.uniqueName(
+                                profileName.text)) {
                         profileName.forceActiveFocus()
                         root.contentY = 10
-                        errorMessageDialog.text=qsTr("Profile with this name already exists");
-                        errorMessageDialog.open();
+                        errorMessageDialog.text = qsTr(
+                                    "Profile with this name already exists")
+                        errorMessageDialog.open()
                         return
                     }
                     if (profileName.text === "") {
@@ -473,7 +471,7 @@ Flickable {
 
     onCert_data_rawChanged: {
         if (cert_data_raw) {
-            try {               
+            try {
                 cert_array = JSON.parse(cert_data_raw)
                 //console.warn(JSON.stringify(cert_array));
                 cert_combo_model = cert_array.map(item => {
@@ -481,7 +479,8 @@ Flickable {
                                                       res.title = item.subject_common_name
                                                       + " " + item.serial
                                                       res.serial = item.serial
-                                                      res.tooltip =qsTr("Issuer: ")+ item.issuer_common_name;
+                                                      res.tooltip = qsTr(
+                                                          "Issuer: ") + item.issuer_common_name
                                                       return res
                                                   })
             } catch (e) {

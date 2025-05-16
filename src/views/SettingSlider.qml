@@ -16,7 +16,9 @@ Slider {
 
     handle: Rectangle {
         x: control.leftPadding + (control.horizontal ? control.visualPosition * (control.availableWidth - width) : (control.availableWidth - width) / 2)
-        y: control.topPadding + (control.horizontal ? (control.availableHeight - height) / 2 : control.visualPosition * (control.availableHeight - height))
+        y: control.topPadding
+           + (control.horizontal ? (control.availableHeight - height) / 2 : control.visualPosition
+                                   * (control.availableHeight - height))
         implicitWidth: 28
         implicitHeight: 28
         radius: width / 2

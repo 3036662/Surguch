@@ -7,7 +7,6 @@ import StyleSheet
 Dialog {
     id: root
 
-
     property var profiles_model
     property var profile_data
     property var stamp_json
@@ -92,9 +91,9 @@ Dialog {
                 Layout.fillWidth: true
             }
 
-            ToolButton{
-                flat:true
-                display:AbstractButton.TextBesideIcon
+            ToolButton {
+                flat: true
+                display: AbstractButton.TextBesideIcon
                 icon.width: 20
                 icon.height: 20
                 leftPadding: 10
@@ -103,7 +102,6 @@ Dialog {
                 bottomPadding: 10
                 font.family: "Noto Sans"
                 icon.source: StyleSheet.close_icon
-
 
                 onClicked: {
                     stampEditor.visible = false
@@ -241,7 +239,6 @@ Dialog {
             }
         }
 
-
         RowLayout {
             width: root.width
             SettingSlider {
@@ -257,7 +254,6 @@ Dialog {
                 onValueChanged: {
                     updatePreview()
                 }
-
             }
 
             Text {
@@ -325,11 +321,12 @@ Dialog {
             icon.height: 20
 
             onClicked: {
-                if (stamp_id<0 &&
-                    !profiles_model.uniqueStampName(stampName.text)){
+                if (stamp_id < 0 && !profiles_model.uniqueStampName(
+                            stampName.text)) {
                     stampName.forceActiveFocus()
-                    errorMessageDialog.text=qsTr("Stamp with this name already exists");
-                    errorMessageDialog.open();
+                    errorMessageDialog.text = qsTr(
+                                "Stamp with this name already exists")
+                    errorMessageDialog.open()
                     return
                 }
                 if (stampName.text === "") {
@@ -365,9 +362,9 @@ Dialog {
 
             onClicked: {
                 if (profiles_model.deleteStamp(root.stamp_id)) {
-                   profiles_model.updateProfiles(root.stamp_json.title)
-                   stampEditor.visible = false
-                   stamp_data = null
+                    profiles_model.updateProfiles(root.stamp_json.title)
+                    stampEditor.visible = false
+                    stamp_data = null
                 }
             }
         }

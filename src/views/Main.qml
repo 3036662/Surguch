@@ -53,7 +53,6 @@ ApplicationWindow {
         RightSideBar {
             id: rightSideBar
         }
-
     }
 
     // --------------------------------------
@@ -98,7 +97,6 @@ ApplicationWindow {
 
     // --------------------------------------
     // modal
-
     StampEditor {
         id: stampEditor
     }
@@ -143,8 +141,8 @@ ApplicationWindow {
             }
             let stamps_json = JSON.parse(profilesModel.getUserStampsJSON())
             let user_stamp = stamps_json.find(stamp => {
-                                                 return curr_profile.stamp_type === stamp.title;
-                                             })
+                                                  return curr_profile.stamp_type === stamp.title
+                                              })
             // gather all information needed to create a signature visual representation
             let params = {
                 "page_index": location_data.page_index,
@@ -222,12 +220,9 @@ ApplicationWindow {
                 } else if (result.err_string === "CERT_CHAINING_ERR") {
                     errorMessageDialog.text = qsTr(
                                 "Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.")
-                } else if (result.err_string ==="TIMEOUT"){
-                    errorMessageDialog.text =qsTr(
-                                "Error.Timeout exceeded."
-                                )
-                }
-                else {
+                } else if (result.err_string === "TIMEOUT") {
+                    errorMessageDialog.text = qsTr("Error.Timeout exceeded.")
+                } else {
                     errorMessageDialog.text = qsTr("Common error")
                 }
                 errorMessageDialog.open()
