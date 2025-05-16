@@ -228,7 +228,7 @@ pdf_document *PdfDocModel::getPdfDoc() const { return pdfdoc_; }
 
 /// @brief resert the whole model
 void PdfDocModel::redrawAll() {
-    // qWarning() << "redraw all";
+    qWarning() << "[PdfDocModel] redraw all";
     beginResetModel();
     endResetModel();
 }
@@ -321,7 +321,7 @@ void PdfDocModel::showInFolder() {
 /// @brief returns a vector of rectangles to highligt
 PdfDocModel::NeedleRectsOnPage PdfDocModel::getNeedlesForPage(
     size_t page_index) {
-    qWarning() << "getNeedlesForPage" << page_index;
+    // qWarning() << "getNeedlesForPage" << page_index;
     if (!text_extractor_) {
         return nullptr;
     }
@@ -358,7 +358,7 @@ void PdfDocModel::jumpToNeedle(int needle_index) {
     const auto needle = text_extractor_->getNeedlePageAndXY(needle_index);
     emit jumpToNeedleCompleted(needle.first, needle.second.first,
                                needle.second.second);
-    qWarning() << "[PdfDocModel] Jump to needle " << needle_index;
+    // qWarning() << "[PdfDocModel] Jump to needle " << needle_index;
 }
 
 std::shared_ptr<core::TextExtractor::RectToHiglightCurrent>

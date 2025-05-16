@@ -79,7 +79,7 @@ QSGNode *PdfPageRender::updatePaintNode(
         rectNode->setFiltering(QSGTexture::Linear);
         rectNode->setOwnsTexture(true);
     }
-    qWarning() << "PdfPageRender: render page" << page_number_;
+    // qWarning() << "PdfPageRender: render page" << page_number_;
     if (!image_) {
         try {
             core::MuPageRender mupdf(fzctx_, fzdoc_);

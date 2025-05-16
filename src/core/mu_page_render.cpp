@@ -162,8 +162,8 @@ RenderRes MuPageRender::RenderPage(int page_number, float custom_rot_value,
             // additional highlight for current needle
             if (needles_->highlight_current) {
                 const auto &current = needles_->current;
-                qWarning() << "curr needle rect:" << current.x0 << " "
-                           << current.y0 << "\n";
+                // qWarning() << "curr needle rect:" << current.x0 << " "
+                //<< current.y0 << "\n";
                 if (!fz_is_empty_rect(current) &&
                     !fz_is_infinite_rect(current)) {
                     float rgb[3] = {150, 0, 0};

@@ -7,23 +7,22 @@ Dialog {
 
     property bool needNewSearch: false
     property bool searchInProgress: false
-    property int  needlesCount: 0
-    property int currentIndex:0
+    property int needlesCount: 0
+    property int currentIndex: 0
     property string prev_needle
 
+    signal searchRequired(string needle)
+    signal jumpToNeedle(int needle_index)
 
-    signal searchRequired(needle: string)
-    signal jumpToNeedle(needle_index: int)
-
-    function searchCompleted(first_needle_page,total_needles){
+    function searchCompleted(first_needle_page, total_needles) {
         console.warn("QML search completed")
-        searchInProgress=false;
-        needlesCount=total_needles;
-        currentIndex=needlesCount>0 ? 1: 0;
-        if (needNewSearch){
+        searchInProgress = false
+        needlesCount = total_needles
+        currentIndex = needlesCount > 0 ? 1 : 0
+        if (needNewSearch) {
             console.warn("QML need new search")
-            searchInProgress=true;
-            needNewSearch=false;
+            searchInProgress = true
+            needNewSearch = false
             searchRequired(searchInput.text)
         }
     }
@@ -36,26 +35,23 @@ Dialog {
     closePolicy: Popup.CloseOnEscape
 
     onOpened: {
-        root_window.focusOwnerId="searchDialog";
-        searchInput.forceActiveFocus();
+        root_window.focusOwnerId = "searchDialog"
+        searchInput.forceActiveFocus()
     }
 
     onClosed: {
-        root_window.focusOwnerId="";
-        searchInput.text="";
-        currentIndex=0;
-
-
+        root_window.focusOwnerId = ""
+        searchInput.text = ""
+        currentIndex = 0
     }
-
-
 
     Row {
         anchors.verticalCenter: parent.verticalCenter
         height: 40
 
         Rectangle {
-            width: 150
+            id: root
+            width: 160
             anchors.verticalCenter: parent.verticalCenter
             height: parent.height - 5
             color: "transparent"
@@ -64,6 +60,7 @@ Dialog {
             radius: 4
             TextInput {
                 id: searchInput
+
                 clip: true
                 anchors.fill: parent
                 anchors.margins: 4
@@ -72,21 +69,28 @@ Dialog {
                 verticalAlignment: TextInput.AlignVCenter
                 focus: true
 
-                onTextEdited:{
-                    if (text===prev_needle){
-                        return;
+                onTextEdited: {
+                    if (text === prev_needle) {
+                        return
                     }
-                    prev_needle=text
+                    prev_needle = text
                     console.warn("QML edited")
-                    console.warn("searchInProgress:"+searchDialog.searchInProgress)
-                    if (!searchDialog.searchInProgress){
-                        searchDialog.searchInProgress=true;
-                        searchDialog.searchRequired(text);
-                    } else{
-                        searchDialog.needNewSearch=true;
+                    console.warn("searchInProgress:" + searchDialog.searchInProgress)
+                    if (!searchDialog.searchInProgress) {
+                        searchDialog.searchInProgress = true
+                        searchDialog.searchRequired(text)
+                    } else {
+                        searchDialog.needNewSearch = true
                     }
-                    root_window.focusOwnerId="searchDialog";
-                    forceActiveFocus();
+                    root_window.focusOwnerId = "searchDialog"
+                    forceActiveFocus()
+                }
+
+                Keys.onReturnPressed: {
+                    if (searchDialog.currentIndex < searchDialog.needlesCount) {
+                        searchDialog.currentIndex += 1
+                        jumpToNeedle(searchDialog.currentIndex - 1)
+                    }
                 }
             }
         }
@@ -100,7 +104,7 @@ Dialog {
             height: parent.height
             width: childrenRect.width
             Text {
-                text: currentIndex+"/"+needlesCount
+                text: currentIndex + "/" + needlesCount
                 anchors.verticalCenter: parent.verticalCenter
                 verticalAlignment: Text.AlignVCenter
             }
@@ -126,9 +130,9 @@ Dialog {
             width: 25
 
             onClicked: {
-                if (searchDialog.currentIndex<searchDialog.needlesCount){
-                    searchDialog.currentIndex+=1;
-                    jumpToNeedle(searchDialog.currentIndex-1);
+                if (searchDialog.currentIndex < searchDialog.needlesCount) {
+                    searchDialog.currentIndex += 1
+                    jumpToNeedle(searchDialog.currentIndex - 1)
                 }
             }
         }
@@ -146,6 +150,12 @@ Dialog {
             rightPadding: 0
             bottomPadding: 0
             width: 25
+            onClicked: {
+                if (searchDialog.currentIndex > 1) {
+                    searchDialog.currentIndex -= 1
+                    jumpToNeedle(searchDialog.currentIndex - 1)
+                }
+            }
         }
 
         ToolButton {
@@ -165,7 +175,5 @@ Dialog {
                 searchDialog.close()
             }
         }
-
-
     }
 }

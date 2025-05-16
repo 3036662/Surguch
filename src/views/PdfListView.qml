@@ -51,7 +51,7 @@ ListView {
 
     function zoomIn() {
         prevZoom = zoomPageFact
-       tryToGetFocus()
+        tryToGetFocus()
         if (zoomAuto) {
             let zoom_fact_goal = currentPage().zoomLast + 0.2
             zoomPageFact = zoom_fact_goal
@@ -160,7 +160,7 @@ ListView {
         }
         if (zoomPageFact > minZoom) {
             canZoomOut()
-        }     
+        }
     }
 
     function scrollToPage(newIndex) {
@@ -226,10 +226,11 @@ ListView {
         }
     }
 
-    function tryToGetFocus(){
-        if (root_window.focusOwnerId!=="" && root_window.focusOwnerId!=="searchDialog"){
-            root_window.focusOwnerId="pdfListView";
-            forceActiveFocus();
+    function tryToGetFocus() {
+        if (root_window.focusOwnerId !== ""
+                && root_window.focusOwnerId !== "searchDialog") {
+            root_window.focusOwnerId = "pdfListView"
+            forceActiveFocus()
         }
     }
 
@@ -272,7 +273,7 @@ ListView {
             "ratio": pageYRatio,
             "zoom_last": pageLastZoom
         }
-        console.warn("QML PreservsPos:"+JSON.stringify(pos));
+        console.warn("QML PreservsPos:" + JSON.stringify(pos))
         return pos
     }
 
@@ -287,64 +288,64 @@ ListView {
      *       "zoom_last": pageLastZoom
      *   }
      */
-    function jumpToPosition(pos){
-        console.warn("jump to position:"+JSON.stringify(pos))
+    function jumpToPosition(pos) {
+        console.warn("jump to position:" + JSON.stringify(pos))
         positionViewAtIndex(pos.index, ListView.Beginning)
         let currPage = currentPage()
         let rotated90 = delegateRotation == 90 || delegateRotation == 270
         let currZoom = zoomPageFact
         let usedPageSize = 0
-        let lastSizeUsed = false;
-        console.warn("currPage.pWidth: "+currPage.pWidth+" currPage.pHeight: "+currPage.pHeight);
+        let lastSizeUsed = false
+        console.warn("currPage.pWidth: " + currPage.pWidth
+                     + " currPage.pHeight: " + currPage.pHeight)
         if (currPage) {
-            usedPageSize = rotated90 ? currPage.pWidth: currPage.pHeight;
+            usedPageSize = rotated90 ? currPage.pWidth : currPage.pHeight
             if (currPage.zoomLast > 0 && currPage.zoomLast !== 1) {
                 currZoom = currPage.zoomLast
             }
         } else {
-            lastSizeUsed=true;
+            lastSizeUsed = true
             usedPageSize = rotated90 ? root.lastPageWidth : root.lastPageHeight
         }
 
         let zoomRatio = currZoom / pos.zoom_last
-        if (zoomRatio<0){
-            zoomRatio=1;
+        if (zoomRatio < 0) {
+            zoomRatio = 1
         }
         let pos_mode = ListView.Beginning
         if (pos.ratio > 0.7) {
-             console.warn("QML pos mode: end");
+            console.warn("QML pos mode: end")
             pos_mode = ListView.End
         } else if (pos.ratio > 0.3) {
             pos_mode = ListView.Center
-            console.warn("QML pos mode: center");
+            console.warn("QML pos mode: center")
         }
         let targetYScroll = 0
-        console.warn("zoomRatio: "+zoomRatio )
+        console.warn("zoomRatio: " + zoomRatio)
         if (zoomRatio > 0) {
-            console.warn("usedPageSize:"+usedPageSize);
-            console.warn("root height:"+ root.height)
-            targetYScroll = pos.ratio * usedPageSize;
-            if (lastSizeUsed){
+            console.warn("usedPageSize:" + usedPageSize)
+            console.warn("root height:" + root.height)
+            targetYScroll = pos.ratio * usedPageSize
+            if (lastSizeUsed) {
                 console.warn("last size was used")
-                targetYScroll*= zoomRatio;
-                targetYScroll=0;
+                targetYScroll *= zoomRatio
+                targetYScroll = 0
+            } else {
+                targetYScroll -= root.height / 2
             }
-            else{
-                targetYScroll-= root.height/2;
-            }
-         }
-        console.warn("scrollY "+targetYScroll);
+        }
+        console.warn("scrollY " + targetYScroll)
         if (targetYScroll > 0 && pos.index > 0) {
             console.warn("targetYScroll > 0")
-            console.warn("pos index: "+pos.index)
-            positionViewAtIndex(pos.index,ListView.Beginning)
+            console.warn("pos index: " + pos.index)
+            positionViewAtIndex(pos.index, ListView.Beginning)
             contentY += targetYScroll
-            console.warn("\n");
+            console.warn("\n")
         } else {
-            console.warn("QML position at index: "+pos.index);
+            console.warn("QML position at index: " + pos.index)
             // if failed to calculate the exact scroll, use jump mode ( beginning | middle | end )
             positionViewAtIndex(pos.index, pos_mode)
-            console.warn("\n");
+            console.warn("\n")
         }
         root.lastPageUsedSize = usedPageSize
     }
@@ -371,59 +372,65 @@ ListView {
         return index
     }
 
-    function searchCompleted(first_needle_page_index,total_needles,x_rel,y_rel){
+    function searchCompleted(first_needle_page_index, total_needles, x_rel, y_rel) {
         //let curr_page= currentPageIndex();
-        let pos=preservePosition();
+        let pos = preservePosition()
 
-        model.redrawAll();
-        console.warn("QML Total needles:"+total_needles);
-        if(total_needles>0){            
-            pos.index=first_needle_page_index;
-            switch (delegateRotation){
-             case 90:
-                pos.ratio=x_rel;
-                 if (pos.ratio>0.7){
-                    pos.ratio=0.7;
-                 }
-                break;
-             case 270:
-                 pos.ratio=1-x_rel;
-                 if (pos.ratio>0.7){
-                    pos.ratio=0.7;
-                 }
-                 break;
-            case 180:
-                pos.ratio=1-y_rel;
-                break;
-            default:
-                pos.ratio=y_rel;
-            }
-            if (pos.ratio>0.9){
-                pos.ratio=0.9;
-            }
+        model.redrawAll()
+        console.warn("QML Total needles:" + total_needles)
+        if (total_needles > 0) {
+            pos.index = first_needle_page_index
+            pos=updateRatioWithRoration(pos,x_rel,y_rel)
         }
 
         jumpToPosition(pos)
     }
 
-    function jumpToNeedle(page_index,rel_x,rel_y){
-        console.warn("QML jump to needle on page "+page_index);
-        let currPage=currentPage();
-         // remove current rect from this page
-        if (currentPageIndex()!==page_index){
-             currPage.updateCurrRect();
-         }
-        let pageLastZoom = currPage ? currPage.zoomLast : 1;
-        let pos={
-            "index":page_index,
-            "ratio":rel_y,
-            "zoom_last":pageLastZoom
-        };
-        jumpToPosition(pos);
-        currPage=root.itemAtIndex(page_index);
-        console.warn("QML update page at index "+page_index);
+    function updateRatioWithRoration(pos,x_rel,y_rel){
+        switch (delegateRotation) {
+        case 90:
+            pos.ratio = x_rel
+            if (pos.ratio > 0.7) {
+                pos.ratio = 0.7
+            }
+            break
+        case 270:
+            pos.ratio = 1 - x_rel
+            if (pos.ratio > 0.7) {
+                pos.ratio = 0.7
+            }
+            break
+        case 180:
+            pos.ratio = 1 - y_rel
+            break
+        default:
+            pos.ratio = y_rel
+        }
+        if (pos.ratio > 0.9) {
+            pos.ratio = 0.9
+        }
+        return pos;
+    }
+
+    function jumpToNeedle(page_index, rel_x, rel_y) {
+        console.warn("QML jump to needle on page " + page_index)
+        let currPage = currentPage()
+        // remove current rect from this page
+        if (currentPageIndex() !== page_index) {
+            currPage.updateCurrRect()
+        }
+        let pageLastZoom = currPage ? currPage.zoomLast : 1
+        let pos = {
+            "index": page_index,
+            "ratio": rel_y,
+            "zoom_last": pageLastZoom
+        }
+        pos=updateRatioWithRoration(pos,rel_x,rel_y)
+        jumpToPosition(pos)
+        currPage = root.itemAtIndex(page_index)
+        console.warn("QML update page at index " + page_index)
         // update current rect
-        currPage.updateCurrRect();
+        currPage.updateCurrRect()
     }
 
     Layout.fillHeight: true
@@ -445,18 +452,18 @@ ListView {
     }
 
     onSourceChanged: {
-        lastPageHeight = 0;
-        lastPageWidth = 0;
-        lastPageUsedSize =0;
-        prevZoom = 1;
-        landscape = false;
-        delegateRotation = 0;
-        pageIndToPreserveWhenZoom =0;
+        lastPageHeight = 0
+        lastPageWidth = 0
+        lastPageUsedSize = 0
+        prevZoom = 1
+        landscape = false
+        delegateRotation = 0
+        pageIndToPreserveWhenZoom = 0
         pdfModel.setSource(source)
         if (sourceIsTmp) {
             pdfModel.deleteFileLater(source)
         }
-        setZoom(-1)        
+        setZoom(-1)
         if (leftSideBar.sigCount === 0) {
             leftSideBar.showPreviews()
         } else {
@@ -469,12 +476,12 @@ ListView {
         if (source.length > 0) {
             root_window.title = source
         }
-        scrollToPage(1);
+        scrollToPage(1)
         currPageChanged(1)
         tryToGetFocus()
     }
 
-    onZoomPageFactChanged: {        
+    onZoomPageFactChanged: {
         // preserve the position
         let pos = preservePosition()
         console.warn(JSON.stringify(pos))
@@ -501,15 +508,16 @@ ListView {
 
     model: pdfModel
 
-    delegate: Column {    
+    delegate: Column {
         width: root.width - verticalScroll.width
         property alias zoomLast: pdfPage.zoomLast
         property alias pWidth: pdfPage.width
         property alias pHeight: pdfPage.height
 
-        function updateCurrRect(){
-            pdfPage.setCurrentNeedleRect(pdfModel.getCurrentNeedleRect(model.display));
-            pdfPage.update();
+        function updateCurrRect() {
+            pdfPage.setCurrentNeedleRect(pdfModel.getCurrentNeedleRect(
+                                             model.display))
+            pdfPage.update()
             console.warn("QML delegate updateCurrRect")
         }
 
@@ -555,7 +563,7 @@ ListView {
                             "stamp_y": cross.y,
                             "stamp_width": cross.width,
                             "stamp_height": cross.height
-                        }                        
+                        }
                         aimResizeInProgress = true
                         sigCreator.resizeAim(location_data)
                     }
@@ -602,7 +610,8 @@ ListView {
                 setDoc(pdfModel.getDoc())
                 setPageNumber(model.display)
                 // highlight the needles
-                setNeedleHighlightRects(pdfModel.getNeedlesForPage(model.display));
+                setNeedleHighlightRects(pdfModel.getNeedlesForPage(
+                                            model.display))
                 if (width > 0 && root.hScrollPos > 0 && root.hScrollPos < 1) {
                     root.contentX = width * root.hScrollPos
                 }
@@ -687,7 +696,6 @@ ListView {
                         font.family: "Noto Sans"
                     }
                 }
-
             }
         }
     }

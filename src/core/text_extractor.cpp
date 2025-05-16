@@ -54,7 +54,7 @@ void TextExtractor::saveSearchContext() {
             });
     }
     search_mtx_.unlock();
-    qWarning() << "[TextExtractor] SIGNAL search completed";
+    // qWarning() << "[TextExtractor] SIGNAL search completed";
     emit searchCompleted();
 }
 
@@ -162,12 +162,10 @@ std::pair<size_t, std::pair<float, float>> TextExtractor::getNeedlePageAndXY(
             if (ptr_vector.empty()) {
                 return false;
             }
-            std::cerr << "vec.size: " << ptr_vector.size() << "\n";
             if (ptr_vector.size() <= local_index) {
                 local_index -= ptr_vector.size();
                 return false;
             }
-            std::cerr << "local_index=" << local_index << "\n";
             return true;
         });
     if (it_page == search_context_->cend()) {
