@@ -9,9 +9,15 @@ Item {
     property var stamp_data
     property bool processing: false
     property bool new_requested: false
+    property bool window_completed: false
 
     function setStampData(){
-        //console.warn("preview" + profile_data)
+        //console.warn("preview " + profile_data)
+       // let curr_profile
+        if (!profile_data) {
+            return {}
+        }
+
         let curr_profile =JSON.parse(profile_data)
         let cert_array = JSON.parse(profilesModel.getUserCertsJSON())
         // console.warn(JSON.stringify(rightSideBar.edit_profile.cert_array));
@@ -60,8 +66,6 @@ Item {
             "file_to_sign_path": pdfModel.getSource()
         }
         //console.warn(JSON.stringify(params))
-        console.warn(curr_profile.logo_path)
-        console.warn(profilesModel.getConfigPath())
         return params
     }
 
@@ -99,5 +103,9 @@ Item {
         } else {
             createPreview()
         }
+    }
+
+    Component.onCompleted: {
+        window_completed = true;
     }
 }

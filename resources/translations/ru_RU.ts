@@ -183,7 +183,7 @@
         <location line="+25"/>
         <location filename="../../src/views/EditProfile.qml" line="+25"/>
         <source>Signature</source>
-        <translation type="unfinished">Электронная подпись</translation>
+        <translation>Электронная подпись</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -203,7 +203,7 @@
         <location line="+38"/>
         <location filename="../../src/views/EditProfile.qml" line="+38"/>
         <source>Stamp</source>
-        <translation type="unfinished"></translation>
+        <translation>Штамп в PDF</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -220,9 +220,9 @@
         <translation>Выберите тип штампа</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+85"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+6"/>
-        <location filename="../../src/views/EditProfile.qml" line="+84"/>
+        <location filename="../../src/views/EditProfile.qml" line="+85"/>
         <source>Company logo</source>
         <translation>Логотип компании</translation>
     </message>
@@ -234,9 +234,9 @@
         <translation>Выберите логотип</translation>
     </message>
     <message>
-        <location line="-144"/>
+        <location line="-145"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+20"/>
-        <location filename="../../src/views/EditProfile.qml" line="-144"/>
+        <location filename="../../src/views/EditProfile.qml" line="-145"/>
         <source>TSP server URL</source>
         <translation>Адрес службы TSP</translation>
     </message>
@@ -248,9 +248,9 @@
         <translation>Введите URL службы TSP</translation>
     </message>
     <message>
-        <location line="+162"/>
+        <location line="+163"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+26"/>
-        <location filename="../../src/views/EditProfile.qml" line="+162"/>
+        <location filename="../../src/views/EditProfile.qml" line="+163"/>
         <source>Save profile</source>
         <translation>Сохранить профиль</translation>
     </message>
@@ -905,8 +905,8 @@
 <context>
     <name>StampPreview</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/StampPreview.qml" line="+23"/>
-        <location filename="../../src/views/StampPreview.qml" line="+23"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/StampPreview.qml" line="+29"/>
+        <location filename="../../src/views/StampPreview.qml" line="+29"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation type="unfinished">Сертификат не найден, возможно он был удален</translation>
     </message>

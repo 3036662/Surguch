@@ -66,7 +66,7 @@ void PreviewRender::createImage(const QVariantMap &qvparams) {
     image_watcher_ = std::make_unique<ImageFutureWatcher>();
     QObject::connect(image_watcher_.get(), &ImageFutureWatcher::finished,
                      [this]() {
-                         qWarning() << "finished";
+                         // qWarning() << "finished";
                          saveImage();
                      });
     image_future_ = std::make_unique<ImageFuture>(
@@ -98,7 +98,7 @@ std::unique_ptr<BakeResult> prepareImage(
             pdfcsp::pdf::BakeSignatureStampImage(params->pod_params),
             pdfcsp::pdf::FreeBakedSigStampImage),
         std::unique_ptr<QImage>()});
-    qWarning() << "result pointer:" << result.get();
+    // qWarning() << "result pointer:" << result.get();
     if (result && result->data_ && result->data_->img != nullptr &&
         result->data_->img_size > 0) {
         result->image_ = std::make_unique<QImage>(

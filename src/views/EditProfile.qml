@@ -266,6 +266,7 @@ Flickable {
                             "logo_path": logoPath.text,
                             "tsp_url": ""
                         }
+                        //console.warn(JSON.stringify(data))
                         stampEditor.profile_data = JSON.stringify(data)
                         stampEditor.stamp_data = null
                         stampEditor.updateStampForm()
