@@ -352,10 +352,20 @@ void PdfDocModel::handleSearchCompleted() {
 }
 
 void PdfDocModel::jumpToNeedle(int needle_index) {
-    if (needle_index < 0) {
+    if (needle_index < 0 || !text_extractor_) {
         return;
     }
-    qWarning() << "Jump to needle " << needle_index;
+    const auto needle = text_extractor_->getNeedlePageAndXY(needle_index);
+    emit jumpToNeedleCompleted(needle.first, needle.second.first,
+                               needle.second.second);
+    qWarning() << "[PdfDocModel] Jump to needle " << needle_index;
 }
 
+std::shared_ptr<core::TextExtractor::RectToHiglightCurrent>
+PdfDocModel::getCurrentNeedleRect(size_t page_index) {
+    if (!text_extractor_) {
+        return nullptr;
+    }
+    return text_extractor_->getCurrentNeedleRect(page_index);
+}
 // NOLINTEND(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)

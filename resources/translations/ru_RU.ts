@@ -393,8 +393,8 @@
         <translation>Общая ошибка</translation>
     </message>
     <message>
-        <location line="+82"/>
-        <location filename="../../src/views/Main.qml" line="+82"/>
+        <location line="+83"/>
+        <location filename="../../src/views/Main.qml" line="+83"/>
         <source>The document was changed after signing, but can be restored</source>
         <translation>Документ был изменен после подписи! Присутствует возможность восстановить подписанную версию</translation>
     </message>
@@ -489,8 +489,8 @@
 <context>
     <name>PdfListView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+644"/>
-        <location filename="../../src/views/PdfListView.qml" line="+644"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+670"/>
+        <location filename="../../src/views/PdfListView.qml" line="+670"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>

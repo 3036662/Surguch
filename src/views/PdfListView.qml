@@ -288,7 +288,7 @@ ListView {
      *   }
      */
     function jumpToPosition(pos){
-
+        console.warn("jump to position:"+JSON.stringify(pos))
         positionViewAtIndex(pos.index, ListView.Beginning)
         let currPage = currentPage()
         let rotated90 = delegateRotation == 90 || delegateRotation == 270
@@ -402,8 +402,28 @@ ListView {
                 pos.ratio=0.9;
             }
         }
-        console.warn("jump to position:"+JSON.stringify(pos))
+
         jumpToPosition(pos)
+    }
+
+    function jumpToNeedle(page_index,rel_x,rel_y){
+        console.warn("QML jump to needle on page "+page_index);
+        let currPage=currentPage();
+         // remove current rect from this page
+        if (currentPageIndex()!==page_index){
+             currPage.updateCurrRect();
+         }
+        let pageLastZoom = currPage ? currPage.zoomLast : 1;
+        let pos={
+            "index":page_index,
+            "ratio":rel_y,
+            "zoom_last":pageLastZoom
+        };
+        jumpToPosition(pos);
+        currPage=root.itemAtIndex(page_index);
+        console.warn("QML update page at index "+page_index);
+        // update current rect
+        currPage.updateCurrRect();
     }
 
     Layout.fillHeight: true
@@ -486,6 +506,12 @@ ListView {
         property alias zoomLast: pdfPage.zoomLast
         property alias pWidth: pdfPage.width
         property alias pHeight: pdfPage.height
+
+        function updateCurrRect(){
+            pdfPage.setCurrentNeedleRect(pdfModel.getCurrentNeedleRect(model.display));
+            pdfPage.update();
+            console.warn("QML delegate updateCurrRect")
+        }
 
         PdfPageRender {
             id: pdfPage

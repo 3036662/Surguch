@@ -95,6 +95,9 @@ class PdfDocModel : public QAbstractListModel {
 
     Q_INVOKABLE void jumpToNeedle(int needle_index);
 
+    Q_INVOKABLE std::shared_ptr<core::TextExtractor::RectToHiglightCurrent>
+    getCurrentNeedleRect(size_t page_index);
+
    signals:
 
     /// @brief some signatures found
@@ -114,6 +117,9 @@ class PdfDocModel : public QAbstractListModel {
     /// @brief search is completed
     void searchCompleted(int first_needle_page_index, int total_needles,
                          float x_position, float y_position);
+
+    /// @brief jump to needle by index completed
+    void jumpToNeedleCompleted(int page_index, float rel_x, float rel_y);
 
    private slots:
     void handleSearchCompleted();

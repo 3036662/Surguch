@@ -68,6 +68,10 @@ class TextExtractor : public QObject {
     [[nodiscard]] core::utils::NeedleRectsOnPage getNeedlesForPage(
         size_t page_index);
 
+    /// @brief get a copy of current rect to highlight
+    [[nodiscard]] std::shared_ptr<RectToHiglightCurrent> getCurrentNeedleRect(
+        size_t page_index);
+
    signals:
 
     void searchCompleted();

@@ -43,6 +43,9 @@ Dialog {
     onClosed: {
         root_window.focusOwnerId="";
         searchInput.text="";
+        currentIndex=0;
+
+
     }
 
 
@@ -125,7 +128,7 @@ Dialog {
             onClicked: {
                 if (searchDialog.currentIndex<searchDialog.needlesCount){
                     searchDialog.currentIndex+=1;
-                    jumpToNeedle(searchDialog.currentIndex);
+                    jumpToNeedle(searchDialog.currentIndex-1);
                 }
             }
         }

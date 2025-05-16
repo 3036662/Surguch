@@ -162,7 +162,8 @@ std::pair<size_t, std::pair<float, float>> TextExtractor::getNeedlePageAndXY(
             if (ptr_vector.empty()) {
                 return false;
             }
-            if (ptr_vector.size() < local_index) {
+            std::cerr << "vec.size: " << ptr_vector.size() << "\n";
+            if (ptr_vector.size() <= local_index) {
                 local_index -= ptr_vector.size();
                 return false;
             }
@@ -227,6 +228,16 @@ TextExtractor::SearchContext TextExtractor::getSearchContext() {
     }
     return std::make_unique<std::map<size_t, utils::NeedleRectsOnPage>>(
         *search_context_);
+}
+
+/// @brief get a copy of current rect to highlight
+std::shared_ptr<TextExtractor::RectToHiglightCurrent>
+TextExtractor::getCurrentNeedleRect(size_t page_index) {
+    if (!current_rect_to_gighlight_ ||
+        current_rect_to_gighlight_->first != page_index) {
+        return nullptr;
+    }
+    return std::make_shared<RectToHiglightCurrent>(*current_rect_to_gighlight_);
 }
 
 }  // namespace core
