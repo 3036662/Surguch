@@ -28,18 +28,17 @@ RowLayout {
     }
 
     function launchSaveFileWithQuit(quit_after_save) {
-        let dlg;
+        let dlg
         if (kdeVersion === "5") {
-           dlg=labsSaveFileDialog;
+            dlg = labsSaveFileDialog
         } else {
-            dlg=saveFileDialog;
+            dlg = saveFileDialog
         }
-        if (quit_after_save){
-            dlg.quitAfterSave=true;
+        if (quit_after_save) {
+            dlg.quitAfterSave = true
         }
-        dlg.open();
+        dlg.open()
     }
-
 
     spacing: 5
 
@@ -195,7 +194,7 @@ RowLayout {
             icon.height: 25
             icon.width: 25
             anchors.top: parent.top
-            anchors.bottom: parent.bottom            
+            anchors.bottom: parent.bottom
 
             onClicked: {
                 if (profileComboBox.currentValue === "new"
@@ -240,7 +239,7 @@ RowLayout {
         currentFolder: StandardPaths.writableLocation(
                            StandardPaths.DocumentsLocation)
         onAccepted: {
-            enableSignMode();
+            enableSignMode()
             // source is chosen by user, not a temporary file
             pdfListView.openFile(currentFile)
             leftSideBar.source = currentFile
@@ -262,8 +261,8 @@ RowLayout {
         onAccepted: {
             console.warn(currentFile)
             pdfListView.saveTo(currentFile)
-            if (quitAfterSave){
-                Qt.quit();
+            if (quitAfterSave) {
+                Qt.quit()
             }
         }
     }
@@ -277,7 +276,7 @@ RowLayout {
         nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
         folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
         onAccepted: {
-            enableSignMode();
+            enableSignMode()
             // source is chosen by user, not a temporary file
             pdfListView.openFile(currentFile)
             leftSideBar.source = currentFile
@@ -299,8 +298,8 @@ RowLayout {
         onAccepted: {
             console.warn(currentFile)
             pdfListView.saveTo(currentFile)
-            if (quitAfterSave){
-                Qt.quit();
+            if (quitAfterSave) {
+                Qt.quit()
             }
         }
     }

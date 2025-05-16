@@ -91,7 +91,7 @@ QString pageToQString(fz_context *fzctx, fz_document *fzdoc, int page_index) {
     fz_try(fzctx) {
         page = fz_load_page(fzctx, fzdoc, page_index);
         stpage = fz_new_stext_page(fzctx, fz_bound_page(fzctx, page));
-        const fz_stext_options opts = {FZ_STEXT_DEHYPHENATE, 1.0f};
+        const fz_stext_options opts = {FZ_STEXT_DEHYPHENATE, 1.0F};
         stext_dev = fz_new_stext_device(fzctx, stpage, &opts);
         fz_run_page_contents(fzctx, page, stext_dev, fz_identity, nullptr);
         fz_close_device(fzctx, stext_dev);
@@ -110,10 +110,11 @@ QString pageToQString(fz_context *fzctx, fz_document *fzdoc, int page_index) {
                         extracted_string.append(QChar(symbol->c));
                     } else {
                         auto arr = QChar::fromUcs4(symbol->c);
-                        std::for_each(arr.begin(), arr.end(),
-                                      [&extracted_string](char16_t ch) {
-                                          extracted_string.append(QChar(ch));
-                                      });
+                        std::for_each(
+                            arr.begin(), arr.end(),
+                            [&extracted_string](char16_t symbol) {
+                                extracted_string.append(QChar(symbol));
+                            });
                     }
                 }
                 extracted_string.append(QChar('\n'));
@@ -305,7 +306,7 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
                     // push the resulting rect to the res
                     if (fz_is_empty_rect(single_needle_rect) == 0 &&
                         fz_is_infinite_rect(single_needle_rect) == 0 &&
-                        fz_is_valid_rect(single_needle_rect)) {
+                        fz_is_valid_rect(single_needle_rect) != 0) {
                         res->needle_rects.push_back(single_needle_rect);
                     }
                 }

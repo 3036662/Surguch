@@ -22,7 +22,7 @@ TextExtractor::TextExtractor(fz_context *fzctx, fz_document *fzdoc,
 /// @return async under the hood, returns immediately
 void TextExtractor::updateCache() {
     {
-        std::unique_lock mtx(search_mtx_);
+        const std::unique_lock mtx(search_mtx_);
         search_context_ = nullptr;
         needles_count_ = 0;
     }
@@ -47,7 +47,8 @@ void TextExtractor::saveSearchContext() {
     if (search_future_ && search_future_->isValid()) {
         search_context_ = search_future_->takeResult();
         needles_count_ = std::accumulate(
-            search_context_->cbegin(), search_context_->cend(), size_t(0),
+            search_context_->cbegin(), search_context_->cend(),
+            static_cast<size_t>(0),
             [](size_t acc,
                const std::pair<const size_t, utils::NeedleRectsOnPage> &pair) {
                 return acc + pair.second->needle_rects.size();
@@ -181,12 +182,12 @@ std::pair<size_t, std::pair<float, float>> TextExtractor::getNeedlePageAndXY(
         RectToHiglightCurrent{it_page->first, rect});
     const auto &page_rect = it_page->second->page_rect;
     const float page_height = std::fabs(page_rect.y1 - page_rect.y0);
-    float y_relative = page_height > 1 ? rect.y0 / page_height : 0.5;
+    float y_relative = page_height > 1 ? rect.y0 / page_height : 0.5F;
     if (y_relative > 1) {
         y_relative = 0.5;
     }
     const float page_width = std::fabs(page_rect.x1 - page_rect.x0);
-    float x_relative = page_width > 1 ? rect.x0 / page_width : 0.5;
+    float x_relative = page_width > 1 ? rect.x0 / page_width : 0.5F;
     if (x_relative > 1) {
         x_relative = 0.5;
     }

@@ -98,7 +98,7 @@ class TextExtractor : public QObject {
     std::unique_ptr<SearchContextWatcher> search_watcher_;
     std::shared_mutex search_mtx_;
     QString needle_;
-    bool case_sensitive_;
+    bool case_sensitive_ = false;
 
     std::unique_ptr<RectToHiglightCurrent> current_rect_to_gighlight_;
 };

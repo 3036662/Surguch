@@ -380,13 +380,13 @@ ListView {
         console.warn("QML Total needles:" + total_needles)
         if (total_needles > 0) {
             pos.index = first_needle_page_index
-            pos=updateRatioWithRoration(pos,x_rel,y_rel)
+            pos = updateRatioWithRoration(pos, x_rel, y_rel)
         }
 
         jumpToPosition(pos)
     }
 
-    function updateRatioWithRoration(pos,x_rel,y_rel){
+    function updateRatioWithRoration(pos, x_rel, y_rel) {
         switch (delegateRotation) {
         case 90:
             pos.ratio = x_rel
@@ -409,7 +409,7 @@ ListView {
         if (pos.ratio > 0.9) {
             pos.ratio = 0.9
         }
-        return pos;
+        return pos
     }
 
     function jumpToNeedle(page_index, rel_x, rel_y) {
@@ -425,7 +425,7 @@ ListView {
             "ratio": rel_y,
             "zoom_last": pageLastZoom
         }
-        pos=updateRatioWithRoration(pos,rel_x,rel_y)
+        pos = updateRatioWithRoration(pos, rel_x, rel_y)
         jumpToPosition(pos)
         currPage = root.itemAtIndex(page_index)
         console.warn("QML update page at index " + page_index)

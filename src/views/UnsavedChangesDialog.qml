@@ -9,23 +9,23 @@ import QtQuick.Layouts
 Dialog {
     id: undsavedFileDialog
 
-    signal saveWithQuit(bool need_quit);
+    signal saveWithQuit(bool need_quit)
 
-    width:300
-    height:unsavedFileDialogContent.height+50
+    width: 300
+    height: unsavedFileDialogContent.height + 50
     title: qsTr("Unsaved Changes")
     modal: true
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2
 
     Column {
-        id:unsavedFileDialogContent
+        id: unsavedFileDialogContent
 
-        width:parent.width
+        width: parent.width
         spacing: 10
         anchors.verticalCenter: parent.verticalCenter
 
-        Text{
+        Text {
             text: qsTr("Do you want to save your changes?")
             wrapMode: Text.Wrap
         }
@@ -37,8 +37,8 @@ Dialog {
                 text: qsTr("Save")
                 width: 100
                 onClicked: {
-                    undsavedFileDialog.close();
-                    saveWithQuit(true);
+                    undsavedFileDialog.close()
+                    saveWithQuit(true)
                     //header.launchSaveFileWithQuit(true);
                 }
             }
@@ -47,8 +47,8 @@ Dialog {
                 text: qsTr("Discard")
                 width: 100
                 onClicked: {
-                    undsavedFileDialog.close();
-                    Qt.quit();
+                    undsavedFileDialog.close()
+                    Qt.quit()
                 }
             }
 
@@ -56,10 +56,9 @@ Dialog {
                 text: qsTr("Cancel")
                 width: 100
                 onClicked: {
-                    undsavedFileDialog.close(); // Just close the dialog
+                    undsavedFileDialog.close() // Just close the dialog
                 }
             }
         }
-
     }
 }

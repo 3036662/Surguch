@@ -148,7 +148,7 @@ void PdfPageRender::setNeedleHighlightRects(
 }
 
 void PdfPageRender::setCurrentNeedleRect(
-    std::shared_ptr<std::pair<size_t, fz_rect>> val) {
+    const std::shared_ptr<std::pair<size_t, fz_rect>> &val) {
     if (!needles_) {
         return;
     }

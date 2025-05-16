@@ -53,7 +53,6 @@ ApplicationWindow {
         RightSideBar {
             id: rightSideBar
         }
-
     }
 
     // --------------------------------------
@@ -202,12 +201,9 @@ ApplicationWindow {
                 } else if (result.err_string === "CERT_CHAINING_ERR") {
                     errorMessageDialog.text = qsTr(
                                 "Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.")
-                } else if (result.err_string ==="TIMEOUT"){
-                    errorMessageDialog.text =qsTr(
-                                "Error.Timeout exceeded."
-                                )
-                }
-                else {
+                } else if (result.err_string === "TIMEOUT") {
+                    errorMessageDialog.text = qsTr("Error.Timeout exceeded.")
+                } else {
                     errorMessageDialog.text = qsTr("Common error")
                 }
                 errorMessageDialog.open()
@@ -264,9 +260,10 @@ ApplicationWindow {
         // search
         headerSubBar.searchDialog.searchRequired.connect(pdfModel.performSearch)
         pdfModel.searchCompleted.connect(pdfListView.searchCompleted)
-        pdfModel.searchCompleted.connect(headerSubBar.searchDialog.searchCompleted)
+        pdfModel.searchCompleted.connect(
+                    headerSubBar.searchDialog.searchCompleted)
         headerSubBar.searchDialog.jumpToNeedle.connect(pdfModel.jumpToNeedle)
-        pdfModel.jumpToNeedleCompleted.connect(pdfListView.jumpToNeedle);
+        pdfModel.jumpToNeedleCompleted.connect(pdfListView.jumpToNeedle)
         // sign the document
         pdfListView.stampLocationSelected.connect(header.disableSignMode)
         pdfListView.stampLocationSelected.connect(sigCreator.signDoc)

@@ -292,7 +292,7 @@ ColumnLayout {
         // }
     }
 
-    SearchDialog{
-        id:searchDialog
+    SearchDialog {
+        id: searchDialog
     }
 }

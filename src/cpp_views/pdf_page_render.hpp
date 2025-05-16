@@ -64,7 +64,7 @@ class PdfPageRender : public QQuickItem {
 
     /// @brief set current needle for additional highlight
     Q_INVOKABLE void setCurrentNeedleRect(
-        std::shared_ptr<std::pair<size_t, fz_rect>>);
+        const std::shared_ptr<std::pair<size_t, fz_rect>> &);
 
     /// @brief the goal with of element
     Q_PROPERTY(float widthGoal MEMBER width_goal_ NOTIFY widthGoalChanged);

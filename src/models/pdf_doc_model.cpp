@@ -347,8 +347,12 @@ void PdfDocModel::handleSearchCompleted() {
     }
     const auto needle = text_extractor_->getNeedlePageAndXY(0);
     qWarning() << "first needle was found on page" << needle.first;
-    emit searchCompleted(needle.first, static_cast<int>(needles_total),
-                         needle.second.first, needle.second.second);
+    if (needle.first > std::numeric_limits<int>::max()) {
+        qWarning() << "[handleSearchCompleted] page index is to big for int";
+    }
+    emit searchCompleted(static_cast<int>(needle.first),
+                         static_cast<int>(needles_total), needle.second.first,
+                         needle.second.second);
 }
 
 void PdfDocModel::jumpToNeedle(int needle_index) {
