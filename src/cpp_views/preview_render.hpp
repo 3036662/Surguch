@@ -90,7 +90,7 @@ class PreviewRender : public QQuickItem {
         RGBColor border_color;
     };
 
-    /// @brief create image with user settings
+    /// @brief Create an image with user settings.
     Q_INVOKABLE void createImage(const QVariantMap &qvparams);
 
     /// @brief perfom the render
@@ -100,17 +100,17 @@ class PreviewRender : public QQuickItem {
 
    signals:
 
-    /// @brief singal when image prepared and ready for render
+    /// @brief the image is prepared and ready for render
     void imageReady();
 
-    /// @brief signal when recieved nullptr for preview image
+    /// @brief signal when received nullptr for preview image
     void errorOnImageGenerate(const QString &err_string);
 
    private:
     /// @brief prepare preview params for later use
     void preparePreviewParams(const QVariantMap &qvparams);
 
-    /// @brief save constructed image to class and signal to render it
+    /// @brief Save the constructed image to the class and signal to render it.
     void saveImage();
 
     /// @brief Gather all parameters (pdfcsp::pdf::CSignParam)

@@ -515,7 +515,7 @@ QString ProfilesModel::saveLogoImage(const QString &path,
     QFile dest_file(dest);
     if (dest_file.exists()) {
         if (dest != file_path) {
-            dest_file.remove();
+            std::ignore = dest_file.remove();
         } else {
             return dest;
         }

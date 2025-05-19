@@ -360,8 +360,12 @@ void PdfDocModel::jumpToNeedle(int needle_index) {
         return;
     }
     const auto needle = text_extractor_->getNeedlePageAndXY(needle_index);
-    emit jumpToNeedleCompleted(needle.first, needle.second.first,
-                               needle.second.second);
+    if (needle.first > std::numeric_limits<int>::max()) {
+        qWarning()
+            << "[PdfDocModel::jumpToNeedle] the page index is to big for int";
+    }
+    emit jumpToNeedleCompleted(static_cast<int>(needle.first),
+                               needle.second.first, needle.second.second);
     // qWarning() << "[PdfDocModel] Jump to needle " << needle_index;
 }
 
