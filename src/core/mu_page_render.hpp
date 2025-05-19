@@ -18,6 +18,9 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef MU_PAGE_RENDER_HPP
 #define MU_PAGE_RENDER_HPP
 
+#include <vector>
+
+#include "../core/utils.hpp"
 #include "mupdf/fitz.h"
 
 namespace core {
@@ -58,9 +61,14 @@ class MuPageRender {
                                        float goal_zoom,
                                        float screen_dpi) const noexcept;
 
+    void SetNeedleRects(core::utils::NeedleRectsOnPage needles) noexcept {
+        needles_ = std::move(needles);
+    }
+
    private:
     fz_context *fzctx_ = nullptr;
     fz_document *fzdoc_ = nullptr;
+    core::utils::NeedleRectsOnPage needles_;  // not owning
 };
 
 }  // namespace core

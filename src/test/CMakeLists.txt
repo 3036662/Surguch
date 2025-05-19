@@ -15,21 +15,29 @@ qt_add_executable(test2 test_common2.cpp
 
 add_test(NAME test1 COMMAND mytest)
 add_test(NAME test2 COMMAND mytest2)
+qt_add_executable(test_search
+      test_search.cpp
+      tsearch.hpp tsearch.cpp)
 
-target_include_directories(test1 PUBLIC ${CMAKE_SOURCE_DIR}/src/)
-target_include_directories(test1 PRIVATE ${MUPDF_INCLUDE_DIR})
+qt_add_executable(test_search2
+          tsearch_multhreaded.cpp)
 
-target_include_directories(test1 PUBLIC ${CMAKE_SOURCE_DIR}/src/core/csp_c_bridge)
+add_test(NAME test_search COMMAND test_search)
 
-target_include_directories(test1 PUBLIC
+include_directories(test1 PUBLIC ${CMAKE_SOURCE_DIR}/src/)
+include_directories(test1 PUBLIC ${MUPDF_INCLUDE_DIR})
+
+include_directories(test1 PUBLIC ${CMAKE_SOURCE_DIR}/src/core/csp_c_bridge)
+
+include_directories(test1 PUBLIC
     ${PDFCSP_INCLUDE_DIR}
 )
 
-target_include_directories(test1 PUBLIC
+include_directories(test1 PUBLIC
     ${PDFCSP_INCLUDE_DIR}csp/checks
 )
 
-target_include_directories(test1 PUBLIC
+include_directories(test1 PUBLIC
     ${PDFCSP_INCLUDE_DIR}csp
 )
 
@@ -77,3 +85,18 @@ target_link_libraries(test2
 target_link_libraries(test2 PRIVATE ${MUPDF_LINK_PATH})
 
 target_compile_definitions(test2 PUBLIC -DTEST_FILES_DIR="${CMAKE_SOURCE_DIR}/test_files/")
+add_compile_definitions(test1 PUBLIC -DTEST_FILES_DIR="${CMAKE_SOURCE_DIR}/test_files/")
+add_compile_definitions(test_search2 PUBLIC -DTEST_FILES_DIR="${CMAKE_SOURCE_DIR}/test_files/")
+
+target_link_libraries(test_search PUBLIC Qt::Test )
+target_link_libraries(test_search PUBLIC appcore csp_c_bridge_qt)
+
+target_link_libraries(test_search
+     PUBLIC ${MUPDF_LINK_PATH}  PRIVATE ${PDFCSP_LINK_PATH}
+)
+
+target_link_libraries(test_search2 PUBLIC appcore csp_c_bridge_qt)
+target_link_libraries(test_search2
+     PUBLIC ${MUPDF_LINK_PATH}  PRIVATE ${PDFCSP_LINK_PATH}
+)
+

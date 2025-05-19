@@ -21,11 +21,13 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QAbstractListModel>
 
 #include "core/raw_signature.hpp"
+#include "core/text_extractor.hpp"
 #include "mupdf/fitz.h"
 #include "mupdf/pdf.h"
 
 class PdfDocModel : public QAbstractListModel {
     Q_OBJECT
+    using NeedleRectsOnPage = core::utils::NeedleRectsOnPage;
 
    public:
     explicit PdfDocModel(QObject *parent = nullptr);
@@ -76,10 +78,25 @@ class PdfDocModel : public QAbstractListModel {
     Q_PROPERTY(
         qreal screenDpi MEMBER physical_screen_dpi_ NOTIFY screenDpiChanged)
 
+    /// @brief Extract the text for search purposes.
+    Q_PROPERTY(bool mustExtractText MEMBER extract_text_)
+
     /// low level getters to connect the MuPDF model with renderer
     [[nodiscard]] Q_INVOKABLE fz_document *getDoc() const;
     [[nodiscard]] Q_INVOKABLE fz_context *getCtx() const;
     [[nodiscard]] Q_INVOKABLE pdf_document *getPdfDoc() const;
+
+    /// @brief returns a vector of rectangles to highligt
+    [[nodiscard]] Q_INVOKABLE NeedleRectsOnPage
+    getNeedlesForPage(size_t page_index);
+
+    /// @brief search for text
+    Q_INVOKABLE void performSearch(QString needle);
+
+    Q_INVOKABLE void jumpToNeedle(int needle_index);
+
+    Q_INVOKABLE std::shared_ptr<core::TextExtractor::RectToHiglightCurrent>
+    getCurrentNeedleRect(size_t page_index);
 
    signals:
 
@@ -97,6 +114,16 @@ class PdfDocModel : public QAbstractListModel {
 
     void docWasRepaired();
 
+    /// @brief search is completed
+    void searchCompleted(int first_needle_page_index, int total_needles,
+                         float x_position, float y_position);
+
+    /// @brief jump to needle by index completed
+    void jumpToNeedleCompleted(int page_index, float rel_x, float rel_y);
+
+   private slots:
+    void handleSearchCompleted();
+
    private:
     /// @brief find all signatures
     void processSignatures();
@@ -113,6 +140,11 @@ class PdfDocModel : public QAbstractListModel {
     bool process_file_delete_ = false;
     qreal physical_screen_dpi_ = 72;  // default MuPDF DPI
     std::vector<QString> tmp_files_to_delete_;
+    bool extract_text_ = false;
+    std::unique_ptr<core::TextExtractor> text_extractor_;
+
+    fz_context *fzctx_text_ = nullptr;
+    fz_document *fzdoc_text_ = nullptr;
 };
 
 #endif  // pdf_doc_model_HPP

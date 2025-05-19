@@ -110,6 +110,7 @@ ELSE()
         QML_FILES views/SettingSlider.qml
         QML_FILES views/StampPreview.qml
         SOURCES cpp_views/preview_render.hpp cpp_views/preview_render.cpp
+        QML_FILES views/SearchDialog.qml
     )
 
     qt6_import_qml_plugins(surguch)

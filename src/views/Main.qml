@@ -18,6 +18,8 @@ ApplicationWindow {
     visibility: Window.Maximized
     title: qsTr("Surguch")
 
+    property string focusOwnerId
+
     // --------------------------------------
     // header
     header: ToolBar {
@@ -107,6 +109,7 @@ ApplicationWindow {
         id: pdfModel
         mustProcessSignatures: true
         mustDeleteTmpFiles: true
+        mustExtractText: true
     }
 
     ProfilesModel {
@@ -267,6 +270,7 @@ ApplicationWindow {
         headerSubBar.rotateClockwise.connect(pdfListView.rotateClockWise)
         headerSubBar.rotateCounterClockWise.connect(
                     pdfListView.rotateCounterClockWise)
+        headerSubBar.se
         // enable/disable zoom
         pdfListView.maxZoomReached.connect(headerSubBar.disableZoom)
         pdfListView.canZoom.connect(headerSubBar.enableZoom)
@@ -275,6 +279,13 @@ ApplicationWindow {
         // toggle from preview to certs in left sidebat
         headerSubBar.showPreviews.connect(leftSideBar.showPreviews)
         headerSubBar.showCerts.connect(leftSideBar.showCerts)
+        // search
+        headerSubBar.searchDialog.searchRequired.connect(pdfModel.performSearch)
+        pdfModel.searchCompleted.connect(pdfListView.searchCompleted)
+        pdfModel.searchCompleted.connect(
+                    headerSubBar.searchDialog.searchCompleted)
+        headerSubBar.searchDialog.jumpToNeedle.connect(pdfModel.jumpToNeedle)
+        pdfModel.jumpToNeedleCompleted.connect(pdfListView.jumpToNeedle)
         // sign the document
         pdfListView.stampLocationSelected.connect(header.disableSignMode)
         pdfListView.stampLocationSelected.connect(sigCreator.signDoc)

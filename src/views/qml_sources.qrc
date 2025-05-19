@@ -28,5 +28,6 @@
         <file>StampPreview.qml</file>
         <file>StampEditor.qml</file>
         <file>SettingSlider.qml</file>
+        <file>SearchDialog.qml</file>
     </qresource>
 </RCC>

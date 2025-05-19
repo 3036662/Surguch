@@ -79,9 +79,11 @@ QSGNode *PdfPageRender::updatePaintNode(
         rectNode->setFiltering(QSGTexture::Linear);
         rectNode->setOwnsTexture(true);
     }
+    // qWarning() << "PdfPageRender: render page" << page_number_;
     if (!image_) {
         try {
-            const core::MuPageRender mupdf(fzctx_, fzdoc_);
+            core::MuPageRender mupdf(fzctx_, fzdoc_);
+            mupdf.SetNeedleRects(needles_);
             const core::RenderRes render_result = mupdf.RenderPage(
                 page_number_, custom_rotation_, /* width(),*/ dev_pix_ratio_,
                 width_goal_, zoom_goal_, screen_dpi_);
@@ -137,3 +139,25 @@ void PdfPageRender::setCtx(fz_context *fzctx) { fzctx_ = fzctx; }
 void PdfPageRender::setPageNumber(int page_number) {
     page_number_ = page_number;
 }
+
+/// @brief set rectangles to highlight the needles
+/// @details does not own the pointer
+void PdfPageRender::setNeedleHighlightRects(
+    core::utils::NeedleRectsOnPage needles) {
+    needles_ = std::move(needles);
+}
+
+void PdfPageRender::setCurrentNeedleRect(
+    const std::shared_ptr<std::pair<size_t, fz_rect>> &val) {
+    if (!needles_) {
+        return;
+    }
+    if (!val || page_number_ != val->first) {
+        needles_->highlight_current = false;
+        image_.reset();
+        return;
+    }
+    needles_->highlight_current = true;
+    needles_->current = val->second;
+    image_.reset();
+};

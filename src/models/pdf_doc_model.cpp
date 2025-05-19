@@ -72,6 +72,13 @@ PdfDocModel::~PdfDocModel() {
     if (fzctx_ != nullptr) {
         fz_drop_context(fzctx_);
     }
+    if (fzdoc_text_ != nullptr) {
+        fz_drop_document(fzctx_text_, fzdoc_text_);
+    }
+    if (fzctx_text_ != nullptr) {
+        fz_drop_context(fzctx_text_);
+    }
+
     file_source_.clear();  // drop current source to allow deletion
     processFileDelete();   // delete temp files
 }
@@ -179,6 +186,35 @@ void PdfDocModel::setSource(const QString &path) {
     if (process_signatures_) {
         processSignatures();
     }
+    // Extract text
+    if (extract_text_) {
+        fz_drop_document(fzctx_text_, fzdoc_text_);
+        fz_drop_context(fzctx_text_);
+        fzctx_text_ = fz_new_context(nullptr, nullptr, 100000000);
+        bool text_ctx_err_catched = false;
+        fz_var(fzdoc_text_);
+        fz_var(text_ctx_err_catched);
+        fz_try(fzctx_text_) {
+            fz_set_aa_level(fzctx_text_, 0);
+            fz_register_document_handlers(fzctx_text_);
+            fzdoc_text_ = fz_open_document(fzctx_text_, local_path_std.c_str());
+            if (fzdoc_text_ == nullptr) {
+                qWarning("Can't open file");
+            }
+        }
+        fz_catch(fzctx_text_) {
+            text_ctx_err_catched = true;
+            fz_report_error(fzctx_text_);
+        }
+        if (!text_ctx_err_catched) {
+            text_extractor_ =
+                std::make_unique<core::TextExtractor>(fzctx_text_, fzdoc_text_);
+            text_extractor_->updateCache();
+            QObject::connect(text_extractor_.get(),
+                             &core::TextExtractor::searchCompleted, this,
+                             &PdfDocModel::handleSearchCompleted);
+        };
+    }
 }
 
 /// @brief get current source path
@@ -192,7 +228,7 @@ pdf_document *PdfDocModel::getPdfDoc() const { return pdfdoc_; }
 
 /// @brief resert the whole model
 void PdfDocModel::redrawAll() {
-    // qWarning() << "redraw all";
+    qWarning() << "[PdfDocModel] redraw all";
     beginResetModel();
     endResetModel();
 }
@@ -282,4 +318,58 @@ void PdfDocModel::showInFolder() {
     QDesktopServices::openUrl(folder_url);
 }
 
+/// @brief returns a vector of rectangles to highligt
+PdfDocModel::NeedleRectsOnPage PdfDocModel::getNeedlesForPage(
+    size_t page_index) {
+    // qWarning() << "getNeedlesForPage" << page_index;
+    if (!text_extractor_) {
+        return nullptr;
+    }
+    return text_extractor_->getNeedlesForPage(page_index);
+}
+
+/// @brief search for text
+void PdfDocModel::performSearch(QString needle) {
+    qWarning() << "search for " << needle;
+    if (text_extractor_) {
+        text_extractor_->performSearch(needle, false);
+    }
+}
+
+void PdfDocModel::handleSearchCompleted() {
+    if (!text_extractor_) {
+        return;
+    }
+    const auto needles_total = text_extractor_->getNeedlesTotal();
+    if (needles_total > std::numeric_limits<int>::max()) {
+        qWarning() << "[PdfDocModel] needles_total is too big";
+        return;
+    }
+    const auto needle = text_extractor_->getNeedlePageAndXY(0);
+    qWarning() << "first needle was found on page" << needle.first;
+    if (needle.first > std::numeric_limits<int>::max()) {
+        qWarning() << "[handleSearchCompleted] page index is to big for int";
+    }
+    emit searchCompleted(static_cast<int>(needle.first),
+                         static_cast<int>(needles_total), needle.second.first,
+                         needle.second.second);
+}
+
+void PdfDocModel::jumpToNeedle(int needle_index) {
+    if (needle_index < 0 || !text_extractor_) {
+        return;
+    }
+    const auto needle = text_extractor_->getNeedlePageAndXY(needle_index);
+    emit jumpToNeedleCompleted(needle.first, needle.second.first,
+                               needle.second.second);
+    // qWarning() << "[PdfDocModel] Jump to needle " << needle_index;
+}
+
+std::shared_ptr<core::TextExtractor::RectToHiglightCurrent>
+PdfDocModel::getCurrentNeedleRect(size_t page_index) {
+    if (!text_extractor_) {
+        return nullptr;
+    }
+    return text_extractor_->getCurrentNeedleRect(page_index);
+}
 // NOLINTEND(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)

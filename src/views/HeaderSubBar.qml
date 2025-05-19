@@ -5,6 +5,8 @@ import StyleSheet
 
 ColumnLayout {
 
+    property alias searchDialog: searchDialog
+
     signal zoomInClicked
     signal zoomOutClicked
     signal zoomSelected(int newZoom)
@@ -24,7 +26,7 @@ ColumnLayout {
     }
 
     function updateZoomValue(zoom) {
-        if (zoom===-1){
+        if (zoom === -1) {
             comboBoxZoom.currentIndex = -1
             comboBoxZoom.displayText = comboBoxZoom.model[0]
             return
@@ -281,31 +283,16 @@ ColumnLayout {
         }
 
         // search
+        HeaderToolSeparator {}
+        Button {
+            id: searchButton
+            flat: true
+            icon.source: "qrc:/icons/search-custom.svg"
+            height: 24
+            smooth: true
+            onClicked: searchDialog.open()
+        }
 
-        //HeaderToolSeparator {}
-        // Row {
-        //     Rectangle {
-        //         width: 10
-        //         height: parent.height
-        //         color: "transparent"
-        //     }
-        //     TextField {
-        //         placeholderText: qsTr("Search")
-        //         maximumLength: 100
-        //         Layout.preferredWidth: 150
-        //         horizontalAlignment: TextInput.AlignLeft
-        //         rightPadding: 30
-        //         Button {
-        //             flat: true
-        //             icon.source: "qrc:/icons/search-custom.svg"
-        //             anchors.top: parent.top
-        //             anchors.bottom: parent.bottom
-        //             height: 24
-        //             smooth: true
-        //             anchors.right: parent.right
-        //         }
-        //     }
-        // }
         Rectangle {
             color: "transparent"
             Layout.fillHeight: true
@@ -322,5 +309,9 @@ ColumnLayout {
         //     rightPadding: 5
         //     Layout.alignment: Qt.AlignRight
         // }
+    }
+
+    SearchDialog {
+        id: searchDialog
     }
 }

@@ -57,6 +57,15 @@ class PdfPageRender : public QQuickItem {
     /// @brief set index of a page to render
     Q_INVOKABLE void setPageNumber(int page_number);
 
+    /// @brief set rectangles to highlight the needles
+    /// @details does not own the pointer
+    Q_INVOKABLE void setNeedleHighlightRects(
+        core::utils::NeedleRectsOnPage needles);
+
+    /// @brief set current needle for additional highlight
+    Q_INVOKABLE void setCurrentNeedleRect(
+        const std::shared_ptr<std::pair<size_t, fz_rect>> &);
+
     /// @brief the goal with of element
     Q_PROPERTY(float widthGoal MEMBER width_goal_ NOTIFY widthGoalChanged);
     /// @brief the goal zoom of element
@@ -92,6 +101,7 @@ class PdfPageRender : public QQuickItem {
     float screen_dpi_ = 72;
     float result_zoom_last_ = 1;
     float custom_rotation_ = 0;
+    core::utils::NeedleRectsOnPage needles_;  // not owning
 };
 
 #endif  // PDF_PAGE_RENDER_HPP

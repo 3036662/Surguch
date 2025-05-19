@@ -68,8 +68,9 @@ RenderRes MuPageRender::RenderPage(int page_number, float custom_rot_value,
         separation = fz_page_separations(fzctx_, page);
         fz_rect page_rect = fz_bound_page(fzctx_, page);
         const fz_matrix custom_rotation_matrix = fz_rotate(custom_rot_value);
-        page_rect = fz_transform_rect(
-            page_rect, custom_rotation_matrix);  // page size 72dpi
+        page_rect =
+            fz_transform_rect(page_rect,
+                              custom_rotation_matrix);  // page size 72dpi
         fz_colorspace *color_space = fz_device_rgb(fzctx_);
         // a dpi multiplier to render the pdf page with good quality
         float zoom_dpi = 1;  // 72 dpi x multiplier
@@ -143,8 +144,42 @@ RenderRes MuPageRender::RenderPage(int page_number, float custom_rot_value,
         }
         draw_device = fz_new_draw_device(fzctx_, transform_device,
                                          pixmap);  // fz_identity
+
         fz_run_page(fzctx_, page, draw_device, transform_run_page, nullptr);
+
+        if (needles_ && !needles_->needle_rects.empty()) {
+            size_t size = needles_->needle_rects.size();
+            for (size_t i = 0; i < size; ++i) {
+                float rgb[3] = {1, 1, 0};
+                fz_path *path = fz_new_path(fzctx_);
+                const auto &needle = needles_->needle_rects[i];
+                fz_rectto(fzctx_, path, needle.x0, needle.y0, needle.x1,
+                          needle.y1);
+                fz_fill_path(fzctx_, draw_device, path, 0, transform_run_page,
+                             color_space, rgb, 0.5, fz_default_color_params);
+                fz_drop_path(fzctx_, path);
+            }
+            // additional highlight for current needle
+            if (needles_->highlight_current) {
+                const auto &current = needles_->current;
+                // qWarning() << "curr needle rect:" << current.x0 << " "
+                //<< current.y0 << "\n";
+                if (!fz_is_empty_rect(current) &&
+                    !fz_is_infinite_rect(current)) {
+                    float rgb[3] = {150, 0, 0};
+                    fz_path *path = fz_new_path(fzctx_);
+                    fz_rectto(fzctx_, path, current.x0, current.y0, current.x1,
+                              current.y1);
+                    fz_stroke_path(fzctx_, draw_device, path,
+                                   &fz_default_stroke_state, transform_run_page,
+                                   color_space, rgb, 0.6,
+                                   fz_default_color_params);
+                    fz_drop_path(fzctx_, path);
+                }
+            }
+        }
         // copy pixmap data to buffer, connect this buffer with an QImage
+
         res.pix_stride = pixmap->stride;
         unsigned char *samples = pixmap->samples;
         auto buff_size = res.pix_stride * pixmap->h;
