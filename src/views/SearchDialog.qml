@@ -28,7 +28,7 @@ Dialog {
         }
     }
 
-    width: 300
+    width: 325
     height: 50
     x: searchButton.x - width / 2
     y: parent.y
@@ -122,7 +122,7 @@ Dialog {
             height: parent.height
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: StyleSheet.chevron_up
+            icon.source: StyleSheet.chevron_down
             icon.width: 20
             icon.height: 20
             leftPadding: 0
@@ -143,7 +143,7 @@ Dialog {
             height: parent.height
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: StyleSheet.chevron_down
+            icon.source: StyleSheet.chevron_up
             icon.width: 20
             icon.height: 20
             leftPadding: 0
