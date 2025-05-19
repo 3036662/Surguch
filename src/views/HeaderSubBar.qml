@@ -287,7 +287,7 @@ ColumnLayout {
         Button {
             id: searchButton
             flat: true
-            icon.source: "qrc:/icons/search-custom.svg"
+            icon.source: StyleSheet.search_icon
             height: 24
             smooth: true
             onClicked: searchDialog.open()
@@ -314,4 +314,12 @@ ColumnLayout {
     SearchDialog {
         id: searchDialog
     }
+
+    Shortcut {
+            sequence: "Ctrl+F"
+            onActivated: {
+                searchDialog.open()
+                searchDialog.focus = true;
+            }
+        }
 }

@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import StyleSheet
 
 Dialog {
     id: searchDialog
@@ -65,6 +66,7 @@ Dialog {
                 anchors.fill: parent
                 anchors.margins: 4
                 maximumLength: 100
+                color: StyleSheet.font_color_extra
                 horizontalAlignment: TextInput.AlignHLeft
                 verticalAlignment: TextInput.AlignVCenter
                 focus: true
@@ -105,6 +107,7 @@ Dialog {
             width: childrenRect.width
             Text {
                 text: currentIndex + "/" + needlesCount
+                color: StyleSheet.font_color_extra
                 anchors.verticalCenter: parent.verticalCenter
                 verticalAlignment: Text.AlignVCenter
             }
@@ -119,10 +122,9 @@ Dialog {
             height: parent.height
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/search-next.svg"
+            icon.source: StyleSheet.chevron_up
             icon.width: 20
             icon.height: 20
-            icon.color: "black"
             leftPadding: 0
             topPadding: 0
             rightPadding: 0
@@ -141,10 +143,9 @@ Dialog {
             height: parent.height
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/search-previous.svg"
+            icon.source: StyleSheet.chevron_down
             icon.width: 20
             icon.height: 20
-            icon.color: "black"
             leftPadding: 0
             topPadding: 0
             rightPadding: 0
@@ -162,10 +163,9 @@ Dialog {
             height: parent.height
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/close_icon.svg"
+            icon.source: StyleSheet.close_icon
             icon.width: 20
             icon.height: 20
-            icon.color: "black"
             leftPadding: 0
             topPadding: 0
             rightPadding: 0

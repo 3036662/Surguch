@@ -49,9 +49,9 @@
         <file>icons/light/trash.svg</file>
         <file>icons/dark/trash.svg</file>
         <file>icons/dark/save.svg</file>
-        <file>icons/search-next.svg</file>
-        <file>icons/search-previous.svg</file>
-        <file>icons/search-custom.svg</file>
-        <file>icons/close_icon.svg</file>
+        <file>icons/dark/chevron_down.svg</file>
+        <file>icons/dark/chevron_up.svg</file>
+        <file>icons/light/chevron_up.svg</file>
+        <file>icons/light/chevron_down.svg</file>
     </qresource>
 </RCC>
