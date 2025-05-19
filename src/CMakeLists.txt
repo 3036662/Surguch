@@ -71,6 +71,7 @@ IF(${Qt6_VERSION_MINOR} VERSION_LESS 5 )
 ELSE()
 
     qt_policy(SET QTP0001 NEW)
+    qt_policy(SET QTP0004 NEW)
 
     add_definitions(-DQT_LOAD_FROM_MODULE=1)
     qt_add_executable(surguch
