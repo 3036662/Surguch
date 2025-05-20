@@ -70,7 +70,7 @@ class ProfilesModel : public QAbstractListModel {
     /// @brief check if the given stamp name is unique
     [[nodiscard]] Q_INVOKABLE bool uniqueStampName(QString stamp_name);
 
-    /// @brief update profiles if their stamp if stamp model was deleted
+    /// @brief Update profiles if their stamp model was deleted.
     Q_INVOKABLE void updateProfiles(const QString &stamp_name);
 
     /// @brief path to config directory (/home/$user/.config)
