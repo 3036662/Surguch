@@ -149,6 +149,9 @@ void PreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
     }
     if (qvparams.contains("logo_path")) {
         params_.logo_path = qvparams.value("logo_path").toUrl().toLocalFile();
+        if (params_.logo_path.isEmpty()) {
+            params_.logo_path = qvparams.value("logo_path").toString();
+        }
     }
     if (qvparams.contains("config_path")) {
         params_.config_path = qvparams.value("config_path").toString();

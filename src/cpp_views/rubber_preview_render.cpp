@@ -1,0 +1,266 @@
+#include "rubber_preview_render.hpp"
+
+#include <QFuture>
+#include <QPainter>
+#include <QSGGeometryNode>
+#include <QSGNode>
+#include <QSGSimpleTextureNode>
+#include <QScreen>
+#include <QThread>
+#include <QtConcurrent>
+#include <QtMath>
+#include <memory>
+
+RubberPreviewRender::RubberPreviewRender() {
+    setFlag(QQuickItem::ItemHasContents, true);
+    setClip(true);
+    const qreal pix_rat = QWindow().devicePixelRatio();
+    if (pix_rat > 2) {
+        dev_pix_ratio_ = static_cast<float>(pix_rat);
+    }
+}
+
+QSGNode *RubberPreviewRender::updatePaintNode(
+    QSGNode *node,
+    [[maybe_unused]] QQuickItem::UpdatePaintNodeData *updatePaintNodeData) {
+    QSGSimpleTextureNode *rectNode = nullptr;
+    if (node != nullptr) {
+        rectNode = dynamic_cast<QSGSimpleTextureNode *>(node);
+        if (!isVisible()) {
+            // qWarning()<<"return same node, not visible";
+            return node;
+        }
+    }
+    if (rectNode == nullptr) {
+        if (!size().isValid()) {
+            return node;
+        }
+        // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
+        rectNode = new QSGSimpleTextureNode();
+        rectNode->setFiltering(QSGTexture::Linear);
+        rectNode->setOwnsTexture(true);
+    }
+
+    if (result_ == nullptr || result_->image_ == nullptr) {
+        auto img =
+            std::make_unique<QImage>(size().toSize(), QImage::Format_RGB888);
+        img->fill(Qt::white);  // Fill the image with white color
+        QSGTexture *texture = window()->createTextureFromImage(*img);
+        if (texture != nullptr) {
+            rectNode->setTexture(texture);
+            rectNode->setRect(QRectF(0, 0, width(), height()));
+        }
+        return rectNode;
+    }
+    QSGTexture *texture = nullptr;
+    if (result_->data_->resolution_x > 400) {
+        QSGTexture *texture = window()->createTextureFromImage((*result_->image_).scaled(400,
+            400 * (static_cast<double>(result_->data_->resolution_y / static_cast<double>(result_->data_->resolution_x))) ,
+            Qt::KeepAspectRatio));
+        setHeight(400 * (static_cast<double>(result_->data_->resolution_y / static_cast<double>(result_->data_->resolution_x))));
+        setWidth(400);
+        if (texture != nullptr) {
+            rectNode->setTexture(texture);
+            rectNode->setRect(QRectF(0, 0, width(), height()));
+        }
+        return rectNode;
+    }
+    if (result_->data_->resolution_y > 400) {
+        QSGTexture *texture = window()->createTextureFromImage((*result_->image_).scaled(
+            400 * (static_cast<double>(result_->data_->resolution_x) / static_cast<double>(result_->data_->resolution_y)),
+        400 ,
+        Qt::KeepAspectRatio));
+        setHeight(400);
+        setWidth(400 * (static_cast<double>(result_->data_->resolution_x) / static_cast<double>(result_->data_->resolution_y)));
+        if (texture != nullptr) {
+            rectNode->setTexture(texture);
+            rectNode->setRect(QRectF(0, 0, width(), height()));
+        }
+        return rectNode;
+    }
+    if (result_->data_->resolution_x <= 400 && result_->data_->resolution_y <= 400) {
+        QSGTexture *texture = window()->createTextureFromImage((*result_->image_));
+        setWidth(result_->data_->resolution_x);
+        setHeight(result_->data_->resolution_y);
+        if (texture != nullptr) {
+            rectNode->setTexture(texture);
+            rectNode->setRect(QRectF(0, 0, width(), height()));
+        }
+        return rectNode;
+    }
+    // if (texture != nullptr) {
+    //     rectNode->setTexture(texture);
+    //     rectNode->setRect(QRectF(0, 0, width(), height()));
+    // }
+    return rectNode;
+}
+
+void RubberPreviewRender::createImage(const QVariantMap &qvparams) {
+    preparePreviewParams(qvparams);
+    auto params_wrapper = createParams();
+    image_watcher_ = std::make_unique<ImageFutureWatcher>();
+    QObject::connect(image_watcher_.get(), &ImageFutureWatcher::finished,
+                     [this]() {
+                         // qWarning() << "finished";
+                         saveImage();
+                     });
+    image_future_ = std::make_unique<ImageFuture>(
+        QtConcurrent::run(prepareImage, params_wrapper));
+    image_watcher_->setFuture(*image_future_);
+}
+
+void RubberPreviewRender::saveImage() {
+    if (image_future_ && image_future_->isValid()) {
+        result_ = image_future_->takeResult();
+    }
+    if (result_ && result_->image_ && result_->image_->width() != 0) {
+        // qWarning() << "width " << width();
+        // qWarning() << "result->resolution_y " << result_->image_->height();
+        // qWarning() << "result->resolution_x " << result_->image_->width();
+        // setHeight(static_cast<double>(result_->image_->height()) /
+        //           result_->image_->width() * width());
+        // setWidth(static_cast<double>(params_.annotation_text.size() * 30));
+        // qWarning() << static_cast<double>(result_->image_->height()) /
+        //                   result_->image_->width() * width();
+    }
+    emit imageReady();
+}
+
+std::unique_ptr<BakeRubberResult> prepareImage(
+    const RubberPreviewRender::SharedParamWrapper &params) {
+    auto result = std::make_unique<BakeRubberResult>(BakeRubberResult{
+        std::unique_ptr<pdfcsp::pdf::BakeRubberStamResult,
+                        void (*)(pdfcsp::pdf::BakeRubberStamResult *)>(
+            pdfcsp::pdf::BakeRubberStamp(params->pod_params),
+            pdfcsp::pdf::FreeRubberStampResult),
+        std::unique_ptr<QImage>()});
+    // qWarning() << "result pointer:" << result.get();
+    if (result && result->data_ && result->data_->img != nullptr &&
+        result->data_->img_size > 0) {
+        result->image_ = std::make_unique<QImage>(
+            result->data_->img, result->data_->resolution_x,
+            result->data_->resolution_y, result->data_->resolution_x * 3,
+            QImage::Format_RGB888);
+        qWarning() << "resolution_x = " << result->data_->resolution_x;
+        qWarning() << "resolution_y = " << result->data_->resolution_y;
+    }
+    return result;
+}
+
+/// @brief prepare rubber preview params for later use
+void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
+    if (qvparams.contains("stamp_width")) {
+        //params_.stamp_width = qvparams.value("stamp_width").toUInt();
+        params_.stamp_width = 400;
+    }
+    if (qvparams.contains("stamp_height")) {
+        //params_.stamp_height = qvparams.value("height").toUInt();
+        params_.stamp_height = 400;
+    }
+    if (qvparams.contains("border_width")) {
+        params_.border_width = qvparams.value("border_width").toUInt();
+    }
+    if (qvparams.contains("border_radius")) {
+        params_.border_radius = qvparams.value("border_radius").toUInt();
+    }
+    if (qvparams.contains("bg_transparent")) {
+        params_.bg_transparent = qvparams.value("bg_transparent").toBool();
+    }
+    if (qvparams.contains("create_from_image")) {
+        params_.create_from_image = qvparams.value("create_from_image").toBool();
+    }
+    if (qvparams.contains("stamp_preserve_ratio")) {
+        //params_.stamp_preserve_ratio = qvparams.value("stamp_preserve_ratio").toBool();
+        params_.stamp_preserve_ratio = true;
+    }
+    if (qvparams.contains("bg_opacity")) {
+        params_.bg_opacity = qvparams.value("bg_opacity").toUInt();
+    }
+    if (qvparams.contains("font_size")) {
+        params_.font_size = qvparams.value("font_size").toUInt();
+    }
+    if (qvparams.contains("font_weight")) {
+        //params_.font_weight = qvparams.value("font_weight").toUInt();
+        params_.font_weight = 400;
+    }
+    if (qvparams.contains("img_path")) {
+        params_.img_path = qvparams.value("img_path").toUrl().toLocalFile();
+        qWarning() << "img_path:" << params_.img_path;
+    }
+    if (qvparams.contains("annotation_text")) {
+        params_.annotation_text = qvparams.value("annotation_text").toString();
+    }
+    if (qvparams.contains("font_family")) {
+        params_.font_family = qvparams.value("font_family").toString();
+        qWarning() << "font_family:" << params_.font_family;
+    }
+    if (qvparams.contains("border_color_red")) {
+        params_.border_color.R = qvparams.value("border_color_red").toUInt();
+    }
+    if (qvparams.contains("border_color_green")) {
+        params_.border_color.G = qvparams.value("border_color_green").toUInt();
+    }
+    if (qvparams.contains("border_color_blue")) {
+        params_.border_color.B = qvparams.value("border_color_blue").toUInt();
+    }
+    if (qvparams.contains("text_color_red")) {
+        params_.text_color.R = qvparams.value("text_color_red").toUInt();
+    }
+    if (qvparams.contains("text_color_green")) {
+        params_.text_color.G = qvparams.value("text_color_green").toUInt();
+    }
+    if (qvparams.contains("text_color_blue")) {
+        params_.text_color.B = qvparams.value("text_color_blue").toUInt();
+    }
+    if (qvparams.contains("bg_color_red")) {
+        params_.bg_color.R = qvparams.value("bg_color_red").toUInt();
+    }
+    if (qvparams.contains("bg_color_green")) {
+        params_.bg_color.G = qvparams.value("bg_color_green").toUInt();
+    }
+    if (qvparams.contains("bg_color_blue")) {
+        params_.bg_color.B = qvparams.value("bg_color_blue").toUInt();
+    }
+}
+
+/// @brief Gather all parameters (pdfcsp::pdf::RubberStampParams)
+RubberPreviewRender::SharedParamWrapper RubberPreviewRender::createParams() const{
+    auto params_wrapper = std::make_shared<CRubberParamsWrapper>();
+    pdfcsp::pdf::RubberStampParams &pod_params = params_wrapper->pod_params;
+    params_wrapper->qb_img_path = params_.img_path.toUtf8();
+    if (!params_wrapper->qb_img_path.isEmpty()) {
+        pod_params.src_img_path = params_wrapper->qb_img_path.data();
+    }
+    pod_params.target_x = params_.stamp_width;
+    pod_params.target_y = params_.stamp_height;
+    pod_params.stamp_preserve_ratio = params_.stamp_preserve_ratio;
+    pod_params.create_from_image = params_.create_from_image;
+    params_wrapper->qb_annotation_text = params_.annotation_text.toUtf8();
+    if (!params_wrapper->qb_annotation_text.isEmpty()) {
+        pod_params.annotation_text = params_wrapper->qb_annotation_text.data();
+    }
+    pod_params.bg_color.red = params_.bg_color.R;
+    pod_params.bg_color.green = params_.bg_color.G;
+    pod_params.bg_color.blue = params_.bg_color.B;
+    pod_params.font_color.red = params_.text_color.R;
+    pod_params.font_color.green = params_.text_color.R;
+    pod_params.font_color.blue = params_.text_color.R;
+    pod_params.border_color.red = params_.border_color.R;
+    pod_params.border_color.green = params_.border_color.R;
+    pod_params.border_color.blue = params_.border_color.R;
+    params_wrapper->qb_font_family = params_.font_family.toUtf8();
+    if (!params_wrapper->qb_font_family.isEmpty()) {
+        pod_params.font_family = params_wrapper->qb_font_family.data();
+    }
+    pod_params.border_radius = params_.border_radius;
+    pod_params.border_width = params_.border_width;
+    pod_params.font_size = 1; //params_.font_size;
+    pod_params.font_weight = 400; //params_.font_weight;
+    pod_params.bg_transparent = params_.bg_transparent;
+    pod_params.bg_opacity = params_.bg_opacity;
+    pod_params.annotation_width = params_.annotation_text.size() * 100;
+    qWarning() << "annot width = " << params_.annotation_text.size() * 100;
+    qWarning() << "border_width = " << params_.border_width;
+    qWarning() << "border_radius = " << params_.border_radius;
+    return params_wrapper;
+}

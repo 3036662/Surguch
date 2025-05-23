@@ -1,0 +1,263 @@
+#include  "rubber_stamp_model.hpp"
+
+#include <QDir>
+#include <QFileInfo>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QStandardPaths>
+
+#include "bridge_utils.hpp"
+
+RubberStampModel::RubberStampModel(QObject* parent)
+    : QAbstractListModel(parent),
+      approve_stamp_title_{tr("Approve")},
+      decline_stamp_title_{tr("Decline")},
+      create_stamp_title_{tr("CreateStamp")} {
+    role_names_[TitleRole] = "title";
+    role_names_[ValueRole] = "value";
+    readRubberStamps();
+}
+
+QVariant RubberStampModel::headerData(int /*section*/,
+                                      Qt::Orientation /*orientation*/,
+                                      int /*role*/) const {
+    return {};
+}
+
+QHash<int, QByteArray> RubberStampModel::roleNames() const {
+    return role_names_;
+}
+
+int RubberStampModel::rowCount(const QModelIndex& parent) const {
+    if (parent.isValid()) {
+        return 0;
+    }
+    if (rubber_stamps_.count() > std::numeric_limits<int>::max()) {
+        qWarning() << "[profilesModel::rowCount] can not cast to integer";
+        return 0;
+    }
+    return static_cast<int>(rubber_stamps_.count());
+}
+
+QVariant RubberStampModel::data(const QModelIndex& index, int role) const {
+    if (!index.isValid() || index.row() > rubber_stamps_.size() - 1) {
+        return {};
+    }
+    switch (role) {
+        case TitleRole: {
+            const QString res =
+                rubber_stamps_.at(index.row()).toObject().value("title").
+                toString();
+            return res;
+        }
+        case ValueRole: {
+            if (rubber_stamps_.at(index.row())
+                .toObject()
+                .value("title")
+                .toString() == create_stamp_title_) {
+                return "new";
+            }
+            const QString res =
+                QJsonDocument(rubber_stamps_.at(index.row()).toObject()).
+                toJson();
+            return res;
+        }
+        default:
+            return {};
+    }
+
+    return {};
+}
+
+/// @brief readRubberStamps from JSON file in
+/// @details /HOME/USER/.config/pdfcsp/rubber_stamps.json
+void RubberStampModel::readRubberStamps() {
+    config_path_ =
+        QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
+    if (config_path_.isEmpty()) {
+        qWarning() << tr(
+            "Standard config location cannot be determined, using home");
+        config_path_ = QDir::homePath();
+    }
+    if (config_path_.isEmpty()) {
+        const QStringList config_path_list =
+            QStandardPaths::standardLocations(QStandardPaths::ConfigLocation);
+        qWarning() << tr("Cannot determine the user's home folder");
+        if (!config_path_list.empty()) {
+            config_path_ = config_path_list.at(0);
+            qWarning() << tr("using the path ") << config_path_;
+        }
+    }
+    if (!config_path_.isEmpty()) {
+        config_path_ += "/csppdf";
+        const QDir config_dir(config_path_);
+        if (!config_dir.exists()) {
+            if (!config_dir.mkpath(".")) {
+                qWarning() << tr("Can not create folder ") << config_path_;
+            }
+        }
+    }
+    if (config_path_.isEmpty()) {
+        return;
+    }
+    rubber_stamps_file_name_ = config_path_ + "/rubber_stamps.json";
+    QFile stamps_file(rubber_stamps_file_name_);
+    // create empty json array if not exists
+    if (!stamps_file.exists()) {
+        if (!stamps_file.open(
+            QIODeviceBase::WriteOnly,
+            QFileDevice::ReadOwner | QFileDevice::WriteOwner)) {
+            qWarning() << tr("Can not create file ") <<
+                rubber_stamps_file_name_;
+            return;
+        }
+        QTextStream out(&stamps_file);
+        stamps_file.close();
+    }
+    if (!stamps_file.exists()) {
+        return;
+    }
+    // read the file
+    if (!stamps_file.open(QIODevice::ReadOnly)) {
+        qWarning() << tr("Can not open file ") << rubber_stamps_file_name_;
+        return;
+    }
+    const QByteArray file_data = stamps_file.readAll();
+    stamps_file.close();
+    const QJsonDocument json_doc = QJsonDocument::fromJson(file_data);
+    if (json_doc.isNull() || !json_doc.isArray()) {
+        qWarning() << tr("Error parsing JSON from file ") <<
+            rubber_stamps_file_name_;
+    }
+    const QJsonObject approve_stamp_field{{"id", 0},
+                                          {"title", approve_stamp_title_}};
+    const QJsonObject decline_stamp_field{{"id", 1},
+                                          {"title", decline_stamp_title_}};
+    const QJsonObject create_profile_field{{"title", create_stamp_title_}};
+    rubber_stamps_ = json_doc.array();
+    rubber_stamps_.append(approve_stamp_field);
+    rubber_stamps_.append(decline_stamp_field);
+    rubber_stamps_.append(create_profile_field);
+}
+
+/// @brief get a json array with rubber stamps
+QString RubberStampModel::getRubberStampsJSON() const {
+    const QJsonDocument json_doc(rubber_stamps_);
+    return json_doc.toJson();
+}
+
+/// @brief save rubber stamp
+bool RubberStampModel::saveRubberStamps(const QString& stamp_json) {
+    if (stamp_json.isEmpty()) {
+        return false;
+    }
+    const QByteArray stamp_data = stamp_json.toUtf8();
+    const QJsonDocument json_doc = QJsonDocument::fromJson(stamp_data);
+    if (json_doc.isNull() || !json_doc.isObject()) {
+        qWarning()
+            << "[RubberStampModel] error parsing JSON,can not save the stamp";
+    }
+    QJsonObject stamp_object = json_doc.object();
+    // if new profile - create a new id
+    if (stamp_object.value("id").toInt() == -1) {
+        const bool unique_name =
+            stamp_object.contains("title") &&
+            uniqueStampName(stamp_object.value("title").toString());
+        if (!unique_name) {
+            qWarning()
+                << "Can't create stamp,stamp with this name already exists";
+            return false;
+        }
+
+        auto it_max_current = std::max_element(
+            rubber_stamps_.cbegin(), rubber_stamps_.cend(),
+            [](const QJsonValue& left, const QJsonValue& right) {
+                return left.toObject().value("id").toInt() <
+                       right.toObject().value("id").toInt();
+            });
+        const int new_id =
+            it_max_current == rubber_stamps_.cend()
+                ? 0
+                : it_max_current->toObject().value("id").toInt() + 1;
+        stamp_object.insert("id", new_id);
+    }
+    // existing profile
+    else {
+        auto it_old_value = std::find_if(
+            rubber_stamps_.begin(), rubber_stamps_.end(),
+            [&stamp_object](const QJsonValue& val) {
+                return val.toObject().value("id") == stamp_object.value("id");
+            });
+        if (it_old_value != rubber_stamps_.cend()) {
+            rubber_stamps_.erase(it_old_value);
+        }
+    }
+    rubber_stamps_.push_back(stamp_object);
+    // save profiles
+    QJsonArray stamps;
+    std::copy_if(rubber_stamps_.cbegin(), rubber_stamps_.cend(),
+                 std::back_inserter(stamps), [this](const QJsonValue& val) {
+                     return val.toObject().value("title").toString() !=
+                            create_stamp_title_;
+                 });
+    QFile file(rubber_stamps_file_name_);
+    const QString stamps_data = QJsonDocument(stamps).toJson();
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        out << stamps_data;
+        file.close();
+        beginResetModel();
+        readRubberStamps();
+        endResetModel();
+        const QString saved_name = stamp_object.value("title").toString();
+        rubberStampSaved(saved_name);
+        return true;
+    }
+    endResetModel();
+    qWarning() << "[RubberStampModel] failed to save stamps";
+    return false;
+}
+
+bool RubberStampModel::uniqueStampName(QString stamp_name) {
+    return !stamp_name.isEmpty() &&
+           std::none_of(rubber_stamps_.begin(), rubber_stamps_.end(),
+                        [&stamp_name](const QJsonValue& val) {
+                            return stamp_name ==
+                                   val.toObject().value("title").toString();
+                        });
+}
+
+bool RubberStampModel::deleteRubberStamps(int id_stamp) {
+    QString stamp_title;
+    QJsonArray stamps_new;
+    for (qsizetype i = 0; i < rubber_stamps_.count(); ++i) {
+        if (!rubber_stamps_[i].isObject()) {
+            continue;
+        }
+        if (rubber_stamps_[i].toObject().value("id").toInt() == id_stamp) {
+            stamp_title = rubber_stamps_[i].toObject().value("title").
+                toString();
+        } else if (rubber_stamps_[i].toObject().value("title").toString() !=
+                   create_stamp_title_) {
+            stamps_new.append(rubber_stamps_[i]);
+        }
+    }
+    QFile file(rubber_stamps_file_name_);
+    const QString stamp_data = QJsonDocument(stamps_new).toJson();
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        out << stamp_data;
+        file.close();
+        beginResetModel();
+        readRubberStamps();
+        endResetModel();
+        rubberStampDeleted(stamp_title);
+        return true;
+    }
+    endResetModel();
+    qWarning() << "[RubberStampModel] failed to delete stamp";
+    return false;
+}
+
+
+

@@ -30,12 +30,14 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "core/signature_creator.hpp"
 #include "cpp_views/pdf_page_render.hpp"
 #include "cpp_views/preview_render.hpp"
+#include  "cpp_views/rubber_preview_render.hpp"
 #include "models/pdf_doc_model.hpp"
 #include "models/profiles_model.hpp"
+#include  "models/rubber_stamp_model.hpp"
 #include "models/signatures_list_model.hpp"
 #include "printer_launcher.hpp"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     // tranlsation
     QTranslator translator;
     const QString locale = QLocale::system().name();
@@ -54,11 +56,15 @@ int main(int argc, char *argv[]) {
                                    "PdfPageRender");
     qmlRegisterType<PreviewRender>("alt.pdfcsp.previewRender", 0, 1,
                                    "PreviewRender");
+    qmlRegisterType<RubberPreviewRender>("alt.pdfcsp.rubberPreviewRender", 0, 1,
+                                        "RubberPreviewRender");
     qmlRegisterType<PdfDocModel>("alt.pdfcsp.pdfModel", 0, 1, "MuPdfModel");
     qmlRegisterType<SignaturesListModel>("alt.pdfcsp.signaturesListModel", 0, 1,
                                          "SignaturesListModel");
     qmlRegisterType<ProfilesModel>("alt.pdfcsp.profilesModel", 0, 1,
                                    "ProfilesModel");
+    qmlRegisterType<RubberStampModel>("alt.pdfcsp.rubberStampModel", 0, 1,
+                                      "RubberStampModel");
     qmlRegisterType<core::SignatureCreator>("alt.pdfcsp.signatureCreator", 0, 1,
                                             "SignatureCreator");
     qmlRegisterType<core::PrinterLauncher>("alt.pdfcsp.printerLauncher", 0, 1,

@@ -7,19 +7,29 @@ ColumnLayout {
 
     property alias searchDialog: searchDialog
 
-    signal zoomInClicked
-    signal zoomOutClicked
+        signal
+    zoomInClicked
+        signal
+    zoomOutClicked
+
     signal zoomSelected(int newZoom)
+
     signal scrollToPage(int pageNumber)
-    signal rotateClockwise
-    signal rotateCounterClockWise
-    signal showPreviews
-    signal showCerts
+
+        signal
+    rotateClockwise
+        signal
+    rotateCounterClockWise
+        signal
+    showPreviews
+        signal
+    showCerts
 
     function changePageCount(newCount) {
         page_number.pageCount = newCount
         pageNumberInputValidator.top = newCount + 1
     }
+
     function changedCurrPage(newIndex) {
         page_number.currPage = newIndex
         pageNumberInput.text = newIndex
@@ -76,7 +86,8 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             flat: true
@@ -92,7 +103,8 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             flat: true
@@ -105,11 +117,12 @@ ColumnLayout {
 
             onClicked: {
                 printer.print(pdfListView.source, pdfListView.count,
-                                                     pdfListView.landscape)
+                    pdfListView.landscape)
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             flat: true
@@ -176,7 +189,8 @@ ColumnLayout {
             color: StyleSheet.font_color_extra
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             flat: true
@@ -206,7 +220,8 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             id: zoomOutButton
@@ -247,21 +262,21 @@ ColumnLayout {
                 onCurrentIndexChanged: {
                     let newZoom = 0
                     switch (currentIndex) {
-                    case 0:
-                        newZoom = -1 //auto
-                        break
-                    case 1:
-                        newZoom = 75
-                        break
-                    case 2:
-                        newZoom = 100
-                        break
-                    case 3:
-                        newZoom = 125
-                        break
-                    case 4:
-                        newZoom = 150
-                        break
+                        case 0:
+                            newZoom = -1 //auto
+                            break
+                        case 1:
+                            newZoom = 75
+                            break
+                        case 2:
+                            newZoom = 100
+                            break
+                        case 3:
+                            newZoom = 125
+                            break
+                        case 4:
+                            newZoom = 150
+                            break
                     }
                     if (newZoom != 0) {
                         zoomSelected(newZoom)
@@ -282,8 +297,20 @@ ColumnLayout {
             }
         }
 
+        // rubberStamps
+        HeaderToolSeparator {
+        }
+        Button {
+            id: rubberStampDialogButton
+            onClicked: {
+                rubberStampDialog.open()
+            }
+        }
+
+
         // search
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
         Button {
             id: searchButton
             flat: true
@@ -315,11 +342,15 @@ ColumnLayout {
         id: searchDialog
     }
 
+    RubberStampDialog {
+        id: rubberStampDialog
+    }
+
     Shortcut {
-            sequence: "Ctrl+F"
-            onActivated: {
-                searchDialog.open()
-                searchDialog.focus = true;
-            }
+        sequence: "Ctrl+F"
+        onActivated: {
+            searchDialog.open()
+            searchDialog.focus = true;
         }
+    }
 }

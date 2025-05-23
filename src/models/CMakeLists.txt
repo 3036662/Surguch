@@ -5,6 +5,8 @@ add_library(models OBJECT
   signatures_list_model.cpp
   profiles_model.hpp 
   profiles_model.cpp
+        rubber_stamp_model.cpp
+        rubber_stamp_model.hpp
 )
 
 target_include_directories(models PRIVATE ${MUPDF_INCLUDE_DIR})
