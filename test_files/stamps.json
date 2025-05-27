@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "title": "ГОСТ"
+    },
+    {
+        "B": 188,
+        "G": 229,
+        "R": 61,
+        "border_radius": 70,
+        "border_width": 20,
+        "id": 2,
+        "title": "2",
+        "transparent": 1
+    }
+]
