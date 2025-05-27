@@ -16,7 +16,9 @@ Dialog {
     }
 
     ListView {
-        width: root.width
+        id: itemView
+
+        //width: root.width
         anchors.fill: parent
         model: rubberStampModel
         delegate: ItemDelegate {
@@ -25,6 +27,7 @@ Dialog {
             RubberStampItem {
                 height: parent.height
                 width: parent.width
+                rubber_model: itemView.model
             }
         }
 

@@ -53,7 +53,7 @@ QSGNode *RubberPreviewRender::updatePaintNode(
         return rectNode;
     }
     QSGTexture *texture = nullptr;
-    if (result_->data_->resolution_x > 400) {
+    if (result_->data_->resolution_x > 400 && result_->data_->resolution_x > result_->data_->resolution_y) {
         QSGTexture *texture = window()->createTextureFromImage((*result_->image_).scaled(400,
             400 * (static_cast<double>(result_->data_->resolution_y / static_cast<double>(result_->data_->resolution_x))) ,
             Qt::KeepAspectRatio));
@@ -65,7 +65,7 @@ QSGNode *RubberPreviewRender::updatePaintNode(
         }
         return rectNode;
     }
-    if (result_->data_->resolution_y > 400) {
+    if (result_->data_->resolution_y > 400 && result_->data_->resolution_y > result_->data_->resolution_x) {
         QSGTexture *texture = window()->createTextureFromImage((*result_->image_).scaled(
             400 * (static_cast<double>(result_->data_->resolution_x) / static_cast<double>(result_->data_->resolution_y)),
         400 ,
@@ -77,8 +77,7 @@ QSGNode *RubberPreviewRender::updatePaintNode(
             rectNode->setRect(QRectF(0, 0, width(), height()));
         }
         return rectNode;
-    }
-    if (result_->data_->resolution_x <= 400 && result_->data_->resolution_y <= 400) {
+    } else {
         QSGTexture *texture = window()->createTextureFromImage((*result_->image_));
         setWidth(result_->data_->resolution_x);
         setHeight(result_->data_->resolution_y);
@@ -88,10 +87,10 @@ QSGNode *RubberPreviewRender::updatePaintNode(
         }
         return rectNode;
     }
-    // if (texture != nullptr) {
-    //     rectNode->setTexture(texture);
-    //     rectNode->setRect(QRectF(0, 0, width(), height()));
-    // }
+     if (texture != nullptr) {
+         rectNode->setTexture(texture);
+         rectNode->setRect(QRectF(0, 0, width(), height()));
+     }
     return rectNode;
 }
 
@@ -120,6 +119,8 @@ void RubberPreviewRender::saveImage() {
         // setHeight(static_cast<double>(result_->image_->height()) /
         //           result_->image_->width() * width());
         // setWidth(static_cast<double>(params_.annotation_text.size() * 30));
+        setHeight(result_->data_->resolution_y);
+        setWidth(result_->data_->resolution_x);
         // qWarning() << static_cast<double>(result_->image_->height()) /
         //                   result_->image_->width() * width();
     }
@@ -141,8 +142,8 @@ std::unique_ptr<BakeRubberResult> prepareImage(
             result->data_->img, result->data_->resolution_x,
             result->data_->resolution_y, result->data_->resolution_x * 3,
             QImage::Format_RGB888);
-        qWarning() << "resolution_x = " << result->data_->resolution_x;
-        qWarning() << "resolution_y = " << result->data_->resolution_y;
+        //qWarning() << "resolution_x = " << result->data_->resolution_x;
+        //qWarning() << "resolution_y = " << result->data_->resolution_y;
     }
     return result;
 }
@@ -185,14 +186,15 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
     }
     if (qvparams.contains("img_path")) {
         params_.img_path = qvparams.value("img_path").toUrl().toLocalFile();
-        qWarning() << "img_path:" << params_.img_path;
+        if (params_.img_path.isEmpty()) {
+            params_.img_path = qvparams.value("img_path").toString();
+        }
     }
     if (qvparams.contains("annotation_text")) {
         params_.annotation_text = qvparams.value("annotation_text").toString();
     }
     if (qvparams.contains("font_family")) {
         params_.font_family = qvparams.value("font_family").toString();
-        qWarning() << "font_family:" << params_.font_family;
     }
     if (qvparams.contains("border_color_red")) {
         params_.border_color.R = qvparams.value("border_color_red").toUInt();
@@ -243,11 +245,11 @@ RubberPreviewRender::SharedParamWrapper RubberPreviewRender::createParams() cons
     pod_params.bg_color.green = params_.bg_color.G;
     pod_params.bg_color.blue = params_.bg_color.B;
     pod_params.font_color.red = params_.text_color.R;
-    pod_params.font_color.green = params_.text_color.R;
-    pod_params.font_color.blue = params_.text_color.R;
+    pod_params.font_color.green = params_.text_color.G;
+    pod_params.font_color.blue = params_.text_color.B;
     pod_params.border_color.red = params_.border_color.R;
-    pod_params.border_color.green = params_.border_color.R;
-    pod_params.border_color.blue = params_.border_color.R;
+    pod_params.border_color.green = params_.border_color.G;
+    pod_params.border_color.blue = params_.border_color.B;
     params_wrapper->qb_font_family = params_.font_family.toUtf8();
     if (!params_wrapper->qb_font_family.isEmpty()) {
         pod_params.font_family = params_wrapper->qb_font_family.data();
@@ -258,9 +260,6 @@ RubberPreviewRender::SharedParamWrapper RubberPreviewRender::createParams() cons
     pod_params.font_weight = 400; //params_.font_weight;
     pod_params.bg_transparent = params_.bg_transparent;
     pod_params.bg_opacity = params_.bg_opacity;
-    pod_params.annotation_width = params_.annotation_text.size() * 100;
-    qWarning() << "annot width = " << params_.annotation_text.size() * 100;
-    qWarning() << "border_width = " << params_.border_width;
-    qWarning() << "border_radius = " << params_.border_radius;
+    pod_params.annotation_width = 900;//params_.annotation_text.size() * 100;
     return params_wrapper;
 }

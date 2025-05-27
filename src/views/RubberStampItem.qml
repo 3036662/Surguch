@@ -6,6 +6,8 @@ import StyleSheet
 Item {
     id: root
 
+    property var rubber_model
+
     RowLayout {
         width: root.width
 
@@ -13,12 +15,22 @@ Item {
             id: radioSelect
             text: title
             Layout.preferredHeight: 30
+            Layout.fillWidth: true
             ButtonGroup.group: rubberStampGroup
 
             onClicked: {
-                rubberStampEditor.editState = false
-                rubberStampEditor.open()
+                rubberStampEditor.edit_state = false
+                //set a reference to model
+                rubberStampEditor.rubber_model = rubber_model
+                //if creating new stamp, set an empty data
+                if (value === "new") {
+                    rubberStampEditor.stamp_data = ""
+                    rubberStampEditor.stamp_id = -1
+                    rubberStampEditor.updateRubberStampForm()
+                    rubberStampEditor.open()
+                }
             }
+
             Component.onCompleted: {
                 if (value === "new") {
                     indicator.width = 0
@@ -27,9 +39,9 @@ Item {
             }
         }
 
-        Rectangle {
-            Layout.fillWidth: true
-        }
+        // Rectangle {
+        //     Layout.fillWidth: true
+        // }
 
         ToolButton {
             id: settingsButton
@@ -38,10 +50,16 @@ Item {
             icon.source: StyleSheet.wrench_icon
             icon.width: 20
             icon.height: 20
-            highlighted: false
 
             onClicked: {
-                console.warn("open me settings")
+                rubberStampEditor.edit_state = true
+                //set a reference to model
+                rubberStampEditor.rubber_model = rubber_model
+                //set data data about selected stamp
+                rubberStampEditor.stamp_data = value
+                //update data in setting window
+                rubberStampEditor.updateRubberStampForm()
+                rubberStampEditor.open()
             }
         }
     }

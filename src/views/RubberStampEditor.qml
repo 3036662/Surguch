@@ -10,17 +10,30 @@ Dialog {
 
     property var stamp_json
     property var stamp_data
+    property var rubber_model
     property int stamp_id: -1
-    property bool editState: true
+    property bool edit_state: true
 
     // fill form with data from JSON
     function updateRubberStampForm() {
         if (stamp_data) {
             try {
-                editState = true
-                stamp_json = stamp_data
+                edit_state = true
+                stamp_json = JSON.parse(stamp_data)
                 stamp_id = stamp_json.id
-                //
+                stampName.text = stamp_json.title
+                linkName.text = stamp_json.stamp_link
+                tagWidth.value = stamp_json.tag_width
+                typeSwitch.checked = !stamp_json.create_from_image
+                logoPath.text = stamp_json.img_path
+                rubberStampText.text = stamp_json.stamp_text
+                fontName.currentIndex = fontName.find(stamp_json.font_family)
+                transparencySwitch.checked = stamp_json.bg_transparent
+                borderWidth.value = stamp_json.border_width
+                borderRadius.value = stamp_json.border_radius
+                redColor.value = stamp_json.R
+                greenColor.value = stamp_json.G
+                blueColor.value = stamp_json.B
             } catch (e) {
                 console.warn("Error parsing JSON " + e.message)
             }
@@ -31,9 +44,11 @@ Dialog {
     }
 
     function resetData() {
-        editState = false
+        edit_state = false
         stamp_id = -1
         stampName.text = ""
+        linkName.text = ""
+        tagWidth.value = 30
         typeSwitch.state = false
         logoPath.text = ""
         rubberStampText.text = ""
@@ -47,8 +62,8 @@ Dialog {
 
     function updatePreview() {
         let rubber_stamp_params = {
-            "stamp_width": 900,
-            "stamp_height": 300,
+            "stamp_width": 400,
+            "stamp_height": 400,
             "create_from_image": typeSwitch.checked ? 0 : 1,
             "img_path": logoPath.text,
             "border_width": borderWidth.value,
@@ -151,8 +166,6 @@ Dialog {
                     height: 400
                     //color: "white"
                     Component.onCompleted: {
-                        console.warn("height = " + rubberStampPreview.height)
-                        console.warn("width = " + rubberStampPreview.width)
                     }
                 }
 
@@ -213,8 +226,36 @@ Dialog {
                     icon.width: 20
                     icon.height: 20
                     onClicked: {
-                        console.warn("width " + width)
-                        console.warn("parent width " + parent.width)
+                        if (stamp_id < 0 && !rubber_model.uniqueStampName(stampName.text)) {
+                            stampName.forceActiveFocus()
+                            errorMessageDialog.text = qsTr(
+                                "Stamp with this name already exists")
+                            errorMessageDialog.open()
+                            return
+                        }
+                        if (stampName.text === "") {
+                            stampName.forceActiveFocus()
+                            return
+                        }
+                        stamp_json = {}
+                        stamp_json["id"] = stamp_id
+                        stamp_json["title"] = stampName.text
+                        stamp_json["stamp_link"] = linkName.text
+                        stamp_json["tag_width"] = tagWidth.value
+                        stamp_json["create_from_image"] = typeSwitch.checked ? 0 : 1
+                        stamp_json["img_path"] = logoPath.text
+                        stamp_json["stamp_text"] = rubberStampText.text
+                        stamp_json["border_width"] = borderWidth.value
+                        stamp_json["border_radius"] = borderRadius.value
+                        stamp_json["font_family"] = fontName.currentText
+                        stamp_json["R"] = redColor.value
+                        stamp_json["G"] = greenColor.value
+                        stamp_json["B"] = blueColor.value
+                        stamp_json["bg_transparent"] = transparencySwitch.checked ? 1 : 0
+                        const new_stamp_data = JSON.stringify(stamp_json)
+                        console.warn(rubber_model.saveRubberStamps(new_stamp_data))
+                        rubberStampEditor.visible = false
+                        stamp_data = null
                     }
                 }
 
@@ -227,7 +268,14 @@ Dialog {
                     icon.source: StyleSheet.trash_icon
                     icon.width: 20
                     icon.height: 20
-                    enabled: editState
+                    enabled: edit_state
+
+                    onClicked: {
+                        if (rubber_model.deleteRubberStamps(root.stamp_id)) {
+                            rubberStampEditor.visible = false
+                            stamp_data = null
+                        }
+                    }
                 }
             }
 

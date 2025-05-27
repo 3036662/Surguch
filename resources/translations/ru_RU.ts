@@ -922,8 +922,8 @@
 <context>
     <name>RubberStampEditor</name>
     <message>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+88"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+88"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+103"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+103"/>
         <source>Tag settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -946,8 +946,8 @@
         <translation type="unfinished">Предпросмотр</translation>
     </message>
     <message>
-        <location line="+21"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+21"/>
+        <location line="+19"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+19"/>
         <source>Link</source>
         <translation type="unfinished"></translation>
     </message>
@@ -970,14 +970,20 @@
         <translation type="unfinished">Сохранить</translation>
     </message>
     <message>
-        <location line="+15"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+15"/>
+        <location line="+8"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+8"/>
+        <source>Stamp with this name already exists</source>
+        <translation type="unfinished">Штамп с выбранным именем уже существует</translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+35"/>
         <source>Delete</source>
         <translation type="unfinished">Удалить</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+16"/>
+        <location line="+23"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+23"/>
         <source>Create from text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1091,7 +1097,7 @@
         <translation type="unfinished">Не удалось создать файл </translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Can not open file </source>
         <translation type="unfinished">Не удалось открыть файл </translation>
     </message>

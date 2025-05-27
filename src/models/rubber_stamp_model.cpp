@@ -112,6 +112,7 @@ void RubberStampModel::readRubberStamps() {
             return;
         }
         QTextStream out(&stamps_file);
+        out << "[{\"id\":1,\"title\": \"Approve\"}, {\"id\":2,\"title\":\"Decline\"}]";
         stamps_file.close();
     }
     if (!stamps_file.exists()) {
@@ -129,14 +130,9 @@ void RubberStampModel::readRubberStamps() {
         qWarning() << tr("Error parsing JSON from file ") <<
             rubber_stamps_file_name_;
     }
-    const QJsonObject approve_stamp_field{{"id", 0},
-                                          {"title", approve_stamp_title_}};
-    const QJsonObject decline_stamp_field{{"id", 1},
-                                          {"title", decline_stamp_title_}};
-    const QJsonObject create_profile_field{{"title", create_stamp_title_}};
+    const QJsonObject create_profile_field{{"id", 0},
+                                            {"title", create_stamp_title_}};
     rubber_stamps_ = json_doc.array();
-    rubber_stamps_.append(approve_stamp_field);
-    rubber_stamps_.append(decline_stamp_field);
     rubber_stamps_.append(create_profile_field);
 }
 
@@ -158,6 +154,7 @@ bool RubberStampModel::saveRubberStamps(const QString& stamp_json) {
             << "[RubberStampModel] error parsing JSON,can not save the stamp";
     }
     QJsonObject stamp_object = json_doc.object();
+    QString old_img_path;
     // if new profile - create a new id
     if (stamp_object.value("id").toInt() == -1) {
         const bool unique_name =
@@ -189,9 +186,21 @@ bool RubberStampModel::saveRubberStamps(const QString& stamp_json) {
                 return val.toObject().value("id") == stamp_object.value("id");
             });
         if (it_old_value != rubber_stamps_.cend()) {
+            const QJsonObject old_profile = it_old_value->toObject();
+            if (old_profile.contains("img_path")) {
+                old_img_path = old_profile.value("img_path").toString();
+            }
             rubber_stamps_.erase(it_old_value);
         }
     }
+    // copy the image
+    const QString img_path = stamp_object.value("img_path").toString();
+    const QString dest_name =
+        "tag_" + QString::number(stamp_object.value("id").toInt()) +
+        "_logo";
+    const QString copy_result_name =
+        saveLogoImage(img_path, dest_name, old_img_path);
+    stamp_object.insert("img_path", copy_result_name);
     rubber_stamps_.push_back(stamp_object);
     // save profiles
     QJsonArray stamps;
@@ -216,6 +225,68 @@ bool RubberStampModel::saveRubberStamps(const QString& stamp_json) {
     endResetModel();
     qWarning() << "[RubberStampModel] failed to save stamps";
     return false;
+}
+
+    /**
+     * @brief Save logo image
+     *
+     * @param path source image path
+     * @param dest_name destination file name
+     * @param old_logo_path old logo to delete
+     * @return QString full path to saved logo on success
+     */
+QString RubberStampModel::saveLogoImage(const QString &path,
+                                     const QString &dest_name,
+                                     const QString &old_logo_path) {
+    if (path.isEmpty()) {
+        return {};
+    }
+    const QString file_path = QUrl(path).toString(QUrl::PreferLocalFile);
+    const QFileInfo src_file_info(file_path);
+    if (!src_file_info.exists() || !src_file_info.isFile()) {
+        qWarning()
+            << "[RubberStampModel] can not save the image, file does not exist: "
+            << path;
+        return {};
+    }
+    if (!src_file_info.isReadable()) {
+        qWarning() << "[RubberStampModel] the file is not readable :" << path;
+        return {};
+    }
+    if (src_file_info.isExecutable()) {
+        qWarning() << "[RubberStampModel] the file is executable, will not copy :"
+                   << path;
+        return {};
+    }
+    if (src_file_info.size() > 100000000) {
+        qWarning() << "[RubberStampModel] file size >100 MB , will not copy :"
+                   << path;
+        return {};
+    }
+
+    QString dest =
+        config_path_ + "/" + dest_name + "." + src_file_info.completeSuffix();
+    // delete old logo
+    if (dest != old_logo_path && old_logo_path != file_path) {
+        QFile old_logo_file(old_logo_path);
+        if (old_logo_file.exists()) {
+            std::ignore = old_logo_file.remove();
+        }
+    }
+    QFile dest_file(dest);
+    if (dest_file.exists()) {
+        if (dest != file_path) {
+            std::ignore = dest_file.remove();
+        } else {
+            return dest;
+        }
+    }
+    if (!QFile::copy(file_path, dest)) {
+        qWarning() << "[RubberStampModel] Failed to copy file from " << path
+                   << " to " << dest;
+        return {};
+    }
+    return dest;
 }
 
 bool RubberStampModel::uniqueStampName(QString stamp_name) {
