@@ -1,0 +1,22 @@
+[
+    {
+        "CADES_format": "CADES_T",
+        "cert_serial": "7c001dfc32b4a566eaf1b12c4e000d001dfc32",
+        "id": 2,
+        "logo_path": "/home/oleg/.config/csppdf/profile_2_logo.png",
+        "stamp_type": "ГОСТ",
+        "title": "t",
+        "tsp_url": "http://pki.tax.gov.ru/tsp/tsp.srf",
+        "use_as_default": false
+    },
+    {
+        "CADES_format": "CADES_BES",
+        "cert_serial": "7c001dfc32b4a566eaf1b12c4e000d001dfc32",
+        "id": 3,
+        "logo_path": "/home/oleg/.config/csppdf/profile_3_logo.bmp",
+        "stamp_type": "2",
+        "title": "1",
+        "tsp_url": "",
+        "use_as_default": true
+    }
+]
