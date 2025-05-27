@@ -51,7 +51,7 @@ void TStamp::createPreview() {
         "Действителен: 2025-04-21 08:33:16 UTC по 2025-06-21 08:43:16 UTC";
     params_.config_path = config_dir_;
     params_.file_to_sign_path = file1_;
-    params_.logo_path = "profile_1_logo.jpg";
+    params_.logo_path = QString(TEST_FILES_DIR) + "profile_1_logo.jpg";
     params_.page_height = 0;
     params_.page_index = 0;
     params_.page_width = 0;
@@ -144,7 +144,11 @@ void TStamp::createPreview() {
 void TStamp::createImage() {
     qWarning() << "section 1";
     const QString json =
-        R"( {"page_index":0,"page_width":0,"page_height":0,"stamp_x":0,"stamp_y":0,"stamp_width":0,"stamp_height":0,"logo_path":"/home/dv/.config/csppdf/profile_3_logo.jpg","config_path":"/home/dv/.config/csppdf","cert_serial":"7c001e316d0c3296185e9c6902000d001e316d","cert_serial_prefix":"Сертификат: ","cert_subject":"Test Certificate","cert_subject_prefix":"Субъект: ","cert_time_validity":"Действителен: 2025-04-21 08:33:16 UTC по 2025-06-21 08:43:16 UTC","stamp_title":"ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ","stamp_type":"321","text_color_red":228,"text_color_green":92,"text_color_blue":123,"border_color_red":228,"border_color_green":92,"border_color_blue":123,"border_width":19,"border_radius":64,"bg_transparent":0,"bg_opacity":1,"cades_type":"CADES_BES","tsp_url":"","file_to_sign_path":""})";
+        QString(
+            R"( {"page_index":0,"page_width":0,"page_height":0,"stamp_x":0,"stamp_y":0,"stamp_width":0,"stamp_height":0,"logo_path":"})") +
+        TEST_FILES_DIR + R"({profile_3_logo.jpg","config_path":"})" +
+        config_dir_ +
+        R"({","cert_serial":"7c001e316d0c3296185e9c6902000d001e316d","cert_serial_prefix":"Сертификат: ","cert_subject":"Test Certificate","cert_subject_prefix":"Субъект: ","cert_time_validity":"Действителен: 2025-04-21 08:33:16 UTC по 2025-06-21 08:43:16 UTC","stamp_title":"ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ","stamp_type":"321","text_color_red":228,"text_color_green":92,"text_color_blue":123,"border_color_red":228,"border_color_green":92,"border_color_blue":123,"border_width":19,"border_radius":64,"bg_transparent":0,"bg_opacity":1,"cades_type":"CADES_BES","tsp_url":"","file_to_sign_path":""})";
     QJsonParseError parse_error;
     QJsonDocument json_doc =
         QJsonDocument::fromJson(json.toUtf8(), &parse_error);
@@ -164,7 +168,11 @@ void TStamp::createImage() {
 void TStamp::createImage2() {
     qWarning() << "section 2";
     const QString json =
-        R"( {"page_index":0,"page_width":0,"page_height":0,"stamp_x":0,"stamp_y":0,"stamp_width":0,"stamp_height":0,"logo_path":"/home/dv/.config/csppdf/profile_1_logo.jpg","config_path":"/home/dv/.config/csppdf","cert_serial":"7c001e316d0c3296185e9c6902000d001e316d","cert_serial_prefix":"Сертификат: ","cert_subject":"Test Certificate","cert_subject_prefix":"Субъект: ","cert_time_validity":"Действителен: 2025-04-21 08:33:16 UTC по 2025-06-21 08:43:16 UTC","stamp_title":"ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ","stamp_type":"321","text_color_red":228,"text_color_green":92,"text_color_blue":123,"border_color_red":228,"border_color_green":92,"border_color_blue":123,"border_width":19,"border_radius":64,"bg_transparent":0,"bg_opacity":1,"cades_type":"CADES_BES","tsp_url":"","file_to_sign_path":""})";
+        QString(
+            R"( {"page_index":0,"page_width":0,"page_height":0,"stamp_x":0,"stamp_y":0,"stamp_width":0,"stamp_height":0,"logo_path":"})") +
+        TEST_FILES_DIR + R"({profile_1_logo.jpg","config_path":"})" +
+        config_dir_ +
+        R"({","cert_serial":"7c001e316d0c3296185e9c6902000d001e316d","cert_serial_prefix":"Сертификат: ","cert_subject":"Test Certificate","cert_subject_prefix":"Субъект: ","cert_time_validity":"Действителен: 2025-04-21 08:33:16 UTC по 2025-06-21 08:43:16 UTC","stamp_title":"ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ","stamp_type":"321","text_color_red":228,"text_color_green":92,"text_color_blue":123,"border_color_red":228,"border_color_green":92,"border_color_blue":123,"border_width":19,"border_radius":64,"bg_transparent":0,"bg_opacity":1,"cades_type":"CADES_BES","tsp_url":"","file_to_sign_path":""})";
     QJsonParseError parse_error;
     QJsonDocument json_doc =
         QJsonDocument::fromJson(json.toUtf8(), &parse_error);
@@ -184,7 +192,11 @@ void TStamp::createImage2() {
 void TStamp::createImage3() {
     qWarning() << "section 3";
     const QString json =
-        R"( {"page_index":0,"page_width":0,"page_height":0,"stamp_x":0,"stamp_y":0,"stamp_width":0,"stamp_height":0,"logo_path":"/home/dv/.config/csppdf/profile_3_logo.jpg","config_path":"/home/dv/.config/csppdf","cert_serial":"7c001e316d0c3296185e9c6902000d001e316d","cert_serial_prefix":"Сертификат: ","cert_subject":"Test Certificate","cert_subject_prefix":"Субъект: ","cert_time_validity":"Действителен: 2025-04-21 08:33:16 UTC по 2025-06-21 08:43:16 UTC","stamp_title":"ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ","stamp_type":"321","text_color_red":228,"text_color_green":92,"text_color_blue":123,"border_color_red":228,"border_color_green":92,"border_color_blue":123,"border_width":19,"border_radius":64,"bg_transparent":0,"bg_opacity":1,"cades_type":"CADES_BES","tsp_url":"","file_to_sign_path":""})";
+        QString(
+            R"( {"page_index":0,"page_width":0,"page_height":0,"stamp_x":0,"stamp_y":0,"stamp_width":0,"stamp_height":0,"logo_path":"})") +
+        TEST_FILES_DIR + R"({profile_3_logo.jpg","config_path":"})" +
+        config_dir_ +
+        R"({","cert_serial":"7c001e316d0c3296185e9c6902000d001e316d","cert_serial_prefix":"Сертификат: ","cert_subject":"Test Certificate","cert_subject_prefix":"Субъект: ","cert_time_validity":"Действителен: 2025-04-21 08:33:16 UTC по 2025-06-21 08:43:16 UTC","stamp_title":"ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ","stamp_type":"321","text_color_red":228,"text_color_green":92,"text_color_blue":123,"border_color_red":228,"border_color_green":92,"border_color_blue":123,"border_width":19,"border_radius":64,"bg_transparent":0,"bg_opacity":1,"cades_type":"CADES_BES","tsp_url":"","file_to_sign_path":""})";
     QJsonParseError parse_error;
     QJsonDocument json_doc =
         QJsonDocument::fromJson(json.toUtf8(), &parse_error);

@@ -17,8 +17,6 @@ add_compile_definitions(TRANSLATION_DIR="${TRANSLATION_DIR}")
 #target_link_libraries(surguch PRIVATE -fsanitize=memory)
 
 
-include_directories(/home/dv/surguch/signatureimg/src/)
-
 IF(NOT DEFINED MUPDF_INCLUDE_DIR)
     SET (MUPDF_INCLUDE_DIR /usr/include/)
 ENDIF()
