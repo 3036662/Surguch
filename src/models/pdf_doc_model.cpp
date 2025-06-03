@@ -58,7 +58,6 @@ PdfDocModel::PdfDocModel(QObject *parent)
             if (screen != nullptr && process_signatures_) {  // if main view
                 physical_screen_dpi_ = screen->physicalDotsPerInch();
                 screenDpiChanged();
-                redrawAll();
             }
         });
     }

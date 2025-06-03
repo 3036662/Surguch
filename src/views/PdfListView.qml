@@ -433,6 +433,12 @@ ListView {
         currPage.updateCurrRect()
     }
 
+    function handleScreenDpiChanged(){
+        let pos=preservePosition();
+        model.redrawAll();
+        jumpToPosition(pos);
+    }
+
     Layout.fillHeight: true
     Layout.fillWidth: true
     Layout.leftMargin: 5
