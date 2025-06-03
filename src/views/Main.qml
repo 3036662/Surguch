@@ -35,6 +35,12 @@ ApplicationWindow {
             HeaderSubBar {
                 id: headerSubBar
                 visible: pdfListView.source != ""
+
+                function placeTagStamp(rubber_stamp_data) {
+                    //let tag_data = rubber_stamp_data
+                    //console.warn("mainqml" + JSON.stringify(tag_data))
+                    //pdfModel.placeRubberStamp(tag_data)
+                }
             }
         }
     }
@@ -307,6 +313,9 @@ ApplicationWindow {
         pdfModel.signaturesCounted.connect(leftSideBar.setSigCount)
         // call SignaturesListModel to update the signatures list and validate all signatures
         pdfModel.signaturesFound.connect(siglistModel.updateSigList)
+        // add rubber stamp to document
+        pdfListView.tagLocationSelected.connect(headerSubBar.placeTagStamp)
+        //pdfModel.imageReady.connect(pdfListView.set)
         // open file error
         pdfModel.errorOpenFile.connect(function (err_string) {
             errorMessageDialog.text = err_string

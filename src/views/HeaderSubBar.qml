@@ -61,6 +61,10 @@ ColumnLayout {
         zoomOutButton.enabled = false
     }
 
+    function setTagData(value) {
+        rubberStampPutButton.tag_data = value
+    }
+
     spacing: 1
 
     Rectangle {
@@ -300,10 +304,41 @@ ColumnLayout {
         // rubberStamps
         HeaderToolSeparator {
         }
-        Button {
-            id: rubberStampDialogButton
-            onClicked: {
-                rubberStampDialog.open()
+
+        RowLayout {
+            spacing: 0
+            Button {
+                id: rubberStampPutButton
+
+                property var tag_data
+
+                enabled: !!tag_data
+                flat: true
+                height: 24
+                smooth: true
+                padding: 0
+                icon.source: StyleSheet.wrench_icon
+                onClicked: {
+                    console.warn("create tag")
+                    pdfListView.tagMode = !pdfListView.tagMode
+                    pdfListView.tagData = tag_data
+                    if (!down) {
+                        pdfListView.reserRotation()
+                    }
+                    down = !down
+                }
+            }
+
+            Button {
+                id: rubberStampDialogButton
+                flat: true
+                height: 24
+                smooth: true
+                padding: 0
+                icon.source: StyleSheet.chevron_down
+                onClicked: {
+                    rubberStampDialog.open()
+                }
             }
         }
 

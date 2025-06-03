@@ -114,6 +114,39 @@ QSGNode *PdfPageRender::updatePaintNode(
                     delete[] buff;
                 },
                 render_result.buf);
+            if (!rubber_stamps_.isEmpty()) {
+                for (auto &stamps_ : rubber_stamps_) {
+                    if (stamps_->res && stamps_->res->image_ != nullptr) {
+                        auto start = std::chrono::high_resolution_clock::now();
+                        // auto img_with_mask = core::utils::glueImageWithMask(
+                        //     stamps_->img, stamps_->img_size, stamps_->img_mask,
+                        //     stamps_->img_mask_size);
+
+                        // QImage stamp_image(img_with_mask.data(), stamps_->resolution_x,
+                        //                    stamps_->resolution_y,
+                        //                    stamps_->resolution_x * 4,
+                        //                    QImage::Format_RGBA8888);
+                        QPainter painter(image_.get());
+                        // move the coordinate system
+                        //painter.translate(0, 0);
+                        // rotate the coordinate system
+                        painter.rotate(custom_rotation_);
+                         const float stamp_ratio =
+                             static_cast<float>(stamps_->res->image_->height()) /
+                             stamps_->res->image_->width();
+                         const int target_width = image_->width() * 0.3;
+                         const int target_height = target_width * stamp_ratio;
+                         QImage stamp_scaled = stamps_->res->image_->scaled(
+                             target_width, target_height, Qt::KeepAspectRatio);
+                        painter.drawImage(stamps_->position_x, stamps_->position_y, stamp_scaled);
+                        auto end = std::chrono::high_resolution_clock::now();
+                        std::chrono::duration<double, std::milli> duration =
+                            end - start;
+                        //qWarning() << "pos x: " << stamps_->position_x;
+                        //qWarning() << "pos y: " << stamps_->position_y;
+                    }
+                }
+            }
         } catch (const std::exception &ex) {
             qWarning() << "[PdfPageRender] " << ex.what();
             image_ = std::make_unique<QImage>(size().toSize(),
@@ -161,3 +194,8 @@ void PdfPageRender::setCurrentNeedleRect(
     needles_->current = val->second;
     image_.reset();
 };
+
+void PdfPageRender::setRubberStamps(QList<std::shared_ptr<core::gui::RubberStamp>> rubber_stamps) {
+    rubber_stamps_ = std::move(rubber_stamps);
+    update();
+}

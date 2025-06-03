@@ -52,6 +52,7 @@ add_executable(test_rubber test_rubber.cpp
 
 target_link_libraries(test1 PRIVATE Qt::Test Qt6::Quick)
 target_link_libraries(test1 PRIVATE appcore)
+target_link_libraries(test1 PRIVATE gui_core)
 target_link_libraries(test1 PRIVATE models)
 target_link_libraries(test1 PRIVATE csp_c_bridge_qt)
 target_link_libraries(test1 PRIVATE ${PDFCSP_LINK_PATH})
@@ -64,6 +65,7 @@ target_compile_definitions(test1 PUBLIC -DTEST_FILES_DIR="${CMAKE_SOURCE_DIR}/te
 
 target_link_libraries(test_preview PUBLIC Qt::Test Qt6::Quick Qt6::Concurrent)
 target_link_libraries(test_preview PUBLIC appcore)
+target_link_libraries(test_preview PUBLIC gui_core)
 target_link_libraries(test_preview PUBLIC models)
 target_link_libraries(test_preview PUBLIC csp_c_bridge_qt)
 target_link_libraries(test_preview PUBLIC ${PDFCSP_LINK_PATH})
@@ -75,6 +77,7 @@ target_compile_definitions(test_preview PUBLIC -DTEST_FILES_DIR="${CMAKE_SOURCE_
 
 target_link_libraries(test_rubber PUBLIC Qt::Test Qt6::Quick Qt6::Concurrent)
 target_link_libraries(test_rubber PUBLIC appcore)
+target_link_libraries(test_rubber PUBLIC gui_core)
 target_link_libraries(test_rubber PUBLIC models)
 target_link_libraries(test_rubber PUBLIC csp_c_bridge_qt)
 target_link_libraries(test_rubber PUBLIC ${PDFCSP_LINK_PATH})

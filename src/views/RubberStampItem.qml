@@ -28,6 +28,8 @@ Item {
                     rubberStampEditor.stamp_id = -1
                     rubberStampEditor.updateRubberStampForm()
                     rubberStampEditor.open()
+                } else {
+                    headerSubBar.setTagData(value)
                 }
             }
 

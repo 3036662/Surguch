@@ -48,7 +48,7 @@ QSGNode *RubberPreviewRender::updatePaintNode(
         QSGTexture *texture = window()->createTextureFromImage(*img);
         if (texture != nullptr) {
             rectNode->setTexture(texture);
-            rectNode->setRect(QRectF(0, 0, width(), height()));
+            rectNode->setRect(QRectF(0, 0, 400, 400));
         }
         return rectNode;
     }
@@ -104,7 +104,7 @@ void RubberPreviewRender::createImage(const QVariantMap &qvparams) {
                          saveImage();
                      });
     image_future_ = std::make_unique<ImageFuture>(
-        QtConcurrent::run(prepareImage, params_wrapper));
+        QtConcurrent::run(core::gui::prepareImage, params_wrapper));
     image_watcher_->setFuture(*image_future_);
 }
 
@@ -125,27 +125,6 @@ void RubberPreviewRender::saveImage() {
         //                   result_->image_->width() * width();
     }
     emit imageReady();
-}
-
-std::unique_ptr<BakeRubberResult> prepareImage(
-    const RubberPreviewRender::SharedParamWrapper &params) {
-    auto result = std::make_unique<BakeRubberResult>(BakeRubberResult{
-        std::unique_ptr<pdfcsp::pdf::BakeRubberStamResult,
-                        void (*)(pdfcsp::pdf::BakeRubberStamResult *)>(
-            pdfcsp::pdf::BakeRubberStamp(params->pod_params),
-            pdfcsp::pdf::FreeRubberStampResult),
-        std::unique_ptr<QImage>()});
-    // qWarning() << "result pointer:" << result.get();
-    if (result && result->data_ && result->data_->img != nullptr &&
-        result->data_->img_size > 0) {
-        result->image_ = std::make_unique<QImage>(
-            result->data_->img, result->data_->resolution_x,
-            result->data_->resolution_y, result->data_->resolution_x * 3,
-            QImage::Format_RGB888);
-        //qWarning() << "resolution_x = " << result->data_->resolution_x;
-        //qWarning() << "resolution_y = " << result->data_->resolution_y;
-    }
-    return result;
 }
 
 /// @brief prepare rubber preview params for later use
@@ -226,8 +205,8 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
 }
 
 /// @brief Gather all parameters (pdfcsp::pdf::RubberStampParams)
-RubberPreviewRender::SharedParamWrapper RubberPreviewRender::createParams() const{
-    auto params_wrapper = std::make_shared<CRubberParamsWrapper>();
+core::gui::SharedParamWrapper RubberPreviewRender::createParams() const{
+    auto params_wrapper = std::make_shared<core::gui::CRubberParamsWrapper>();
     pdfcsp::pdf::RubberStampParams &pod_params = params_wrapper->pod_params;
     params_wrapper->qb_img_path = params_.img_path.toUtf8();
     if (!params_wrapper->qb_img_path.isEmpty()) {

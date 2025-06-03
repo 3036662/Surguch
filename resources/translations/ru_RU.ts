@@ -397,15 +397,15 @@
 <context>
     <name>HeaderSubBar</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+173"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+190"/>
         <location filename="../../build/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+153"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+186"/>
-        <location filename="../../src/views/HeaderSubBar.qml" line="+186"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+190"/>
+        <location filename="../../src/views/HeaderSubBar.qml" line="+190"/>
         <source> of </source>
         <translation> из </translation>
     </message>
     <message>
-        <location line="+99"/>
+        <location line="+101"/>
         <location filename="../../build/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+98"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+101"/>
         <location filename="../../src/views/HeaderSubBar.qml" line="+101"/>
@@ -431,7 +431,7 @@
 <context>
     <name>Main</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="+19"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="+20"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+17"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+20"/>
         <location filename="../../src/views/Main.qml" line="+20"/>
@@ -439,10 +439,10 @@
         <translation>Сургуч</translation>
     </message>
     <message>
-        <location line="+125"/>
+        <location line="+135"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+113"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+129"/>
-        <location filename="../../src/views/Main.qml" line="+129"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+135"/>
+        <location filename="../../src/views/Main.qml" line="+135"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
@@ -527,10 +527,10 @@
         <translation>Общая ошибка</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+86"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+76"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+84"/>
-        <location filename="../../src/views/Main.qml" line="+84"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+87"/>
+        <location filename="../../src/views/Main.qml" line="+87"/>
         <source>The document was changed after signing, but can be restored</source>
         <translation>Документ был изменен после подписи! Присутствует возможность восстановить подписанную версию</translation>
     </message>
@@ -622,7 +622,7 @@
 <context>
     <name>PdfDocModel</name>
     <message>
-        <location filename="../../src/models/pdf_doc_model.cpp" line="+137"/>
+        <location filename="../../src/models/pdf_doc_model.cpp" line="+142"/>
         <source>File does not exist</source>
         <translation>Файл не существует</translation>
     </message>
@@ -641,18 +641,24 @@
 <context>
     <name>PdfListView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+679"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+696"/>
+        <location line="+102"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+564"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+679"/>
-        <location filename="../../src/views/PdfListView.qml" line="+679"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+699"/>
+        <location line="+104"/>
+        <location filename="../../src/views/PdfListView.qml" line="+699"/>
+        <location line="+104"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-101"/>
+        <location line="+102"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+1"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+1"/>
-        <location filename="../../src/views/PdfListView.qml" line="+1"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-103"/>
+        <location line="+104"/>
+        <location filename="../../src/views/PdfListView.qml" line="-103"/>
+        <location line="+104"/>
         <source>Invalid position</source>
         <translation>Недопустимая позиция</translation>
     </message>
@@ -922,6 +928,7 @@
 <context>
     <name>RubberStampEditor</name>
     <message>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+103"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+103"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+103"/>
         <source>Tag settings</source>
@@ -929,102 +936,119 @@
     </message>
     <message>
         <location line="+34"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+34"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+34"/>
         <source>Tag name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+9"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+9"/>
         <source>Enter tag name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+8"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+8"/>
         <source>Preview</source>
         <translation type="unfinished">Предпросмотр</translation>
     </message>
     <message>
         <location line="+19"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+19"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+19"/>
         <source>Link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+9"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+9"/>
         <source>Enter link here</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+11"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+11"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+11"/>
         <source>Default tag width, % from A4 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+30"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+30"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+30"/>
         <source>Save</source>
         <translation type="unfinished">Сохранить</translation>
     </message>
     <message>
         <location line="+8"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+8"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+8"/>
         <source>Stamp with this name already exists</source>
         <translation type="unfinished">Штамп с выбранным именем уже существует</translation>
     </message>
     <message>
         <location line="+35"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+35"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+35"/>
         <source>Delete</source>
         <translation type="unfinished">Удалить</translation>
     </message>
     <message>
         <location line="+23"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+23"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+23"/>
         <source>Create from text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+18"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+18"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+18"/>
         <source>Generate from file (*.png *.jpg *.jpeg *.bmp)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+9"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+9"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+9"/>
         <source>Select a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+18"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+18"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+18"/>
         <source>Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+11"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+11"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+11"/>
         <source>Enter text here</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+12"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+12"/>
         <source>Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+22"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+22"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+22"/>
         <source>Transparency</source>
         <translation type="unfinished">Прозрачность фона</translation>
     </message>
     <message>
         <location line="+20"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+20"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+20"/>
         <source>Color</source>
         <translation type="unfinished"></translation>
@@ -1035,12 +1059,14 @@
     </message>
     <message>
         <location line="+89"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+89"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+89"/>
         <source>Stamp border width: </source>
         <translation type="unfinished">Толщина рамки: </translation>
     </message>
     <message>
         <location line="+36"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+36"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+36"/>
         <source>Stamp border radius: </source>
         <translation type="unfinished">Скругление рамки: </translation>

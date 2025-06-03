@@ -142,6 +142,10 @@ target_link_libraries(surguch PRIVATE
 )
 
 target_link_libraries(surguch PRIVATE
+        gui_core
+)
+
+target_link_libraries(surguch PRIVATE
         models
 )
 
