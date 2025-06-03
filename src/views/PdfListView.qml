@@ -274,7 +274,7 @@ ListView {
             "ratio": pageYRatio,
             "zoom_last": pageLastZoom
         }
-        console.warn("QML PreservsPos:" + JSON.stringify(pos))
+        //console.warn("QML PreservsPos:" + JSON.stringify(pos))
         return pos
     }
 
@@ -290,15 +290,15 @@ ListView {
      *   }
      */
     function jumpToPosition(pos) {
-        console.warn("jump to position:" + JSON.stringify(pos))
+        //console.warn("jump to position:" + JSON.stringify(pos))
         positionViewAtIndex(pos.index, ListView.Beginning)
         let currPage = currentPage()
         let rotated90 = delegateRotation == 90 || delegateRotation == 270
         let currZoom = zoomPageFact
         let usedPageSize = 0
         let lastSizeUsed = false
-        console.warn("currPage.pWidth: " + currPage.pWidth
-                     + " currPage.pHeight: " + currPage.pHeight)
+        // console.warn("currPage.pWidth: " + currPage.pWidth
+        //              + " currPage.pHeight: " + currPage.pHeight)
         if (currPage) {
             usedPageSize = rotated90 ? currPage.pWidth : currPage.pHeight
             if (currPage.zoomLast > 0 && currPage.zoomLast !== 1) {
@@ -314,39 +314,30 @@ ListView {
             zoomRatio = 1
         }
         let pos_mode = ListView.Beginning
-        if (pos.ratio > 0.7) {
-            console.warn("QML pos mode: end")
+        if (pos.ratio > 0.7) {           
             pos_mode = ListView.End
         } else if (pos.ratio > 0.3) {
-            pos_mode = ListView.Center
-            console.warn("QML pos mode: center")
+            pos_mode = ListView.Center        
         }
         let targetYScroll = 0
-        console.warn("zoomRatio: " + zoomRatio)
         if (zoomRatio > 0) {
-            console.warn("usedPageSize:" + usedPageSize)
-            console.warn("root height:" + root.height)
             targetYScroll = pos.ratio * usedPageSize
-            if (lastSizeUsed) {
-                console.warn("last size was used")
+            if (lastSizeUsed) {            
                 targetYScroll *= zoomRatio
                 targetYScroll = 0
             } else {
                 targetYScroll -= root.height / 2
             }
         }
-        console.warn("scrollY " + targetYScroll)
+        //console.warn("scrollY " + targetYScroll)
         if (targetYScroll > 0 && pos.index > 0) {
-            console.warn("targetYScroll > 0")
-            console.warn("pos index: " + pos.index)
+            //console.warn("targetYScroll > 0")
+            //console.warn("pos index: " + pos.index)
             positionViewAtIndex(pos.index, ListView.Beginning)
-            contentY += targetYScroll
-            console.warn("\n")
-        } else {
-            console.warn("QML position at index: " + pos.index)
+            contentY += targetYScroll            
+        } else {            
             // if failed to calculate the exact scroll, use jump mode ( beginning | middle | end )
-            positionViewAtIndex(pos.index, pos_mode)
-            console.warn("\n")
+            positionViewAtIndex(pos.index, pos_mode)        
         }
         root.lastPageUsedSize = usedPageSize
     }
@@ -414,7 +405,7 @@ ListView {
     }
 
     function jumpToNeedle(page_index, rel_x, rel_y) {
-        console.warn("QML jump to needle on page " + page_index)
+        //console.warn("QML jump to needle on page " + page_index)
         let currPage = currentPage()
         // remove current rect from this page
         if (currentPageIndex() !== page_index) {
@@ -429,7 +420,7 @@ ListView {
         pos = updateRatioWithRoration(pos, rel_x, rel_y)
         jumpToPosition(pos)
         currPage = root.itemAtIndex(page_index)
-        console.warn("QML update page at index " + page_index)
+        //console.warn("QML update page at index " + page_index)
         // update current rect
         currPage.updateCurrRect()
     }
@@ -491,7 +482,7 @@ ListView {
     onZoomPageFactChanged: {
         // preserve the position
         let pos = preservePosition()
-        console.warn(JSON.stringify(pos))
+        //console.warn(JSON.stringify(pos))
         pdfModel.redrawAll()
         zoomFactorUpdate(zoomPageFact)
         jumpToPosition(pos)
@@ -525,7 +516,7 @@ ListView {
             pdfPage.setCurrentNeedleRect(pdfModel.getCurrentNeedleRect(
                                              model.display))
             pdfPage.update()
-            console.warn("QML delegate updateCurrRect")
+            //console.warn("QML delegate updateCurrRect")
         }
 
         PdfPageRender {
@@ -595,8 +586,6 @@ ListView {
                 if (width > 0) {
                     lastPageWidth = width
                 }
-                console.warn(model.display + " WIDTH CHANGED,PAGE WIDTH: "
-                             + width + "HEIGHT: " + height)
             }
 
             onZoomLastChanged: {
@@ -611,8 +600,6 @@ ListView {
                 if (height > 0) {
                     root.lastPageHeight = height
                 }
-                console.warn(model.display + " HEIGHT CHANGED,PAGE WIDTH: "
-                             + width + "HEIGHT: " + height)
             }
 
             onAimResizeStatusChanged: {
@@ -628,8 +615,7 @@ ListView {
                                             model.display))
                 if (width > 0 && root.hScrollPos > 0 && root.hScrollPos < 1) {
                     root.contentX = width * root.hScrollPos
-                }
-                console.warn(model.display + " PAGE WIDTH: " + width + "HEIGHT: " + height)
+                }                
             }
 
             MouseArea {
