@@ -16,9 +16,10 @@ ListView {
     // page sizes and zoom
     property double zoomPageFact: 1
     property int pageWidth: 0
-    property int lastPageHeight: 0
-    property int lastPageWidth: 0
-    property int lastPageUsedSize: 0
+    property int pageHeight: 0
+    property int lastPageHeight: 0 // used for preservePos
+    property int lastPageWidth: 0 // used for preservePos
+    property int lastPageUsedSize: 0 // used for jumpToPosition
     property double prevZoom: 1
     property bool landscape: false
     property bool zoomAuto: false
@@ -433,10 +434,10 @@ ListView {
         currPage.updateCurrRect()
     }
 
-    function handleScreenDpiChanged(){
-        let pos=preservePosition();
-        model.redrawAll();
-        jumpToPosition(pos);
+    function handleScreenDpiChanged() {
+        let pos = preservePosition()
+        model.redrawAll()
+        jumpToPosition(pos)
     }
 
     Layout.fillHeight: true
@@ -534,12 +535,14 @@ ListView {
             property bool sizeKnown: false
             property int defaultWidth: root.pageWidth > 0
                                        && !sizeKnown ? root.pageWidth : root.width
+            property int defaultHeight: root.pageHeight
+                                        && !sizeKnown ? root.pageHeight : defaultWidth * 1.42
 
             customRotation: root.delegateRotation
             anchors.horizontalCenter: width < parent.width ? parent.horizontalCenter : undefined
             anchors.rightMargin: verticalScroll.width
             width: defaultWidth
-            height: defaultWidth * 1.42
+            height:defaultHeight
             // utilized,if zoomAuto == false
             zoomGoal: zoomPageFact
             // set goal width only if autoZoom; if autoZoom==true,zoomGoal will be ignored
@@ -592,6 +595,8 @@ ListView {
                 if (width > 0) {
                     lastPageWidth = width
                 }
+                console.warn(model.display + " WIDTH CHANGED,PAGE WIDTH: "
+                             + width + "HEIGHT: " + height)
             }
 
             onZoomLastChanged: {
@@ -600,11 +605,14 @@ ListView {
             }
 
             onHeightChanged: {
+                root.pageHeight = height
                 updateCrossSize()
                 landscape = pdfPage.width > pdfPage.height
                 if (height > 0) {
                     root.lastPageHeight = height
                 }
+                console.warn(model.display + " HEIGHT CHANGED,PAGE WIDTH: "
+                             + width + "HEIGHT: " + height)
             }
 
             onAimResizeStatusChanged: {
@@ -621,6 +629,7 @@ ListView {
                 if (width > 0 && root.hScrollPos > 0 && root.hScrollPos < 1) {
                     root.contentX = width * root.hScrollPos
                 }
+                console.warn(model.display + " PAGE WIDTH: " + width + "HEIGHT: " + height)
             }
 
             MouseArea {
