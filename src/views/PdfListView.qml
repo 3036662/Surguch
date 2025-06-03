@@ -425,7 +425,8 @@ ListView {
         currPage.updateCurrRect()
     }
 
-    function handleScreenDpiChanged() {
+    // redraw but preserve the postiton
+    function redrawAndPreservePosion() {
         let pos = preservePosition()
         model.redrawAll()
         jumpToPosition(pos)
@@ -518,6 +519,12 @@ ListView {
             pdfPage.update()
             //console.warn("QML delegate updateCurrRect")
         }
+        onWidthChanged: {
+            if (root.zoomAuto){
+                pdfPage.width=width
+            }
+        }
+
 
         PdfPageRender {
             id: pdfPage
