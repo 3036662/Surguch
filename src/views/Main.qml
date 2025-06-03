@@ -242,6 +242,7 @@ ApplicationWindow {
         }
     }
 
+
     // --------------------------------------
     //  connect the events
     Component.onCompleted: {
@@ -279,6 +280,8 @@ ApplicationWindow {
         // toggle from preview to certs in left sidebat
         headerSubBar.showPreviews.connect(leftSideBar.showPreviews)
         headerSubBar.showCerts.connect(leftSideBar.showCerts)
+        // screen DPI changed
+        pdfModel.screenDpiChanged.connect(pdfListView.redrawAndPreservePosion)
         // search
         headerSubBar.searchDialog.searchRequired.connect(pdfModel.performSearch)
         pdfModel.searchCompleted.connect(pdfListView.searchCompleted)
