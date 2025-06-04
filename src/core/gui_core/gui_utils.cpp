@@ -39,12 +39,12 @@ std::unique_ptr<BakeRubberResult> prepareImage(
     // qWarning() << "result pointer:" << result.get();
     if (result && result->data_ && result->data_->img != nullptr &&
         result->data_->img_size > 0) {
-        result->image_ = std::make_unique<QImage>(result->data_->img,
-            //glueImageWithMask(result->data_->img, result->data_->img_size,
-                //result->data_->img_mask, result->data_->img_mask_size).data(),
+        result->image_ = std::make_unique<QImage>(//result->data_->img,
+            glueImageWithMask(result->data_->img, result->data_->img_size,
+                result->data_->img_mask, result->data_->img_mask_size).data(),
                 result->data_->resolution_x,
-            result->data_->resolution_y, result->data_->resolution_x * 3,
-            QImage::Format_RGB888);
+            result->data_->resolution_y, result->data_->resolution_x * 4,
+            QImage::Format_RGBA8888);
         qWarning() << "resolution_x = " << result->data_->resolution_x;
         qWarning() << "resolution_y = " << result->data_->resolution_y;
         }

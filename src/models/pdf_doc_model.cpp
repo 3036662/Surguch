@@ -406,6 +406,19 @@ QList<std::shared_ptr<core::gui::RubberStamp>> PdfDocModel::getRubberStampForPag
     return history_manager_->getActionsOnPage(page_index);
 }
 
+void PdfDocModel::undoRubberStamp(){
+    history_manager_->undoAction();
+
+    emit updateDoc();
+}
+
+void PdfDocModel::redoRubberStamp(){
+    history_manager_->redoAction();
+
+    emit updateDoc();
+}
+
+
 void PdfDocModel::saveImage() {
     if (!history_manager_) {
         history_manager_ = std::make_unique<core::gui::HistoryManager>();
@@ -416,6 +429,8 @@ void PdfDocModel::saveImage() {
         .page_index = page_index_,
         .position_x = position_x_,
         .position_y = position_y_,
+        .qml_width = page_width_,
+        .qml_height = page_height_,
         .res = image_future_->takeResult()
     }));
     }
@@ -424,13 +439,19 @@ void PdfDocModel::saveImage() {
 
 core::gui::RubberParams PdfDocModel::prepareParams(const QVariantMap &qvparams)  {
     if (qvparams.contains("page_index")) {
-        page_index_ = qvparams["page_index"].toUInt();
+        page_index_ = qvparams.value("page_index").toUInt();
     }
     if (qvparams.contains("stamp_x")) {
-        position_x_ = qvparams["stamp_x"].toDouble();
+        position_x_ = qvparams.value("stamp_x").toDouble();
     }
     if (qvparams.contains("stamp_y")) {
-        position_y_ = qvparams["stamp_y"].toDouble();
+        position_y_ = qvparams.value("stamp_y").toDouble();
+    }
+    if (qvparams.contains("page_width")) {
+        page_width_ = qvparams.value("page_width").toDouble();
+    }
+    if (qvparams.contains("page_height")) {
+        page_height_ = qvparams.value("page_height").toDouble();
     }
     if (qvparams.contains("stamp_width")) {
         params.stamp_width = qvparams.value("stamp_width").toUInt();

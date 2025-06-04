@@ -388,4 +388,20 @@ ColumnLayout {
             searchDialog.focus = true;
         }
     }
+
+    Shortcut {
+        sequence: "Ctrl+Z"
+        onActivated: {
+            console.warn("undo")
+            pdfModel.undoRubberStamp()
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+Shift+Z"
+        onActivated: {
+            console.warn("undo")
+            pdfModel.redoRubberStamp()
+        }
+    }
 }

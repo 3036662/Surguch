@@ -79,7 +79,7 @@ QSGNode *PdfPageRender::updatePaintNode(
         rectNode->setFiltering(QSGTexture::Linear);
         rectNode->setOwnsTexture(true);
     }
-    // qWarning() << "PdfPageRender: render page" << page_number_;
+     qWarning() << "PdfPageRender: render page" << page_number_;
     if (!image_) {
         try {
             core::MuPageRender mupdf(fzctx_, fzdoc_);
@@ -128,17 +128,20 @@ QSGNode *PdfPageRender::updatePaintNode(
                         //                    QImage::Format_RGBA8888);
                         QPainter painter(image_.get());
                         // move the coordinate system
-                        //painter.translate(0, 0);
+                        painter.translate(0, 0);
                         // rotate the coordinate system
                         painter.rotate(custom_rotation_);
-                         const float stamp_ratio =
-                             static_cast<float>(stamps_->res->image_->height()) /
-                             stamps_->res->image_->width();
-                         const int target_width = image_->width() * 0.3;
-                         const int target_height = target_width * stamp_ratio;
+                         // const float stamp_ratio =
+                         //     static_cast<float>(stamps_->res->image_->height()) /
+                         //     stamps_->res->image_->width();
+                         //const int target_width = stamps_->res->image_->width();
+                         //const int target_height = target_width * stamp_ratio;
+                        const int target_width = stamps_->res->image_->width() / stamps_->qml_width * image_->width();
+                        const int target_height = stamps_->res->image_->height() / stamps_->qml_height * image_->height();
                          QImage stamp_scaled = stamps_->res->image_->scaled(
                              target_width, target_height, Qt::KeepAspectRatio);
-                        painter.drawImage(stamps_->position_x, stamps_->position_y, stamp_scaled);
+                        painter.drawImage(stamps_->position_x / stamps_->qml_width * image_->width(),
+                            stamps_->position_y / stamps_->qml_height * image_->height() , stamp_scaled);
                         auto end = std::chrono::high_resolution_clock::now();
                         std::chrono::duration<double, std::milli> duration =
                             end - start;
@@ -196,6 +199,7 @@ void PdfPageRender::setCurrentNeedleRect(
 };
 
 void PdfPageRender::setRubberStamps(QList<std::shared_ptr<core::gui::RubberStamp>> rubber_stamps) {
-    rubber_stamps_ = std::move(rubber_stamps);
+    rubber_stamps_ = rubber_stamps;
+    image_.reset();
     update();
 }

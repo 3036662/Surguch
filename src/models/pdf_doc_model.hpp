@@ -100,6 +100,12 @@ class PdfDocModel : public QAbstractListModel {
     /// @brief return a vector of stamps to render
     [[nodiscard]] Q_INVOKABLE QList<std::shared_ptr<core::gui::RubberStamp>> getRubberStampForPage(size_t page_index) const;
 
+    /// @brief undo last placed stamp
+    Q_INVOKABLE void undoRubberStamp();
+
+    /// @brief redo last removed stamp
+    Q_INVOKABLE void redoRubberStamp();
+
     /// @brief returns a vector of rectangles to highligt
     [[nodiscard]] Q_INVOKABLE NeedleRectsOnPage
     getNeedlesForPage(size_t page_index);
@@ -138,6 +144,9 @@ class PdfDocModel : public QAbstractListModel {
     /// @brief the image is prepared and ready for render
     void imageReady();
 
+    /// @brief signal for update after undo or redo
+    void updateDoc();
+
    private slots:
     void handleSearchCompleted();
 
@@ -173,6 +182,8 @@ class PdfDocModel : public QAbstractListModel {
     std::unique_ptr<core::gui::HistoryManager> history_manager_;
     core::gui::RubberParams params;
     size_t page_index_ = 0;
+    double page_width_ = 0;
+    double page_height_ = 0;
     double position_x_ = 0;
     double position_y_ = 0;
 

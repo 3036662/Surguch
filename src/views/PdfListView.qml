@@ -820,6 +820,22 @@ ListView {
                     }
                 }
             }
+
+            Connections {
+                target: pdfModel
+
+                function onImageReady() {
+                    // add rubber stamps on render
+                    pdfPage.setRubberStamps(pdfModel.getRubberStampForPage(
+                        model.display))
+                }
+
+                function onUpdateDoc() {
+                    // add rubber stamps on render
+                    pdfPage.setRubberStamps(pdfModel.getRubberStampForPage(
+                        model.display))
+                }
+            }
         }
     }
 

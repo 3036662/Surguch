@@ -56,6 +56,8 @@ struct RubberStamp {
     size_t page_index;
     double position_x;
     double position_y;
+    double qml_width;
+    double qml_height;
     std::unique_ptr<BakeRubberResult> res;
 };
 
