@@ -7,6 +7,7 @@
 #include <QList>
 #include <QObject>
 #include <memory>
+#include <shared_mutex>
 
 #include "pdf_csp_c.hpp"
 #include "rubber_structs.hpp"
@@ -30,7 +31,7 @@ Q_OBJECT
     void addAction(std::unique_ptr<RubberStamp> action);
 
     /// @brief get array of actions on page x
-    [[nodiscard]] QList<EditActions> getActionsOnPage(size_t page_index) const;
+    [[nodiscard]] std::vector<EditActions> getActionsOnPage(size_t page_index) const;
 
     /// @brief clears redo actions array if something done after undo
     void clearRedo();
@@ -44,10 +45,15 @@ Q_OBJECT
     /// @brief redo previously undo stamps(ctrl+shift+z)
     void redoAction();
 
+    /// @brief get annotations(rubber stamps) params for embedding them into pdf
+    std::vector<pdfcsp::pdf::CAnnotParams> getAnnotsParams();
+
 
 private:
-    QList<EditActions> undo_actions_;
-    QList<EditActions> redo_actions_;
+    std::vector<EditActions> undo_actions_;
+    std::vector<EditActions> redo_actions_;
+    mutable std::shared_mutex mutex_;
+    std::vector<pdfcsp::pdf::CAnnotParams> c_annot_params_;
 };
 
 }  // namespace core::gui

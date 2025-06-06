@@ -51,7 +51,7 @@ RowLayout {
             icon.source: StyleSheet.file_plus_icon
             text: qsTr("Open")
             onClicked: kdeVersion === "5" ? labsFileDialog.open(
-                                                ) : fileDialog.open()
+            ) : fileDialog.open()
             width: 130
         }
 
@@ -67,7 +67,7 @@ RowLayout {
             text: qsTr("Save as ...")
             enabled: pdfListView.source.length > 0
             onClicked: kdeVersion === "5" ? labsSaveFileDialog.open(
-                                                ) : saveFileDialog.open()
+            ) : saveFileDialog.open()
         }
 
         Row {
@@ -100,15 +100,15 @@ RowLayout {
 
                 onActivated: {
                     profileComboBox.displayText = profileComboBox.textAt(
-                                currentIndex)
+                        currentIndex)
                     //open profile info panel
                     rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
                     // set the certificates for select
                     rightSideBar.edit_profile.cert_data_raw
-                            = profileComboBox.model.getUserCertsJSON()
+                        = profileComboBox.model.getUserCertsJSON()
                     //set the stamps for select
                     rightSideBar.edit_profile.stamps_data_raw
-                            = profileComboBox.model.getUserStampsJSON()
+                        = profileComboBox.model.getUserStampsJSON()
                     // set a reference to this model
                     rightSideBar.edit_profile.profiles_model = profileComboBox.model
                     // if create a new profile, set an empty data
@@ -127,7 +127,7 @@ RowLayout {
                         const indx = profileComboBox.indexOfValue(def_profile)
                         //console.warn(indx)
                         profileComboBox.displayText = profileComboBox.textAt(
-                                    indx)
+                            indx)
                         profileComboBox.currentIndex = indx
                     } else {
                         profileComboBox.currentIndex = -1
@@ -149,10 +149,10 @@ RowLayout {
                     rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
                     // set the certificates for select
                     rightSideBar.edit_profile.cert_data_raw
-                            = profileComboBox.model.getUserCertsJSON()
+                        = profileComboBox.model.getUserCertsJSON()
                     //set the stamps for select
                     rightSideBar.edit_profile.stamps_data_raw
-                            = profileComboBox.model.getUserStampsJSON()
+                        = profileComboBox.model.getUserStampsJSON()
                     // set a reference to this model
                     rightSideBar.edit_profile.profiles_model = profileComboBox.model
                     rightSideBar.edit_profile.profile_data = profileComboBox.currentValue
@@ -161,6 +161,7 @@ RowLayout {
 
             Connections {
                 target: profilesModel
+
                 // when model has successfully saved the profile
                 function onProfileSaved(val) {
                     // select saved profile in the header combo
@@ -204,7 +205,7 @@ RowLayout {
 
             onClicked: {
                 if (profileComboBox.currentValue === "new"
-                        || profileComboBox.currentIndex === -1) {
+                    || profileComboBox.currentIndex === -1) {
                     profileComboBox.popup.open()
                 } else {
                     pdfListView.signMode = !pdfListView.signMode
@@ -227,15 +228,15 @@ RowLayout {
     //     rightPadding: 10
     // }
     Keys.onPressed: event => {
-                        if (event.key === Qt.Key_Escape
-                            && pdfListView.signMode) {
-                            pdfListView.signMode = false
-                            signModeButton.down = false
-                            event.accepted = true
-                            return
-                        }
-                        event.accepted = false
-                    }
+        if (event.key === Qt.Key_Escape
+            && pdfListView.signMode) {
+            pdfListView.signMode = false
+            signModeButton.down = false
+            event.accepted = true
+            return
+        }
+        event.accepted = false
+    }
 
     CommonDialods.FileDialog {
         id: fileDialog
@@ -243,7 +244,7 @@ RowLayout {
         //nameFilters: ["PDF files (*.pdf)","Any file (* *.*)"];
         nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
         currentFolder: StandardPaths.writableLocation(
-                           StandardPaths.DocumentsLocation)
+            StandardPaths.DocumentsLocation)
         onAccepted: {
             enableSignMode()
             // source is chosen by user, not a temporary file
@@ -262,9 +263,11 @@ RowLayout {
         defaultSuffix: "pdf"
         nameFilters: [qsTr("PDF files (*.pdf)")]
         currentFolder: StandardPaths.writableLocation(
-                           StandardPaths.DocumentsLocation)
+            StandardPaths.DocumentsLocation)
 
         onAccepted: {
+            pdfModel.setSource(tagCreator.embedAnnot(pdfModel.getAnnotParams(), pdfModel.getSource()))
+            pdfModel.clearHistory()
             console.warn(currentFile)
             pdfListView.saveTo(currentFile)
             if (quitAfterSave) {
@@ -302,6 +305,8 @@ RowLayout {
         folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
 
         onAccepted: {
+            pdfModel.setSource(tagCreator.embedAnnot(pdfModel.getAnnotParams(), pdfModel.getSource()))
+            pdfModel.clearHistory()
             console.warn(currentFile)
             pdfListView.saveTo(currentFile)
             if (quitAfterSave) {

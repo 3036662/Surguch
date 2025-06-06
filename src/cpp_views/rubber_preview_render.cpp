@@ -53,12 +53,12 @@ QSGNode *RubberPreviewRender::updatePaintNode(
         return rectNode;
     }
     QSGTexture *texture = nullptr;
-    if (result_->data_->resolution_x > 400 && result_->data_->resolution_x > result_->data_->resolution_y) {
-        QSGTexture *texture = window()->createTextureFromImage((*result_->image_).scaled(400,
+    if (result_->data_->resolution_x > 480 && result_->data_->resolution_x > result_->data_->resolution_y) {
+        QSGTexture *texture = window()->createTextureFromImage((*result_->image_).scaled(480,
             400 * (static_cast<double>(result_->data_->resolution_y / static_cast<double>(result_->data_->resolution_x))) ,
             Qt::KeepAspectRatio));
         setHeight(400 * (static_cast<double>(result_->data_->resolution_y / static_cast<double>(result_->data_->resolution_x))));
-        setWidth(400);
+        setWidth(480);
         if (texture != nullptr) {
             rectNode->setTexture(texture);
             rectNode->setRect(QRectF(0, 0, width(), height()));
@@ -67,11 +67,11 @@ QSGNode *RubberPreviewRender::updatePaintNode(
     }
     if (result_->data_->resolution_y > 400 && result_->data_->resolution_y > result_->data_->resolution_x) {
         QSGTexture *texture = window()->createTextureFromImage((*result_->image_).scaled(
-            400 * (static_cast<double>(result_->data_->resolution_x) / static_cast<double>(result_->data_->resolution_y)),
+            480 * (static_cast<double>(result_->data_->resolution_x) / static_cast<double>(result_->data_->resolution_y)),
         400 ,
         Qt::KeepAspectRatio));
         setHeight(400);
-        setWidth(400 * (static_cast<double>(result_->data_->resolution_x) / static_cast<double>(result_->data_->resolution_y)));
+        setWidth(480 * (static_cast<double>(result_->data_->resolution_x) / static_cast<double>(result_->data_->resolution_y)));
         if (texture != nullptr) {
             rectNode->setTexture(texture);
             rectNode->setRect(QRectF(0, 0, width(), height()));

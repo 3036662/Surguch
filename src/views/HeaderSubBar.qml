@@ -65,6 +65,12 @@ ColumnLayout {
         rubberStampPutButton.tag_data = value
     }
 
+    function enableTagButton() {
+        console.warn("enabling tag button")
+        rubberStampPutButton.down = false
+        rubberStampPutButton.enabled = true
+    }
+
     spacing: 1
 
     Rectangle {
@@ -82,8 +88,8 @@ ColumnLayout {
             icon.source: StyleSheet.book_icon
             icon.width: 20
             icon.height: 20
-            leftPadding: 40
-            rightPadding: 40
+            leftPadding: 5
+            rightPadding: 5
 
             onClicked: {
                 showPreviews()
@@ -99,8 +105,8 @@ ColumnLayout {
             icon.source: StyleSheet.pen_tool_icon
             icon.width: 20
             icon.height: 20
-            leftPadding: 40
-            rightPadding: 40
+            leftPadding: 5
+            rightPadding: 5
 
             onClicked: {
                 showCerts()
@@ -116,8 +122,8 @@ ColumnLayout {
             icon.source: StyleSheet.printer_icon
             icon.width: 20
             icon.height: 20
-            leftPadding: 40
-            rightPadding: 40
+            leftPadding: 5
+            rightPadding: 5
 
             onClicked: {
                 printer.print(pdfListView.source, pdfListView.count,
@@ -305,40 +311,38 @@ ColumnLayout {
         HeaderToolSeparator {
         }
 
-        RowLayout {
-            spacing: 0
-            Button {
-                id: rubberStampPutButton
 
-                property var tag_data
+        Button {
+            id: rubberStampPutButton
 
-                enabled: !!tag_data
-                flat: true
-                height: 24
-                smooth: true
-                padding: 0
-                icon.source: StyleSheet.wrench_icon
-                onClicked: {
-                    console.warn("create tag")
-                    pdfListView.tagMode = !pdfListView.tagMode
-                    pdfListView.tagData = tag_data
-                    if (!down) {
-                        pdfListView.reserRotation()
-                    }
-                    down = !down
+            property var tag_data
+
+            enabled: !!tag_data
+            flat: true
+            icon.width: 20
+            icon.height: 20
+            padding: 0
+            icon.source: StyleSheet.tag_icon
+            onClicked: {
+                console.warn("create tag")
+                pdfListView.tagMode = !pdfListView.tagMode
+                pdfListView.tagData = tag_data
+                if (!down) {
+                    pdfListView.reserRotation()
                 }
+                down = !down
             }
+        }
 
-            Button {
-                id: rubberStampDialogButton
-                flat: true
-                height: 24
-                smooth: true
-                padding: 0
-                icon.source: StyleSheet.chevron_down
-                onClicked: {
-                    rubberStampDialog.open()
-                }
+        Button {
+            id: rubberStampDialogButton
+            flat: true
+            icon.width: 20
+            icon.height: 20
+            padding: 0
+            icon.source: StyleSheet.chevron_down
+            onClicked: {
+                rubberStampDialog.open()
             }
         }
 
@@ -350,8 +354,10 @@ ColumnLayout {
             id: searchButton
             flat: true
             icon.source: StyleSheet.search_icon
-            height: 24
-            smooth: true
+            icon.width: 20
+            icon.height: 20
+            leftPadding: 5
+            rightPadding: 5
             onClicked: searchDialog.open()
         }
 

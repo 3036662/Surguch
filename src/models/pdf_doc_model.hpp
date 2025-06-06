@@ -97,14 +97,23 @@ class PdfDocModel : public QAbstractListModel {
     /// @brief create rubber stamps on document
     Q_INVOKABLE void placeRubberStamp(const QVariantMap &qvparams);
 
+    /// @brief create image to get default tag height
+    Q_INVOKABLE void prepareImage(const QVariantMap &qvparams);
+
     /// @brief return a vector of stamps to render
-    [[nodiscard]] Q_INVOKABLE QList<std::shared_ptr<core::gui::RubberStamp>> getRubberStampForPage(size_t page_index) const;
+    [[nodiscard]] Q_INVOKABLE std::vector<std::shared_ptr<core::gui::RubberStamp>> getRubberStampForPage(size_t page_index) const;
 
     /// @brief undo last placed stamp
     Q_INVOKABLE void undoRubberStamp();
 
     /// @brief redo last removed stamp
     Q_INVOKABLE void redoRubberStamp();
+
+    /// @brief clear history
+    Q_INVOKABLE void clearHistory() const;
+
+    /// @brief get annot params for embedding in pdf
+    [[nodiscard]] Q_INVOKABLE std::vector<pdfcsp::pdf::CAnnotParams> getAnnotParams() const;
 
     /// @brief returns a vector of rectangles to highligt
     [[nodiscard]] Q_INVOKABLE NeedleRectsOnPage
@@ -141,8 +150,8 @@ class PdfDocModel : public QAbstractListModel {
     /// @brief jump to needle by index completed
     void jumpToNeedleCompleted(int page_index, float rel_x, float rel_y);
 
-    /// @brief the image is prepared and ready for render
-    void imageReady();
+    /// @brief size estimated
+    void sizeReady(int height);
 
     /// @brief signal for update after undo or redo
     void updateDoc();
@@ -156,6 +165,9 @@ class PdfDocModel : public QAbstractListModel {
 
     /// @brief Gather all parameters (pdfcsp::pdf::CSignParam)
     [[nodiscard]] core::gui::SharedParamWrapper createParams(const core::gui::RubberParams &params) const;
+
+    /// @brief get data from csp lib and send estimated sizes
+    void estimateTagHeight();
 
     /// @brief find all signatures
     void processSignatures();
@@ -181,11 +193,6 @@ class PdfDocModel : public QAbstractListModel {
     std::unique_ptr<ImageFutureWatcher> image_watcher_;
     std::unique_ptr<core::gui::HistoryManager> history_manager_;
     core::gui::RubberParams params;
-    size_t page_index_ = 0;
-    double page_width_ = 0;
-    double page_height_ = 0;
-    double position_x_ = 0;
-    double position_y_ = 0;
 
     fz_context *fzctx_text_ = nullptr;
     fz_document *fzdoc_text_ = nullptr;

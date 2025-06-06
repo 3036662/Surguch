@@ -53,5 +53,7 @@
         <file>icons/dark/chevron_up.svg</file>
         <file>icons/light/chevron_up.svg</file>
         <file>icons/light/chevron_down.svg</file>
+        <file>icons/light/tag_icon.svg</file>
+        <file>icons/dark/tag_icon.svg</file>
     </qresource>
 </RCC>

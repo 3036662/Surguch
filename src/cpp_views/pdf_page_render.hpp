@@ -22,6 +22,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QQuickItem>
 #include <QList>
 #include <memory>
+#include <mutex>
 
 #include "core/gui_core/rubber_structs.hpp"
 #include "core/mu_page_render.hpp"
@@ -69,7 +70,7 @@ class PdfPageRender : public QQuickItem {
         const std::shared_ptr<std::pair<size_t, fz_rect>> &);
 
     /// @brief set rubber stamps for page
-    Q_INVOKABLE void setRubberStamps(QList<std::shared_ptr<core::gui::RubberStamp>> rubber_stamps);
+    Q_INVOKABLE void setRubberStamps(std::vector<std::shared_ptr<core::gui::RubberStamp>> rubber_stamps);
 
     /// @brief the goal with of element
     Q_PROPERTY(float widthGoal MEMBER width_goal_ NOTIFY widthGoalChanged);
@@ -107,7 +108,8 @@ class PdfPageRender : public QQuickItem {
     float result_zoom_last_ = 1;
     float custom_rotation_ = 0;
     core::utils::NeedleRectsOnPage needles_;  // not owning
-    QList<std::shared_ptr<core::gui::RubberStamp>> rubber_stamps_;
+    std::vector<std::shared_ptr<core::gui::RubberStamp>> rubber_stamps_;
+    std::mutex mutex_;
 };
 
 #endif  // PDF_PAGE_RENDER_HPP

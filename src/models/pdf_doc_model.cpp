@@ -220,6 +220,9 @@ void PdfDocModel::setSource(const QString &path) {
                              &PdfDocModel::handleSearchCompleted);
         };
     }
+    if (history_manager_ != nullptr) {
+        history_manager_->clearHistory();
+    }
 }
 
 /// @brief get current source path
@@ -383,8 +386,8 @@ PdfDocModel::getCurrentNeedleRect(size_t page_index) {
 }
 
 void PdfDocModel::placeRubberStamp(const QVariantMap& qvparams){
-    auto params = prepareParams(qvparams);
-    auto params_wrapper = createParams(params);
+    params = core::gui::prepareParams(qvparams);
+    auto params_wrapper = core::gui::createParams(params);
     qWarning() << "[PlaceRubberStamp]" << "parsed and ready to place tags";
     image_watcher_ = std::make_unique<ImageFutureWatcher>();
     QObject::connect(image_watcher_.get(), &ImageFutureWatcher::finished,
@@ -395,11 +398,31 @@ void PdfDocModel::placeRubberStamp(const QVariantMap& qvparams){
     image_future_ = std::make_unique<ImageFuture>(
         QtConcurrent::run(core::gui::prepareImage, params_wrapper));
     image_watcher_->setFuture(*image_future_);
-
-
 }
 
-QList<std::shared_ptr<core::gui::RubberStamp>> PdfDocModel::getRubberStampForPage(size_t page_index) const {
+void PdfDocModel::prepareImage(const QVariantMap &qvparams) {
+    params = core::gui::prepareParams(qvparams);
+    auto params_wrapper = core::gui::createParams(params);
+    image_watcher_ = std::make_unique<ImageFutureWatcher>();
+    QObject::connect(image_watcher_.get(), &ImageFutureWatcher::finished,
+                     [this]() {
+                         // qWarning() << "finished";
+                         estimateTagHeight();
+                     });
+    image_future_ = std::make_unique<ImageFuture>(
+        QtConcurrent::run(core::gui::prepareImage, params_wrapper));
+    image_watcher_->setFuture(*image_future_);
+}
+
+void PdfDocModel::estimateTagHeight() {
+    if (image_future_ && image_future_->isValid()) {
+        auto result  = image_future_->takeResult();
+        emit sizeReady(result->data_->resolution_y);
+    }
+}
+
+
+std::vector<std::shared_ptr<core::gui::RubberStamp>> PdfDocModel::getRubberStampForPage(size_t page_index) const {
     if (!history_manager_) {
         return {};
     }
@@ -407,15 +430,36 @@ QList<std::shared_ptr<core::gui::RubberStamp>> PdfDocModel::getRubberStampForPag
 }
 
 void PdfDocModel::undoRubberStamp(){
+    if (!history_manager_) {
+        return;
+    }
     history_manager_->undoAction();
 
     emit updateDoc();
 }
 
 void PdfDocModel::redoRubberStamp(){
+    if (!history_manager_) {
+        return;
+    }
     history_manager_->redoAction();
 
     emit updateDoc();
+}
+
+void PdfDocModel::clearHistory() const {
+    qWarning() << "[PdfDocModel::clearHistory]";
+    if (!history_manager_) {
+        return;
+    }
+    history_manager_->clearHistory();
+}
+
+std::vector<pdfcsp::pdf::CAnnotParams> PdfDocModel::getAnnotParams() const {
+    if (!history_manager_) {
+        return {};
+    }
+    return history_manager_->getAnnotsParams();
 }
 
 
@@ -426,148 +470,19 @@ void PdfDocModel::saveImage() {
     if (image_future_ && image_future_->isValid()) {
         history_manager_->addAction(std::make_unique<core::gui::RubberStamp>(
     core::gui::RubberStamp{
-        .page_index = page_index_,
-        .position_x = position_x_,
-        .position_y = position_y_,
-        .qml_width = page_width_,
-        .qml_height = page_height_,
+        .page_index = params.page_index,
+        .position_x = params.position_x,
+        .position_y = params.position_y,
+        .qml_width = params.page_width,
+        .qml_height = params.page_height,
+        .stamp_width = params.stamp_width,
+        .stamp_height = params.stamp_height,
+        .link = params.link,
         .res = image_future_->takeResult()
     }));
     }
-    emit imageReady();
-}
-
-core::gui::RubberParams PdfDocModel::prepareParams(const QVariantMap &qvparams)  {
-    if (qvparams.contains("page_index")) {
-        page_index_ = qvparams.value("page_index").toUInt();
-    }
-    if (qvparams.contains("stamp_x")) {
-        position_x_ = qvparams.value("stamp_x").toDouble();
-    }
-    if (qvparams.contains("stamp_y")) {
-        position_y_ = qvparams.value("stamp_y").toDouble();
-    }
-    if (qvparams.contains("page_width")) {
-        page_width_ = qvparams.value("page_width").toDouble();
-    }
-    if (qvparams.contains("page_height")) {
-        page_height_ = qvparams.value("page_height").toDouble();
-    }
-    if (qvparams.contains("stamp_width")) {
-        params.stamp_width = qvparams.value("stamp_width").toUInt();
-        //params.stamp_width = 400;
-    }
-    if (qvparams.contains("stamp_height")) {
-        //params.stamp_height = qvparams.value("height").toUInt();
-        params.stamp_height = 400;
-    }
-    if (qvparams.contains("annotation_width")) {
-        params.annotation_width = qvparams["annotation_width"].toUInt();
-    }
-    if (qvparams.contains("border_width")) {
-        params.border_width = qvparams.value("border_width").toUInt();
-    }
-    if (qvparams.contains("border_radius")) {
-        params.border_radius = qvparams.value("border_radius").toUInt();
-    }
-    if (qvparams.contains("bg_transparent")) {
-        params.bg_transparent = qvparams.value("bg_transparent").toBool();
-    }
-    if (qvparams.contains("create_from_image")) {
-        params.create_from_image = qvparams.value("create_from_image").toBool();
-    }
-    if (qvparams.contains("stamp_preserve_ratio")) {
-        //params.stamp_preserve_ratio = qvparams.value("stamp_preserve_ratio").toBool();
-        params.stamp_preserve_ratio = true;
-    }
-    if (qvparams.contains("bg_opacity")) {
-        params.bg_opacity = qvparams.value("bg_opacity").toUInt();
-    }
-    if (qvparams.contains("font_size")) {
-        params.font_size = qvparams.value("font_size").toUInt();
-    }
-    if (qvparams.contains("font_weight")) {
-        //params.font_weight = qvparams.value("font_weight").toUInt();
-        params.font_weight = 400;
-    }
-    if (qvparams.contains("img_path")) {
-        params.img_path = qvparams.value("img_path").toUrl().toLocalFile();
-        if (params.img_path.isEmpty()) {
-            params.img_path = qvparams.value("img_path").toString();
-        }
-    }
-    if (qvparams.contains("annotation_text")) {
-        params.annotation_text = qvparams.value("annotation_text").toString();
-    }
-    if (qvparams.contains("font_family")) {
-        params.font_family = qvparams.value("font_family").toString();
-    }
-    if (qvparams.contains("border_color_red")) {
-        params.border_color.R = qvparams.value("border_color_red").toUInt();
-    }
-    if (qvparams.contains("border_color_green")) {
-        params.border_color.G = qvparams.value("border_color_green").toUInt();
-    }
-    if (qvparams.contains("border_color_blue")) {
-        params.border_color.B = qvparams.value("border_color_blue").toUInt();
-    }
-    if (qvparams.contains("text_color_red")) {
-        params.text_color.R = qvparams.value("text_color_red").toUInt();
-    }
-    if (qvparams.contains("text_color_green")) {
-        params.text_color.G = qvparams.value("text_color_green").toUInt();
-    }
-    if (qvparams.contains("text_color_blue")) {
-        params.text_color.B = qvparams.value("text_color_blue").toUInt();
-    }
-    if (qvparams.contains("bg_color_red")) {
-        params.bg_color.R = qvparams.value("bg_color_red").toUInt();
-    }
-    if (qvparams.contains("bg_color_green")) {
-        params.bg_color.G = qvparams.value("bg_color_green").toUInt();
-    }
-    if (qvparams.contains("bg_color_blue")) {
-        params.bg_color.B = qvparams.value("bg_color_blue").toUInt();
-    }
-    return params;
-}
-
- core::gui::SharedParamWrapper PdfDocModel::createParams(const core::gui::RubberParams& params) const {
-    auto paramswrapper = std::make_shared<core::gui::CRubberParamsWrapper>();
-    pdfcsp::pdf::RubberStampParams &pod_params = paramswrapper->pod_params;
-    paramswrapper->qb_img_path = params.img_path.toUtf8();
-    if (!paramswrapper->qb_img_path.isEmpty()) {
-        pod_params.src_img_path = paramswrapper->qb_img_path.data();
-    }
-    pod_params.target_x = params.stamp_width;
-    pod_params.target_y = params.stamp_height;
-    pod_params.stamp_preserve_ratio = params.stamp_preserve_ratio;
-    pod_params.create_from_image = params.create_from_image;
-    paramswrapper->qb_annotation_text = params.annotation_text.toUtf8();
-    if (!paramswrapper->qb_annotation_text.isEmpty()) {
-        pod_params.annotation_text = paramswrapper->qb_annotation_text.data();
-    }
-    pod_params.bg_color.red = params.bg_color.R;
-    pod_params.bg_color.green = params.bg_color.G;
-    pod_params.bg_color.blue = params.bg_color.B;
-    pod_params.font_color.red = params.text_color.R;
-    pod_params.font_color.green = params.text_color.G;
-    pod_params.font_color.blue = params.text_color.B;
-    pod_params.border_color.red = params.border_color.R;
-    pod_params.border_color.green = params.border_color.G;
-    pod_params.border_color.blue = params.border_color.B;
-    paramswrapper->qb_font_family = params.font_family.toUtf8();
-    if (!paramswrapper->qb_font_family.isEmpty()) {
-        pod_params.font_family = paramswrapper->qb_font_family.data();
-    }
-    pod_params.border_radius = params.border_radius;
-    pod_params.border_width = params.border_width;
-    pod_params.font_size = 1; //params.font_size;
-    pod_params.font_weight = 400; //params.font_weight;
-    pod_params.bg_transparent = params.bg_transparent;
-    pod_params.bg_opacity = params.bg_opacity;
-    pod_params.annotation_width = params.annotation_width;
-    return paramswrapper;
+    history_manager_->clearRedo();
+    emit updateDoc();
 }
 
 // NOLINTEND(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)

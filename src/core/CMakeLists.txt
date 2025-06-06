@@ -11,6 +11,8 @@ add_library(appcore OBJECT
         file_recover_worker.hpp file_recover_worker.cpp
         printer_launcher.hpp printer_launcher.cpp
         text_extractor.hpp text_extractor.cpp
+        tag_creator.cpp
+        tag_creator.hpp
 )
 
 

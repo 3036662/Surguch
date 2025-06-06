@@ -27,17 +27,23 @@ struct RubberParams {
     bool bg_transparent = false;
     bool create_from_image = false;
     bool stamp_preserve_ratio = true;
+    int page_index = 0;
+    double position_x = 0;
+    double position_y = 0;
+    double page_width = 0;
+    double page_height = 0;
     quint8 bg_opacity = 0;
     quint64 border_width = 10;
     quint32 border_radius = 10;
-    quint64 stamp_width = 0;
-    quint64 stamp_height = 0;
+    double stamp_width = 0;
+    double stamp_height = 0;
     quint64 annotation_width = 900;
     quint64 font_size = 0;
     quint64 font_weight = 0;
     QString img_path;
     QString annotation_text;
     QString font_family;
+    QString link;
     RGBColor text_color;
     RGBColor border_color;
     RGBColor bg_color;
@@ -53,11 +59,14 @@ struct BakeRubberResult {
 
 /// @brief structure for holding all needed for render data
 struct RubberStamp {
-    size_t page_index;
+    int page_index;
     double position_x;
     double position_y;
     double qml_width;
     double qml_height;
+    double stamp_width;
+    double stamp_height;
+    QString link;
     std::unique_ptr<BakeRubberResult> res;
 };
 

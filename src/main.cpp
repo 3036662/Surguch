@@ -28,6 +28,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QtConcurrent>
 
 #include "core/signature_creator.hpp"
+#include "core/tag_creator.hpp"
 #include "cpp_views/pdf_page_render.hpp"
 #include "cpp_views/preview_render.hpp"
 #include  "cpp_views/rubber_preview_render.hpp"
@@ -67,6 +68,8 @@ int main(int argc, char* argv[]) {
                                       "RubberStampModel");
     qmlRegisterType<core::SignatureCreator>("alt.pdfcsp.signatureCreator", 0, 1,
                                             "SignatureCreator");
+    qmlRegisterType<core::TagCreator>("alt.pdfcsp.tagCreator", 0, 1,
+                                            "TagCreator");
     qmlRegisterType<core::PrinterLauncher>("alt.pdfcsp.printerLauncher", 0, 1,
                                            "PrinterLauncher");
     qmlRegisterSingletonType(QUrl("qrc:/StyleSheet.qml"), "StyleSheet", 0, 1,

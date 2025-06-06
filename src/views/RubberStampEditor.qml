@@ -101,6 +101,10 @@ Dialog {
 
             Label {
                 text: qsTr("Tag settings")
+                font.weight: Font.DemiBold
+                topPadding: 10
+                bottomPadding: 10
+                font.family: "Noto Sans"
             }
 
             Rectangle {
@@ -128,10 +132,11 @@ Dialog {
 
         RowLayout {
             Layout.fillWidth: true
+            spacing: 0
 
             ColumnLayout {
-                Layout.preferredWidth: root.width / 2
-                Layout.maximumWidth: root.width / 2
+                Layout.preferredWidth: root.width / 2 - 30
+                Layout.minimumWidth: root.width / 2 - 30
 
                 Text {
                     text: qsTr("Tag name")
@@ -162,7 +167,7 @@ Dialog {
 
                     //Layout.fillWidth: true
                     //Layout.fillHeight: true
-                    width: 400
+                    width: 480
                     height: 400
                     //color: "white"
                     Component.onCompleted: {
@@ -211,8 +216,8 @@ Dialog {
                     id: tagWidth
                     Layout.fillWidth: true
                     snapMode: Slider.SnapOnRelease
-                    from: 0
-                    to: 100
+                    from: 1
+                    to: 99
                     stepSize: 1
                 }
 
@@ -279,9 +284,13 @@ Dialog {
                 }
             }
 
+            Item {
+                width: 30
+            }
+
             ColumnLayout {
-                Layout.preferredWidth: root.width / 2
-                Layout.maximumWidth: root.width / 2
+                Layout.preferredWidth: root.width / 2 - 30
+                Layout.minimumWidth: root.width / 2 - 30
                 RowLayout {
                     Layout.fillWidth: true
 
@@ -338,18 +347,27 @@ Dialog {
                     color: StyleSheet.font_color_extra
                 }
 
-                TextArea {
-                    id: rubberStampText
+                ScrollView {
                     Layout.fillWidth: true
-                    visible: typeSwitch.checked
-                    placeholderText: qsTr("Enter text here")
-                    selectByMouse: true
-                    wrapMode: Text.WordWrap
-                    placeholderTextColor: "grey"
-                    font.family: "Noto Sans"
+                    Layout.maximumHeight: Math.min(rubberStampText.implicitHeight, font.pixelSize * 5 + 20)
+                    TextArea {
+                        id: rubberStampText
+                        Layout.fillWidth: true
+                        visible: typeSwitch.checked
+                        placeholderText: qsTr("Enter text here")
+                        selectByMouse: true
+                        wrapMode: Text.WordWrap
+                        placeholderTextColor: "grey"
+                        font.family: "Noto Sans"
 
-                    onTextChanged: {
-                        updatePreview()
+                        onTextChanged: {
+                            updatePreview()
+                        }
+                    }
+                    ScrollBar.vertical: ScrollBar {
+                        Layout.fillWidth: true
+                        anchors.right: parent.right
+                        policy: (rubberStampText.lineCount > 5) ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff
                     }
                 }
 
@@ -392,6 +410,10 @@ Dialog {
                         id: transparencySwitch
                         visible: typeSwitch.checked
                         scale: 1.5
+
+                        onToggled: {
+                            updatePreview()
+                        }
                     }
                 }
 
@@ -425,6 +447,7 @@ Dialog {
                         text: "R " + redColor.value
                         font.family: "Noto Sans"
                         color: StyleSheet.font_color_extra
+                        Layout.leftMargin: 5
                     }
                 }
 
@@ -451,6 +474,7 @@ Dialog {
                         text: "G " + greenColor.value
                         font.family: "Noto Sans"
                         color: StyleSheet.font_color_extra
+                        Layout.leftMargin: 5
                     }
                 }
 
@@ -477,6 +501,7 @@ Dialog {
                         text: "B " + blueColor.value
                         font.family: "Noto Sans"
                         color: StyleSheet.font_color_extra
+                        Layout.leftMargin: 5
                     }
                 }
 
@@ -543,7 +568,7 @@ Dialog {
                     Layout.fillWidth: true
                     visible: typeSwitch.checked
                     snapMode: Slider.SnapOnRelease
-                    from: 0
+                    from: 1
                     to: 70
                     stepSize: 1
 

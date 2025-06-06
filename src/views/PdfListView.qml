@@ -64,7 +64,7 @@ ListView {
 
     signal stampLocationSelected(var stamp_location_info)
 
-    signal tagLocationSelected(var tag_location_info)
+    signal tagPlaced()
 
     function zoomIn() {
         prevZoom = zoomPageFact
@@ -629,8 +629,7 @@ ListView {
                 // highlight the needles
                 setNeedleHighlightRects(pdfModel.getNeedlesForPage(
                     model.display))
-                // add rubber stamps on render
-                setRubberStamps(pdfModel.getRubberStampForPage(
+                pdfPage.setRubberStamps(pdfModel.getRubberStampForPage(
                     model.display))
                 if (width > 0 && root.hScrollPos > 0 && root.hScrollPos < 1) {
                     root.contentX = width * root.hScrollPos
@@ -674,6 +673,8 @@ ListView {
                         }
                         cross.visible = false
                         cursorShape = Qt.BusyCursor
+                        pdfModel.setSource(tagCreator.embedAnnot(pdfModel.getAnnotParams(), pdfModel.getSource()))
+                        root.sourceIsTmp = true
                         root.signMode = false
                         root.signInProgress = true
                         stampLocationSelected(location_data)
@@ -784,7 +785,8 @@ ListView {
                             "font_family": t_data.font_family,
                             "annotation_text": t_data.stamp_text,
                             "bg_transparent": t_data.bg_transparent,
-                            "annotation_width": tagCross.width
+                            "annotation_width": tagCross.width,
+                            "link": t_data.stamp_link
                         }
                         cross.visible = false
                         cursorShape = Qt.BusyCursor
@@ -824,16 +826,17 @@ ListView {
             Connections {
                 target: pdfModel
 
-                function onImageReady() {
-                    // add rubber stamps on render
-                    pdfPage.setRubberStamps(pdfModel.getRubberStampForPage(
-                        model.display))
-                }
+                // function onImageReady() {
+                //     // add rubber stamps on render
+                //     pdfPage.setRubberStamps(pdfModel.getRubberStampForPage(
+                //         model.display))
+                // }
 
                 function onUpdateDoc() {
                     // add rubber stamps on render
                     pdfPage.setRubberStamps(pdfModel.getRubberStampForPage(
                         model.display))
+                    tagPlaced()
                 }
             }
         }

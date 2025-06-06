@@ -4,6 +4,7 @@ import QtQuick.Dialogs
 import QtQuick.Layouts
 import alt.pdfcsp.pdfModel
 import alt.pdfcsp.signatureCreator
+import alt.pdfcsp.tagCreator
 import alt.pdfcsp.profilesModel
 import alt.pdfcsp.rubberStampModel
 import alt.pdfcsp.signaturesListModel
@@ -137,6 +138,10 @@ ApplicationWindow {
 
     PrinterLauncher {
         id: printer
+    }
+
+    TagCreator {
+        id: tagCreator
     }
 
     SignatureCreator {
@@ -285,7 +290,6 @@ ApplicationWindow {
         headerSubBar.rotateClockwise.connect(pdfListView.rotateClockWise)
         headerSubBar.rotateCounterClockWise.connect(
             pdfListView.rotateCounterClockWise)
-        headerSubBar.se
         // enable/disable zoom
         pdfListView.maxZoomReached.connect(headerSubBar.disableZoom)
         pdfListView.canZoom.connect(headerSubBar.enableZoom)
@@ -314,8 +318,7 @@ ApplicationWindow {
         // call SignaturesListModel to update the signatures list and validate all signatures
         pdfModel.signaturesFound.connect(siglistModel.updateSigList)
         // add rubber stamp to document
-        pdfListView.tagLocationSelected.connect(headerSubBar.placeTagStamp)
-        //pdfModel.imageReady.connect(pdfListView.set)
+        pdfListView.tagPlaced.connect(headerSubBar.enableTagButton)
         // open file error
         pdfModel.errorOpenFile.connect(function (err_string) {
             errorMessageDialog.text = err_string
