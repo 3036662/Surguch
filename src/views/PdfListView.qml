@@ -671,14 +671,20 @@ ListView {
                             "stamp_width": cross.width,
                             "stamp_height": cross.height
                         }
+                        const safe_root = root
                         cross.visible = false
                         cursorShape = Qt.BusyCursor
-                        pdfModel.setSource(tagCreator.embedAnnot(pdfModel.getAnnotParams(), pdfModel.getSource()))
-                        root.sourceIsTmp = true
-                        root.signMode = false
-                        root.signInProgress = true
-                        stampLocationSelected(location_data)
-                        root.forceActiveFocus()
+                        console.warn(pdfModel.getSource())
+                        if (root.tagInProgress) {
+                            console.warn("embedding tags")
+                            root.tagInProgress = false
+                            root.openTmpFile(tagCreator.embedAnnot(pdfModel.getAnnotParams(), pdfModel.getSource()))
+                        }
+                        console.warn("starting to sign")
+                        safe_root.signMode = false
+                        safe_root.signInProgress = true
+                        safe_root.stampLocationSelected(location_data)
+                        safe_root.forceActiveFocus()
                     }
                 }
 
@@ -742,8 +748,18 @@ ListView {
                 onPositionChanged: {
                     if (pressed) {
                         root.interactive = false
-                        tagCross.width = mouseX - tagCross.x
-                        tagCross.height = mouseY - tagCross.y
+                        if (mouseX > tagCross.x) {
+                            tagCross.width = mouseX - tagCross.x
+                        } else {
+                            tagCross.width = tagCross.x - mouseX
+                            tagCross.x = mouseX
+                        }
+                        if (mouseY > tagCross.y) {
+                            tagCross.height = mouseY - tagCross.y
+                        } else {
+                            tagCross.height = tagCross.y - mouseY
+                            tagCross.y = mouseY
+                        }
                     } else {
                         tagCross.x = mouseX
                         tagCross.y = mouseY
@@ -792,9 +808,9 @@ ListView {
                         cursorShape = Qt.BusyCursor
                         root.tagMode = false
                         console.warn("exit tag mode")
-                        console.warn(JSON.stringify(rubber_stamp_data))
                         root.interactive = true
                         pdfModel.placeRubberStamp(rubber_stamp_data)
+                        root.tagInProgress = true
                         root.forceActiveFocus()
                     }
                 }

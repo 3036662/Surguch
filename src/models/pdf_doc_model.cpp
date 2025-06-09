@@ -123,6 +123,10 @@ void PdfDocModel::setSource(const QString &path) {
     fz_drop_document(fzctx_, fzdoc_);
     fz_drop_context(fzctx_);
     file_source_.clear();
+    if (history_manager_ != nullptr) {
+        history_manager_->clearHistory();
+    }
+    qWarning() << "path = " << path;
     processFileDelete();
     fzctx_ = fz_new_context(nullptr, nullptr, 500000000);
     fz_try(fzctx_) {
@@ -219,9 +223,6 @@ void PdfDocModel::setSource(const QString &path) {
                              &core::TextExtractor::searchCompleted, this,
                              &PdfDocModel::handleSearchCompleted);
         };
-    }
-    if (history_manager_ != nullptr) {
-        history_manager_->clearHistory();
     }
 }
 

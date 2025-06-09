@@ -68,7 +68,7 @@ Dialog {
     }
 
     width: 400
-    height: 700
+    height: 750
     visible: false
     modal: true
     x: (parent.width - width) / 2
@@ -322,10 +322,10 @@ Dialog {
 
             onClicked: {
                 if (stamp_id < 0 && !profiles_model.uniqueStampName(
-                            stampName.text)) {
+                    stampName.text)) {
                     stampName.forceActiveFocus()
                     errorMessageDialog.text = qsTr(
-                                "Stamp with this name already exists")
+                        "Stamp with this name already exists")
                     errorMessageDialog.open()
                     return
                 }

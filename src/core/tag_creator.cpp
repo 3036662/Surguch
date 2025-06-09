@@ -13,6 +13,7 @@ QString TagCreator::embedAnnot(const std::vector<pdfcsp::pdf::CAnnotParams> &par
         auto res = pdfcsp::pdf::PerfomAnnotEmbeddign(params.data(), params.size(),
             QStandardPaths::writableLocation(QStandardPaths::TempLocation).toUtf8(),
             file_path.toUtf8());
+        qWarning() << "end embedding annots";
         if (res != nullptr && res->status) {
             return res->tmp_file_path;
         }

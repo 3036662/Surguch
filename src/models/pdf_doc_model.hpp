@@ -160,12 +160,6 @@ class PdfDocModel : public QAbstractListModel {
     void handleSearchCompleted();
 
    private:
-    /// @brief parse and prepare params we get from QML
-    [[nodiscard]] core::gui::RubberParams prepareParams(const QVariantMap &qvparams) ;
-
-    /// @brief Gather all parameters (pdfcsp::pdf::CSignParam)
-    [[nodiscard]] core::gui::SharedParamWrapper createParams(const core::gui::RubberParams &params) const;
-
     /// @brief get data from csp lib and send estimated sizes
     void estimateTagHeight();
 

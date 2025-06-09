@@ -165,6 +165,7 @@ bool SignatureCreator::createSignature(const QVariantMap &qvparams) {
         p_sign_thread_ = nullptr;
     });
     p_sign_thread_->start();
+    qWarning() << "[SignatureCreator::createSignature] started create";
     ;
     return true;
 }
