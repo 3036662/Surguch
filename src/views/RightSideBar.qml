@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import StyleSheet
 
 Item {
     id: root
@@ -24,7 +25,7 @@ Item {
             //console.warn(data);
             jsonData = JSON.parse(data)
             showState = RightSideBar.ShowState.SigInfo
-            sigInfoPanel.contentY=0;
+            sigInfoPanel.contentY = 0;
 
         } catch (e) {
             console.error("Error parsing JSON" + e.message)
@@ -41,7 +42,8 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: "white"
+        border.color: "#454A4E"
+        color: StyleSheet.edit_background
     }
 
     RSBSigInfo {

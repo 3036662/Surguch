@@ -37,6 +37,9 @@ Item {
     property color slider_fill_color
     property color slider_border_color
     property color slider_handle_color
+    property color edit_background
+    property color text_area_background
+    property color combo_box_background
     states: [
         State {
             name: "dark"
@@ -73,6 +76,9 @@ Item {
                 slider_fill_color: "#454A4E"
                 slider_border_color: "#454A4E"
                 slider_handle_color: "#31363B"
+                edit_background: "#292D32"
+                text_area_background: "#1A1D1F"
+                combo_box_background: "#31363B"
             }
         },
         State {
@@ -110,6 +116,9 @@ Item {
                 slider_fill_color: "#DADBDC"
                 slider_border_color: "#DADBDC"
                 slider_handle_color: "#EFF0F1"
+                edit_background: "#FFFFFE"
+                text_area_background: "#FCFCFC"
+                combo_box_background: "#EFF0F1"
             }
         }
     ]

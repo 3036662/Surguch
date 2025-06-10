@@ -151,7 +151,7 @@ class PdfDocModel : public QAbstractListModel {
     void jumpToNeedleCompleted(int page_index, float rel_x, float rel_y);
 
     /// @brief size estimated
-    void sizeReady(int height);
+    void sizeReady(double height);
 
     /// @brief signal for update after undo or redo
     void updateDoc();

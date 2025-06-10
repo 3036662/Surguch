@@ -327,6 +327,7 @@ ColumnLayout {
                 console.warn("create tag")
                 pdfListView.tagMode = !pdfListView.tagMode
                 pdfListView.tagData = tag_data
+                pdfModel.prepareImage(JSON.parse(tag_data))
                 if (!down) {
                     pdfListView.reserRotation()
                 }

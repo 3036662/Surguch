@@ -86,8 +86,10 @@ Dialog {
     }
 
 
-    width: 1000
+    width: 1020
     height: 800
+    leftMargin: 10
+    rightMargin: 10
     modal: true
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2
@@ -153,6 +155,17 @@ Dialog {
                     wrapMode: Text.WordWrap
                     placeholderTextColor: "grey"
                     font.family: "Noto Sans"
+
+                    onTextChanged: {
+                        let validInput = stampName.text.match(/^S+$/)
+                        if (!validInput) {
+                            stampName.text = stampName.text.replace(/\s/g, '')
+                            stampName.cursorPosition = stampName.text.length
+                        }
+                        if (stampName.text.length > 50) {
+                            stampName.text = stampName.text.slice(0, 50)
+                        }
+                    }
                 }
 
                 Text {
@@ -226,20 +239,21 @@ Dialog {
 
                     Layout.fillWidth: true
                     text: qsTr("Save")
+                    font.family: "Noto Sans"
                     display: AbstractButton.TextBesideIcon
                     icon.source: StyleSheet.save_icon
                     icon.width: 20
                     icon.height: 20
                     onClicked: {
+                        if (stampName.text === "") {
+                            stampName.forceActiveFocus()
+                            return
+                        }
                         if (stamp_id < 0 && !rubber_model.uniqueStampName(stampName.text)) {
                             stampName.forceActiveFocus()
                             errorMessageDialog.text = qsTr(
                                 "Stamp with this name already exists")
                             errorMessageDialog.open()
-                            return
-                        }
-                        if (stampName.text === "") {
-                            stampName.forceActiveFocus()
                             return
                         }
                         stamp_json = {}
@@ -269,6 +283,7 @@ Dialog {
 
                     Layout.fillWidth: true
                     text: qsTr("Delete")
+                    font.family: "Noto Sans"
                     display: AbstractButton.TextBesideIcon
                     icon.source: StyleSheet.trash_icon
                     icon.width: 20
@@ -305,9 +320,11 @@ Dialog {
                         Layout.fillWidth: true
                     }
 
-                    Switch {
+                    RSBSwitch {
                         id: typeSwitch
-                        scale: 1.5
+
+                        topPadding: 5
+                        bottomPadding: 5
                     }
                 }
 
@@ -350,6 +367,8 @@ Dialog {
                 ScrollView {
                     Layout.fillWidth: true
                     Layout.maximumHeight: Math.min(rubberStampText.implicitHeight, font.pixelSize * 5 + 20)
+                    visible: typeSwitch.checked
+
                     TextArea {
                         id: rubberStampText
                         Layout.fillWidth: true
@@ -388,6 +407,15 @@ Dialog {
                     onActivated: {
                         updatePreview()
                     }
+
+                    Component.onCompleted: {
+                        var index = model.indexOf("Noto Sans")
+                        if (index >= 0) {
+                            currentIndex = index
+                        } else {
+                            currentIndex = 0
+                        }
+                    }
                 }
 
                 RowLayout {
@@ -399,6 +427,8 @@ Dialog {
                         visible: typeSwitch.checked
                         color: StyleSheet.font_color_extra
                         font.family: "Noto Sans"
+                        topPadding: 10
+                        bottomPadding: 10
                     }
 
                     Rectangle {
@@ -406,10 +436,14 @@ Dialog {
                         visible: typeSwitch.checked
                     }
 
-                    Switch {
+                    RSBSwitch {
                         id: transparencySwitch
                         visible: typeSwitch.checked
-                        scale: 1.5
+
+                        topPadding: 10
+                        bottomPadding: 10
+                        rightPadding: 10
+                        rightInset: 10
 
                         onToggled: {
                             updatePreview()
@@ -432,6 +466,7 @@ Dialog {
                         id: redColor
 
                         Layout.fillWidth: true
+                        Layout.maximumWidth: 435
                         snapMode: Slider.SnapOnRelease
                         from: 0
                         to: 255
@@ -459,6 +494,7 @@ Dialog {
                         id: greenColor
 
                         Layout.fillWidth: true
+                        Layout.maximumWidth: 435
                         snapMode: Slider.SnapOnRelease
                         from: 0
                         to: 255
@@ -486,6 +522,7 @@ Dialog {
                         id: blueColor
 
                         Layout.fillWidth: true
+                        Layout.maximumWidth: 435
                         snapMode: Slider.SnapOnRelease
                         from: 0
                         to: 255

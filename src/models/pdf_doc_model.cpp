@@ -418,7 +418,12 @@ void PdfDocModel::prepareImage(const QVariantMap &qvparams) {
 void PdfDocModel::estimateTagHeight() {
     if (image_future_ && image_future_->isValid()) {
         auto result  = image_future_->takeResult();
-        emit sizeReady(result->data_->resolution_y);
+        if (result != nullptr && result->data_ != nullptr) {
+            auto ratio = static_cast<double>(result->data_->resolution_x) /
+                static_cast<double>(result->data_->resolution_y);
+            qWarning() << "[EstimateTagHeight]" << ratio;
+            emit sizeReady(ratio);
+        }
     }
 }
 

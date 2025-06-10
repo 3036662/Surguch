@@ -145,16 +145,16 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/EditProfile.qml" line="+94"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+89"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+94"/>
-        <location filename="../../src/views/EditProfile.qml" line="+94"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+95"/>
+        <location filename="../../src/views/EditProfile.qml" line="+95"/>
         <source>Profile settings</source>
         <translation>Настройки профиля</translation>
     </message>
     <message>
         <location line="+10"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+10"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+10"/>
-        <location filename="../../src/views/EditProfile.qml" line="+10"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+11"/>
+        <location filename="../../src/views/EditProfile.qml" line="+11"/>
         <source>Profile id</source>
         <translation>ID профиля</translation>
     </message>
@@ -177,8 +177,8 @@
     <message>
         <location line="+41"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+23"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+41"/>
-        <location filename="../../src/views/EditProfile.qml" line="+41"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+46"/>
+        <location filename="../../src/views/EditProfile.qml" line="+46"/>
         <source>Use this profile by default</source>
         <translation>Использовать по умолчанию</translation>
     </message>
@@ -190,102 +190,102 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/EditProfile.qml" line="-25"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+9"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="-25"/>
-        <location filename="../../src/views/EditProfile.qml" line="-25"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="-29"/>
+        <location filename="../../src/views/EditProfile.qml" line="-29"/>
         <source>Certificate</source>
         <translation>Сертификат</translation>
     </message>
     <message>
         <location line="+8"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+8"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+8"/>
-        <location filename="../../src/views/EditProfile.qml" line="+8"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+10"/>
+        <location filename="../../src/views/EditProfile.qml" line="+10"/>
         <source>Select the certificate</source>
         <translation>Выберите сертификат</translation>
     </message>
     <message>
         <location line="+25"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+25"/>
-        <location filename="../../src/views/EditProfile.qml" line="+25"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+29"/>
+        <location filename="../../src/views/EditProfile.qml" line="+29"/>
         <source>Signature</source>
         <translation>Электронная подпись</translation>
     </message>
     <message>
         <location line="+10"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+11"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+10"/>
-        <location filename="../../src/views/EditProfile.qml" line="+10"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+11"/>
+        <location filename="../../src/views/EditProfile.qml" line="+11"/>
         <source>Cades type</source>
         <translation>Тип CADES</translation>
     </message>
     <message>
         <location line="+17"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+17"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+17"/>
-        <location filename="../../src/views/EditProfile.qml" line="+17"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+18"/>
+        <location filename="../../src/views/EditProfile.qml" line="+18"/>
         <source>Select Cades format</source>
         <translation>Выберите формат CADES</translation>
     </message>
     <message>
         <location line="+37"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+37"/>
-        <location filename="../../src/views/EditProfile.qml" line="+37"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+39"/>
+        <location filename="../../src/views/EditProfile.qml" line="+39"/>
         <source>Stamp</source>
         <translation>Штамп в PDF</translation>
     </message>
     <message>
         <location line="+10"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+6"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+10"/>
-        <location filename="../../src/views/EditProfile.qml" line="+10"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+11"/>
+        <location filename="../../src/views/EditProfile.qml" line="+11"/>
         <source>Stamp appearance</source>
         <translation>Вид штампа</translation>
     </message>
     <message>
         <location line="+17"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+13"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+17"/>
-        <location filename="../../src/views/EditProfile.qml" line="+17"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+18"/>
+        <location filename="../../src/views/EditProfile.qml" line="+18"/>
         <source>Select stamp type</source>
         <translation>Выберите тип штампа</translation>
     </message>
     <message>
         <location line="+83"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+6"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+83"/>
-        <location filename="../../src/views/EditProfile.qml" line="+83"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+84"/>
+        <location filename="../../src/views/EditProfile.qml" line="+84"/>
         <source>Company logo</source>
         <translation>Логотип компании</translation>
     </message>
     <message>
         <location line="+7"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+7"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+7"/>
-        <location filename="../../src/views/EditProfile.qml" line="+7"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+8"/>
+        <location filename="../../src/views/EditProfile.qml" line="+8"/>
         <source>Select a logo</source>
         <translation>Выберите логотип</translation>
     </message>
     <message>
         <location line="-142"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+20"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="-142"/>
-        <location filename="../../src/views/EditProfile.qml" line="-142"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="-148"/>
+        <location filename="../../src/views/EditProfile.qml" line="-148"/>
         <source>TSP server URL</source>
         <translation>Адрес службы TSP</translation>
     </message>
     <message>
         <location line="+7"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+7"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+7"/>
-        <location filename="../../src/views/EditProfile.qml" line="+7"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+8"/>
+        <location filename="../../src/views/EditProfile.qml" line="+8"/>
         <source>Enter TSP service url</source>
         <translation>Введите URL службы TSP</translation>
     </message>
     <message>
         <location line="+160"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+26"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+160"/>
-        <location filename="../../src/views/EditProfile.qml" line="+160"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+166"/>
+        <location filename="../../src/views/EditProfile.qml" line="+166"/>
         <source>Save profile</source>
         <translation>Сохранить профиль</translation>
     </message>
@@ -348,16 +348,16 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+19"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+40"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+19"/>
-        <location filename="../../src/views/Header.qml" line="+19"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+44"/>
+        <location filename="../../src/views/Header.qml" line="+44"/>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>
     <message>
         <location line="+114"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+79"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+114"/>
-        <location filename="../../src/views/Header.qml" line="+114"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+90"/>
+        <location filename="../../src/views/Header.qml" line="+90"/>
         <source>Sign</source>
         <translation>Подписать</translation>
     </message>
@@ -422,8 +422,8 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+72"/>
         <location filename="../../build/src/gui_pdf_csp/views/LeftSideBar.qml" line="+72"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+72"/>
-        <location filename="../../src/views/LeftSideBar.qml" line="+72"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+74"/>
+        <location filename="../../src/views/LeftSideBar.qml" line="+74"/>
         <source>No signatures</source>
         <translation>Подписи отсутствуют</translation>
     </message>
@@ -644,10 +644,10 @@
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+699"/>
         <location line="+105"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+564"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+706"/>
-        <location line="+115"/>
-        <location filename="../../src/views/PdfListView.qml" line="+706"/>
-        <location line="+115"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+711"/>
+        <location line="+124"/>
+        <location filename="../../src/views/PdfListView.qml" line="+711"/>
+        <location line="+124"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>
@@ -655,10 +655,10 @@
         <location line="-104"/>
         <location line="+105"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+1"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-114"/>
-        <location line="+115"/>
-        <location filename="../../src/views/PdfListView.qml" line="-114"/>
-        <location line="+115"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-123"/>
+        <location line="+124"/>
+        <location filename="../../src/views/PdfListView.qml" line="-123"/>
+        <location line="+124"/>
         <source>Invalid position</source>
         <translation>Недопустимая позиция</translation>
     </message>
@@ -908,8 +908,8 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/RSBTextArea.qml" line="+13"/>
         <location filename="../../build/src/gui_pdf_csp/views/RSBTextArea.qml" line="+12"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RSBTextArea.qml" line="+13"/>
-        <location filename="../../src/views/RSBTextArea.qml" line="+13"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RSBTextArea.qml" line="+14"/>
+        <location filename="../../src/views/RSBTextArea.qml" line="+14"/>
         <source>Placeholder text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -929,8 +929,8 @@
     <name>RubberStampEditor</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+103"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+103"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+103"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+105"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+105"/>
         <source>Tag settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -950,8 +950,8 @@
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+8"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+8"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+19"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+19"/>
         <source>Preview</source>
         <translation type="unfinished">Предпросмотр</translation>
     </message>
@@ -985,29 +985,29 @@
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+8"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+8"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+13"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+13"/>
         <source>Stamp with this name already exists</source>
         <translation type="unfinished">Штамп с выбранным именем уже существует</translation>
     </message>
     <message>
         <location line="+35"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+35"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+35"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+31"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+31"/>
         <source>Delete</source>
         <translation type="unfinished">Удалить</translation>
     </message>
     <message>
         <location line="+27"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+27"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+27"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+28"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+28"/>
         <source>Create from text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+18"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+18"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+18"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+20"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+20"/>
         <source>Generate from file (*.png *.jpg *.jpeg *.bmp)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1027,8 +1027,8 @@
     </message>
     <message>
         <location line="+14"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+14"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+14"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+16"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+16"/>
         <source>Enter text here</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1041,15 +1041,15 @@
     </message>
     <message>
         <location line="+22"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+22"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+22"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+31"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+31"/>
         <source>Transparency</source>
         <translation type="unfinished">Прозрачность фона</translation>
     </message>
     <message>
         <location line="+24"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+24"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+24"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+30"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+30"/>
         <source>Color</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1059,8 +1059,8 @@
     </message>
     <message>
         <location line="+92"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+92"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+92"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+95"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+95"/>
         <source>Stamp border width: </source>
         <translation type="unfinished">Толщина рамки: </translation>
     </message>
@@ -1078,6 +1078,10 @@
     <message>
         <source>Select a logo</source>
         <translation type="obsolete">Выберите логотип</translation>
+    </message>
+    <message>
+        <source>Surguch</source>
+        <translation type="obsolete">Сургуч</translation>
     </message>
 </context>
 <context>
@@ -1155,15 +1159,15 @@
     <name>StampEditor</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/StampEditor.qml" line="+87"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+87"/>
-        <location filename="../../src/views/StampEditor.qml" line="+87"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+89"/>
+        <location filename="../../src/views/StampEditor.qml" line="+89"/>
         <source>Stamp editor</source>
         <translation>Настройка штампа</translation>
     </message>
     <message>
         <location line="+27"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+27"/>
-        <location filename="../../src/views/StampEditor.qml" line="+27"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+31"/>
+        <location filename="../../src/views/StampEditor.qml" line="+31"/>
         <source>Stamp name</source>
         <translation>Название</translation>
     </message>
@@ -1176,22 +1180,22 @@
     </message>
     <message>
         <location line="+9"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+9"/>
-        <location filename="../../src/views/StampEditor.qml" line="+9"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+20"/>
+        <location filename="../../src/views/StampEditor.qml" line="+20"/>
         <source>Preview</source>
         <translation>Предпросмотр</translation>
     </message>
     <message>
         <location line="+163"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+163"/>
-        <location filename="../../src/views/StampEditor.qml" line="+163"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+166"/>
+        <location filename="../../src/views/StampEditor.qml" line="+166"/>
         <source>Transparency</source>
         <translation>Прозрачность фона</translation>
     </message>
     <message>
         <location line="-147"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="-147"/>
-        <location filename="../../src/views/StampEditor.qml" line="-147"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="-150"/>
+        <location filename="../../src/views/StampEditor.qml" line="-150"/>
         <source>Stamp border width: </source>
         <translation>Толщина рамки: </translation>
     </message>
@@ -1211,22 +1215,22 @@
     </message>
     <message>
         <location line="+144"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+144"/>
-        <location filename="../../src/views/StampEditor.qml" line="+144"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+147"/>
+        <location filename="../../src/views/StampEditor.qml" line="+147"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
         <location line="-29"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="-29"/>
-        <location filename="../../src/views/StampEditor.qml" line="-29"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="-25"/>
+        <location filename="../../src/views/StampEditor.qml" line="-25"/>
         <source>Stamp with this name already exists</source>
         <translation>Штамп с выбранным именем уже существует</translation>
     </message>
     <message>
         <location line="-10"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="-10"/>
-        <location filename="../../src/views/StampEditor.qml" line="-10"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="-15"/>
+        <location filename="../../src/views/StampEditor.qml" line="-15"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>

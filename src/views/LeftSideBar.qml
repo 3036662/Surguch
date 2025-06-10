@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import alt.pdfcsp.pdfModel
 import alt.pdfcsp.pdfRender
+import StyleSheet
 
 Item {
     id: root
@@ -16,6 +17,7 @@ Item {
     property int sigCount: 0
 
     signal pageClick(int index)
+
     signal showSigData(string data)
 
     function scrollToPage(newIndex) {
@@ -42,7 +44,7 @@ Item {
     Layout.minimumWidth: 200
     Layout.fillHeight: true
     Layout.fillWidth: true
-   // Layout.horizontalStretchFactor: 1
+    // Layout.horizontalStretchFactor: 1
 
     Item {
         anchors.fill: parent
@@ -57,20 +59,21 @@ Item {
         SignaturesList {
             id: sigListView
             visible: showState == LeftSideBar.ShowState.Certs
-                     && sigCount > 0
+                && sigCount > 0
         }
 
         Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.fill: parent
             visible: showState == LeftSideBar.ShowState.Certs
-                     && sigCount === 0
+                && sigCount === 0
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top
                 topPadding: 20
                 text: qsTr("No signatures")
                 font.family: "Noto Sans"
+                color: StyleSheet.font_color_extra
             }
         }
     }

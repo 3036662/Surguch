@@ -22,7 +22,7 @@ Dialog {
         anchors.fill: parent
         model: rubberStampModel
         delegate: ItemDelegate {
-            height: 30
+            height: 35
             width: parent.width
             RubberStampItem {
                 height: parent.height

@@ -13,7 +13,7 @@ ComboBox {
     wheelEnabled: false
     font.family: "Noto Sans"
 
-    popup.y:control.height
+    popup.y: control.height
 
     onActivated: {
         displayText = model[currentIndex].title
@@ -29,16 +29,16 @@ ComboBox {
 
 
         width: control.width
-        contentItem: Item{
+        contentItem: Item {
 
-            width:delegate.width
-            height:delegate.height
+            width: delegate.width
+            height: delegate.height
 
             Text {
                 height: parent.height
-                width:  parent.width
+                width: parent.width
                 //text: delegate.model[control.textRole]
-                text:  control.model[index][control.textRole]
+                text: control.model[index][control.textRole]
                 font: control.font
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter
@@ -49,9 +49,9 @@ ComboBox {
 
         ToolTip {
             id: tooltip_obj
-            visible: control.highlightedIndex === index && text!==""
-            text: control.model[index]["tooltip"]!==undefined ?
-                          control.model[index]["tooltip"] : "";
+            visible: control.highlightedIndex === index && text !== ""
+            text: control.model[index]["tooltip"] !== undefined ?
+                control.model[index]["tooltip"] : "";
         }
     }
 
@@ -60,6 +60,7 @@ ComboBox {
         rightPadding: control.indicator.width + control.spacing
         text: control.displayText
         font: control.font
+        color: StyleSheet.font_color_extra
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
 
@@ -72,8 +73,9 @@ ComboBox {
     background: Rectangle {
         implicitWidth: 120
         implicitHeight: 40
-        border.color: control.item_selected ? "lightGrey" : "red"
+        border.color: StyleSheet.slider_border_color
         border.width: control.visualFocus ? 2 : 1
         radius: 2
+        color: StyleSheet.combo_box_background
     }
 }

@@ -35,7 +35,11 @@ ListView {
     //tag stamps
     property bool tagMode: false
     property bool tagInProgress: false
+    property bool size_estimated: false
     property var tagData
+    property var ratio: 3
+    property double startX
+    property double startY
     // --------
     //aim
     property double aimResizeX: 1
@@ -671,7 +675,7 @@ ListView {
                             "stamp_width": cross.width,
                             "stamp_height": cross.height
                         }
-                        const safe_root = root
+                        const safe_root = root // use safe_root cuz after opening tmp file with embeded tags qml looses refernce to everything
                         cross.visible = false
                         cursorShape = Qt.BusyCursor
                         console.warn(pdfModel.getSource())
@@ -681,7 +685,8 @@ ListView {
                             root.openTmpFile(tagCreator.embedAnnot(pdfModel.getAnnotParams(), pdfModel.getSource()))
                         }
                         console.warn("starting to sign")
-                        safe_root.signMode = false
+                        //console warn(pdfModel.getSource()) //this will error cuz loosing pdfModel reference
+                        safe_root.signMode = false //error of use root instead of safe_root
                         safe_root.signInProgress = true
                         safe_root.stampLocationSelected(location_data)
                         safe_root.forceActiveFocus()
@@ -745,20 +750,28 @@ ListView {
                     cursorShape = Qt.ArrowCursor
                 }
 
+                onPressed: {
+                    root.startX = mouseX
+                    root.startY = mouseY
+                }
+
                 onPositionChanged: {
                     if (pressed) {
                         root.interactive = false
-                        if (mouseX > tagCross.x) {
-                            tagCross.width = mouseX - tagCross.x
+                        if (mouseX > startX) {
+                            tagCross.x = startX
+                            tagCross.width = mouseX - startX
                         } else {
-                            tagCross.width = tagCross.x - mouseX
                             tagCross.x = mouseX
+                            tagCross.width = startX - mouseX
                         }
-                        if (mouseY > tagCross.y) {
-                            tagCross.height = mouseY - tagCross.y
+
+                        if (mouseY > startY) {
+                            tagCross.y = startY
+                            tagCross.height = mouseY - startY
                         } else {
-                            tagCross.height = tagCross.y - mouseY
                             tagCross.y = mouseY
+                            tagCross.height = startY - mouseY
                         }
                     } else {
                         tagCross.x = mouseX
@@ -799,12 +812,13 @@ ListView {
                             "bg_color_green": t_data.G,
                             "bg_color_blue": t_data.B,
                             "font_family": t_data.font_family,
-                            "annotation_text": t_data.stamp_text,
+                            "stamp_text": t_data.stamp_text,
                             "bg_transparent": t_data.bg_transparent,
                             "annotation_width": tagCross.width,
                             "link": t_data.stamp_link
                         }
-                        cross.visible = false
+                        root.size_estimated = false
+                        tagCross.visible = false
                         cursorShape = Qt.BusyCursor
                         root.tagMode = false
                         console.warn("exit tag mode")
@@ -822,8 +836,6 @@ ListView {
                     property string invalidPositionText: qsTr("Invalid position")
                     property bool valid_position: true
 
-                    width: 100
-                    height: 100
                     color: "transparent"
                     border.color: valid_position ? "blue" : "red"
                     border.width: 2
@@ -842,11 +854,15 @@ ListView {
             Connections {
                 target: pdfModel
 
-                // function onImageReady() {
-                //     // add rubber stamps on render
-                //     pdfPage.setRubberStamps(pdfModel.getRubberStampForPage(
-                //         model.display))
-                // }
+                function onSizeReady(calc_ratio) {
+                    // add rubber stamps on render
+                    root.ratio = calc_ratio
+                    tagCross.height = tagCross.width / calc_ratio
+                    root.size_estimated = true
+                    console.warn("height = " + tagCross.height)
+                    console.warn("width = " + tagCross.width)
+                    console.warn("size ready = " + ratio)
+                }
 
                 function onUpdateDoc() {
                     // add rubber stamps on render

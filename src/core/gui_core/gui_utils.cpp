@@ -115,8 +115,8 @@ RubberParams prepareParams(const QVariantMap &qvparams)  {
             params.img_path = qvparams.value("img_path").toString();
         }
     }
-    if (qvparams.contains("annotation_text")) {
-        params.annotation_text = qvparams.value("annotation_text").toString();
+    if (qvparams.contains("stamp_text")) {
+        params.annotation_text = qvparams.value("stamp_text").toString();
     }
     if (qvparams.contains("font_family")) {
         params.font_family = qvparams.value("font_family").toString();

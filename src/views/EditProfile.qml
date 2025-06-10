@@ -29,27 +29,27 @@ Flickable {
                 profileName.text = profile_json.title
                 useAsDefaultProfileSwitch.checked = profile_json.use_as_default
                 const cert_indx = selectCertificateCombo.indexOfValue(
-                                    profile_json.cert_serial)
+                    profile_json.cert_serial)
                 selectCertificateCombo.currentIndex = cert_indx
                 selectCertificateCombo.item_selected = true
                 if (cert_indx !== -1) {
                     selectCertificateCombo.displayText = cert_combo_model[cert_indx].title
                 }
                 const cades_format_indx = selectCadesFormatCombo.indexOfValue(
-                                            profile_json.CADES_format)
+                    profile_json.CADES_format)
                 selectCadesFormatCombo.currentIndex = cades_format_indx
                 selectCadesFormatCombo.item_selected = true
                 if (cades_format_indx !== -1) {
                     selectCadesFormatCombo.displayText
-                            = selectCadesFormatCombo.model[cades_format_indx].title
+                        = selectCadesFormatCombo.model[cades_format_indx].title
                 }
                 const stamp_type_indx = selectStampTypeCombo.find(
-                                          profile_json.stamp_type)
+                    profile_json.stamp_type)
                 selectStampTypeCombo.currentIndex = stamp_type_indx
                 selectStampTypeCombo.item_selected = true
                 if (stamp_type_indx !== -1) {
                     selectStampTypeCombo.displayText
-                            = selectStampTypeCombo.model[stamp_type_indx].title
+                        = selectStampTypeCombo.model[stamp_type_indx].title
                 }
                 logoPath.text = profile_json.logo_path
                 tspUrlEdit.text = profile_json.tsp_url
@@ -84,7 +84,8 @@ Flickable {
     rightMargin: 10
     topMargin: 10
 
-    RSBCloseButton {}
+    RSBCloseButton {
+    }
 
     Column {
         id: profileColumn
@@ -96,6 +97,7 @@ Flickable {
             topPadding: 10
             bottomPadding: 10
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         TextPair {
@@ -109,12 +111,13 @@ Flickable {
             text: qsTr("Profile name")
             bottomPadding: 5
             font.family: "Noto Sans"
-            color: StyleSheet.font_color
+            color: StyleSheet.font_color_extra
         }
 
         RSBTextArea {
             id: profileName
             placeholderText: qsTr("Enter profile name")
+            color: StyleSheet.font_color_extra
 
             onTextChanged: {
                 let validInput = profileName.text.match(/^S+$/)
@@ -131,8 +134,10 @@ Flickable {
         // certificate choice
         Text {
             text: qsTr("Certificate")
-            bottomPadding: 5
+            topPadding: 10
+            bottomPadding: 10
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         RSBComboSelect {
@@ -148,6 +153,8 @@ Flickable {
 
         RightSBHorizontalDelimiter {
             width: parent.width
+            topPadding: 10
+            bottomPadding: 10
         }
 
         // use by default switch
@@ -160,6 +167,8 @@ Flickable {
 
         RightSBHorizontalDelimiter {
             width: parent.width
+            topPadding: 10
+            bottomPadding: 10
         }
 
         Text {
@@ -168,6 +177,7 @@ Flickable {
             topPadding: 10
             bottomPadding: 10
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         // Cades format
@@ -176,17 +186,18 @@ Flickable {
             text: qsTr("Cades type")
             bottomPadding: 5
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         RSBComboSelect {
             id: selectCadesFormatCombo
             model: [{
-                    "title": "CADES_BES"
-                }, {
-                    "title": "CADES_T"
-                }, {
-                    "title": "CADES_XLT1"
-                }]
+                "title": "CADES_BES"
+            }, {
+                "title": "CADES_T"
+            }, {
+                "title": "CADES_XLT1"
+            }]
             textRole: "title"
             valueRole: "title"
             displayText: displayTextDefault
@@ -198,18 +209,20 @@ Flickable {
             id: tspUrlWrapper
             width: parent.width
             visible: selectCadesFormatCombo.item_selected
-                     && (selectCadesFormatCombo.currentValue === "CADES_T"
-                         || selectCadesFormatCombo.currentValue === "CADES_XLT1")
+                && (selectCadesFormatCombo.currentValue === "CADES_T"
+                    || selectCadesFormatCombo.currentValue === "CADES_XLT1")
             Text {
                 topPadding: 10
                 text: qsTr("TSP server URL")
                 bottomPadding: 5
                 font.family: "Noto Sans"
+                color: StyleSheet.font_color_extra
             }
 
             RSBTextArea {
                 id: tspUrlEdit
                 placeholderText: qsTr("Enter TSP service url")
+                color: StyleSheet.font_color_extra
                 inputMethodHints: Qt.ImhUrlCharactersOnly
                 property bool valid_url: false
 
@@ -232,6 +245,7 @@ Flickable {
             topPadding: 10
             bottomPadding: 10
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         // stamp settings
@@ -240,6 +254,7 @@ Flickable {
             text: qsTr("Stamp appearance")
             bottomPadding: 5
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         RowLayout {
@@ -253,7 +268,7 @@ Flickable {
                 valueRole: "value"
                 displayText: displayTextDefault
                 enabled: selectCertificateCombo.item_selected
-                         && selectCadesFormatCombo.item_selected
+                    && selectCadesFormatCombo.item_selected
                 property string displayTextDefault: qsTr("Select stamp type")
 
                 onActivated: {
@@ -313,6 +328,7 @@ Flickable {
 
         Connections {
             target: profilesModel
+
             // when model has successfully saved the stamp
             function onStampsSaved(val) {
                 // update stamp combobox
@@ -320,7 +336,7 @@ Flickable {
                 // select saved stamp in the header combo
                 const indx = selectStampTypeCombo.find(val)
                 selectStampTypeCombo.displayText = selectStampTypeCombo.textAt(
-                            indx)
+                    indx)
                 selectStampTypeCombo.currentIndex = indx
             }
 
@@ -340,11 +356,13 @@ Flickable {
             text: qsTr("Company logo")
             bottomPadding: 5
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         RSBTextArea {
             id: logoPath
             placeholderText: qsTr("Select a logo")
+            color: StyleSheet.font_color_extra
 
             MouseArea {
                 anchors.fill: parent
@@ -366,7 +384,7 @@ Flickable {
                 icon.source: StyleSheet.save_icon
                 icon.width: 20
                 icon.height: 20
-                width: root.width
+                width: logoPath.width
                 //width: text.length
                 //     < deleteProfileButton.text.length ? deleteProfileButton.width : 150
                 text: qsTr("Save profile")
@@ -376,11 +394,11 @@ Flickable {
 
                 onClicked: {
                     if (profile_id < 0 && !profiles_model.uniqueName(
-                                profileName.text)) {
+                        profileName.text)) {
                         profileName.forceActiveFocus()
                         root.contentY = 10
                         errorMessageDialog.text = qsTr(
-                                    "Profile with this name already exists")
+                            "Profile with this name already exists")
                         errorMessageDialog.open()
                         return
                     }
@@ -441,7 +459,7 @@ Flickable {
                 text: qsTr("Delete profile")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
-                width: root.width
+                width: logoPath.width
                 font.family: "Noto Sans"
 
                 onClicked: {
@@ -475,14 +493,14 @@ Flickable {
                 cert_array = JSON.parse(cert_data_raw)
                 //console.warn(JSON.stringify(cert_array));
                 cert_combo_model = cert_array.map(item => {
-                                                      let res = {}
-                                                      res.title = item.subject_common_name
-                                                      + " " + item.serial
-                                                      res.serial = item.serial
-                                                      res.tooltip = qsTr(
-                                                          "Issuer: ") + item.issuer_common_name
-                                                      return res
-                                                  })
+                    let res = {}
+                    res.title = item.subject_common_name
+                        + " " + item.serial
+                    res.serial = item.serial
+                    res.tooltip = qsTr(
+                        "Issuer: ") + item.issuer_common_name
+                    return res
+                })
             } catch (e) {
                 console.error("Error " + e.message)
             }
@@ -495,11 +513,11 @@ Flickable {
                 stamps_array = JSON.parse(stamps_data_raw)
                 //console.warn(stamps_data_raw)
                 stamps_combo_model = stamps_array.map(item => {
-                                                          let res = {}
-                                                          res.title = item.title
-                                                          res.value = (item.id === 0) ? "new" : item
-                                                          return res
-                                                      })
+                    let res = {}
+                    res.title = item.title
+                    res.value = (item.id === 0) ? "new" : item
+                    return res
+                })
             } catch (e) {
                 console.error("Error " + e.message)
             }

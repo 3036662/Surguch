@@ -14,8 +14,11 @@ Item {
         RadioButton {
             id: radioSelect
             text: title
-            Layout.preferredHeight: 30
+            font.family: "Noto Sans"
+            Layout.preferredHeight: 35
             Layout.fillWidth: true
+            leftInset: 10
+            leftPadding: 10
             ButtonGroup.group: rubberStampGroup
 
             onClicked: {
@@ -41,10 +44,6 @@ Item {
             }
         }
 
-        // Rectangle {
-        //     Layout.fillWidth: true
-        // }
-
         ToolButton {
             id: settingsButton
             visible: value !== "new"
@@ -52,6 +51,10 @@ Item {
             icon.source: StyleSheet.wrench_icon
             icon.width: 20
             icon.height: 20
+
+            height: radioSelect.height
+            rightInset: 2
+            rightPadding: 2
 
             onClicked: {
                 rubberStampEditor.edit_state = true
