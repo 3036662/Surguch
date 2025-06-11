@@ -34,6 +34,7 @@ Item {
     property string chevron_up
     property string chevron_down
     property string tag_icon
+    property string info_icon
     property color slider_fill_color
     property color slider_border_color
     property color slider_handle_color
@@ -73,6 +74,7 @@ Item {
                 chevron_up: "qrc:/icons/dark/chevron_up.svg"
                 chevron_down: "qrc:/icons/dark/chevron_down.svg"
                 tag_icon: "qrc:/icons/dark/tag_icon.svg"
+                info_icon: "qrc:/icons/dark/info_icon.svg"
                 slider_fill_color: "#454A4E"
                 slider_border_color: "#454A4E"
                 slider_handle_color: "#31363B"
@@ -113,6 +115,7 @@ Item {
                 chevron_up: "qrc:/icons/light/chevron_up.svg"
                 chevron_down: "qrc:/icons/light/chevron_down.svg"
                 tag_icon: "qrc:/icons/light/tag_icon.svg"
+                info_icon: "qrc:/icons/light/info_icon.svg"
                 slider_fill_color: "#DADBDC"
                 slider_border_color: "#DADBDC"
                 slider_handle_color: "#EFF0F1"

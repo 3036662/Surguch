@@ -27,12 +27,15 @@ Item {
                 rubberStampEditor.rubber_model = rubber_model
                 //if creating new stamp, set an empty data
                 if (value === "new") {
+                    headerSubBar.disableTagButton()
                     rubberStampEditor.stamp_data = ""
                     rubberStampEditor.stamp_id = -1
                     rubberStampEditor.updateRubberStampForm()
                     rubberStampEditor.open()
                 } else {
                     headerSubBar.setTagData(value)
+                    rubberStampDialog.close()
+                    headerSubBar.clickTagButton()
                 }
             }
 

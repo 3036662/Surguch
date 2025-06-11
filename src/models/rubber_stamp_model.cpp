@@ -112,7 +112,9 @@ void RubberStampModel::readRubberStamps() {
             return;
         }
         QTextStream out(&stamps_file);
-        out << "[{\"id\":1,\"title\": \"Approve\"}, {\"id\":2,\"title\":\"Decline\"}]";
+       //  out << "[{\"id\":1,\"title\":\"" << approve_stamp_title_ << "\"}, "
+       // << "{\"id\":2,\"title\":\"" << decline_stamp_title_ << "\"}]";
+        out << generateConfig();
         stamps_file.close();
     }
     if (!stamps_file.exists()) {
@@ -329,6 +331,45 @@ bool RubberStampModel::deleteRubberStamps(int id_stamp) {
     qWarning() << "[RubberStampModel] failed to delete stamp";
     return false;
 }
+
+QString RubberStampModel::generateConfig() const
+{
+    return QString(R"([
+    {
+        "B": 168,
+        "G": 62,
+        "R": 50,
+        "bg_transparent": 0,
+        "border_radius": 50,
+        "border_width": 7,
+        "create_from_image": 0,
+        "font_family": "Noto Sans",
+        "id": 1,
+        "img_path": "",
+        "stamp_link": "",
+        "stamp_text": "%1",
+        "tag_width": 30,
+        "title": "%1"
+    },
+    {
+        "B": 181,
+        "G": 62,
+        "R": 50,
+        "bg_transparent": 0,
+        "border_radius": 50,
+        "border_width": 7,
+        "create_from_image": 0,
+        "font_family": "Noto Sans",
+        "id": 2,
+        "img_path": "",
+        "stamp_link": "",
+        "stamp_text": "%2",
+        "tag_width": 30,
+        "title": "%2"
+    }
+])").arg(approve_stamp_title_, decline_stamp_title_);
+}
+
 
 
 

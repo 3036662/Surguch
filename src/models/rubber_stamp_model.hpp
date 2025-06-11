@@ -43,6 +43,9 @@ signals:
     void rubberStampDeleted(QString); // value of deleted stamp
 
 private:
+    /// @brief generate config for basic rubber stamps
+    QString generateConfig() const;
+
     /// @brief readRubberStamps from JSON file in
     /// @details /HOME/USER/.config/pdfcsp/rubber_stamps.json
     void readRubberStamps();

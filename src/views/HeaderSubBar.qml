@@ -5,6 +5,9 @@ import StyleSheet
 
 ColumnLayout {
 
+    property int redoCount: 0
+    property int undoCount: 0
+
     property alias searchDialog: searchDialog
 
         signal
@@ -66,9 +69,23 @@ ColumnLayout {
     }
 
     function enableTagButton() {
-        console.warn("enabling tag button")
+        console.debug("enabling tag button")
         rubberStampPutButton.down = false
         rubberStampPutButton.enabled = true
+    }
+
+    function disableTagButton() {
+        rubberStampPutButton.enabled = false
+    }
+
+    function clickTagButton() {
+        rubberStampPutButton.enabled = true
+        rubberStampPutButton.click()
+    }
+
+    function updateHistory() {
+        undoCount = pdfModel.getUndoCount()
+        redoCount = pdfModel.getRedoCount()
     }
 
     spacing: 1
@@ -324,7 +341,7 @@ ColumnLayout {
             padding: 0
             icon.source: StyleSheet.tag_icon
             onClicked: {
-                console.warn("create tag")
+                console.debug("create tag")
                 pdfListView.tagMode = !pdfListView.tagMode
                 pdfListView.tagData = tag_data
                 pdfModel.prepareImage(JSON.parse(tag_data))
@@ -333,6 +350,17 @@ ColumnLayout {
                 }
                 down = !down
             }
+        }
+
+        Keys.onPressed: event => {
+            if (event.key === Qt.Key_Escape
+                && pdfListView.tagMode) {
+                pdfListView.tagMode = false
+                rubberStampPutButton.down = false
+                event.accepted = true
+                return
+            }
+            event.accepted = false
         }
 
         Button {
@@ -401,18 +429,26 @@ ColumnLayout {
     }
 
     Shortcut {
+        id: undoShortcut
+
+        enabled: undoCount > 0
         sequence: "Ctrl+Z"
         onActivated: {
             console.warn("undo")
             pdfModel.undoRubberStamp()
+            updateHistory()
         }
     }
 
     Shortcut {
+        id: redoShortcut
+
+        enabled: redoCount > 0
         sequence: "Ctrl+Shift+Z"
         onActivated: {
-            console.warn("undo")
+            console.warn("redo")
             pdfModel.redoRubberStamp()
+            updateHistory()
         }
     }
 }

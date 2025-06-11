@@ -48,6 +48,12 @@ Q_OBJECT
     /// @brief get annotations(rubber stamps) params for embedding them into pdf
     std::vector<pdfcsp::pdf::CAnnotParams> getAnnotsParams();
 
+    /// @brief get undo action size
+    int getUndoCount() const;
+
+    /// @brief get redo action size
+    int getRedoCount() const;
+
 
 private:
     std::vector<EditActions> undo_actions_;

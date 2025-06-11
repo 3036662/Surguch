@@ -523,7 +523,7 @@ ListView {
     onZoomPageFactChanged: {
         // preserve the position
         let pos = preservePosition()
-        console.warn(JSON.stringify(pos))
+        console.debug(JSON.stringify(pos))
         pdfModel.redrawAll()
         zoomFactorUpdate(zoomPageFact)
         jumpToPosition(pos)
@@ -745,7 +745,7 @@ ListView {
                 cursorShape: Qt.CrossCursor
 
                 onEntered: {
-                    console.warn("enter height = " + tagCross.height)
+                    console.debug("enter height = " + tagCross.height)
                     let t_data = JSON.parse(tagData)
                     tagCross.width = t_data.tag_width * width / 100
                     tagCross.visible = true
@@ -830,11 +830,12 @@ ListView {
                         tagCross.visible = false
                         cursorShape = Qt.BusyCursor
                         root.tagMode = false
-                        console.warn("exit tag mode")
+                        console.debug("exit tag mode")
                         root.interactive = true
                         pdfModel.placeRubberStamp(rubber_stamp_data)
                         root.tagInProgress = true
                         root.forceActiveFocus()
+                        headerSubBar.updateHistory()
                     }
                 }
 
@@ -870,9 +871,9 @@ ListView {
                     tagCross.width = t_data.tag_width * width / 100
                     tagCross.height = tagCross.width / calc_ratio
                     root.size_estimated = true
-                    console.warn("size ready height = " + tagCross.height)
-                    console.warn("size ready width = " + tagCross.width)
-                    console.warn("size ready = " + ratio)
+                    console.debug("size ready height = " + tagCross.height)
+                    console.debug("size ready width = " + tagCross.width)
+                    console.debug("size ready = " + ratio)
                 }
 
                 function onUpdateDoc() {

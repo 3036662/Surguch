@@ -60,9 +60,22 @@ void HistoryManager::redoAction() {
 
 /// @brief get annotations(rubber stamps) params for embedding them into pdf
 std::vector<pdfcsp::pdf::CAnnotParams> HistoryManager::getAnnotsParams() {
+    std::shared_lock lock(mutex_);
     c_annot_params_ = core::gui::createAnnotParams(undo_actions_);
     return c_annot_params_;
 }
+
+int HistoryManager::getUndoCount() const{
+    std::shared_lock lock(mutex_);
+    return undo_actions_.size();
+}
+
+int HistoryManager::getRedoCount() const{
+    std::shared_lock lock(mutex_);
+    return redo_actions_.size();
+}
+
+
 
 
 }  //namespace core::gui

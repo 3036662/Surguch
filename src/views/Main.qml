@@ -115,6 +115,10 @@ ApplicationWindow {
         id: rubberStampEditor
     }
 
+    InfoDialog {
+        id: appInfoDialog
+    }
+
     // --------------------------------------
     // instantinate cpp models
     MuPdfModel {

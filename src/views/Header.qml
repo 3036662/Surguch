@@ -98,7 +98,7 @@ RowLayout {
                     rightSideBar.edit_profile.profile_data = profileComboBox.currentValue
                 }
             }
-            
+
             Rectangle {
                 width: 5
                 height: parent.height
@@ -217,6 +217,23 @@ RowLayout {
                 }
             }
         }
+    }
+
+    Rectangle {
+        Layout.fillWidth: true
+    }
+
+
+    ToolButton {
+        id: info_button
+
+        flat: true
+        icon.source: StyleSheet.info_icon
+        icon.width: 20
+        icon.height: 20
+        leftPadding: 5
+        rightPadding: 5
+        onClicked: appInfoDialog.open()
     }
 
     // ToolButton {

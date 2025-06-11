@@ -453,6 +453,20 @@ void PdfDocModel::redoRubberStamp(){
     emit updateDoc();
 }
 
+int PdfDocModel::getUndoCount() const {
+    if (!history_manager_) {
+        return 0;
+    }
+    return history_manager_->getUndoCount();
+}
+
+int PdfDocModel::getRedoCount() const {
+    if (!history_manager_) {
+        return 0;
+    }
+    return history_manager_->getRedoCount();
+}
+
 void PdfDocModel::clearHistory() const {
     qWarning() << "[PdfDocModel::clearHistory]";
     if (!history_manager_) {

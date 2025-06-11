@@ -109,6 +109,12 @@ class PdfDocModel : public QAbstractListModel {
     /// @brief redo last removed stamp
     Q_INVOKABLE void redoRubberStamp();
 
+    /// @brief get undo actions size
+    Q_INVOKABLE int getUndoCount() const;
+
+    /// @brief get redo actions size
+    Q_INVOKABLE int getRedoCount() const;
+
     /// @brief clear history
     Q_INVOKABLE void clearHistory() const;
 

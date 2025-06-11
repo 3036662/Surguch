@@ -49,15 +49,15 @@ Dialog {
         stampName.text = ""
         linkName.text = ""
         tagWidth.value = 30
-        typeSwitch.state = false
+        typeSwitch.checked = true
         logoPath.text = ""
-        rubberStampText.text = ""
-        borderRadius.value = 0
-        borderWidth.value = 0
-        transparencySwitch.state = false
-        redColor.value = 0
-        greenColor.value = 0
-        blueColor.value = 0
+        rubberStampText.text = qsTr("Surguch")
+        borderRadius.value = 50
+        borderWidth.value = 7
+        transparencySwitch.checked = false
+        redColor.value = 50
+        greenColor.value = 62
+        blueColor.value = 168
     }
 
     function updatePreview() {
@@ -325,6 +325,10 @@ Dialog {
 
                         topPadding: 5
                         bottomPadding: 5
+
+                        onToggled: {
+                            updatePreview()
+                        }
                     }
                 }
 
@@ -445,9 +449,9 @@ Dialog {
                         rightPadding: 10
                         rightInset: 10
 
-                        onToggled: {
-                            updatePreview()
-                        }
+                        // onToggled: {
+                        //     updatePreview()
+                        // }
                     }
                 }
 
