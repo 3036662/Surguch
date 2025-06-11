@@ -70,6 +70,24 @@ ListView {
 
     signal tagPlaced()
 
+    function proceedSigning(location_data) {
+        //console.warn(pdfModel.getSource())
+        if (tagInProgress) {
+            //console.warn("embedding tags")
+            tagInProgress = false
+            let tmpFile = tagCreator.embedAnnot(pdfModel.getAnnotParams(), pdfModel.getSource())
+            openTmpFile(tmpFile)
+            //console.warn("NEW SOURCE AFTER EMBEDDING RUBBER STAMPS");
+            //console.warn("new source: " + tmpFile)
+        }
+        //console.warn("starting to sign")
+        //console.warn(pdfModel.getSource())
+        signMode = false
+        signInProgress = true
+        stampLocationSelected(location_data)
+        forceActiveFocus()
+    }
+
     function zoomIn() {
         prevZoom = zoomPageFact
         tryToGetFocus()
@@ -675,21 +693,9 @@ ListView {
                             "stamp_width": cross.width,
                             "stamp_height": cross.height
                         }
-                        const safe_root = root // use safe_root cuz after opening tmp file with embeded tags qml looses refernce to everything
                         cross.visible = false
                         cursorShape = Qt.BusyCursor
-                        console.warn(pdfModel.getSource())
-                        if (root.tagInProgress) {
-                            console.warn("embedding tags")
-                            root.tagInProgress = false
-                            root.openTmpFile(tagCreator.embedAnnot(pdfModel.getAnnotParams(), pdfModel.getSource()))
-                        }
-                        console.warn("starting to sign")
-                        //console warn(pdfModel.getSource()) //this will error cuz loosing pdfModel reference
-                        safe_root.signMode = false //error of use root instead of safe_root
-                        safe_root.signInProgress = true
-                        safe_root.stampLocationSelected(location_data)
-                        safe_root.forceActiveFocus()
+                        root.proceedSigning(location_data)
                     }
                 }
 
@@ -739,10 +745,11 @@ ListView {
                 cursorShape: Qt.CrossCursor
 
                 onEntered: {
+                    console.warn("enter height = " + tagCross.height)
                     let t_data = JSON.parse(tagData)
                     tagCross.width = t_data.tag_width * width / 100
-                    tagCross.visible = root.signInProgress ? false : true
-                    cursorShape = root.signInProgress ? Qt.BusyCursor : Qt.CrossCursor
+                    tagCross.visible = true
+                    cursorShape = Qt.CrossCursor
                 }
 
                 onExited: {
@@ -751,13 +758,15 @@ ListView {
                 }
 
                 onPressed: {
+                    root.interactive = false
                     root.startX = mouseX
                     root.startY = mouseY
                 }
 
                 onPositionChanged: {
-                    if (pressed) {
-                        root.interactive = false
+                    if (pressed &&
+                        Math.abs(startX - mouseX) > 10 &&
+                        Math.abs(startY - mouseY) > 10) {
                         if (mouseX > startX) {
                             tagCross.x = startX
                             tagCross.width = mouseX - startX
@@ -857,10 +866,12 @@ ListView {
                 function onSizeReady(calc_ratio) {
                     // add rubber stamps on render
                     root.ratio = calc_ratio
+                    let t_data = JSON.parse(tagData)
+                    tagCross.width = t_data.tag_width * width / 100
                     tagCross.height = tagCross.width / calc_ratio
                     root.size_estimated = true
-                    console.warn("height = " + tagCross.height)
-                    console.warn("width = " + tagCross.width)
+                    console.warn("size ready height = " + tagCross.height)
+                    console.warn("size ready width = " + tagCross.width)
                     console.warn("size ready = " + ratio)
                 }
 

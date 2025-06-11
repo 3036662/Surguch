@@ -343,7 +343,11 @@ ColumnLayout {
             padding: 0
             icon.source: StyleSheet.chevron_down
             onClicked: {
-                rubberStampDialog.open()
+                if (rubberStampDialog.visible) {
+                    rubberStampDialog.close()
+                } else {
+                    rubberStampDialog.open()
+                }
             }
         }
 

@@ -11,7 +11,9 @@ HistoryManager::HistoryManager(QObject* parent ): QObject{parent} {
 
 void HistoryManager::addAction(std::unique_ptr<RubberStamp> action){
     std::unique_lock lock(mutex_);
-    undo_actions_.emplace_back(std::move(action));
+    if (action->res->data_ != nullptr && action->res->image_ != nullptr) {
+        undo_actions_.emplace_back(std::move(action));
+    }
 }
 
 std::vector<HistoryManager::EditActions> HistoryManager::getActionsOnPage(size_t page_index) const {

@@ -644,10 +644,10 @@
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+699"/>
         <location line="+105"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+564"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+711"/>
-        <location line="+124"/>
-        <location filename="../../src/views/PdfListView.qml" line="+711"/>
-        <location line="+124"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+717"/>
+        <location line="+127"/>
+        <location filename="../../src/views/PdfListView.qml" line="+717"/>
+        <location line="+127"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>
@@ -655,10 +655,10 @@
         <location line="-104"/>
         <location line="+105"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+1"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-123"/>
-        <location line="+124"/>
-        <location filename="../../src/views/PdfListView.qml" line="-123"/>
-        <location line="+124"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-126"/>
+        <location line="+127"/>
+        <location filename="../../src/views/PdfListView.qml" line="-126"/>
+        <location line="+127"/>
         <source>Invalid position</source>
         <translation>Недопустимая позиция</translation>
     </message>
