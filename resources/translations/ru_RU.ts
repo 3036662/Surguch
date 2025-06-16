@@ -418,6 +418,39 @@
     </message>
 </context>
 <context>
+    <name>InfoDialog</name>
+    <message>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/InfoDialog.qml" line="+23"/>
+        <location filename="../../src/views/InfoDialog.qml" line="+23"/>
+        <source>Surguch - application for work with digital signature</source>
+        <translation>Сургуч - Программа для работы с электронной подписью</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location filename="../../src/views/InfoDialog.qml" line="+6"/>
+        <source>Version </source>
+        <translation>Версия </translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location filename="../../src/views/InfoDialog.qml" line="+6"/>
+        <source>Help </source>
+        <translation>Справка </translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation type="obsolete">Версия </translation>
+    </message>
+    <message>
+        <source>Version %1</source>
+        <translation type="vanished">Версия </translation>
+    </message>
+    <message>
+        <source>Help %1</source>
+        <translation type="vanished">Справка </translation>
+    </message>
+</context>
+<context>
     <name>LeftSideBar</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+72"/>
