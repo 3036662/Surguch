@@ -62,7 +62,7 @@ IF (${Qt6_VERSION_MINOR} VERSION_LESS 5)
             main.cpp
             cpp_views/pdf_page_render.hpp cpp_views/pdf_page_render.cpp
             cpp_views/preview_render.hpp cpp_views/preview_render.cpp
-            cpp_views/rubber_preview_render.hpp cpp_views/rubber_preview_render.cp
+            cpp_views/rubber_preview_render.hpp cpp_views/rubber_preview_render.cpp
             ${CMAKE_SOURCE_DIR}/resources/resources.qrc
             ${CMAKE_SOURCE_DIR}/src/views/qml_sources.qrc
     )
