@@ -983,8 +983,8 @@
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+19"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+19"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+20"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+20"/>
         <source>Preview</source>
         <translation>Предпросмотр</translation>
     </message>
@@ -1004,8 +1004,8 @@
     </message>
     <message>
         <location line="+11"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+11"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+11"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+12"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+12"/>
         <source>Default tag width, % from A4 </source>
         <translation>Ширина тега по умолчания, % от А4</translation>
     </message>
@@ -1067,8 +1067,8 @@
     </message>
     <message>
         <location line="+18"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+18"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+18"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+19"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+19"/>
         <source>Font</source>
         <translation>Шрифт</translation>
     </message>
@@ -1113,8 +1113,8 @@
         <translation type="obsolete">Выберите логотип</translation>
     </message>
     <message>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="-536"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="-536"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="-539"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="-539"/>
         <source>Surguch</source>
         <translation>Сургуч</translation>
     </message>
@@ -1215,8 +1215,8 @@
     </message>
     <message>
         <location line="+9"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+20"/>
-        <location filename="../../src/views/StampEditor.qml" line="+20"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+21"/>
+        <location filename="../../src/views/StampEditor.qml" line="+21"/>
         <source>Preview</source>
         <translation>Предпросмотр</translation>
     </message>

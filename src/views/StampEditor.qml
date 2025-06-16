@@ -123,7 +123,7 @@ Dialog {
             color: StyleSheet.font_color_extra
         }
 
-        TextArea {
+        RSBTextArea {
             id: stampName
             Layout.fillWidth: true
             placeholderText: qsTr("Enter stamp name")
@@ -132,6 +132,7 @@ Dialog {
             wrapMode: Text.WordWrap
             placeholderTextColor: "grey"
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
 
             onTextChanged: {
                 let validInput = stampName.text.match(/^S+$/)

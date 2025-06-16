@@ -147,7 +147,7 @@ Dialog {
                     color: StyleSheet.font_color_extra
                 }
 
-                TextArea {
+                RSBTextArea {
                     id: stampName
                     Layout.fillWidth: true
                     placeholderText: qsTr("Enter tag name")
@@ -155,6 +155,7 @@ Dialog {
                     wrapMode: Text.WordWrap
                     placeholderTextColor: "grey"
                     font.family: "Noto Sans"
+                    color: StyleSheet.font_color_extra
 
                     onTextChanged: {
                         let validInput = stampName.text.match(/^S+$/)
@@ -194,7 +195,7 @@ Dialog {
                     color: StyleSheet.font_color_extra
                 }
 
-                TextArea {
+                RSBTextArea {
                     id: linkName
                     Layout.fillWidth: true
                     placeholderText: qsTr("Enter link here")
@@ -202,6 +203,7 @@ Dialog {
                     wrapMode: Text.WordWrap
                     placeholderTextColor: "grey"
                     font.family: "Noto Sans"
+                    color: StyleSheet.font_color_extra
                 }
 
                 RowLayout {
@@ -373,7 +375,7 @@ Dialog {
                     Layout.maximumHeight: Math.min(rubberStampText.implicitHeight, font.pixelSize * 5 + 20)
                     visible: typeSwitch.checked
 
-                    TextArea {
+                    RSBTextArea {
                         id: rubberStampText
                         Layout.fillWidth: true
                         visible: typeSwitch.checked
@@ -382,6 +384,7 @@ Dialog {
                         wrapMode: Text.WordWrap
                         placeholderTextColor: "grey"
                         font.family: "Noto Sans"
+                        color: StyleSheet.font_color_extra
 
                         onTextChanged: {
                             updatePreview()

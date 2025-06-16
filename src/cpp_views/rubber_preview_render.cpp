@@ -144,7 +144,8 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
         params_.border_radius = qvparams.value("border_radius").toUInt();
     }
     if (qvparams.contains("bg_transparent")) {
-        params_.bg_transparent = qvparams.value("bg_transparent").toBool();
+        //params_.bg_transparent = qvparams.value("bg_transparent").toBool();
+        params_.bg_transparent = false;
     }
     if (qvparams.contains("create_from_image")) {
         params_.create_from_image = qvparams.value("create_from_image").toBool();
