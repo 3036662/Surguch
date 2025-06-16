@@ -284,10 +284,13 @@ RowLayout {
             StandardPaths.DocumentsLocation)
 
         onAccepted: {
+            pdfModel.mustExtractText = false
             pdfModel.setSource(tagCreator.embedAnnot(pdfModel.getAnnotParams(), pdfModel.getSource()))
             pdfModel.clearHistory()
             console.warn(currentFile)
             pdfListView.saveTo(currentFile)
+            pdfModel.mustExtractText = true
+            headerSubBar.updateHistory()
             if (quitAfterSave) {
                 Qt.quit()
             }
@@ -323,10 +326,13 @@ RowLayout {
         folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
 
         onAccepted: {
+            pdfModel.mustExtractText = false
             pdfModel.setSource(tagCreator.embedAnnot(pdfModel.getAnnotParams(), pdfModel.getSource()))
             pdfModel.clearHistory()
             console.warn(currentFile)
             pdfListView.saveTo(currentFile)
+            pdfModel.mustExtractText = true
+            headerSubBar.updateHistory()
             if (quitAfterSave) {
                 Qt.quit()
             }

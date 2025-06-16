@@ -236,24 +236,24 @@
     <message>
         <location line="+10"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+6"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+11"/>
-        <location filename="../../src/views/EditProfile.qml" line="+11"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+15"/>
+        <location filename="../../src/views/EditProfile.qml" line="+15"/>
         <source>Stamp appearance</source>
         <translation>Вид штампа</translation>
     </message>
     <message>
         <location line="+17"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+13"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+18"/>
-        <location filename="../../src/views/EditProfile.qml" line="+18"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+54"/>
+        <location filename="../../src/views/EditProfile.qml" line="+54"/>
         <source>Select stamp type</source>
         <translation>Выберите тип штампа</translation>
     </message>
     <message>
         <location line="+83"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+6"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+84"/>
-        <location filename="../../src/views/EditProfile.qml" line="+84"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+48"/>
+        <location filename="../../src/views/EditProfile.qml" line="+48"/>
         <source>Company logo</source>
         <translation>Логотип компании</translation>
     </message>
@@ -268,8 +268,8 @@
     <message>
         <location line="-142"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+20"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="-148"/>
-        <location filename="../../src/views/EditProfile.qml" line="-148"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="-152"/>
+        <location filename="../../src/views/EditProfile.qml" line="-152"/>
         <source>TSP server URL</source>
         <translation>Адрес службы TSP</translation>
     </message>
@@ -284,8 +284,8 @@
     <message>
         <location line="+160"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+26"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+166"/>
-        <location filename="../../src/views/EditProfile.qml" line="+166"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+170"/>
+        <location filename="../../src/views/EditProfile.qml" line="+170"/>
         <source>Save profile</source>
         <translation>Сохранить профиль</translation>
     </message>
@@ -371,9 +371,9 @@
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+45"/>
         <location line="+38"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+62"/>
-        <location line="+40"/>
+        <location line="+43"/>
         <location filename="../../src/views/Header.qml" line="+62"/>
-        <location line="+40"/>
+        <location line="+43"/>
         <source>Any file (* *.*)</source>
         <translation>Любой файл (* *.*)</translation>
     </message>
@@ -384,12 +384,12 @@
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="-38"/>
         <location line="+19"/>
         <location line="+19"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="-40"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="-43"/>
         <location line="+19"/>
-        <location line="+21"/>
-        <location filename="../../src/views/Header.qml" line="-40"/>
+        <location line="+24"/>
+        <location filename="../../src/views/Header.qml" line="-43"/>
         <location line="+19"/>
-        <location line="+21"/>
+        <location line="+24"/>
         <source>PDF files (*.pdf)</source>
         <translation>PDF файлы (*.pdf)</translation>
     </message>

@@ -249,12 +249,52 @@ Flickable {
         }
 
         // stamp settings
-        Text {
-            topPadding: 10
-            text: qsTr("Stamp appearance")
-            bottomPadding: 5
-            font.family: "Noto Sans"
-            color: StyleSheet.font_color_extra
+
+        RowLayout {
+            width: parent.width
+
+            Text {
+                topPadding: 10
+                text: qsTr("Stamp appearance")
+                bottomPadding: 5
+                font.family: "Noto Sans"
+                color: StyleSheet.font_color_extra
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
+            }
+
+            ToolButton {
+                id: editButton
+                flat: true
+                display: AbstractButton.TextBesideIcon
+                icon.width: 10
+                icon.height: 10
+                leftPadding: 5
+                rightPadding: 5
+                topPadding: 5
+                bottomPadding: 5
+                font.family: "Noto Sans"
+                icon.source: StyleSheet.wrench_icon
+                enabled: selectStampTypeCombo.currentText !== "ГОСТ"
+
+                onClicked: {
+                    stampEditor.stamp_data = selectStampTypeCombo.currentValue
+                    stampEditor.profiles_model = profiles_model
+                    let data = {
+                        "CADES_format": selectCadesFormatCombo.currentValue,
+                        "cert_serial": selectCertificateCombo.currentValue,
+                        "logo_path": logoPath.text,
+                        "tsp_url": ""
+                    }
+                    //console.warn(JSON.stringify(data))
+                    stampEditor.profile_data = JSON.stringify(data)
+                    stampEditor.updateStampForm()
+                    stampEditor.editState = true
+                    stampEditor.visible = true
+                }
+            }
         }
 
         RowLayout {
@@ -286,42 +326,6 @@ Flickable {
                         stampEditor.updateStampForm()
                         stampEditor.visible = true
                     }
-                }
-            }
-
-            Rectangle {
-                Layout.fillWidth: true
-            }
-
-            ToolButton {
-                id: editButton
-                Layout.fillWidth: true
-                flat: true
-                display: AbstractButton.TextBesideIcon
-                icon.width: 30
-                icon.height: 30
-                leftPadding: 10
-                rightPadding: 10
-                topPadding: 10
-                bottomPadding: 10
-                font.family: "Noto Sans"
-                icon.source: StyleSheet.wrench_icon
-                enabled: selectStampTypeCombo.currentText !== "ГОСТ"
-
-                onClicked: {
-                    stampEditor.stamp_data = selectStampTypeCombo.currentValue
-                    stampEditor.profiles_model = profiles_model
-                    let data = {
-                        "CADES_format": selectCadesFormatCombo.currentValue,
-                        "cert_serial": selectCertificateCombo.currentValue,
-                        "logo_path": logoPath.text,
-                        "tsp_url": ""
-                    }
-                    //console.warn(JSON.stringify(data))
-                    stampEditor.profile_data = JSON.stringify(data)
-                    stampEditor.updateStampForm()
-                    stampEditor.editState = true
-                    stampEditor.visible = true
                 }
             }
         }

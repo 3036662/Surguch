@@ -13,6 +13,7 @@ Dialog {
     property string prev_needle
 
     signal searchRequired(string needle)
+
     signal jumpToNeedle(int needle_index)
 
     function searchCompleted(first_needle_page, total_needles) {
@@ -122,7 +123,7 @@ Dialog {
             height: parent.height
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: StyleSheet.chevron_up
+            icon.source: StyleSheet.chevron_down
             icon.width: 20
             icon.height: 20
             leftPadding: 0
@@ -143,7 +144,7 @@ Dialog {
             height: parent.height
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: StyleSheet.chevron_down
+            icon.source: StyleSheet.chevron_up
             icon.width: 20
             icon.height: 20
             leftPadding: 0
