@@ -80,7 +80,13 @@ ColumnLayout {
 
     function clickTagButton() {
         rubberStampPutButton.enabled = true
-        rubberStampPutButton.click()
+        pdfListView.tagMode = !pdfListView.tagMode
+        pdfListView.tagData = rubberStampPutButton.tag_data
+        pdfModel.prepareImage(JSON.parse(rubberStampPutButton.tag_data))
+        if (!rubberStampPutButton.down) {
+            pdfListView.reserRotation()
+        }
+        rubberStampPutButton.down = !rubberStampPutButton.down
     }
 
     function updateHistory() {

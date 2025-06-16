@@ -399,8 +399,8 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+196"/>
         <location filename="../../build/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+153"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+213"/>
-        <location filename="../../src/views/HeaderSubBar.qml" line="+213"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+219"/>
+        <location filename="../../src/views/HeaderSubBar.qml" line="+219"/>
         <source> of </source>
         <translation> из </translation>
     </message>
