@@ -64,7 +64,7 @@ class PdfDocModel : public QAbstractListModel {
     Q_INVOKABLE void redrawAll();
 
     /// @brief the 'save file as' implementation
-    Q_INVOKABLE bool saveCurrSourceTo(const QString &path,
+    Q_INVOKABLE bool saveCurrSourceTo(const QString &curr_source, const QString &path,
                                       bool delete_curr_source);
 
     /// @brief schedule the given file for deletion

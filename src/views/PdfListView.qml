@@ -66,17 +66,18 @@ ListView {
         signal
     canZoomOut
 
-    signal stampLocationSelected(var stamp_location_info)
+    signal stampLocationSelected(var stamp_location_info, var path)
 
     signal tagPlaced()
 
     function proceedSigning(location_data) {
         //console.warn(pdfModel.getSource())
+        let tmpFile = pdfModel.getSource()
         if (tagInProgress) {
             //console.warn("embedding tags")
             tagInProgress = false
-            let tmpFile = tagCreator.embedAnnot(pdfModel.getAnnotParams(), pdfModel.getSource())
-            openTmpFile(tmpFile)
+            tmpFile = tagCreator.embedAnnot(pdfModel.getAnnotParams(), pdfModel.getSource())
+            //openTmpFile(tmpFile)
             //console.warn("NEW SOURCE AFTER EMBEDDING RUBBER STAMPS");
             //console.warn("new source: " + tmpFile)
         }
@@ -84,7 +85,7 @@ ListView {
         //console.warn(pdfModel.getSource())
         signMode = false
         signInProgress = true
-        stampLocationSelected(location_data)
+        stampLocationSelected(location_data, tmpFile)
         forceActiveFocus()
     }
 
@@ -250,10 +251,10 @@ ListView {
         source = file
     }
 
-    function saveTo(dest) {
+    function saveTo(file, dest) {
         if (dest) {
             // The second parameter will let the model delete the source file.
-            if (model.saveCurrSourceTo(dest, sourceIsTmp)) {
+            if (model.saveCurrSourceTo(file, dest, sourceIsTmp)) {
                 openFile(dest)
             }
         }

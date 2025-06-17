@@ -296,10 +296,10 @@ Q_INVOKABLE void PdfDocModel::deleteFileLater(QString path) {
 }
 
 /// @brief the 'save file as' implementation
-Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(const QString &path,
+Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(const QString &curr_path,const QString &path,
                                                bool delete_curr_source) {
     const QString dest_path = QUrl(path).toString(QUrl::PreferLocalFile);
-    QFile src_file(file_source_);
+    QFile src_file(curr_path);
     if (!src_file.exists()) {
         qWarning() << "[SaveCurrSourceTo] source file does not exist";
         return false;

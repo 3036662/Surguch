@@ -152,7 +152,7 @@ ApplicationWindow {
         id: sigCreator
 
         // common function to gather parameters used in resizeAim and signDoc
-        function gatherParams(location_data) {
+        function gatherParams(location_data, path) {
             let curr_profile = JSON.parse(header.getCurrentProfileValue())
             let cert_array = JSON.parse(profilesModel.getUserCertsJSON())
             // console.warn(JSON.stringify(rightSideBar.edit_profile.cert_array));
@@ -202,7 +202,7 @@ ApplicationWindow {
                 "bg_opacity": 1,
                 "cades_type": curr_profile.CADES_format,
                 "tsp_url": curr_profile.tsp_url,
-                "file_to_sign_path": pdfModel.getSource()
+                "file_to_sign_path": path
             }
             //console.warn(JSON.stringify(params))
             return params
@@ -222,12 +222,12 @@ ApplicationWindow {
         }
 
         // sign the document
-        function signDoc(location_data) {
+        function signDoc(location_data, path) {
             try {
                 if (typeof (location_data) == "undefined") {
                     return
                 }
-                let params = gatherParams(location_data)
+                let params = gatherParams(location_data, path)
                 sigCreator.createSignature(params)
             } catch (e) {
                 console.warn("signDoc" + e)

@@ -285,10 +285,14 @@ RowLayout {
 
         onAccepted: {
             pdfModel.mustExtractText = false
-            pdfModel.setSource(tagCreator.embedAnnot(pdfModel.getAnnotParams(), pdfModel.getSource()))
+            let tmp_file = tagCreator.embedAnnot(pdfModel.getAnnotParams(), pdfModel.getSource())
+            if (tmp_file === "") {
+                tmp_file = pdfModel.getSource()
+            }
+            console.warn(tmp_file)
             pdfModel.clearHistory()
             console.warn(currentFile)
-            pdfListView.saveTo(currentFile)
+            pdfListView.saveTo(tmp_file, currentFile)
             pdfModel.mustExtractText = true
             headerSubBar.updateHistory()
             if (quitAfterSave) {
@@ -327,10 +331,13 @@ RowLayout {
 
         onAccepted: {
             pdfModel.mustExtractText = false
-            pdfModel.setSource(tagCreator.embedAnnot(pdfModel.getAnnotParams(), pdfModel.getSource()))
+            let tmp_file = tagCreator.embedAnnot(pdfModel.getAnnotParams(), pdfModel.getSource())
+            if (tmp_file === "") {
+                tmp_file = pdfModel.getSource()
+            }
             pdfModel.clearHistory()
             console.warn(currentFile)
-            pdfListView.saveTo(currentFile)
+            pdfListView.saveTo(tmp_file, currentFile)
             pdfModel.mustExtractText = true
             headerSubBar.updateHistory()
             if (quitAfterSave) {
