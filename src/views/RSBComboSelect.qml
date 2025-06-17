@@ -22,7 +22,7 @@ ComboBox {
 
     delegate: ItemDelegate {
         id: delegate
-        height: 30
+        height: 25
 
         required property var model
         required property int index
@@ -49,6 +49,9 @@ ComboBox {
 
         ToolTip {
             id: tooltip_obj
+            background: Rectangle {
+                color: StyleSheet.tooltip_background
+            }
             visible: control.highlightedIndex === index && text !== ""
             text: control.model[index]["tooltip"] !== undefined ?
                 control.model[index]["tooltip"] : "";
@@ -72,7 +75,7 @@ ComboBox {
 
     background: Rectangle {
         implicitWidth: 120
-        implicitHeight: 40
+        implicitHeight: 29
         border.color: StyleSheet.slider_border_color
         border.width: control.visualFocus ? 2 : 1
         radius: 2

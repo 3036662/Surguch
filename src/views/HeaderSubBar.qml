@@ -450,7 +450,7 @@ ColumnLayout {
         id: redoShortcut
 
         enabled: redoCount > 0
-        sequence: "Ctrl+Shift+Z"
+        sequence: "Ctrl+Y"
         onActivated: {
             console.warn("redo")
             pdfModel.redoRubberStamp()

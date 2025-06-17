@@ -217,7 +217,7 @@ Dialog {
             id: borderRadius
             Layout.fillWidth: true
             snapMode: Slider.SnapOnRelease
-            from: 0
+            from: 1
             to: 70
             stepSize: 1
 

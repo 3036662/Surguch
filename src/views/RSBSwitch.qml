@@ -4,13 +4,17 @@ import StyleSheet
 
 Switch {
     id: control
+
+    property int size_w: 49
+    property int size_h: 28
+
     font.family: "Noto Sans"
 
     width: parent.width
 
     indicator: Rectangle {
-        implicitWidth: 49
-        implicitHeight: 28
+        implicitWidth: size_w
+        implicitHeight: size_h
         x: parent.width - width
         y: parent.height / 2 - height / 2
         radius: width / 2
@@ -19,10 +23,10 @@ Switch {
 
         Rectangle {
             x: control.checked ? parent.width - width : 0
-            width: 28
-            height: 28
+            width: size_h
+            height: size_h
             radius: width / 2
-            color: control.down ? "#cccccc" : StyleSheet.slider_handle_color
+            color: control.down ? "#ffffff" : StyleSheet.slider_handle_color
             border.width: control.visualFocus ? 4 : 2
             border.color: control.checked ? (control.down ? "#17a81a" : StyleSheet.slider_border_color) : StyleSheet.slider_border_color
         }

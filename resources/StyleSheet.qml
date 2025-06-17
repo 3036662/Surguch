@@ -41,6 +41,7 @@ Item {
     property color edit_background
     property color text_area_background
     property color combo_box_background
+    property color tooltip_background
     states: [
         State {
             name: "dark"
@@ -81,6 +82,7 @@ Item {
                 edit_background: "#292D32"
                 text_area_background: "#1A1D1F"
                 combo_box_background: "#31363B"
+                tooltip_background: "#31363B"
             }
         },
         State {
@@ -118,10 +120,11 @@ Item {
                 info_icon: "qrc:/icons/light/info_icon.svg"
                 slider_fill_color: "#DADBDC"
                 slider_border_color: "#DADBDC"
-                slider_handle_color: "#EFF0F1"
+                slider_handle_color: "#ffffff"
                 edit_background: "#FFFFFE"
                 text_area_background: "#FCFCFC"
                 combo_box_background: "#EFF0F1"
+                tooltip_background: "#1A1D1F"
             }
         }
     ]

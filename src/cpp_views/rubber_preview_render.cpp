@@ -48,30 +48,30 @@ QSGNode *RubberPreviewRender::updatePaintNode(
         QSGTexture *texture = window()->createTextureFromImage(*img);
         if (texture != nullptr) {
             rectNode->setTexture(texture);
-            rectNode->setRect(QRectF(0, 0, 400, 400));
+            rectNode->setRect(QRectF(0, 0, 380, 300));
         }
         return rectNode;
     }
     QSGTexture *texture = nullptr;
-    if (result_->data_->resolution_x > 480 && result_->data_->resolution_x > result_->data_->resolution_y) {
-        QSGTexture *texture = window()->createTextureFromImage((*result_->image_).scaled(480,
-            400 * (static_cast<double>(result_->data_->resolution_y / static_cast<double>(result_->data_->resolution_x))) ,
+    if (result_->data_->resolution_x > 380 && result_->data_->resolution_x > result_->data_->resolution_y) {
+        QSGTexture *texture = window()->createTextureFromImage((*result_->image_).scaled(380,
+            300 * (static_cast<double>(result_->data_->resolution_y / static_cast<double>(result_->data_->resolution_x))) ,
             Qt::KeepAspectRatio));
-        setHeight(400 * (static_cast<double>(result_->data_->resolution_y / static_cast<double>(result_->data_->resolution_x))));
-        setWidth(480);
+        setHeight(300 * (static_cast<double>(result_->data_->resolution_y / static_cast<double>(result_->data_->resolution_x))));
+        setWidth(380);
         if (texture != nullptr) {
             rectNode->setTexture(texture);
             rectNode->setRect(QRectF(0, 0, width(), height()));
         }
         return rectNode;
     }
-    if (result_->data_->resolution_y > 400 && result_->data_->resolution_y > result_->data_->resolution_x) {
+    if (result_->data_->resolution_y > 300 && result_->data_->resolution_y > result_->data_->resolution_x) {
         QSGTexture *texture = window()->createTextureFromImage((*result_->image_).scaled(
-            480 * (static_cast<double>(result_->data_->resolution_x) / static_cast<double>(result_->data_->resolution_y)),
-        400 ,
+            380 * (static_cast<double>(result_->data_->resolution_x) / static_cast<double>(result_->data_->resolution_y)),
+        300 ,
         Qt::KeepAspectRatio));
-        setHeight(400);
-        setWidth(480 * (static_cast<double>(result_->data_->resolution_x) / static_cast<double>(result_->data_->resolution_y)));
+        setHeight(300);
+        setWidth(380 * (static_cast<double>(result_->data_->resolution_x) / static_cast<double>(result_->data_->resolution_y)));
         if (texture != nullptr) {
             rectNode->setTexture(texture);
             rectNode->setRect(QRectF(0, 0, width(), height()));

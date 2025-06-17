@@ -153,8 +153,8 @@ Flickable {
 
         RightSBHorizontalDelimiter {
             width: parent.width
-            topPadding: 10
-            bottomPadding: 10
+            topPadding: 7
+            bottomPadding: 7
         }
 
         // use by default switch
@@ -163,6 +163,9 @@ Flickable {
             topPadding: 5
             bottomPadding: 5
             text: qsTr("Use this profile by default")
+            
+            size_w: 35
+            size_h: 20
         }
 
         RightSBHorizontalDelimiter {
@@ -268,9 +271,9 @@ Flickable {
             ToolButton {
                 id: editButton
                 flat: true
-                display: AbstractButton.TextBesideIcon
-                icon.width: 10
-                icon.height: 10
+                display: AbstractButton.IconOnly
+                icon.width: 15
+                icon.height: 15
                 leftPadding: 5
                 rightPadding: 5
                 topPadding: 5

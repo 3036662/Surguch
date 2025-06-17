@@ -205,8 +205,8 @@
     </message>
     <message>
         <location line="+25"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+29"/>
-        <location filename="../../src/views/EditProfile.qml" line="+29"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+32"/>
+        <location filename="../../src/views/EditProfile.qml" line="+32"/>
         <source>Signature</source>
         <translation>Электронная подпись</translation>
     </message>
