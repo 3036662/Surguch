@@ -27,6 +27,10 @@ ColumnLayout {
     showPreviews
         signal
     showCerts
+        signal
+    undoAction
+        signal
+    redoAction
 
     function changePageCount(newCount) {
         page_number.pageCount = newCount
@@ -89,9 +93,9 @@ ColumnLayout {
         rubberStampPutButton.down = !rubberStampPutButton.down
     }
 
-    function updateHistory() {
-        undoCount = pdfModel.getUndoCount()
-        redoCount = pdfModel.getRedoCount()
+    function updateHistory(undo, redo) {
+        undoCount = undo
+        redoCount = redo
     }
 
     spacing: 1
@@ -441,7 +445,7 @@ ColumnLayout {
         sequence: "Ctrl+Z"
         onActivated: {
             console.warn("undo")
-            pdfModel.undoRubberStamp()
+            undoAction()
             updateHistory()
         }
     }
@@ -453,8 +457,7 @@ ColumnLayout {
         sequence: "Ctrl+Y"
         onActivated: {
             console.warn("redo")
-            pdfModel.redoRubberStamp()
-            updateHistory()
+            redoAction()
         }
     }
 }

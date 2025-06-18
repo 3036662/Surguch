@@ -299,6 +299,10 @@ ApplicationWindow {
         pdfListView.canZoom.connect(headerSubBar.enableZoom)
         pdfListView.minZoomReached.connect(headerSubBar.disableZoomOut)
         pdfListView.canZoomOut.connect(headerSubBar.enableZoomOut)
+        ///sync action history
+        headerSubBar.undoAction.connect(pdfListView.undo)
+        headerSubBar.redoAction.connect(pdfListView.redo)
+        pdfListView.updateHistory.connect(headerSubBar.updateHistory)
         // toggle from preview to certs in left sidebat
         headerSubBar.showPreviews.connect(leftSideBar.showPreviews)
         headerSubBar.showCerts.connect(leftSideBar.showCerts)

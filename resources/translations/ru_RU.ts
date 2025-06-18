@@ -6,8 +6,8 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/CertInfo.qml" line="+32"/>
         <location filename="../../build/src/gui_pdf_csp/views/CertInfo.qml" line="+32"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+32"/>
-        <location filename="../../src/views/CertInfo.qml" line="+32"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+33"/>
+        <location filename="../../src/views/CertInfo.qml" line="+33"/>
         <source>Status</source>
         <translation>Статус</translation>
     </message>
@@ -399,8 +399,8 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+196"/>
         <location filename="../../build/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+153"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+219"/>
-        <location filename="../../src/views/HeaderSubBar.qml" line="+219"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+223"/>
+        <location filename="../../src/views/HeaderSubBar.qml" line="+223"/>
         <source> of </source>
         <translation> из </translation>
     </message>
@@ -562,8 +562,8 @@
     <message>
         <location line="+85"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+76"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+85"/>
-        <location filename="../../src/views/Main.qml" line="+85"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+89"/>
+        <location filename="../../src/views/Main.qml" line="+89"/>
         <source>The document was changed after signing, but can be restored</source>
         <translation>Документ был изменен после подписи! Присутствует возможность восстановить подписанную версию</translation>
     </message>
@@ -677,10 +677,10 @@
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+699"/>
         <location line="+105"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+564"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+718"/>
-        <location line="+128"/>
-        <location filename="../../src/views/PdfListView.qml" line="+718"/>
-        <location line="+128"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+737"/>
+        <location line="+127"/>
+        <location filename="../../src/views/PdfListView.qml" line="+737"/>
+        <location line="+127"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>
@@ -688,10 +688,10 @@
         <location line="-104"/>
         <location line="+105"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+1"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-127"/>
-        <location line="+128"/>
-        <location filename="../../src/views/PdfListView.qml" line="-127"/>
-        <location line="+128"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-126"/>
+        <location line="+127"/>
+        <location filename="../../src/views/PdfListView.qml" line="-126"/>
+        <location line="+127"/>
         <source>Invalid position</source>
         <translation>Недопустимая позиция</translation>
     </message>
@@ -766,8 +766,8 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+26"/>
         <location filename="../../build/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+26"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+26"/>
-        <location filename="../../src/views/RSBSigInfo.qml" line="+26"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+27"/>
+        <location filename="../../src/views/RSBSigInfo.qml" line="+27"/>
         <source>Signature</source>
         <translation>Электронная подпись</translation>
     </message>
@@ -777,17 +777,17 @@
         <location filename="../../build/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+10"/>
         <location line="+73"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+10"/>
-        <location line="+73"/>
+        <location line="+74"/>
         <location filename="../../src/views/RSBSigInfo.qml" line="+10"/>
-        <location line="+73"/>
+        <location line="+74"/>
         <source>Status</source>
         <translation>Статус</translation>
     </message>
     <message>
         <location line="-63"/>
         <location filename="../../build/src/gui_pdf_csp/views/RSBSigInfo.qml" line="-63"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="-63"/>
-        <location filename="../../src/views/RSBSigInfo.qml" line="-63"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="-64"/>
+        <location filename="../../src/views/RSBSigInfo.qml" line="-64"/>
         <source>Document integrity</source>
         <translation>Целостность документа</translation>
     </message>
@@ -825,9 +825,9 @@
         <location filename="../../build/src/gui_pdf_csp/views/RSBSigInfo.qml" line="-40"/>
         <location line="+97"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="-40"/>
-        <location line="+97"/>
+        <location line="+98"/>
         <location filename="../../src/views/RSBSigInfo.qml" line="-40"/>
-        <location line="+97"/>
+        <location line="+98"/>
         <source>OCSP status</source>
         <translation>Статус OCSP</translation>
     </message>
@@ -836,18 +836,18 @@
         <location line="+47"/>
         <location filename="../../build/src/gui_pdf_csp/views/RSBSigInfo.qml" line="-89"/>
         <location line="+47"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="-89"/>
-        <location line="+47"/>
-        <location filename="../../src/views/RSBSigInfo.qml" line="-89"/>
-        <location line="+47"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="-90"/>
+        <location line="+48"/>
+        <location filename="../../src/views/RSBSigInfo.qml" line="-90"/>
+        <location line="+48"/>
         <source>Date of creation</source>
         <translation>Дата подписи</translation>
     </message>
     <message>
         <location line="-40"/>
         <location filename="../../build/src/gui_pdf_csp/views/RSBSigInfo.qml" line="-40"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="-40"/>
-        <location filename="../../src/views/RSBSigInfo.qml" line="-40"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="-41"/>
+        <location filename="../../src/views/RSBSigInfo.qml" line="-41"/>
         <source>CADES standart</source>
         <translation>CADES стандарт</translation>
     </message>
@@ -857,17 +857,17 @@
         <location filename="../../build/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+9"/>
         <location line="+109"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+9"/>
-        <location line="+109"/>
+        <location line="+111"/>
         <location filename="../../src/views/RSBSigInfo.qml" line="+9"/>
-        <location line="+109"/>
+        <location line="+111"/>
         <source>Certificate chain</source>
         <translation>Цепочка сертификатов</translation>
     </message>
     <message>
         <location line="-71"/>
         <location filename="../../build/src/gui_pdf_csp/views/RSBSigInfo.qml" line="-71"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="-71"/>
-        <location filename="../../src/views/RSBSigInfo.qml" line="-71"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="-72"/>
+        <location filename="../../src/views/RSBSigInfo.qml" line="-72"/>
         <source>Serial number</source>
         <translation>Серийный номер</translation>
     </message>
@@ -890,8 +890,8 @@
     <message>
         <location line="+28"/>
         <location filename="../../build/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+28"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+28"/>
-        <location filename="../../src/views/RSBSigInfo.qml" line="+28"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+29"/>
+        <location filename="../../src/views/RSBSigInfo.qml" line="+29"/>
         <source>Certificate status</source>
         <translation>Статус сертификата</translation>
     </message>
@@ -1343,8 +1343,8 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/TextPairBool.qml" line="+19"/>
         <location filename="../../build/src/gui_pdf_csp/views/TextPairBool.qml" line="+19"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/TextPairBool.qml" line="+19"/>
-        <location filename="../../src/views/TextPairBool.qml" line="+19"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/TextPairBool.qml" line="+21"/>
+        <location filename="../../src/views/TextPairBool.qml" line="+21"/>
         <source>Valid</source>
         <translation>Верно</translation>
     </message>
@@ -1362,8 +1362,8 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/TextPairStatus.qml" line="+18"/>
         <location filename="../../build/src/gui_pdf_csp/views/TextPairStatus.qml" line="+18"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/TextPairStatus.qml" line="+18"/>
-        <location filename="../../src/views/TextPairStatus.qml" line="+18"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/TextPairStatus.qml" line="+20"/>
+        <location filename="../../src/views/TextPairStatus.qml" line="+20"/>
         <source>Field is absent</source>
         <translation>Поле отсутствует</translation>
     </message>

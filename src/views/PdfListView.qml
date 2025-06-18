@@ -70,6 +70,8 @@ ListView {
 
     signal tagPlaced()
 
+    signal updateHistory(int undo, int redo)
+
     function proceedSigning(location_data) {
         //console.warn(pdfModel.getSource())
         let tmpFile = pdfModel.getSource()
@@ -87,6 +89,20 @@ ListView {
         signInProgress = true
         stampLocationSelected(location_data, tmpFile)
         forceActiveFocus()
+    }
+
+    function undo() {
+        pdfModel.undoRubberStamp()
+        let undoCount = pdfModel.getUndoCount()
+        let redoCount = pdfModel.getRedoCount()
+        updateHistory(undoCount, redoCount)
+    }
+
+    function redo() {
+        pdfModel.redoRubberStamp()
+        let undoCount = pdfModel.getUndoCount()
+        let redoCount = pdfModel.getRedoCount()
+        updateHistory(undoCount, redoCount)
     }
 
     function zoomIn() {
@@ -519,6 +535,9 @@ ListView {
         scrollToPage(1)
         currPageChanged(1)
         tryToGetFocus()
+        let undoCount = pdfModel.getUndoCount()
+        let redoCount = pdfModel.getRedoCount()
+        updateHistory(undoCount, redoCount)
     }
 
     onZoomPageFactChanged: {
@@ -836,7 +855,6 @@ ListView {
                         pdfModel.placeRubberStamp(rubber_stamp_data)
                         root.tagInProgress = true
                         root.forceActiveFocus()
-                        headerSubBar.updateHistory()
                     }
                 }
 
@@ -882,6 +900,10 @@ ListView {
                     pdfPage.setRubberStamps(pdfModel.getRubberStampForPage(
                         model.display))
                     tagPlaced()
+
+                    let undoCount = pdfModel.getUndoCount()
+                    let redoCount = pdfModel.getRedoCount()
+                    updateHistory(undoCount, redoCount)
                 }
             }
         }

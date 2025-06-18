@@ -389,7 +389,6 @@ PdfDocModel::getCurrentNeedleRect(size_t page_index) {
 void PdfDocModel::placeRubberStamp(const QVariantMap& qvparams){
     params = core::gui::prepareParams(qvparams);
     auto params_wrapper = core::gui::createParams(params);
-    qWarning() << "[PlaceRubberStamp]" << "parsed and ready to place tags";
     image_watcher_ = std::make_unique<ImageFutureWatcher>();
     QObject::connect(image_watcher_.get(), &ImageFutureWatcher::finished,
                      [this]() {
@@ -421,7 +420,7 @@ void PdfDocModel::estimateTagHeight() {
         if (result != nullptr && result->data_ != nullptr) {
             auto ratio = static_cast<double>(result->data_->resolution_x) /
                 static_cast<double>(result->data_->resolution_y);
-            qWarning() << "[EstimateTagHeight]" << ratio;
+            //qWarning() << "[EstimateTagHeight]" << ratio;
             emit sizeReady(ratio);
         }
     }
@@ -457,6 +456,7 @@ int PdfDocModel::getUndoCount() const {
     if (!history_manager_) {
         return 0;
     }
+    //qWarning() << "[PdfDocModel::getUndoCount]" << history_manager_->getUndoCount() << "\n";
     return history_manager_->getUndoCount();
 }
 
@@ -464,11 +464,12 @@ int PdfDocModel::getRedoCount() const {
     if (!history_manager_) {
         return 0;
     }
+    //qWarning() << "[PdfDocModel::getRedoCount]" << history_manager_->getRedoCount() << "\n";
     return history_manager_->getRedoCount();
 }
 
 void PdfDocModel::clearHistory() const {
-    qWarning() << "[PdfDocModel::clearHistory]";
+    //qWarning() << "[PdfDocModel::clearHistory]";
     if (!history_manager_) {
         return;
     }

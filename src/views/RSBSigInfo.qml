@@ -1,24 +1,25 @@
 import QtQuick
 import QtQuick.Controls
+import StyleSheet
 
 Flickable {
     width: parent.width
     height: parent.height
-    contentHeight: sigInfoContentColumn.height+20
+    contentHeight: sigInfoContentColumn.height + 20
     leftMargin: 10
     rightMargin: 10
     topMargin: 10
 
 
-
-    Item{
-        width:parent.width
-        height:40
-        RSBCloseButton {}
+    Item {
+        width: parent.width
+        height: 40
+        RSBCloseButton {
+        }
     }
 
     Column {
-        id : sigInfoContentColumn
+        id: sigInfoContentColumn
         width: parent.width
 
 
@@ -26,7 +27,7 @@ Flickable {
             text: qsTr("Signature")
             font.weight: Font.DemiBold
             font.family: "Noto Sans"
-
+            color: StyleSheet.font_color_extra
         }
 
 
@@ -104,6 +105,7 @@ Flickable {
                     topPadding: 10
                     bottomPadding: 10
                     font.family: "Noto Sans"
+                    color: StyleSheet.font_color_extra
                 }
                 RSideBarStatusMedal {
                     title: qsTr("Status")
@@ -161,10 +163,11 @@ Flickable {
                     topPadding: 10
                     bottomPadding: 10
                     font.family: "Noto Sans"
+                    color: StyleSheet.font_color_extra
                 }
                 Repeater {
                     model: modelData.tbs_response_data.responses
-                           !== undefined ? modelData.tbs_response_data.responses : []
+                        !== undefined ? modelData.tbs_response_data.responses : []
                     Column {
                         width: root.width
                         RSideBarStatusMedal {
@@ -209,9 +212,9 @@ Flickable {
         }
         TextPairBool {
             id: recoverableStatus
-            visible:!fullCoverageStatus.value
+            visible: !fullCoverageStatus.value
             keyText: qsTr("It is possible to open a signed version")
-            value: jsonData !== undefined ? jsonData.can_be_casted_to_full_coverage  : false;
+            value: jsonData !== undefined ? jsonData.can_be_casted_to_full_coverage : false;
         }
 
         // Recover signed document button
