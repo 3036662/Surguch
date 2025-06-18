@@ -5,8 +5,8 @@ import StyleSheet
 Switch {
     id: control
 
-    property int size_w: 49
-    property int size_h: 28
+    property int size_w: 35
+    property int size_h: 20
 
     font.family: "Noto Sans"
 

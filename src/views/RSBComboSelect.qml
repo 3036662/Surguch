@@ -52,6 +52,11 @@ ComboBox {
             background: Rectangle {
                 color: StyleSheet.tooltip_background
             }
+            contentItem: Text {
+                text: tooltip_obj.text
+                font.family: "Noto Sans"
+                color: StyleSheet.font_color_extra
+            }
             visible: control.highlightedIndex === index && text !== ""
             text: control.model[index]["tooltip"] !== undefined ?
                 control.model[index]["tooltip"] : "";

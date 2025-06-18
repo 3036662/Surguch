@@ -42,7 +42,7 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        border.color: "#454A4E"
+        //border.color: "#454A4E"
         color: StyleSheet.edit_background
     }
 

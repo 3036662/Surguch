@@ -124,7 +124,7 @@ Item {
                 edit_background: "#FFFFFE"
                 text_area_background: "#FCFCFC"
                 combo_box_background: "#EFF0F1"
-                tooltip_background: "#1A1D1F"
+                tooltip_background: "#FCFCFC"
             }
         }
     ]

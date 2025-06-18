@@ -67,8 +67,8 @@ Dialog {
         stampPreview.stamp_data = stamp_params
     }
 
-    width: 420
-    height: 750
+    width: 340
+    height: 680
     leftMargin: 10
     rightMargin: 10
     visible: false

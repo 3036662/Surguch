@@ -127,7 +127,7 @@ RowLayout {
                     profileComboBox.displayText = profileComboBox.textAt(
                         currentIndex)
                     //open profile info panel
-                    rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
+                    //rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
                     // set the certificates for select
                     rightSideBar.edit_profile.cert_data_raw
                         = profileComboBox.model.getUserCertsJSON()
