@@ -339,13 +339,10 @@ ColumnLayout {
         }
 
 
-        Button {
+        ToolButton {
             id: rubberStampPutButton
 
             property var tag_data
-
-            width: zoomButton.width
-            height: zoomButton.height
 
             enabled: !!tag_data
             flat: true
@@ -377,12 +374,9 @@ ColumnLayout {
             event.accepted = false
         }
 
-        Button {
+        ToolButton {
             id: rubberStampDialogButton
 
-            width: zoomButton.width
-            height: zoomButton.height
-            
             flat: true
             icon.width: 20
             icon.height: 20
@@ -402,7 +396,7 @@ ColumnLayout {
         // search
         HeaderToolSeparator {
         }
-        Button {
+        ToolButton {
             id: searchButton
             flat: true
             icon.source: StyleSheet.search_icon

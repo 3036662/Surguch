@@ -29,7 +29,7 @@ Dialog {
         }
     }
 
-    width: 300
+    width: 330
     height: 50
     x: searchButton.x - width / 2
     y: parent.y
@@ -130,7 +130,6 @@ Dialog {
             topPadding: 0
             rightPadding: 0
             bottomPadding: 0
-            width: 25
 
             onClicked: {
                 if (searchDialog.currentIndex < searchDialog.needlesCount) {
@@ -151,7 +150,6 @@ Dialog {
             topPadding: 0
             rightPadding: 0
             bottomPadding: 0
-            width: 25
             onClicked: {
                 if (searchDialog.currentIndex > 1) {
                     searchDialog.currentIndex -= 1
