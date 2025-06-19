@@ -17,126 +17,67 @@
 #include "cpp_views/rubber_preview_render.hpp"
 #include "models/rubber_stamp_model.hpp"
 #include "pdf_csp_c.hpp"
-
-void SavePPM(const unsigned char *data, size_t data_size, size_t width,
-             size_t height, const std::string &dest, bool gray) {
-    std::ofstream file(dest, std::ios_base::binary);
-    assert(file.is_open());
-    file << (gray ? "P5\n" : "P6\n");
-    file << width << " " << height << " " << 255 << "\n";
-    if (data != nullptr && data_size > 0) {
-        file.write(reinterpret_cast<const char *>(data), data_size);
-    }
-    file.close();
-}
+#include "gui_core/rubber_structs.hpp"
+#include "gui_core/gui_utils.hpp"
 
 TRubber::TRubber(QObject *parent) : QObject{parent} {}
 
-void TRubber::createImages(){
-    pdfcsp::pdf::RubberStampParams params{};
-    params.annotation_text = "ANNOTATION TEXT";
-    params.create_from_image = false;
-    params.bg_color = pdfcsp::pdf::RGBColor{0xff, 0xff, 0xff};
-    params.font_color = pdfcsp::pdf::RGBColor{0x00, 0x00, 0xff};
-    params.border_color = pdfcsp::pdf::RGBColor{0x00, 0x00, 0xff};
-    params.border_radius = 50;
-    params.bg_opacity = 0xff;
-    params.bg_transparent = false;
-    for (params.annotation_width = 200; params.annotation_width < 1000; params.annotation_width += 10) {
-        auto *result_ = BakeRubberStamp(params);
-        QVERIFY(result_ != nullptr);
-        QVERIFY(result_->img_size > 0);
-        QVERIFY(result_->img_mask == nullptr);
-        QVERIFY(result_->img_mask_size == 0);
+void TRubber::createRubber1(){
+    qWarning() << "section 1";
+    const QString json = R"( {})";
+    QJsonParseError parse_error;
+    QJsonDocument json_doc =
+        QJsonDocument::fromJson(json.toUtf8(), &parse_error);
+    // qWarning() << "JSON parse error:" << parse_error.errorString();
+    QVERIFY(parse_error.error == QJsonParseError::NoError);
 
-        const std::string dest = test_files_dir_.toStdString() + "testBake" + std::to_string(params.annotation_width) + ".ppm";
+    QJsonObject json_obj = json_doc.object();
+    QVariantMap varmap = json_obj.toVariantMap();
+    RubberPreviewRender renderer;
+    QSignalSpy spy(&renderer, &RubberPreviewRender::imageReady);
 
-        if (result_->resolution_x > 400) {
-            auto image_ = std::make_unique<QImage>(
-            result_->img, result_->resolution_x,
-            result_->resolution_y, result_->resolution_x * 3,
-            QImage::Format_RGB888);
-            auto image = image_->scaled(400,
-                400 * (static_cast<double>(result_->resolution_y / static_cast<double>(result_->resolution_x))) ,
-                Qt::KeepAspectRatio);
-            QVERIFY(image.save(dest.c_str()));
-            FreeRubberStampResult(result_);
-            continue;
-        }
-
-        if (result_->resolution_y > 400) {
-            auto image_ = std::make_unique<QImage>(
-            result_->img, result_->resolution_x,
-            result_->resolution_y, result_->resolution_x * 3,
-            QImage::Format_RGB888);
-            auto image = image_->scaled(
-                400 * (static_cast<double>(result_->resolution_x) / static_cast<double>(result_->resolution_y)),
-            400 ,
-            Qt::KeepAspectRatio);
-            QVERIFY(image.save(dest.c_str()));
-            FreeRubberStampResult(result_);
-            continue;
-        }
-
-        if (result_->resolution_x <= 400 && result_->resolution_y <= 400) {
-            auto image_ = std::make_unique<QImage>(
-            result_->img, result_->resolution_x,
-            result_->resolution_y, result_->resolution_x * 3,
-            QImage::Format_RGB888);
-            QVERIFY(image_->save(dest.c_str()));
-            FreeRubberStampResult(result_);
-            continue;
-        }
-        FreeRubberStampResult(result_);
-    }
-
-    for (params.annotation_width = 200; params.annotation_width < 1000; params.annotation_width += 10) {
-        for (params.border_width = 0; params.border_width < 10; params.border_width += 1) {
-            auto *result_ = BakeRubberStamp(params);
-            QVERIFY(result_ != nullptr);
-            QVERIFY(result_->img_size > 0);
-            QVERIFY(result_->img_mask == nullptr);
-            QVERIFY(result_->img_mask_size == 0);
-
-            const std::string dest = test_files_dir_.toStdString() + std::to_string(params.border_width) + "testBake" + std::to_string(params.annotation_width) + ".ppm";
-
-            if (result_->resolution_x > 400) {
-                auto image_ = std::make_unique<QImage>(
-                result_->img, result_->resolution_x,
-                result_->resolution_y, result_->resolution_x * 3,
-                QImage::Format_RGB888);
-                auto image = image_->scaled(400,
-                    400 * (static_cast<double>(result_->resolution_y / static_cast<double>(result_->resolution_x))) ,
-                    Qt::KeepAspectRatio);
-                QVERIFY(image.save(dest.c_str()));
-                FreeRubberStampResult(result_);
-                continue;
-            }
-
-            if (result_->resolution_y > 400) {
-                auto image_ = std::make_unique<QImage>(
-                result_->img, result_->resolution_x,
-                result_->resolution_y, result_->resolution_x * 3,
-                QImage::Format_RGB888);
-                auto image = image_->scaled(
-                    400 * (static_cast<double>(result_->resolution_x) / static_cast<double>(result_->resolution_y)),
-                400 ,
-                Qt::KeepAspectRatio);
-                QVERIFY(image.save(dest.c_str()));
-                FreeRubberStampResult(result_);
-                continue;
-            }
-
-            if (result_->resolution_x <= 400 && result_->resolution_y <= 400) {
-                auto image_ = std::make_unique<QImage>(
-                result_->img, result_->resolution_x,
-                result_->resolution_y, result_->resolution_x * 3,
-                QImage::Format_RGB888);
-                QVERIFY(image_->save(dest.c_str()));
-                FreeRubberStampResult(result_);
-                continue;
-            }
-            FreeRubberStampResult(result_);
-        }
-    }
+    renderer.createImage(varmap);
+    QTest::qWait(500);
+    QCOMPARE(spy.count(), 1);
 }
+
+void TRubber::createRubber2(){
+    qWarning() << "section 2";
+    const QString json = QString(R"( {"stamp_width":900,"stamp_height":300,"create_from_image":1,"img_path":"})") +
+        TEST_FILES_DIR + R"({tag_5_logo.jpg","border_width":7,"border_radius":50,"text_color_red":50,"text_color_green":62,"text_color_blue":168,"border_color_red":50,"border_color_green":62,"border_color_blue":168,"bg_color_red":50,"bg_color_green":62,"bg_color_blue":168,"font_family":"Noto Sans","annotation_text":"Сургуч","bg_transparent":0,"annotation_width":300})";
+    QJsonParseError parse_error;
+    QJsonDocument json_doc =
+        QJsonDocument::fromJson(json.toUtf8(), &parse_error);
+    // qWarning() << "JSON parse error:" << parse_error.errorString();
+    QVERIFY(parse_error.error == QJsonParseError::NoError);
+
+    QJsonObject json_obj = json_doc.object();
+    QVariantMap varmap = json_obj.toVariantMap();
+    RubberPreviewRender renderer;
+    QSignalSpy spy(&renderer, &RubberPreviewRender::imageReady);
+
+    renderer.createImage(varmap);
+    QTest::qWait(500);
+    QCOMPARE(spy.count(), 1);
+}
+
+void TRubber::createRubber3(){
+    qWarning() << "section 3";
+    const QString json = QString(R"( {"stamp_width":900,"stamp_height":300,"create_from_image":0,"img_path":"})") +
+        TEST_FILES_DIR + R"({tag_5_logo.jpg","border_width":7,"border_radius":50,"text_color_red":50,"text_color_green":62,"text_color_blue":168,"border_color_red":50,"border_color_green":62,"border_color_blue":168,"bg_color_red":50,"bg_color_green":62,"bg_color_blue":168,"font_family":"Noto Sans","annotation_text":"Сургуч","bg_transparent":0,"annotation_width":300})";
+    QJsonParseError parse_error;
+    QJsonDocument json_doc =
+        QJsonDocument::fromJson(json.toUtf8(), &parse_error);
+    // qWarning() << "JSON parse error:" << parse_error.errorString();
+    QVERIFY(parse_error.error == QJsonParseError::NoError);
+
+    QJsonObject json_obj = json_doc.object();
+    QVariantMap varmap = json_obj.toVariantMap();
+    RubberPreviewRender renderer;
+    QSignalSpy spy(&renderer, &RubberPreviewRender::imageReady);
+
+    renderer.createImage(varmap);
+    QTest::qWait(500);
+    QCOMPARE(spy.count(), 1);
+}
+

@@ -1,25 +1,21 @@
-#ifndef T_RUBBER_HPP
-#define T_RUBBER_HPP
+#ifndef T_GUIUTILS_HPP
+#define T_GUIUTILS_HPP
 
 #include <QObject>
 #include <QDir>
 
-
-class TRubber: public QObject {
+class TGuiUtils: public QObject {
     Q_OBJECT
     public:
-    explicit TRubber(QObject *parent = nullptr);
+    explicit TGuiUtils(QObject *parent = nullptr);
 
     signals:
     private slots:
 
-    void createRubber1();
+    void test_image();
 
-    void createRubber2();
 
-    void createRubber3();
-
-    private:
+private:
 
     const QString test_files_dir_ = TEST_FILES_DIR;
     const QString file1_ = test_files_dir_ + "13_cam_CADES-XLT1_1sig.pdf";
@@ -35,6 +31,4 @@ class TRubber: public QObject {
 
 };
 
-
-
-#endif //T_RUBBER_HPP
+#endif //T_GUIUTILS_HPP

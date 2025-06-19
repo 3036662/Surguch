@@ -47,6 +47,22 @@ qt_add_executable(test_preview test_preview.cpp
 )
 
 #-------------------------------
+# rubber
+
+qt_add_executable(test_rubber test_rubber.cpp
+        t_rubber.hpp t_rubber.cpp
+        ${CMAKE_SOURCE_DIR}/src/cpp_views/rubber_preview_render.hpp
+        ${CMAKE_SOURCE_DIR}/src/cpp_views/rubber_preview_render.cpp
+)
+
+#-------------------------------
+# gui utils
+
+qt_add_executable(test_gui_utils test_guiutils.cpp
+        t_guiutils.hpp t_guiutils.cpp
+)
+
+#-------------------------------
 #link test1
 
 target_link_libraries(test1 PRIVATE Qt::Test Qt6::Quick)
@@ -70,6 +86,27 @@ target_link_libraries(test_preview PUBLIC csp_c_bridge_qt)
 target_link_libraries(test_preview PUBLIC ${PDFCSP_LINK_PATH})
 target_link_libraries(test_preview PRIVATE ${MUPDF_LINK_PATH}) # harcoded mupdf linkage
 
+#-------------------------------
+# ling test_rubber
+
+target_link_libraries(test_rubber PUBLIC Qt::Test Qt6::Quick Qt6::Concurrent)
+target_link_libraries(test_rubber PUBLIC appcore)
+target_link_libraries(test_rubber PUBLIC gui_core)
+target_link_libraries(test_rubber PUBLIC models)
+target_link_libraries(test_rubber PUBLIC csp_c_bridge_qt)
+target_link_libraries(test_rubber PUBLIC ${PDFCSP_LINK_PATH})
+target_link_libraries(test_rubber PRIVATE ${MUPDF_LINK_PATH}) # harcoded mupdf linkage
+
+#-------------------------------
+# ling test_gui_utils
+
+target_link_libraries(test_gui_utils PUBLIC Qt::Test Qt6::Quick Qt6::Concurrent)
+target_link_libraries(test_gui_utils PUBLIC appcore)
+target_link_libraries(test_gui_utils PUBLIC gui_core)
+target_link_libraries(test_gui_utils PUBLIC models)
+target_link_libraries(test_gui_utils PUBLIC csp_c_bridge_qt)
+target_link_libraries(test_gui_utils PUBLIC ${PDFCSP_LINK_PATH})
+target_link_libraries(test_gui_utils PRIVATE ${MUPDF_LINK_PATH}) # harcoded mupdf linkage
 
 #-------------------------------
 # link test_search
