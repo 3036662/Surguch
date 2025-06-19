@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "rubber_structs.hpp"
 #include  "QVariant"
 #include "QUrl"

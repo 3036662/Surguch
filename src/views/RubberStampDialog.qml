@@ -7,7 +7,7 @@ Dialog {
     id: root
 
     width: 300
-    height: Math.min(300, itemView.contentHeight + 30)
+    height: Math.min(300, itemView.contentHeight + 20)
     x: rubberStampDialogButton.x - width / 2
     y: parent.y
 

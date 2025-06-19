@@ -115,8 +115,8 @@ ColumnLayout {
             icon.source: StyleSheet.book_icon
             icon.width: 20
             icon.height: 20
-            leftPadding: 5
-            rightPadding: 5
+            leftPadding: 40
+            rightPadding: 40
 
             onClicked: {
                 showPreviews()
@@ -132,8 +132,8 @@ ColumnLayout {
             icon.source: StyleSheet.pen_tool_icon
             icon.width: 20
             icon.height: 20
-            leftPadding: 5
-            rightPadding: 5
+            leftPadding: 40
+            rightPadding: 40
 
             onClicked: {
                 showCerts()
@@ -348,7 +348,8 @@ ColumnLayout {
             flat: true
             icon.width: 20
             icon.height: 20
-            padding: 0
+            leftPadding: 5
+            rightPadding: 5
             icon.source: StyleSheet.tag_icon
             onClicked: {
                 console.debug("create tag")
@@ -378,7 +379,8 @@ ColumnLayout {
             flat: true
             icon.width: 20
             icon.height: 20
-            padding: 0
+            leftPadding: 5
+            rightPadding: 5
             icon.source: StyleSheet.chevron_down
             onClicked: {
                 if (rubberStampDialog.visible) {

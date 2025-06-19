@@ -639,9 +639,20 @@ ListView {
                 }
             }
 
+            function updateTagCrossSize() {
+                if (root.tagMode) {
+                    let t_data = JSON.parse(tagData)
+                    tagCross.width = t_data.tag_width * pdfPage.width / 100
+                    tagCross.height = tagCross.width / root.ratio
+                    console.warn("tag width = " + tagCross.width)
+                    console.warn("tag height = " + tagCross.height)
+                }
+            }
+
             onWidthChanged: {
                 root.pageWidth = width
                 updateCrossSize()
+                updateTagCrossSize()
                 if (width > 0) {
                     lastPageWidth = width
                 }
@@ -654,6 +665,7 @@ ListView {
 
             onHeightChanged: {
                 updateCrossSize()
+                updateTagCrossSize()
                 landscape = pdfPage.width > pdfPage.height
                 if (height > 0) {
                     root.lastPageHeight = height
@@ -662,6 +674,7 @@ ListView {
 
             onAimResizeStatusChanged: {
                 updateCrossSize()
+                updateTagCrossSize()
             }
 
             Component.onCompleted: {
@@ -768,6 +781,10 @@ ListView {
                     console.debug("enter height = " + tagCross.height)
                     let t_data = JSON.parse(tagData)
                     tagCross.width = t_data.tag_width * width / 100
+                    console.warn("enter width" + tagCross.width)
+                    if (root.ratio > 0) {
+                        tagCross.height = tagCross.width / root.ratio
+                    }
                     tagCross.visible = true
                     cursorShape = Qt.CrossCursor
                 }
@@ -846,6 +863,9 @@ ListView {
                             "annotation_width": tagCross.width,
                             "link": t_data.stamp_link
                         }
+
+                        console.warn("tag width = " + tagCross.width)
+                        console.warn("tag height = " + tagCross.height)
                         root.size_estimated = false
                         tagCross.visible = false
                         cursorShape = Qt.BusyCursor

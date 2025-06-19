@@ -348,6 +348,13 @@ Dialog {
                     placeholderText: qsTr("Select a file")
                     visible: !typeSwitch.checked
                     Layout.fillWidth: true
+                    font.family: "Noto Sans"
+                    color: StyleSheet.font_color_extra
+
+                    background: Rectangle {
+                        border.color: StyleSheet.slider_border_color
+                        color: "transparent"
+                    }
 
                     onTextChanged: {
                         updatePreview()
@@ -410,6 +417,7 @@ Dialog {
                     Layout.fillWidth: true
                     visible: typeSwitch.checked
                     model: Qt.fontFamilies()
+                    wheelEnabled: true
 
                     onActivated: {
                         updatePreview()

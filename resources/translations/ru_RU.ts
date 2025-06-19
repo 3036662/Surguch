@@ -677,10 +677,10 @@
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+699"/>
         <location line="+105"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+564"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+737"/>
-        <location line="+127"/>
-        <location filename="../../src/views/PdfListView.qml" line="+737"/>
-        <location line="+127"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+750"/>
+        <location line="+134"/>
+        <location filename="../../src/views/PdfListView.qml" line="+750"/>
+        <location line="+134"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>
@@ -688,10 +688,10 @@
         <location line="-104"/>
         <location line="+105"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+1"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-126"/>
-        <location line="+127"/>
-        <location filename="../../src/views/PdfListView.qml" line="-126"/>
-        <location line="+127"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-133"/>
+        <location line="+134"/>
+        <location filename="../../src/views/PdfListView.qml" line="-133"/>
+        <location line="+134"/>
         <source>Invalid position</source>
         <translation>Недопустимая позиция</translation>
     </message>
@@ -1053,8 +1053,8 @@
     </message>
     <message>
         <location line="+18"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+18"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+18"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+25"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+25"/>
         <source>Text</source>
         <translation>Текст</translation>
     </message>
@@ -1074,8 +1074,8 @@
     </message>
     <message>
         <location line="+22"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+31"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+31"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+32"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+32"/>
         <source>Transparency</source>
         <translation>Прозрачность фона</translation>
     </message>
@@ -1113,8 +1113,8 @@
         <translation type="obsolete">Выберите логотип</translation>
     </message>
     <message>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="-539"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="-539"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="-547"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="-547"/>
         <source>Surguch</source>
         <translation>Сургуч</translation>
     </message>
