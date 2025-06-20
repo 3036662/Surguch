@@ -379,9 +379,11 @@ ColumnLayout {
 
             flat: true
             icon.width: 20
-            icon.height: 20
+            icon.height: 10
             leftPadding: 5
             rightPadding: 5
+            topPadding: 5
+            bottomPadding: 5
             icon.source: StyleSheet.chevron_down
             onClicked: {
                 if (rubberStampDialog.visible) {

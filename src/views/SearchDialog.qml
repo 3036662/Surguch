@@ -29,7 +29,7 @@ Dialog {
         }
     }
 
-    width: 330
+    width: 320
     height: 50
     x: searchButton.x - width / 2
     y: parent.y
@@ -125,11 +125,11 @@ Dialog {
             display: AbstractButton.IconOnly
             icon.source: StyleSheet.chevron_down
             icon.width: 20
-            icon.height: 20
+            icon.height: 10
             leftPadding: 0
-            topPadding: 0
+            topPadding: 5
             rightPadding: 0
-            bottomPadding: 0
+            bottomPadding: 5
 
             onClicked: {
                 if (searchDialog.currentIndex < searchDialog.needlesCount) {
@@ -145,11 +145,11 @@ Dialog {
             display: AbstractButton.IconOnly
             icon.source: StyleSheet.chevron_up
             icon.width: 20
-            icon.height: 20
+            icon.height: 10
             leftPadding: 0
-            topPadding: 0
+            topPadding: 5
             rightPadding: 0
-            bottomPadding: 0
+            bottomPadding: 5
             onClicked: {
                 if (searchDialog.currentIndex > 1) {
                     searchDialog.currentIndex -= 1
