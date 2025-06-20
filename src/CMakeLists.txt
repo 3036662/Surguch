@@ -117,6 +117,7 @@ ELSE ()
             QML_FILES views/RubberStampItem.qml
             QML_FILES views/RubberPreview.qml
             QML_FILES views/InfoDialog.qml
+            QML_FILES views/SettingSwitch.qml
     )
 
     qt6_import_qml_plugins(surguch)

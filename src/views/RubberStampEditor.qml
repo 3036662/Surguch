@@ -86,7 +86,7 @@ Dialog {
     }
 
 
-    width: 640
+    width: 650
     height: 650
     leftMargin: 10
     rightMargin: 10
@@ -322,11 +322,12 @@ Dialog {
                         Layout.fillWidth: true
                     }
 
-                    RSBSwitch {
+                    SettingSwitch {
                         id: typeSwitch
 
                         topPadding: 5
                         bottomPadding: 5
+                        rightPadding: 10
 
                         onToggled: {
                             updatePreview()
@@ -451,7 +452,7 @@ Dialog {
                         visible: typeSwitch.checked
                     }
 
-                    RSBSwitch {
+                    SettingSwitch {
                         id: transparencySwitch
                         visible: typeSwitch.checked
 

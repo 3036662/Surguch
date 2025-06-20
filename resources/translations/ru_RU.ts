@@ -205,8 +205,8 @@
     </message>
     <message>
         <location line="+25"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+32"/>
-        <location filename="../../src/views/EditProfile.qml" line="+32"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+29"/>
+        <location filename="../../src/views/EditProfile.qml" line="+29"/>
         <source>Signature</source>
         <translation>Электронная подпись</translation>
     </message>
@@ -1039,8 +1039,8 @@
     </message>
     <message>
         <location line="+18"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+24"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+24"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+25"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+25"/>
         <source>Generate from file (*.png *.jpg *.jpeg *.bmp)</source>
         <translation>Сгенерировать из файла (*.png *.jpg *.jpeg *.bmp)</translation>
     </message>
@@ -1113,8 +1113,8 @@
         <translation type="obsolete">Выберите логотип</translation>
     </message>
     <message>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="-547"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="-547"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="-548"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="-548"/>
         <source>Surguch</source>
         <translation>Сургуч</translation>
     </message>

@@ -29,7 +29,7 @@ Dialog {
         }
     }
 
-    width: 320
+    width: 335
     height: 50
     x: searchButton.x - width / 2
     y: parent.y
@@ -57,7 +57,7 @@ Dialog {
             anchors.verticalCenter: parent.verticalCenter
             height: parent.height - 5
             color: "transparent"
-            border.color: "#caccce"
+            border.color: "transparent"
             border.width: 1
             radius: 4
             TextInput {
@@ -99,24 +99,32 @@ Dialog {
         }
 
         Rectangle {
-            width: 10
+            width: 60
             height: parent.height
             color: "transparent"
-        }
-        Control {
-            height: parent.height
-            width: childrenRect.width
-            Text {
-                text: currentIndex + "/" + needlesCount
-                color: StyleSheet.font_color_extra
-                anchors.verticalCenter: parent.verticalCenter
-                verticalAlignment: Text.AlignVCenter
+
+            Control {
+                id: symCount
+                height: parent.height
+                width: childrenRect.width
+                anchors.centerIn: parent
+                Text {
+                    text: currentIndex + "/" + needlesCount
+                    color: StyleSheet.font_color_extra
+                    anchors.verticalCenter: parent.verticalCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
             }
         }
+
+        ToolSeparator {
+            padding: vertical ? 10 : 2
+            topPadding: vertical ? 2 : 10
+            bottomPadding: vertical ? 2 : 10
+        }
+
         Rectangle {
             width: 10
-            height: parent.height
-            color: "transparent"
         }
 
         ToolButton {

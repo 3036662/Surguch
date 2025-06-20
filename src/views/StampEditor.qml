@@ -323,7 +323,7 @@ Dialog {
                 Layout.fillWidth: true
             }
 
-            RSBSwitch {
+            SettingSwitch {
                 id: transparencySwitch
 
                 onToggled: {

@@ -163,9 +163,6 @@ Flickable {
             topPadding: 5
             bottomPadding: 5
             text: qsTr("Use this profile by default")
-            
-            size_w: 35
-            size_h: 20
         }
 
         RightSBHorizontalDelimiter {

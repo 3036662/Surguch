@@ -34,5 +34,6 @@
         <file>RubberStampEditor.qml</file>
         <file>RubberPreview.qml</file>
         <file>InfoDialog.qml</file>
+        <file>SettingSwitch.qml</file>
     </qresource>
 </RCC>
