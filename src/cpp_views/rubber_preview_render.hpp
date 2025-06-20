@@ -53,7 +53,7 @@ private:
     void saveImage();
 
     /// @brief Gather all parameters (pdfcsp::pdf::CSignParam)
-    [[nodiscard]] core::gui::SharedParamWrapper createParams() const;
+    [[nodiscard]] core::gui::SharedRubberParamWrapper createParams() const;
 
     core::gui::RubberParams params_;
     float dev_pix_ratio_ = 2;
@@ -64,6 +64,6 @@ private:
 
 /// @brief concurrent function to make QImage
 std::unique_ptr<core::gui::BakeRubberResult> prepareImage(
-    const core::gui::SharedParamWrapper &params);
+    const core::gui::SharedRubberParamWrapper &params);
 
 #endif //RUBBER_RENDER_HPP

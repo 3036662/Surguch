@@ -2,6 +2,7 @@
 <RCC>
     <qresource prefix="/">
         <file>translations/ru_RU.qm</file>
+        <file>pb.jpg</file>
         <file>app_icons/SealWax-1_32.png</file>
         <file>StyleSheet.qml</file>
         <file>icons/light/wrench.svg</file>

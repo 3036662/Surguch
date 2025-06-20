@@ -1250,8 +1250,8 @@
     </message>
     <message>
         <location line="+144"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+147"/>
-        <location filename="../../src/views/StampEditor.qml" line="+147"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+151"/>
+        <location filename="../../src/views/StampEditor.qml" line="+151"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>

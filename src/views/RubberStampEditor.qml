@@ -460,9 +460,9 @@ Dialog {
                         rightPadding: 10
                         rightInset: 10
 
-                        // onToggled: {
-                        //     updatePreview()
-                        // }
+                        onToggled: {
+                            updatePreview()
+                        }
                     }
                 }
 

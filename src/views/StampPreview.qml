@@ -22,11 +22,11 @@ Item {
         let cert_array = JSON.parse(profilesModel.getUserCertsJSON())
         // console.warn(JSON.stringify(rightSideBar.edit_profile.cert_array));
         let cert_index = cert_array.findIndex(cert => {
-                                                  return curr_profile.cert_serial === cert.serial
-                                              })
+            return curr_profile.cert_serial === cert.serial
+        })
         if (cert_index === -1) {
             errorMessageDialog.text = qsTr(
-                        "Certificate not found, looks like it was deleted.﻿")
+                "Certificate not found, looks like it was deleted.﻿")
             errorMessageDialog.open()
             throw new Error('Certificate data not found')
         }
@@ -34,27 +34,27 @@ Item {
         let params = {
             "page_index": 0,
             "page_width"//location_data.page_index,
-            : 0,
+                : 0,
             "page_height"//location_data.page_width,
-            : 0,
+                : 0,
             "stamp_x"//location_data.page_height,
-            : 0,
+                : 0,
             "stamp_y"//location_data.stamp_x,
-            : 0,
+                : 0,
             "stamp_width"//location_data.stamp_y,
-            : 0,
+                : 0,
             "stamp_height"//location_data.stamp_width,
-            : 0,
+                : 0,
             "logo_path"//location_data.stamp_height,
-            : curr_profile.logo_path,
+                : curr_profile.logo_path,
             "config_path": profilesModel.getConfigPath(),
             "cert_serial": curr_profile.cert_serial,
             "cert_serial_prefix": qsTr("Certificate: "),
             "cert_subject": cert_array[cert_index].subject_common_name,
             "cert_subject_prefix": qsTr("Subject: "),
             "cert_time_validity": qsTr("Vaildity: ")
-                                  + cert_array[cert_index].not_before_readable + qsTr(
-                " till ") + cert_array[cert_index].not_after_readable,
+                + cert_array[cert_index].not_before_readable + qsTr(
+                    " till ") + cert_array[cert_index].not_after_readable,
             "stamp_title": qsTr("THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE"),
             "stamp_type": stamp_data.stamp_name,
             "text_color_red": stamp_data.text_color_red,
@@ -79,6 +79,11 @@ Item {
         processing = true
         let params = setStampData()
         stampPreview.createImage(params)
+    }
+
+    Image {
+        anchors.fill: parent
+        source: "qrc:/pb.jpg"
     }
 
     PreviewRender {

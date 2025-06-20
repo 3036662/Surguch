@@ -67,8 +67,8 @@ Dialog {
         stampPreview.stamp_data = stamp_params
     }
 
-    width: 340
-    height: 680
+    width: 400
+    height: 690
     leftMargin: 10
     rightMargin: 10
     visible: false
@@ -325,6 +325,10 @@ Dialog {
 
             RSBSwitch {
                 id: transparencySwitch
+
+                onToggled: {
+                    updatePreview()
+                }
             }
         }
 

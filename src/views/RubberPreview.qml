@@ -45,6 +45,11 @@ Item {
         rubberPreview.createImage(params)
     }
 
+    Image {
+        anchors.fill: parent
+        source: "qrc:/pb.jpg"
+    }
+
     RubberPreviewRender {
         id: rubberPreview
         width: parent.width

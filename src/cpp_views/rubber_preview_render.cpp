@@ -144,8 +144,8 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
         params_.border_radius = qvparams.value("border_radius").toUInt();
     }
     if (qvparams.contains("bg_transparent")) {
-        //params_.bg_transparent = qvparams.value("bg_transparent").toBool();
-        params_.bg_transparent = false;
+        params_.bg_transparent = qvparams.value("bg_transparent").toBool();
+        //params_.bg_transparent = false;
     }
     if (qvparams.contains("create_from_image")) {
         params_.create_from_image = qvparams.value("create_from_image").toBool();
@@ -206,7 +206,7 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
 }
 
 /// @brief Gather all parameters (pdfcsp::pdf::RubberStampParams)
-core::gui::SharedParamWrapper RubberPreviewRender::createParams() const{
+core::gui::SharedRubberParamWrapper RubberPreviewRender::createParams() const{
     auto params_wrapper = std::make_shared<core::gui::CRubberParamsWrapper>();
     pdfcsp::pdf::RubberStampParams &pod_params = params_wrapper->pod_params;
     params_wrapper->qb_img_path = params_.img_path.toUtf8();
