@@ -86,8 +86,8 @@ Dialog {
     }
 
 
-    width: 650
-    height: 650
+    width: 840
+    height: 700
     leftMargin: 10
     rightMargin: 10
     modal: true
@@ -181,8 +181,8 @@ Dialog {
 
                     //Layout.fillWidth: true
                     //Layout.fillHeight: true
-                    width: 300
-                    height: 250
+                    width: 400
+                    height: 300
                     //color: "white"
                     Component.onCompleted: {
                     }

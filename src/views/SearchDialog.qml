@@ -29,7 +29,7 @@ Dialog {
         }
     }
 
-    width: 335
+    width: 330
     height: 50
     x: searchButton.x - width / 2
     y: parent.y
