@@ -1,18 +1,18 @@
+#include "gui_utils.hpp"
+
 #include <QDebug>
 #include <QImage>
 #include <QStandardPaths>
 
-#include "gui_utils.hpp"
-
 namespace core::gui {
 
-inline std::vector<unsigned char>* glueImageWithMask(
-    const unsigned char* const img , size_t img_size, const unsigned char* img_mask,
-    size_t mask_size) {
+inline std::vector<unsigned char> *glueImageWithMask(
+    const unsigned char *const img, size_t img_size,
+    const unsigned char *img_mask, size_t mask_size) {
     if (img_size == 0 || img == nullptr) {
         return {};
     }
-    auto result=std::make_unique< std::vector<unsigned char>>();
+    auto result = std::make_unique<std::vector<unsigned char>>();
     result->reserve(img_size + mask_size);
     for (size_t i = 0; i < img_size; ++i) {
         result->push_back(img[i]);
@@ -40,16 +40,20 @@ std::unique_ptr<BakeResult> prepareStampImage(
     // qWarning() << "result pointer:" << result.get();
     if (result && result->data_ && result->data_->img != nullptr &&
         result->data_->img_size > 0) {
-        auto* p_vec=glueImageWithMask(result->data_->img, result->data_->img_size,
-                result->data_->img_mask, result->data_->img_mask_size);
-        result->image_ = std::make_unique<QImage>(//result->data_->img,
-            p_vec->data(),
-                result->data_->resolution_x,
+        auto *p_vec = glueImageWithMask(
+            result->data_->img, result->data_->img_size,
+            result->data_->img_mask, result->data_->img_mask_size);
+        result->image_ = std::make_unique<QImage>(  // result->data_->img,
+            p_vec->data(), result->data_->resolution_x,
             result->data_->resolution_y, result->data_->resolution_x * 4,
-            QImage::Format_RGBA8888,[](void *ptr){delete static_cast<std::vector<unsigned char>*>(ptr);},p_vec);
-        //qWarning() << "resolution_x = " << result->data_->resolution_x;
-        //qWarning() << "resolution_y = " << result->data_->resolution_y;
-        }
+            QImage::Format_RGBA8888,
+            [](void *ptr) {
+                delete static_cast<std::vector<unsigned char> *>(ptr);
+            },
+            p_vec);
+        // qWarning() << "resolution_x = " << result->data_->resolution_x;
+        // qWarning() << "resolution_y = " << result->data_->resolution_y;
+    }
     return result;
 }
 
@@ -230,20 +234,24 @@ std::unique_ptr<BakeRubberResult> prepareImage(
     // qWarning() << "result pointer:" << result.get();
     if (result && result->data_ && result->data_->img != nullptr &&
         result->data_->img_size > 0) {
-        auto* p_vec=glueImageWithMask(result->data_->img, result->data_->img_size,
-                result->data_->img_mask, result->data_->img_mask_size);
-        result->image_ = std::make_unique<QImage>(//result->data_->img,
-            p_vec->data(),
-                result->data_->resolution_x,
+        auto *p_vec = glueImageWithMask(
+            result->data_->img, result->data_->img_size,
+            result->data_->img_mask, result->data_->img_mask_size);
+        result->image_ = std::make_unique<QImage>(  // result->data_->img,
+            p_vec->data(), result->data_->resolution_x,
             result->data_->resolution_y, result->data_->resolution_x * 4,
-            QImage::Format_RGBA8888,[](void *ptr){delete static_cast<std::vector<unsigned char>*>(ptr);},p_vec);
-        //qWarning() << "resolution_x = " << result->data_->resolution_x;
-        //qWarning() << "resolution_y = " << result->data_->resolution_y;
-        }
+            QImage::Format_RGBA8888,
+            [](void *ptr) {
+                delete static_cast<std::vector<unsigned char> *>(ptr);
+            },
+            p_vec);
+        // qWarning() << "resolution_x = " << result->data_->resolution_x;
+        // qWarning() << "resolution_y = " << result->data_->resolution_y;
+    }
     return result;
 }
 
-RubberParams prepareParams(const QVariantMap &qvparams)  {
+RubberParams prepareParams(const QVariantMap &qvparams) {
     RubberParams params;
     if (qvparams.contains("page_index")) {
         params.page_index = qvparams.value("page_index").toUInt();
@@ -265,11 +273,11 @@ RubberParams prepareParams(const QVariantMap &qvparams)  {
     }
     if (qvparams.contains("stamp_width")) {
         params.stamp_width = qvparams.value("stamp_width").toUInt();
-        //params.stamp_width = 400;
+        // params.stamp_width = 400;
     }
     if (qvparams.contains("stamp_height")) {
         params.stamp_height = qvparams.value("stamp_height").toUInt();
-        //params.stamp_height = 400;
+        // params.stamp_height = 400;
     }
     if (qvparams.contains("annotation_width")) {
         params.annotation_width = qvparams["annotation_width"].toUInt();
@@ -287,7 +295,8 @@ RubberParams prepareParams(const QVariantMap &qvparams)  {
         params.create_from_image = qvparams.value("create_from_image").toBool();
     }
     if (qvparams.contains("stamp_preserve_ratio")) {
-        //params.stamp_preserve_ratio = qvparams.value("stamp_preserve_ratio").toBool();
+        // params.stamp_preserve_ratio =
+        // qvparams.value("stamp_preserve_ratio").toBool();
         params.stamp_preserve_ratio = true;
     }
     if (qvparams.contains("bg_opacity")) {
@@ -297,7 +306,7 @@ RubberParams prepareParams(const QVariantMap &qvparams)  {
         params.font_size = qvparams.value("font_size").toUInt();
     }
     if (qvparams.contains("font_weight")) {
-        //params.font_weight = qvparams.value("font_weight").toUInt();
+        // params.font_weight = qvparams.value("font_weight").toUInt();
         params.font_weight = 100;
     }
     if (qvparams.contains("img_path")) {
@@ -342,7 +351,7 @@ RubberParams prepareParams(const QVariantMap &qvparams)  {
     return params;
 }
 
- SharedRubberParamWrapper createParams(const RubberParams& params)  {
+SharedRubberParamWrapper createParams(const RubberParams &params) {
     auto paramswrapper = std::make_shared<CRubberParamsWrapper>();
     pdfcsp::pdf::RubberStampParams &pod_params = paramswrapper->pod_params;
     paramswrapper->qb_img_path = params.img_path.toUtf8();
@@ -371,34 +380,38 @@ RubberParams prepareParams(const QVariantMap &qvparams)  {
         pod_params.font_family = paramswrapper->qb_font_family.data();
     }
     pod_params.border_radius = params.border_radius;
-    pod_params.border_width = std::ceil(static_cast<double>(params.border_width) / 900.0 * static_cast<double>(params.annotation_width));
-    pod_params.font_size = 1; //params.font_size;
-    pod_params.font_weight = 400; //params.font_weight;
+    pod_params.border_width =
+        std::ceil(static_cast<double>(params.border_width) / 900.0 *
+                  static_cast<double>(params.annotation_width));
+    pod_params.font_size = 1;  // params.font_size;
+    pod_params.font_weight = params.font_weight;
     pod_params.bg_transparent = params.bg_transparent;
     pod_params.bg_opacity = params.bg_opacity;
     pod_params.annotation_width = params.annotation_width;
     return paramswrapper;
 }
 
-std::vector<pdfcsp::pdf::CAnnotParams> createAnnotParams(const std::vector<std::shared_ptr<RubberStamp>>& params) {
+std::vector<pdfcsp::pdf::CAnnotParams> createAnnotParams(
+    const std::vector<std::shared_ptr<RubberStamp>> &params) {
     std::vector<pdfcsp::pdf::CAnnotParams> cparams;
-    std::for_each(params.begin(), params.end(), [&cparams](const std::shared_ptr<RubberStamp> &p) {
-        cparams.emplace_back(pdfcsp::pdf::CAnnotParams{
-        .page_index = p->page_index,
-        .page_width = p->qml_width,
-        .page_height = p->qml_height,
-        .stamp_x = p->position_x,
-        .stamp_y = p->position_y,
-        .stamp_width = p->stamp_width,
-        .stamp_height = p->stamp_height,
-        .img = p->res->data_->img,
-        .img_size = p->res->data_->img_size,
-        .img_mask = p->res->data_->img_mask,
-        .img_mask_size = p->res->data_->img_mask_size,
-        .resolution_x = p->res->data_->resolution_x,
-        .resolution_y = p->res->data_->resolution_y,
-        .link = p->link.toUtf8()});
-    });
+    std::for_each(params.begin(), params.end(),
+                  [&cparams](const std::shared_ptr<RubberStamp> &p) {
+                      cparams.emplace_back(pdfcsp::pdf::CAnnotParams{
+                          .page_index = p->page_index,
+                          .page_width = p->qml_width,
+                          .page_height = p->qml_height,
+                          .stamp_x = p->position_x,
+                          .stamp_y = p->position_y,
+                          .stamp_width = p->stamp_width,
+                          .stamp_height = p->stamp_height,
+                          .img = p->res->data_->img,
+                          .img_size = p->res->data_->img_size,
+                          .img_mask = p->res->data_->img_mask,
+                          .img_mask_size = p->res->data_->img_mask_size,
+                          .resolution_x = p->res->data_->resolution_x,
+                          .resolution_y = p->res->data_->resolution_y,
+                          .link = p->link.toUtf8()});
+                  });
     return cparams;
 }
 

@@ -2,6 +2,7 @@
 
 #include <QFuture>
 #include <QPainter>
+#include <QRawFont>
 #include <QSGGeometryNode>
 #include <QSGNode>
 #include <QSGSimpleTextureNode>
@@ -53,11 +54,20 @@ QSGNode *RubberPreviewRender::updatePaintNode(
         return rectNode;
     }
     QSGTexture *texture = nullptr;
-    if (result_->data_->resolution_x > 400 && result_->data_->resolution_x > result_->data_->resolution_y) {
-        QSGTexture *texture = window()->createTextureFromImage((*result_->image_).scaled(400,
-            300 * (static_cast<double>(result_->data_->resolution_y / static_cast<double>(result_->data_->resolution_x))) ,
-            Qt::KeepAspectRatio));
-        setHeight(300 * (static_cast<double>(result_->data_->resolution_y / static_cast<double>(result_->data_->resolution_x))));
+    if (result_->data_->resolution_x > 400 &&
+        result_->data_->resolution_x > result_->data_->resolution_y) {
+        QSGTexture *texture = window()->createTextureFromImage(
+            (*result_->image_)
+                .scaled(400,
+                        300 * (static_cast<double>(
+                                  result_->data_->resolution_y /
+                                  static_cast<double>(
+                                      result_->data_->resolution_x))),
+                        Qt::KeepAspectRatio));
+        setHeight(300 *
+                  (static_cast<double>(
+                      result_->data_->resolution_y /
+                      static_cast<double>(result_->data_->resolution_x))));
         setWidth(400);
         if (texture != nullptr) {
             rectNode->setTexture(texture);
@@ -65,20 +75,25 @@ QSGNode *RubberPreviewRender::updatePaintNode(
         }
         return rectNode;
     }
-    if (result_->data_->resolution_y > 300 && result_->data_->resolution_y > result_->data_->resolution_x) {
-        QSGTexture *texture = window()->createTextureFromImage((*result_->image_).scaled(
-            400 * (static_cast<double>(result_->data_->resolution_x) / static_cast<double>(result_->data_->resolution_y)),
-        300 ,
-        Qt::KeepAspectRatio));
+    if (result_->data_->resolution_y > 300 &&
+        result_->data_->resolution_y > result_->data_->resolution_x) {
+        QSGTexture *texture = window()->createTextureFromImage(
+            (*result_->image_)
+                .scaled(
+                    400 * (static_cast<double>(result_->data_->resolution_x) /
+                           static_cast<double>(result_->data_->resolution_y)),
+                    300, Qt::KeepAspectRatio));
         setHeight(300);
-        setWidth(400 * (static_cast<double>(result_->data_->resolution_x) / static_cast<double>(result_->data_->resolution_y)));
+        setWidth(400 * (static_cast<double>(result_->data_->resolution_x) /
+                        static_cast<double>(result_->data_->resolution_y)));
         if (texture != nullptr) {
             rectNode->setTexture(texture);
             rectNode->setRect(QRectF(0, 0, width(), height()));
         }
         return rectNode;
     } else {
-        QSGTexture *texture = window()->createTextureFromImage((*result_->image_));
+        QSGTexture *texture =
+            window()->createTextureFromImage((*result_->image_));
         setWidth(result_->data_->resolution_x);
         setHeight(result_->data_->resolution_y);
         if (texture != nullptr) {
@@ -87,10 +102,10 @@ QSGNode *RubberPreviewRender::updatePaintNode(
         }
         return rectNode;
     }
-     if (texture != nullptr) {
-         rectNode->setTexture(texture);
-         rectNode->setRect(QRectF(0, 0, width(), height()));
-     }
+    if (texture != nullptr) {
+        rectNode->setTexture(texture);
+        rectNode->setRect(QRectF(0, 0, width(), height()));
+    }
     return rectNode;
 }
 
@@ -130,11 +145,11 @@ void RubberPreviewRender::saveImage() {
 /// @brief prepare rubber preview params for later use
 void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
     if (qvparams.contains("stamp_width")) {
-        //params_.stamp_width = qvparams.value("stamp_width").toUInt();
+        // params_.stamp_width = qvparams.value("stamp_width").toUInt();
         params_.stamp_width = 900;
     }
     if (qvparams.contains("stamp_height")) {
-        //params_.stamp_height = qvparams.value("height").toUInt();
+        // params_.stamp_height = qvparams.value("height").toUInt();
         params_.stamp_height = 300;
     }
     if (qvparams.contains("border_width")) {
@@ -145,13 +160,15 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
     }
     if (qvparams.contains("bg_transparent")) {
         params_.bg_transparent = qvparams.value("bg_transparent").toBool();
-        //params_.bg_transparent = false;
+        // params_.bg_transparent = false;
     }
     if (qvparams.contains("create_from_image")) {
-        params_.create_from_image = qvparams.value("create_from_image").toBool();
+        params_.create_from_image =
+            qvparams.value("create_from_image").toBool();
     }
     if (qvparams.contains("stamp_preserve_ratio")) {
-        //params_.stamp_preserve_ratio = qvparams.value("stamp_preserve_ratio").toBool();
+        // params_.stamp_preserve_ratio =
+        // qvparams.value("stamp_preserve_ratio").toBool();
         params_.stamp_preserve_ratio = true;
     }
     if (qvparams.contains("bg_opacity")) {
@@ -159,10 +176,6 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
     }
     if (qvparams.contains("font_size")) {
         params_.font_size = qvparams.value("font_size").toUInt();
-    }
-    if (qvparams.contains("font_weight")) {
-        //params_.font_weight = qvparams.value("font_weight").toUInt();
-        params_.font_weight = 400;
     }
     if (qvparams.contains("img_path")) {
         params_.img_path = qvparams.value("img_path").toUrl().toLocalFile();
@@ -175,6 +188,21 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
     }
     if (qvparams.contains("font_family")) {
         params_.font_family = qvparams.value("font_family").toString();
+        int default_weight = 400;
+        int tmp_weight = 0;
+        const QStringList styles = QFontDatabase::styles(params_.font_family);
+        qsizetype index_regular =
+            styles.indexOf("regular", Qt::CaseInsensitive);
+        if (index_regular < 0 && styles.size() > 0) {
+            index_regular = 0;
+        }
+        tmp_weight = default_weight = QFontDatabase::weight(
+            params_.font_family, styles.value(index_regular));
+        if (tmp_weight > 0) {
+            default_weight = tmp_weight;
+        }
+        params_.font_weight = default_weight;
+        qWarning() << "weight:" << params_.font_weight;
     }
     if (qvparams.contains("border_color_red")) {
         params_.border_color.R = qvparams.value("border_color_red").toUInt();
@@ -206,7 +234,7 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
 }
 
 /// @brief Gather all parameters (pdfcsp::pdf::RubberStampParams)
-core::gui::SharedRubberParamWrapper RubberPreviewRender::createParams() const{
+core::gui::SharedRubberParamWrapper RubberPreviewRender::createParams() const {
     auto params_wrapper = std::make_shared<core::gui::CRubberParamsWrapper>();
     pdfcsp::pdf::RubberStampParams &pod_params = params_wrapper->pod_params;
     params_wrapper->qb_img_path = params_.img_path.toUtf8();
@@ -236,10 +264,11 @@ core::gui::SharedRubberParamWrapper RubberPreviewRender::createParams() const{
     }
     pod_params.border_radius = params_.border_radius;
     pod_params.border_width = params_.border_width;
-    pod_params.font_size = 1; //params_.font_size;
-    pod_params.font_weight = 400; //params_.font_weight;
+    pod_params.font_size = 1;  // params_.font_size;
+    pod_params.font_weight = params_.font_weight;
     pod_params.bg_transparent = params_.bg_transparent;
     pod_params.bg_opacity = params_.bg_opacity;
-    pod_params.annotation_width = 2100;//params_.annotation_text.size() * 100;
+    pod_params.annotation_width = 2100;  // params_.annotation_text.size() *
+                                         // 100;
     return params_wrapper;
 }

@@ -13,6 +13,7 @@ add_library(appcore OBJECT
         text_extractor.hpp text_extractor.cpp
         tag_creator.cpp
         tag_creator.hpp
+        font_helper.hpp
 )
 
 

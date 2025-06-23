@@ -4,7 +4,7 @@ import QtQuick.Layouts
 import Qt.labs.platform as QLP
 import QtCore
 import StyleSheet
-
+import alt.pdfcsp.fontHelper
 Dialog {
     id: root
 
@@ -417,11 +417,15 @@ Dialog {
                     id: fontName
                     Layout.fillWidth: true
                     visible: typeSwitch.checked
-                    model: Qt.fontFamilies()
+                    model: fontHelper.cyrillicFamilies(); //Qt.fontFamilies()
                     wheelEnabled: true
 
                     onActivated: {
                         updatePreview()
+                    }
+
+                    FontHelper{
+                        id:fontHelper
                     }
 
                     Component.onCompleted: {

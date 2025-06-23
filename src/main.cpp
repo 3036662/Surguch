@@ -27,14 +27,15 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QTranslator>
 #include <QtConcurrent>
 
+#include "core/font_helper.hpp"
 #include "core/signature_creator.hpp"
 #include "core/tag_creator.hpp"
 #include "cpp_views/pdf_page_render.hpp"
 #include "cpp_views/preview_render.hpp"
-#include  "cpp_views/rubber_preview_render.hpp"
+#include "cpp_views/rubber_preview_render.hpp"
 #include "models/pdf_doc_model.hpp"
 #include "models/profiles_model.hpp"
-#include  "models/rubber_stamp_model.hpp"
+#include "models/rubber_stamp_model.hpp"
 #include "models/signatures_list_model.hpp"
 #include "printer_launcher.hpp"
 
@@ -58,7 +59,7 @@ int main(int argc, char* argv[]) {
     qmlRegisterType<PreviewRender>("alt.pdfcsp.previewRender", 0, 1,
                                    "PreviewRender");
     qmlRegisterType<RubberPreviewRender>("alt.pdfcsp.rubberPreviewRender", 0, 1,
-                                        "RubberPreviewRender");
+                                         "RubberPreviewRender");
     qmlRegisterType<PdfDocModel>("alt.pdfcsp.pdfModel", 0, 1, "MuPdfModel");
     qmlRegisterType<SignaturesListModel>("alt.pdfcsp.signaturesListModel", 0, 1,
                                          "SignaturesListModel");
@@ -69,11 +70,14 @@ int main(int argc, char* argv[]) {
     qmlRegisterType<core::SignatureCreator>("alt.pdfcsp.signatureCreator", 0, 1,
                                             "SignatureCreator");
     qmlRegisterType<core::TagCreator>("alt.pdfcsp.tagCreator", 0, 1,
-                                            "TagCreator");
+                                      "TagCreator");
     qmlRegisterType<core::PrinterLauncher>("alt.pdfcsp.printerLauncher", 0, 1,
                                            "PrinterLauncher");
     qmlRegisterSingletonType(QUrl("qrc:/StyleSheet.qml"), "StyleSheet", 0, 1,
                              "StyleSheet");
+
+    qmlRegisterType<core::FontHelper>("alt.pdfcsp.fontHelper", 0, 1,
+                                      "FontHelper");
     // run the app
     QQmlApplicationEngine engine;
     const QStringList args = QApplication::arguments();
