@@ -198,7 +198,7 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
         }
         tmp_weight = default_weight = QFontDatabase::weight(
             params_.font_family, styles.value(index_regular));
-        if (tmp_weight > 0) {
+        if (tmp_weight > 0 && tmp_weight <= 1000) {
             default_weight = tmp_weight;
         }
         params_.font_weight = default_weight;

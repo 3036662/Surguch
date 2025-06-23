@@ -29,12 +29,19 @@ Dialog {
         }
     }
 
-    width: 330
+    width: 350
     height: 50
     x: searchButton.x - width / 2
     y: parent.y
     modal: false
     closePolicy: Popup.CloseOnEscape
+
+    background: Rectangle {
+        color: StyleSheet.text_area_background
+        radius: 5
+        border.color: StyleSheet.slider_border_color
+        border.width: 1
+    }
 
     onOpened: {
         root_window.focusOwnerId = "searchDialog"
@@ -130,13 +137,12 @@ Dialog {
         ToolButton {
             height: parent.height
             flat: true
-            display: AbstractButton.IconOnly
             icon.source: StyleSheet.chevron_down
             icon.width: 20
             icon.height: 10
-            leftPadding: 0
+            leftPadding: 5
             topPadding: 5
-            rightPadding: 0
+            rightPadding: 5
             bottomPadding: 5
 
             onClicked: {
@@ -150,13 +156,12 @@ Dialog {
         ToolButton {
             height: parent.height
             flat: true
-            display: AbstractButton.IconOnly
             icon.source: StyleSheet.chevron_up
             icon.width: 20
             icon.height: 10
-            leftPadding: 0
+            leftPadding: 5
             topPadding: 5
-            rightPadding: 0
+            rightPadding: 5
             bottomPadding: 5
             onClicked: {
                 if (searchDialog.currentIndex > 1) {
@@ -169,15 +174,13 @@ Dialog {
         ToolButton {
             height: parent.height
             flat: true
-            display: AbstractButton.IconOnly
             icon.source: StyleSheet.close_icon
             icon.width: 20
             icon.height: 20
-            leftPadding: 0
-            topPadding: 0
-            rightPadding: 0
-            bottomPadding: 0
-            width: 25
+            leftPadding: 5
+            topPadding: 5
+            rightPadding: 5
+            bottomPadding: 5
             onClicked: {
                 searchDialog.close()
             }

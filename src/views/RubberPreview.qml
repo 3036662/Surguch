@@ -47,7 +47,7 @@ Item {
 
     Image {
         anchors.fill: parent
-        source: "qrc:/pb.jpg"
+        source: "qrc:/chess_bg.jpg"
     }
 
     RubberPreviewRender {

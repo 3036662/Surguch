@@ -495,10 +495,11 @@ void PdfDocModel::saveImage() {
         .position_x = params.position_x,
         .position_y = params.position_y,
         .qml_width = params.page_width,
+        .real_stamp_qml_width = params.real_stamp_width,
         .qml_height = params.page_height,
         .stamp_width = params.stamp_width,
         .stamp_height = params.stamp_height,
-        .link = params.link,
+        .link =  params.link,
         .res = image_future_->takeResult()
     }));
     }

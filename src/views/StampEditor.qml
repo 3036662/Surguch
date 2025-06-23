@@ -239,7 +239,7 @@ Dialog {
                 id: redColor
 
                 Layout.fillWidth: true
-                Layout.maximumWidth: 345
+                Layout.maximumWidth: 380
                 snapMode: Slider.SnapOnRelease
                 from: 0
                 to: 255
@@ -249,6 +249,10 @@ Dialog {
                 onValueChanged: {
                     updatePreview()
                 }
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
             }
 
             Text {
@@ -264,7 +268,7 @@ Dialog {
                 id: greenColor
 
                 Layout.fillWidth: true
-                Layout.maximumWidth: 345
+                Layout.maximumWidth: 380
                 snapMode: Slider.SnapOnRelease
                 from: 0
                 to: 255
@@ -274,6 +278,10 @@ Dialog {
                 onValueChanged: {
                     updatePreview()
                 }
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
             }
 
             Text {
@@ -290,7 +298,7 @@ Dialog {
                 id: blueColor
 
                 Layout.fillWidth: true
-                Layout.maximumWidth: 345
+                Layout.maximumWidth: 380
                 snapMode: Slider.SnapOnRelease
                 from: 0
                 to: 255
@@ -300,6 +308,10 @@ Dialog {
                 onValueChanged: {
                     updatePreview()
                 }
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
             }
 
             Text {

@@ -75,6 +75,7 @@ struct CRubberParamsWrapper {
     QByteArray qb_img_path;
     QByteArray qb_annotation_text;
     QByteArray qb_font_family;
+    QByteArray qb_link;
     pdfcsp::pdf::RubberStampParams pod_params;
 };
 
@@ -94,13 +95,14 @@ struct RubberParams {
     quint32 border_radius = 10;
     double stamp_width = 0;
     double stamp_height = 0;
+    double real_stamp_width = 900;
     quint64 annotation_width = 900;
     quint64 font_size = 0;
     quint64 font_weight = 0;
     QString img_path;
     QString annotation_text;
     QString font_family;
-    QString link;
+    std::string link;
     RGBColor text_color;
     RGBColor border_color;
     RGBColor bg_color;
@@ -120,10 +122,11 @@ struct RubberStamp {
     double position_x;
     double position_y;
     double qml_width;
+    double real_stamp_qml_width;
     double qml_height;
     double stamp_width;
     double stamp_height;
-    QString link;
+    std::string link;
     std::unique_ptr<BakeRubberResult> res;
 };
 

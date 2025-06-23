@@ -814,10 +814,17 @@ ListView {
 
                         if (mouseY > startY) {
                             tagCross.y = startY
-                            tagCross.height = mouseY - startY
+                            tagCross.height = tagCross.width / root.ratio
                         } else {
                             tagCross.y = mouseY
-                            tagCross.height = startY - mouseY
+                            tagCross.height = tagCross.width / root.ratio
+                        }
+                        if (tagCross.x < 0 || tagCross.x + tagCross.width > pdfPage.width
+                            || tagCross.y < 0
+                            || tagCross.y + tagCross.height > pdfPage.height) {
+                            tagCross.valid_position = false
+                        } else {
+                            tagCross.valid_position = true
                         }
                     } else {
                         tagCross.x = mouseX
@@ -861,6 +868,7 @@ ListView {
                             "stamp_text": t_data.stamp_text,
                             "bg_transparent": t_data.bg_transparent,
                             "annotation_width": tagCross.width,
+                            "zoom_on_rubber_render": root.zoomPageFact,
                             "link": t_data.stamp_link
                         }
 

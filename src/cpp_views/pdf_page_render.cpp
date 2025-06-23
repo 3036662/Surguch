@@ -146,19 +146,36 @@ QSGNode *PdfPageRender::updatePaintNode(
                         if (stamps_->res && stamps_->res->image_ != nullptr) {
                             //auto start = std::chrono::high_resolution_clock::now();
                             QPainter painter(image_.get());
-                            // move the coordinate system
-                            painter.translate(0, 0);
                             // rotate the coordinate system
                             painter.rotate(custom_rotation_);
-                            const int target_width = stamps_->res->image_->width() / stamps_->qml_width * image_->width();
-                            const int target_height = stamps_->res->image_->height() / stamps_->qml_height * image_->height();
+                            // move the coordinate system
+                            int img_width=image_->width();
+                            int img_height=image_->height();
+                            switch (static_cast<int>(custom_rotation_)) {
+                                case 90:
+                                    painter.translate(0, -image_->width());
+                                    std::swap(img_height,img_width);
+                                    break;
+                                case 180:
+                                    painter.translate(-image_->width(), -image_->height());
+                                    break;
+                                case 270:
+                                    painter.translate(-image_->height(), 0);
+                                    std::swap(img_height,img_width);
+                                    break;
+                                default: break;
+                            }
+
+                            double ratio = stamps_->res->image_->width() / stamps_->res->image_->height();
+                            const int target_width = stamps_->real_stamp_qml_width / stamps_->qml_width * img_width;
+                            const int target_height = stamps_->real_stamp_qml_width / ratio / stamps_->qml_height * img_height;
 
                             QImage stamp_scaled =stamps_->res->image_->scaled(
                                  target_width, target_height, Qt::KeepAspectRatio);
-                            painter.drawImage(stamps_->position_x / stamps_->qml_width * image_->width(),
-                                stamps_->position_y / stamps_->qml_height * image_->height() , stamp_scaled);
+                            painter.drawImage(stamps_->position_x / stamps_->qml_width * img_width,
+                                stamps_->position_y / stamps_->qml_height * img_height , stamp_scaled);
                             // auto end = std::chrono::high_resolution_clock::now();
-                            // std::chrono::duration<double, std::milli> duration =
+                            // std::chrono::duration<double, std::milli> duration =123
                             //     end - start;
                             //qWarning() << "pos x: " << stamps_->position_x;
                             //qWarning() << "pos y: " << stamps_->position_y;

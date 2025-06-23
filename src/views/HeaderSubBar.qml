@@ -94,8 +94,12 @@ ColumnLayout {
     }
 
     function updateHistory(undo, redo) {
-        undoCount = undo
-        redoCount = redo
+        if (undo) {
+            undoCount = undo
+        }
+        if (redo) {
+            redoCount = redo
+        }
     }
 
     spacing: 1
