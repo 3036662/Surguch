@@ -21,16 +21,22 @@ Dialog {
 
         anchors.fill: parent
         model: rubberStampModel
+        spacing: 1
+        rightMargin: scrollBar.width + 2
 
         ScrollBar.vertical: ScrollBar {
+            id: scrollBar
+            padding: 1
+            width: 8
+            policy: ScrollBar.AlwaysOn
         }
 
         delegate: ItemDelegate {
             height: 35
-            width: 230
+            width: itemView.width - itemView.rightMargin
             RubberStampItem {
-                height: parent.height
-                width: parent.width
+                anchors.fill: parent
+                anchors.margins: 1
                 rubber_model: itemView.model
             }
         }
