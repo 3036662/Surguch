@@ -168,7 +168,7 @@ QSGNode *PdfPageRender::updatePaintNode(
                                     break;
                             }
 
-                            double ratio = stamps_->res->image_->width() / stamps_->res->image_->height();
+                            double ratio = static_cast<double>(stamps_->res->data_->resolution_x) / static_cast<double>(stamps_->res->data_->resolution_y);
                             const int target_width = stamps_->real_stamp_qml_width / stamps_->qml_width * img_width;
                             const int target_height = stamps_->real_stamp_qml_width / ratio / stamps_->qml_height * img_height;
 
