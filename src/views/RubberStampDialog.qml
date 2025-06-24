@@ -19,12 +19,15 @@ Dialog {
     ListView {
         id: itemView
 
-        //width: root.width
         anchors.fill: parent
         model: rubberStampModel
+
+        ScrollBar.vertical: ScrollBar {
+        }
+
         delegate: ItemDelegate {
             height: 35
-            width: itemView.width
+            width: 230
             RubberStampItem {
                 height: parent.height
                 width: parent.width
