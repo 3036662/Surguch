@@ -79,6 +79,7 @@ ListView {
             //console.warn("embedding tags")
             tagInProgress = false
             tmpFile = tagCreator.embedAnnot(pdfModel.getAnnotParams(), pdfModel.getSource())
+            pdfModel.deleteFileLater(tmpFile)
             //openTmpFile(tmpFile)
             //console.warn("NEW SOURCE AFTER EMBEDDING RUBBER STAMPS");
             //console.warn("new source: " + tmpFile)
@@ -264,6 +265,7 @@ ListView {
 
     function openFile(file) {
         sourceIsTmp = false
+        source = ""
         source = file
     }
 
@@ -508,6 +510,9 @@ ListView {
     }
 
     onSourceChanged: {
+        if (source === "") {
+            return
+        }
         lastPageHeight = 0
         lastPageWidth = 0
         lastPageUsedSize = 0

@@ -293,6 +293,7 @@ RowLayout {
             pdfModel.clearHistory()
             console.warn(currentFile)
             pdfListView.saveTo(tmp_file, currentFile)
+            pdfModel.deleteFileLater(tmp_file)
             pdfModel.mustExtractText = true
             headerSubBar.updateHistory()
             if (quitAfterSave) {
@@ -338,6 +339,7 @@ RowLayout {
             pdfModel.clearHistory()
             console.warn(currentFile)
             pdfListView.saveTo(tmp_file, currentFile)
+            pdfModel.deleteFileLater(tmp_file)
             pdfModel.mustExtractText = true
             headerSubBar.updateHistory()
             if (quitAfterSave) {

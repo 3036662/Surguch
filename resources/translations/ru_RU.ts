@@ -371,9 +371,9 @@
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+45"/>
         <location line="+38"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+62"/>
-        <location line="+47"/>
+        <location line="+48"/>
         <location filename="../../src/views/Header.qml" line="+62"/>
-        <location line="+47"/>
+        <location line="+48"/>
         <source>Any file (* *.*)</source>
         <translation>Любой файл (* *.*)</translation>
     </message>
@@ -384,12 +384,12 @@
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="-38"/>
         <location line="+19"/>
         <location line="+19"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="-47"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="-48"/>
         <location line="+19"/>
-        <location line="+28"/>
-        <location filename="../../src/views/Header.qml" line="-47"/>
+        <location line="+29"/>
+        <location filename="../../src/views/Header.qml" line="-48"/>
         <location line="+19"/>
-        <location line="+28"/>
+        <location line="+29"/>
         <source>PDF files (*.pdf)</source>
         <translation>PDF файлы (*.pdf)</translation>
     </message>
@@ -677,9 +677,9 @@
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+699"/>
         <location line="+105"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+564"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+750"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+755"/>
         <location line="+142"/>
-        <location filename="../../src/views/PdfListView.qml" line="+750"/>
+        <location filename="../../src/views/PdfListView.qml" line="+755"/>
         <location line="+142"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
