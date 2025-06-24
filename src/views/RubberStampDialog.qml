@@ -10,6 +10,7 @@ Dialog {
     height: Math.min(300, itemView.contentHeight + 20)
     x: rubberStampDialogButton.x - width / 2
     y: parent.y
+    clip: true
 
     ButtonGroup {
         id: rubberStampGroup

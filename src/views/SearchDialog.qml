@@ -128,6 +128,12 @@ Dialog {
             padding: vertical ? 10 : 2
             topPadding: vertical ? 2 : 10
             bottomPadding: vertical ? 2 : 10
+
+            contentItem: Rectangle {
+                implicitWidth: parent.vertical ? 1 : 32
+                implicitHeight: parent.vertical ? 32 : 1
+                color: StyleSheet.icon_color
+            }
         }
 
         Rectangle {

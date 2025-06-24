@@ -163,7 +163,9 @@ QSGNode *PdfPageRender::updatePaintNode(
                                     painter.translate(-image_->height(), 0);
                                     std::swap(img_height,img_width);
                                     break;
-                                default: break;
+                                default:
+                                    painter.translate(0, 0);
+                                    break;
                             }
 
                             double ratio = stamps_->res->image_->width() / stamps_->res->image_->height();

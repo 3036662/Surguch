@@ -5,6 +5,7 @@ import Qt.labs.platform as QLP
 import QtCore
 import StyleSheet
 import alt.pdfcsp.fontHelper
+
 Dialog {
     id: root
 
@@ -87,7 +88,7 @@ Dialog {
 
 
     width: 840
-    height: 700
+    height: 720
     leftMargin: 10
     rightMargin: 10
     modal: true
@@ -195,15 +196,31 @@ Dialog {
                     color: StyleSheet.font_color_extra
                 }
 
-                RSBTextArea {
-                    id: linkName
+                ScrollView {
                     Layout.fillWidth: true
-                    placeholderText: qsTr("Enter link here")
-                    selectByMouse: true
-                    wrapMode: Text.WordWrap
-                    placeholderTextColor: "grey"
-                    font.family: "Noto Sans"
-                    color: StyleSheet.font_color_extra
+                    Layout.maximumHeight: Math.min(rubberStampText.implicitHeight, font.pixelSize * 5 + 20)
+                    visible: typeSwitch.checked
+
+                    RSBTextArea {
+                        id: linkName
+                        Layout.fillWidth: true
+                        placeholderText: qsTr("Enter link here")
+                        selectByMouse: true
+                        wrapMode: Text.WordWrap
+                        placeholderTextColor: "grey"
+                        font.family: "Noto Sans"
+                        color: StyleSheet.font_color_extra
+
+
+                        onTextChanged: {
+                            updatePreview()
+                        }
+                    }
+                    ScrollBar.vertical: ScrollBar {
+                        Layout.fillWidth: true
+                        anchors.right: parent.right
+                        policy: (linkName.lineCount > 5) ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff
+                    }
                 }
 
                 RowLayout {
@@ -424,8 +441,8 @@ Dialog {
                         updatePreview()
                     }
 
-                    FontHelper{
-                        id:fontHelper
+                    FontHelper {
+                        id: fontHelper
                     }
 
                     Component.onCompleted: {

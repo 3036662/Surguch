@@ -56,8 +56,10 @@ Item {
             icon.height: 20
 
             height: radioSelect.height
-            rightInset: 2
-            rightPadding: 2
+            leftPadding: 5
+            topPadding: 5
+            rightPadding: 5
+            bottomPadding: 5
 
             onClicked: {
                 rubberStampEditor.edit_state = true
