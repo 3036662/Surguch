@@ -8,10 +8,9 @@
 #include <QVariant>
 #include <memory>
 
-#include "pdf_csp_c.hpp"
-
 #include "gui_core/gui_utils.hpp"
 #include "gui_core/rubber_structs.hpp"
+#include "pdf_csp_c.hpp"
 
 /**
  * @brief QML Item for rendering preview images
@@ -28,7 +27,8 @@ class PreviewRender : public QQuickItem {
     PreviewRender &operator=(PreviewRender &&) = delete;
 
     using ImageFuture = QFuture<std::unique_ptr<core::gui::BakeResult>>;
-    using ImageFutureWatcher = QFutureWatcher<std::unique_ptr<core::gui::BakeResult>>;
+    using ImageFutureWatcher =
+        QFutureWatcher<std::unique_ptr<core::gui::BakeResult>>;
 
     struct RGBColor {
         quint8 R = 0;
@@ -53,7 +53,6 @@ class PreviewRender : public QQuickItem {
     void errorOnImageGenerate(const QString &err_string);
 
    private:
-
     /// @brief Save the constructed image to the class and signal to render it.
     void saveImage();
 

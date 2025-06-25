@@ -23,7 +23,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "core/raw_signature.hpp"
 #include "core/text_extractor.hpp"
-
 #include "gui_core/gui_utils.hpp"
 #include "gui_core/history_manager.hpp"
 #include "mupdf/fitz.h"
@@ -44,7 +43,8 @@ class PdfDocModel : public QAbstractListModel {
     ~PdfDocModel() override;
 
     using ImageFuture = QFuture<std::unique_ptr<core::gui::BakeRubberResult>>;
-    using ImageFutureWatcher = QFutureWatcher<std::unique_ptr<core::gui::BakeRubberResult>>;
+    using ImageFutureWatcher =
+        QFutureWatcher<std::unique_ptr<core::gui::BakeRubberResult>>;
 
     [[nodiscard]] QVariant headerData(int section, Qt::Orientation orientation,
                                       int role) const override;
@@ -64,7 +64,8 @@ class PdfDocModel : public QAbstractListModel {
     Q_INVOKABLE void redrawAll();
 
     /// @brief the 'save file as' implementation
-    Q_INVOKABLE bool saveCurrSourceTo(const QString &curr_source, const QString &path,
+    Q_INVOKABLE bool saveCurrSourceTo(const QString &curr_source,
+                                      const QString &path,
                                       bool delete_curr_source);
 
     /// @brief schedule the given file for deletion
@@ -101,7 +102,9 @@ class PdfDocModel : public QAbstractListModel {
     Q_INVOKABLE void prepareImage(const QVariantMap &qvparams);
 
     /// @brief return a vector of stamps to render
-    [[nodiscard]] Q_INVOKABLE std::vector<std::shared_ptr<core::gui::RubberStamp>> getRubberStampForPage(size_t page_index) const;
+    [[nodiscard]] Q_INVOKABLE
+        std::vector<std::shared_ptr<core::gui::RubberStamp>>
+        getRubberStampForPage(size_t page_index) const;
 
     /// @brief undo last placed stamp
     Q_INVOKABLE void undoRubberStamp();
@@ -119,7 +122,8 @@ class PdfDocModel : public QAbstractListModel {
     Q_INVOKABLE void clearHistory() const;
 
     /// @brief get annot params for embedding in pdf
-    [[nodiscard]] Q_INVOKABLE std::vector<pdfcsp::pdf::CAnnotParams> getAnnotParams() const;
+    [[nodiscard]] Q_INVOKABLE std::vector<pdfcsp::pdf::CAnnotParams>
+    getAnnotParams() const;
 
     /// @brief returns a vector of rectangles to highligt
     [[nodiscard]] Q_INVOKABLE NeedleRectsOnPage

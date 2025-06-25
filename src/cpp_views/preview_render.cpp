@@ -11,7 +11,6 @@
 #include <QtMath>
 #include <memory>
 
-
 PreviewRender::PreviewRender() {
     setFlag(QQuickItem::ItemHasContents, true);
     setClip(true);

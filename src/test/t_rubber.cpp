@@ -15,14 +15,14 @@
 
 #include "core/csp_c_bridge/bridge_utils.hpp"
 #include "cpp_views/rubber_preview_render.hpp"
+#include "gui_core/gui_utils.hpp"
+#include "gui_core/rubber_structs.hpp"
 #include "models/rubber_stamp_model.hpp"
 #include "pdf_csp_c.hpp"
-#include "gui_core/rubber_structs.hpp"
-#include "gui_core/gui_utils.hpp"
 
 TRubber::TRubber(QObject *parent) : QObject{parent} {}
 
-void TRubber::createRubber1(){
+void TRubber::createRubber1() {
     qWarning() << "section 1";
     const QString json = R"( {})";
     QJsonParseError parse_error;
@@ -41,10 +41,13 @@ void TRubber::createRubber1(){
     QCOMPARE(spy.count(), 1);
 }
 
-void TRubber::createRubber2(){
+void TRubber::createRubber2() {
     qWarning() << "section 2";
-    const QString json = QString(R"( {"stamp_width":900,"stamp_height":300,"create_from_image":1,"img_path":"})") +
-        TEST_FILES_DIR + R"({tag_5_logo.jpg","border_width":7,"border_radius":50,"text_color_red":50,"text_color_green":62,"text_color_blue":168,"border_color_red":50,"border_color_green":62,"border_color_blue":168,"bg_color_red":50,"bg_color_green":62,"bg_color_blue":168,"font_family":"Noto Sans","annotation_text":"Сургуч","bg_transparent":0,"annotation_width":300})";
+    const QString json =
+        QString(
+            R"( {"stamp_width":900,"stamp_height":300,"create_from_image":1,"img_path":"})") +
+        TEST_FILES_DIR +
+        R"({tag_5_logo.jpg","border_width":7,"border_radius":50,"text_color_red":50,"text_color_green":62,"text_color_blue":168,"border_color_red":50,"border_color_green":62,"border_color_blue":168,"bg_color_red":50,"bg_color_green":62,"bg_color_blue":168,"font_family":"Noto Sans","annotation_text":"Сургуч","bg_transparent":0,"annotation_width":300})";
     QJsonParseError parse_error;
     QJsonDocument json_doc =
         QJsonDocument::fromJson(json.toUtf8(), &parse_error);
@@ -61,10 +64,13 @@ void TRubber::createRubber2(){
     QCOMPARE(spy.count(), 1);
 }
 
-void TRubber::createRubber3(){
+void TRubber::createRubber3() {
     qWarning() << "section 3";
-    const QString json = QString(R"( {"stamp_width":900,"stamp_height":300,"create_from_image":0,"img_path":"})") +
-        TEST_FILES_DIR + R"({tag_5_logo.jpg","border_width":7,"border_radius":50,"text_color_red":50,"text_color_green":62,"text_color_blue":168,"border_color_red":50,"border_color_green":62,"border_color_blue":168,"bg_color_red":50,"bg_color_green":62,"bg_color_blue":168,"font_family":"Noto Sans","annotation_text":"Сургуч","bg_transparent":0,"annotation_width":300})";
+    const QString json =
+        QString(
+            R"( {"stamp_width":900,"stamp_height":300,"create_from_image":0,"img_path":"})") +
+        TEST_FILES_DIR +
+        R"({tag_5_logo.jpg","border_width":7,"border_radius":50,"text_color_red":50,"text_color_green":62,"text_color_blue":168,"border_color_red":50,"border_color_green":62,"border_color_blue":168,"bg_color_red":50,"bg_color_green":62,"bg_color_blue":168,"font_family":"Noto Sans","annotation_text":"Сургуч","bg_transparent":0,"annotation_width":300})";
     QJsonParseError parse_error;
     QJsonDocument json_doc =
         QJsonDocument::fromJson(json.toUtf8(), &parse_error);
@@ -80,4 +86,3 @@ void TRubber::createRubber3(){
     QTest::qWait(500);
     QCOMPARE(spy.count(), 1);
 }
-

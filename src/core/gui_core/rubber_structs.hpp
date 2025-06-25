@@ -2,7 +2,6 @@
 #define RUBBER_STRUCTS_HPP
 
 #include <QImage>
-
 #include <pdf_csp_c.hpp>
 
 namespace core::gui {
@@ -130,7 +129,6 @@ struct RubberStamp {
     std::unique_ptr<BakeRubberResult> res;
 };
 
+}  // namespace core::gui
 
-} // namespace core::gui
-
-#endif //RUBBER_STRUCTS_HPP
+#endif  // RUBBER_STRUCTS_HPP

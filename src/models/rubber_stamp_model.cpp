@@ -1,4 +1,4 @@
-#include  "rubber_stamp_model.hpp"
+#include "rubber_stamp_model.hpp"
 
 #include <QDir>
 #include <QFileInfo>
@@ -45,21 +45,22 @@ QVariant RubberStampModel::data(const QModelIndex& index, int role) const {
     }
     switch (role) {
         case TitleRole: {
-            const QString res =
-                rubber_stamps_.at(index.row()).toObject().value("title").
-                toString();
+            const QString res = rubber_stamps_.at(index.row())
+                                    .toObject()
+                                    .value("title")
+                                    .toString();
             return res;
         }
         case ValueRole: {
             if (rubber_stamps_.at(index.row())
-                .toObject()
-                .value("title")
-                .toString() == create_stamp_title_) {
+                    .toObject()
+                    .value("title")
+                    .toString() == create_stamp_title_) {
                 return "new";
             }
             const QString res =
-                QJsonDocument(rubber_stamps_.at(index.row()).toObject()).
-                toJson();
+                QJsonDocument(rubber_stamps_.at(index.row()).toObject())
+                    .toJson();
             return res;
         }
         default:
@@ -105,15 +106,15 @@ void RubberStampModel::readRubberStamps() {
     // create empty json array if not exists
     if (!stamps_file.exists()) {
         if (!stamps_file.open(
-            QIODeviceBase::WriteOnly,
-            QFileDevice::ReadOwner | QFileDevice::WriteOwner)) {
-            qWarning() << tr("Can not create file ") <<
-                rubber_stamps_file_name_;
+                QIODeviceBase::WriteOnly,
+                QFileDevice::ReadOwner | QFileDevice::WriteOwner)) {
+            qWarning() << tr("Can not create file ")
+                       << rubber_stamps_file_name_;
             return;
         }
         QTextStream out(&stamps_file);
-       //  out << "[{\"id\":1,\"title\":\"" << approve_stamp_title_ << "\"}, "
-       // << "{\"id\":2,\"title\":\"" << decline_stamp_title_ << "\"}]";
+        //  out << "[{\"id\":1,\"title\":\"" << approve_stamp_title_ << "\"}, "
+        // << "{\"id\":2,\"title\":\"" << decline_stamp_title_ << "\"}]";
         out << generateConfig();
         stamps_file.close();
     }
@@ -129,11 +130,11 @@ void RubberStampModel::readRubberStamps() {
     stamps_file.close();
     const QJsonDocument json_doc = QJsonDocument::fromJson(file_data);
     if (json_doc.isNull() || !json_doc.isArray()) {
-        qWarning() << tr("Error parsing JSON from file ") <<
-            rubber_stamps_file_name_;
+        qWarning() << tr("Error parsing JSON from file ")
+                   << rubber_stamps_file_name_;
     }
     const QJsonObject create_profile_field{{"id", 0},
-                                            {"title", create_stamp_title_}};
+                                           {"title", create_stamp_title_}};
     rubber_stamps_ = json_doc.array();
     rubber_stamps_.append(create_profile_field);
 }
@@ -198,8 +199,7 @@ bool RubberStampModel::saveRubberStamps(const QString& stamp_json) {
     // copy the image
     const QString img_path = stamp_object.value("img_path").toString();
     const QString dest_name =
-        "tag_" + QString::number(stamp_object.value("id").toInt()) +
-        "_logo";
+        "tag_" + QString::number(stamp_object.value("id").toInt()) + "_logo";
     const QString copy_result_name =
         saveLogoImage(img_path, dest_name, old_img_path);
     stamp_object.insert("img_path", copy_result_name);
@@ -229,26 +229,26 @@ bool RubberStampModel::saveRubberStamps(const QString& stamp_json) {
     return false;
 }
 
-    /**
-     * @brief Save logo image
-     *
-     * @param path source image path
-     * @param dest_name destination file name
-     * @param old_logo_path old logo to delete
-     * @return QString full path to saved logo on success
-     */
-QString RubberStampModel::saveLogoImage(const QString &path,
-                                     const QString &dest_name,
-                                     const QString &old_logo_path) {
+/**
+ * @brief Save logo image
+ *
+ * @param path source image path
+ * @param dest_name destination file name
+ * @param old_logo_path old logo to delete
+ * @return QString full path to saved logo on success
+ */
+QString RubberStampModel::saveLogoImage(const QString& path,
+                                        const QString& dest_name,
+                                        const QString& old_logo_path) {
     if (path.isEmpty()) {
         return {};
     }
     const QString file_path = QUrl(path).toString(QUrl::PreferLocalFile);
     const QFileInfo src_file_info(file_path);
     if (!src_file_info.exists() || !src_file_info.isFile()) {
-        qWarning()
-            << "[RubberStampModel] can not save the image, file does not exist: "
-            << path;
+        qWarning() << "[RubberStampModel] can not save the image, file does "
+                      "not exist: "
+                   << path;
         return {};
     }
     if (!src_file_info.isReadable()) {
@@ -256,8 +256,9 @@ QString RubberStampModel::saveLogoImage(const QString &path,
         return {};
     }
     if (src_file_info.isExecutable()) {
-        qWarning() << "[RubberStampModel] the file is executable, will not copy :"
-                   << path;
+        qWarning()
+            << "[RubberStampModel] the file is executable, will not copy :"
+            << path;
         return {};
     }
     if (src_file_info.size() > 100000000) {
@@ -308,8 +309,8 @@ bool RubberStampModel::deleteRubberStamps(int id_stamp) {
             continue;
         }
         if (rubber_stamps_[i].toObject().value("id").toInt() == id_stamp) {
-            stamp_title = rubber_stamps_[i].toObject().value("title").
-                toString();
+            stamp_title =
+                rubber_stamps_[i].toObject().value("title").toString();
         } else if (rubber_stamps_[i].toObject().value("title").toString() !=
                    create_stamp_title_) {
             stamps_new.append(rubber_stamps_[i]);
@@ -332,8 +333,7 @@ bool RubberStampModel::deleteRubberStamps(int id_stamp) {
     return false;
 }
 
-QString RubberStampModel::generateConfig() const
-{
+QString RubberStampModel::generateConfig() const {
     return QString(R"([
     {
         "B": 168,
@@ -367,9 +367,6 @@ QString RubberStampModel::generateConfig() const
         "tag_width": 30,
         "title": "%2"
     }
-])").arg(approve_stamp_title_, decline_stamp_title_);
+])")
+        .arg(approve_stamp_title_, decline_stamp_title_);
 }
-
-
-
-

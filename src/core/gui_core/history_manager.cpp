@@ -4,19 +4,20 @@
 
 namespace core::gui {
 
-HistoryManager::HistoryManager(QObject* parent ): QObject{parent} {
+HistoryManager::HistoryManager(QObject* parent) : QObject{parent} {
     undo_actions_.reserve(100);
     redo_actions_.reserve(100);
 }
 
-void HistoryManager::addAction(std::unique_ptr<RubberStamp> action){
+void HistoryManager::addAction(std::unique_ptr<RubberStamp> action) {
     std::unique_lock lock(mutex_);
     if (action->res->data_ != nullptr && action->res->image_ != nullptr) {
         undo_actions_.emplace_back(std::move(action));
     }
 }
 
-std::vector<HistoryManager::EditActions> HistoryManager::getActionsOnPage(size_t page_index) const {
+std::vector<HistoryManager::EditActions> HistoryManager::getActionsOnPage(
+    size_t page_index) const {
     std::shared_lock lock(mutex_);
     if (!undo_actions_.empty()) {
         std::vector<EditActions> actions_on_page;
@@ -65,17 +66,14 @@ std::vector<pdfcsp::pdf::CAnnotParams> HistoryManager::getAnnotsParams() {
     return c_annot_params_;
 }
 
-int HistoryManager::getUndoCount() const{
+int HistoryManager::getUndoCount() const {
     std::shared_lock lock(mutex_);
     return undo_actions_.size();
 }
 
-int HistoryManager::getRedoCount() const{
+int HistoryManager::getRedoCount() const {
     std::shared_lock lock(mutex_);
     return redo_actions_.size();
 }
 
-
-
-
-}  //namespace core::gui
+}  // namespace core::gui

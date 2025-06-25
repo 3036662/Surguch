@@ -118,7 +118,7 @@ void RubberPreviewRender::createImage(const QVariantMap &qvparams) {
                          // qWarning() << "finished";
                          saveImage();
                      });
-    //start_time_ = std::chrono::high_resolution_clock::now();
+    // start_time_ = std::chrono::high_resolution_clock::now();
     image_future_ = std::make_unique<ImageFuture>(
         QtConcurrent::run(core::gui::prepareImage, params_wrapper));
     image_watcher_->setFuture(*image_future_);
@@ -128,9 +128,10 @@ void RubberPreviewRender::saveImage() {
     if (image_future_ && image_future_->isValid()) {
         result_ = image_future_->takeResult();
     }
-    //end_time_ = std::chrono::high_resolution_clock::now();
-    //std::chrono::duration<double, std::milli> duration =end_time_ - start_time_;
-    //qWarning() << "RubberPreviewRender::saveImage(): " << duration.count();
+    // end_time_ = std::chrono::high_resolution_clock::now();
+    // std::chrono::duration<double, std::milli> duration =end_time_ -
+    // start_time_; qWarning() << "RubberPreviewRender::saveImage(): " <<
+    // duration.count();
     if (result_ && result_->image_ && result_->image_->width() != 0) {
         // qWarning() << "width " << width();
         // qWarning() << "result->resolution_y " << result_->image_->height();
@@ -273,6 +274,6 @@ core::gui::SharedRubberParamWrapper RubberPreviewRender::createParams() const {
     pod_params.bg_transparent = params_.bg_transparent;
     pod_params.bg_opacity = params_.bg_opacity;
     pod_params.annotation_width = 400;  // params_.annotation_text.size() *
-                                         // 100;
+                                        // 100;
     return params_wrapper;
 }

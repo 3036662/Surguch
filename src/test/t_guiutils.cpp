@@ -15,30 +15,39 @@
 
 #include "core/csp_c_bridge/bridge_utils.hpp"
 #include "cpp_views/rubber_preview_render.hpp"
+#include "gui_core/gui_utils.hpp"
+#include "gui_core/rubber_structs.hpp"
 #include "models/rubber_stamp_model.hpp"
 #include "pdf_csp_c.hpp"
-#include "gui_core/rubber_structs.hpp"
-#include "gui_core/gui_utils.hpp"
 
 TGuiUtils::TGuiUtils(QObject *parent) : QObject{parent} {}
 
-void TGuiUtils::test_image(){
-    const QString str1 = QString(R"( {"stamp_width":900,"stamp_height":300,"create_from_image":0,"img_path":"})") +
-        TEST_FILES_DIR + R"({tag_5_logo.jpg","border_width":7,"border_radius":50,"text_color_red":50,"text_color_green":62,"text_color_blue":168,"border_color_red":50,"border_color_green":62,"border_color_blue":168,"bg_color_red":50,"bg_color_green":62,"bg_color_blue":168,"font_family":"Noto Sans","annotation_text":"","bg_transparent":0,"annotation_width":300})";
+void TGuiUtils::test_image() {
+    const QString str1 =
+        QString(
+            R"( {"stamp_width":900,"stamp_height":300,"create_from_image":0,"img_path":"})") +
+        TEST_FILES_DIR +
+        R"({tag_5_logo.jpg","border_width":7,"border_radius":50,"text_color_red":50,"text_color_green":62,"text_color_blue":168,"border_color_red":50,"border_color_green":62,"border_color_blue":168,"bg_color_red":50,"bg_color_green":62,"bg_color_blue":168,"font_family":"Noto Sans","annotation_text":"","bg_transparent":0,"annotation_width":300})";
     QJsonParseError parse_error1;
     QJsonDocument json_doc1 =
         QJsonDocument::fromJson(str1.toUtf8(), &parse_error1);
     // qWarning() << "JSON parse error:" << parse_error.errorString();
     QVERIFY(parse_error1.error == QJsonParseError::NoError);
-    const QString str2 = QString(R"( {"stamp_width":900,"stamp_height":300,"create_from_image":0,"img_path":"})") +
-       TEST_FILES_DIR + R"({tag_5_logo.jpg","border_width":7,"border_radius":50,"text_color_red":50,"text_color_green":62,"text_color_blue":168,"border_color_red":50,"border_color_green":62,"border_color_blue":168,"bg_color_red":50,"bg_color_green":62,"bg_color_blue":168,"font_family":"Noto Sans","annotation_text":"Сургуч","bg_transparent":1,"annotation_width":300})";
+    const QString str2 =
+        QString(
+            R"( {"stamp_width":900,"stamp_height":300,"create_from_image":0,"img_path":"})") +
+        TEST_FILES_DIR +
+        R"({tag_5_logo.jpg","border_width":7,"border_radius":50,"text_color_red":50,"text_color_green":62,"text_color_blue":168,"border_color_red":50,"border_color_green":62,"border_color_blue":168,"bg_color_red":50,"bg_color_green":62,"bg_color_blue":168,"font_family":"Noto Sans","annotation_text":"Сургуч","bg_transparent":1,"annotation_width":300})";
     QJsonParseError parse_error2;
     QJsonDocument json_doc2 =
         QJsonDocument::fromJson(str2.toUtf8(), &parse_error2);
     // qWarning() << "JSON parse error:" << parse_error.errorString();
     QVERIFY(parse_error2.error == QJsonParseError::NoError);
-    const QString str3 = QString(R"( {"stamp_width":900,"stamp_height":300,"create_from_image":1,"img_path":"})") +
-       TEST_FILES_DIR + R"({tag_5_logo.jpg","border_width":7,"border_radius":50,"text_color_red":50,"text_color_green":62,"text_color_blue":168,"border_color_red":50,"border_color_green":62,"border_color_blue":168,"bg_color_red":50,"bg_color_green":62,"bg_color_blue":168,"font_family":"Noto Sans","annotation_text":"Сургуч","bg_transparent":0,"annotation_width":300})";
+    const QString str3 =
+        QString(
+            R"( {"stamp_width":900,"stamp_height":300,"create_from_image":1,"img_path":"})") +
+        TEST_FILES_DIR +
+        R"({tag_5_logo.jpg","border_width":7,"border_radius":50,"text_color_red":50,"text_color_green":62,"text_color_blue":168,"border_color_red":50,"border_color_green":62,"border_color_blue":168,"bg_color_red":50,"bg_color_green":62,"bg_color_blue":168,"font_family":"Noto Sans","annotation_text":"Сургуч","bg_transparent":0,"annotation_width":300})";
     QJsonParseError parse_error3;
     QJsonDocument json_doc3 =
         QJsonDocument::fromJson(str3.toUtf8(), &parse_error3);

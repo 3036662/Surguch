@@ -1,22 +1,20 @@
 #ifndef T_GUIUTILS_HPP
 #define T_GUIUTILS_HPP
 
-#include <QObject>
 #include <QDir>
+#include <QObject>
 
-class TGuiUtils: public QObject {
+class TGuiUtils : public QObject {
     Q_OBJECT
-    public:
+   public:
     explicit TGuiUtils(QObject *parent = nullptr);
 
-    signals:
-    private slots:
+   signals:
+   private slots:
 
     void test_image();
 
-
-private:
-
+   private:
     const QString test_files_dir_ = TEST_FILES_DIR;
     const QString file1_ = test_files_dir_ + "13_cam_CADES-XLT1_1sig.pdf";
     const QString file2_ = test_files_dir_ + "14_acrob_CADES-XLT1.pdf";
@@ -27,8 +25,8 @@ private:
     const QString config_dir_ = home_dir + "/.config/csppdf";
     const QString profile_file_ = QString(TEST_FILES_DIR) + "/profiles.json";
     const QString stamps_file_ = QString(TEST_FILES_DIR) + "/stamps.json";
-    const QString rubber_stamps_file_ = QString(TEST_FILES_DIR) + "/rubber_stamps.json";
-
+    const QString rubber_stamps_file_ =
+        QString(TEST_FILES_DIR) + "/rubber_stamps.json";
 };
 
-#endif //T_GUIUTILS_HPP
+#endif  // T_GUIUTILS_HPP

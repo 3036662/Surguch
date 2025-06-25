@@ -15,14 +15,15 @@
 namespace core::gui {
 
 /**
- * @brief The HistoryManager stores and handles undo and redo actions for rubber stamps.
+ * @brief The HistoryManager stores and handles undo and redo actions for rubber
+ * stamps.
  * @details This class owns images and data for rubber stamps.
  */
 
-class HistoryManager: public QObject {
-Q_OBJECT
+class HistoryManager : public QObject {
+    Q_OBJECT
 
-    public:
+   public:
     HistoryManager(QObject* parent = nullptr);
 
     using EditActions = std::shared_ptr<RubberStamp>;
@@ -31,7 +32,8 @@ Q_OBJECT
     void addAction(std::unique_ptr<RubberStamp> action);
 
     /// @brief get array of actions on page x
-    [[nodiscard]] std::vector<EditActions> getActionsOnPage(size_t page_index) const;
+    [[nodiscard]] std::vector<EditActions> getActionsOnPage(
+        size_t page_index) const;
 
     /// @brief clears redo actions array if something done after undo
     void clearRedo();
@@ -54,8 +56,7 @@ Q_OBJECT
     /// @brief get redo action size
     int getRedoCount() const;
 
-
-private:
+   private:
     std::vector<EditActions> undo_actions_;
     std::vector<EditActions> redo_actions_;
     mutable std::shared_mutex mutex_;
@@ -64,4 +65,4 @@ private:
 
 }  // namespace core::gui
 
-#endif //HISTORY_MANAGER_HPP
+#endif  // HISTORY_MANAGER_HPP

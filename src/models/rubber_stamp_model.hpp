@@ -4,7 +4,6 @@
 #include <QAbstractListModel>
 #include <QJsonArray>
 
-
 /**
  * @brief Model for rubber stamps
  */
@@ -13,7 +12,7 @@ class RubberStampModel : public QAbstractListModel {
 
     enum RoleNames { TitleRole = Qt::UserRole, ValueRole = Qt::UserRole + 1 };
 
-public:
+   public:
     explicit RubberStampModel(QObject* parent = nullptr);
 
     [[nodiscard]] QVariant headerData(int section, Qt::Orientation orientation,
@@ -38,11 +37,11 @@ public:
     /// @brief check if the given rubber stamp name is unique
     [[nodiscard]] Q_INVOKABLE bool uniqueStampName(QString stamp_name);
 
-signals:
-    void rubberStampSaved(QString); // value of saved stamp
-    void rubberStampDeleted(QString); // value of deleted stamp
+   signals:
+    void rubberStampSaved(QString);    // value of saved stamp
+    void rubberStampDeleted(QString);  // value of deleted stamp
 
-private:
+   private:
     /// @brief generate config for basic rubber stamps
     QString generateConfig() const;
 
@@ -70,4 +69,4 @@ private:
     QString rubber_stamps_file_name_;
 };
 
-#endif //RUBBER_STAMP_MODEL_HPP
+#endif  // RUBBER_STAMP_MODEL_HPP

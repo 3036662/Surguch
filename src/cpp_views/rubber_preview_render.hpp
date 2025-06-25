@@ -8,8 +8,8 @@
 #include <QVariant>
 #include <memory>
 
-#include "gui_core/rubber_structs.hpp"
 #include "gui_core/gui_utils.hpp"
+#include "gui_core/rubber_structs.hpp"
 #include "pdf_csp_c.hpp"
 
 /**
@@ -27,7 +27,8 @@ class RubberPreviewRender : public QQuickItem {
     RubberPreviewRender &operator=(RubberPreviewRender &&) = delete;
 
     using ImageFuture = QFuture<std::unique_ptr<core::gui::BakeRubberResult>>;
-    using ImageFutureWatcher = QFutureWatcher<std::unique_ptr<core::gui::BakeRubberResult>>;
+    using ImageFutureWatcher =
+        QFutureWatcher<std::unique_ptr<core::gui::BakeRubberResult>>;
 
     /// @brief Create preview with user settings
     Q_INVOKABLE void createImage(const QVariantMap &qvparams);
@@ -37,15 +38,15 @@ class RubberPreviewRender : public QQuickItem {
         QSGNode *oldNode,
         QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;
 
-    signals:
+   signals:
 
-     /// @brief the image is prepared and ready for render
-     void imageReady();
+    /// @brief the image is prepared and ready for render
+    void imageReady();
 
     /// @brief signal when received nullptr for preview image
     void errorOnImageGenerate(const QString &err_string);
 
-private:
+   private:
     /// @brief prepare preview params for later use
     void preparePreviewParams(const QVariantMap &qvparams);
 
@@ -69,4 +70,4 @@ private:
 std::unique_ptr<core::gui::BakeRubberResult> prepareImage(
     const core::gui::SharedRubberParamWrapper &params);
 
-#endif //RUBBER_RENDER_HPP
+#endif  // RUBBER_RENDER_HPP

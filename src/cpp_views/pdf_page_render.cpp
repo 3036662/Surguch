@@ -29,7 +29,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "gui_core/gui_utils.hpp"
 inline std::vector<unsigned char> glueImageWithMask(
-    const unsigned char* img, size_t img_size, const unsigned char* img_mask,
+    const unsigned char *img, size_t img_size, const unsigned char *img_mask,
     size_t mask_size) {
     if (img_size == 0 || img == nullptr) {
         return {};
@@ -104,7 +104,7 @@ QSGNode *PdfPageRender::updatePaintNode(
         rectNode->setFiltering(QSGTexture::Linear);
         rectNode->setOwnsTexture(true);
     }
-     qWarning() << "PdfPageRender: render page" << page_number_;
+    qWarning() << "PdfPageRender: render page" << page_number_;
     if (!image_) {
         try {
             core::MuPageRender mupdf(fzctx_, fzdoc_);
@@ -142,45 +142,62 @@ QSGNode *PdfPageRender::updatePaintNode(
             {
                 std::lock_guard<std::mutex> aaaa(mutex_);
                 if (!rubber_stamps_.empty()) {
-                    for (const auto& stamps_ : rubber_stamps_) {
+                    for (const auto &stamps_ : rubber_stamps_) {
                         if (stamps_->res && stamps_->res->image_ != nullptr) {
-                            //auto start = std::chrono::high_resolution_clock::now();
+                            // auto start =
+                            // std::chrono::high_resolution_clock::now();
                             QPainter painter(image_.get());
                             // rotate the coordinate system
                             painter.rotate(custom_rotation_);
                             // move the coordinate system
-                            int img_width=image_->width();
-                            int img_height=image_->height();
+                            int img_width = image_->width();
+                            int img_height = image_->height();
                             switch (static_cast<int>(custom_rotation_)) {
                                 case 90:
                                     painter.translate(0, -image_->width());
-                                    std::swap(img_height,img_width);
+                                    std::swap(img_height, img_width);
                                     break;
                                 case 180:
-                                    painter.translate(-image_->width(), -image_->height());
+                                    painter.translate(-image_->width(),
+                                                      -image_->height());
                                     break;
                                 case 270:
                                     painter.translate(-image_->height(), 0);
-                                    std::swap(img_height,img_width);
+                                    std::swap(img_height, img_width);
                                     break;
                                 default:
                                     painter.translate(0, 0);
                                     break;
                             }
 
-                            double ratio = static_cast<double>(stamps_->res->data_->resolution_x) / static_cast<double>(stamps_->res->data_->resolution_y);
-                            const int target_width = stamps_->real_stamp_qml_width / stamps_->qml_width * img_width;
-                            const int target_height = stamps_->real_stamp_qml_width / ratio / stamps_->qml_height * img_height;
+                            double ratio =
+                                static_cast<double>(
+                                    stamps_->res->data_->resolution_x) /
+                                static_cast<double>(
+                                    stamps_->res->data_->resolution_y);
+                            const int target_width =
+                                stamps_->real_stamp_qml_width /
+                                stamps_->qml_width * img_width;
+                            const int target_height =
+                                stamps_->real_stamp_qml_width / ratio /
+                                stamps_->qml_height * img_height;
 
-                            QImage stamp_scaled =stamps_->res->image_->scaled(
-                                 target_width, target_height, Qt::KeepAspectRatio);
-                            painter.drawImage(stamps_->position_x / stamps_->qml_width * img_width,
-                                stamps_->position_y / stamps_->qml_height * img_height , stamp_scaled);
-                            // auto end = std::chrono::high_resolution_clock::now();
-                            // std::chrono::duration<double, std::milli> duration =123
+                            QImage stamp_scaled = stamps_->res->image_->scaled(
+                                target_width, target_height,
+                                Qt::KeepAspectRatio);
+                            painter.drawImage(
+                                stamps_->position_x / stamps_->qml_width *
+                                    img_width,
+                                stamps_->position_y / stamps_->qml_height *
+                                    img_height,
+                                stamp_scaled);
+                            // auto end =
+                            // std::chrono::high_resolution_clock::now();
+                            // std::chrono::duration<double, std::milli>
+                            // duration =123
                             //     end - start;
-                            //qWarning() << "pos x: " << stamps_->position_x;
-                            //qWarning() << "pos y: " << stamps_->position_y;
+                            // qWarning() << "pos x: " << stamps_->position_x;
+                            // qWarning() << "pos y: " << stamps_->position_y;
                         }
                     }
                 }
@@ -233,9 +250,10 @@ void PdfPageRender::setCurrentNeedleRect(
     image_.reset();
 };
 
-void PdfPageRender::setRubberStamps(std::vector<std::shared_ptr<core::gui::RubberStamp>> rubber_stamps) {
+void PdfPageRender::setRubberStamps(
+    std::vector<std::shared_ptr<core::gui::RubberStamp>> rubber_stamps) {
     std::lock_guard<std::mutex> aaaa(mutex_);
-    std::swap(rubber_stamps_ ,rubber_stamps);
+    std::swap(rubber_stamps_, rubber_stamps);
     image_.reset();
     update();
 }

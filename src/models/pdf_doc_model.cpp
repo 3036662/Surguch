@@ -23,7 +23,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QFileInfo>
 #include <QFuture>
 #include <QFutureWatcher>
-#include <QtConcurrent>
 #include <QGuiApplication>
 #include <QImage>
 #include <QMimeDatabase>
@@ -31,6 +30,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QThread>
 #include <QUrl>
 #include <QWindow>
+#include <QtConcurrent>
 
 #include "core/signature_processor.hpp"
 #include "core/utils.hpp"
@@ -296,7 +296,8 @@ Q_INVOKABLE void PdfDocModel::deleteFileLater(QString path) {
 }
 
 /// @brief the 'save file as' implementation
-Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(const QString &curr_path,const QString &path,
+Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(const QString &curr_path,
+                                               const QString &path,
                                                bool delete_curr_source) {
     const QString dest_path = QUrl(path).toString(QUrl::PreferLocalFile);
     QFile src_file(curr_path);
@@ -386,7 +387,7 @@ PdfDocModel::getCurrentNeedleRect(size_t page_index) {
     return text_extractor_->getCurrentNeedleRect(page_index);
 }
 
-void PdfDocModel::placeRubberStamp(const QVariantMap& qvparams){
+void PdfDocModel::placeRubberStamp(const QVariantMap &qvparams) {
     params = core::gui::prepareParams(qvparams);
     auto params_wrapper = core::gui::createParams(params);
     image_watcher_ = std::make_unique<ImageFutureWatcher>();
@@ -416,25 +417,25 @@ void PdfDocModel::prepareImage(const QVariantMap &qvparams) {
 
 void PdfDocModel::estimateTagHeight() {
     if (image_future_ && image_future_->isValid()) {
-        auto result  = image_future_->takeResult();
+        auto result = image_future_->takeResult();
         if (result != nullptr && result->data_ != nullptr) {
             auto ratio = static_cast<double>(result->data_->resolution_x) /
-                static_cast<double>(result->data_->resolution_y);
-            //qWarning() << "[EstimateTagHeight]" << ratio;
+                         static_cast<double>(result->data_->resolution_y);
+            // qWarning() << "[EstimateTagHeight]" << ratio;
             emit sizeReady(ratio);
         }
     }
 }
 
-
-std::vector<std::shared_ptr<core::gui::RubberStamp>> PdfDocModel::getRubberStampForPage(size_t page_index) const {
+std::vector<std::shared_ptr<core::gui::RubberStamp>>
+PdfDocModel::getRubberStampForPage(size_t page_index) const {
     if (!history_manager_) {
         return {};
     }
     return history_manager_->getActionsOnPage(page_index);
 }
 
-void PdfDocModel::undoRubberStamp(){
+void PdfDocModel::undoRubberStamp() {
     if (!history_manager_) {
         return;
     }
@@ -443,7 +444,7 @@ void PdfDocModel::undoRubberStamp(){
     emit updateDoc();
 }
 
-void PdfDocModel::redoRubberStamp(){
+void PdfDocModel::redoRubberStamp() {
     if (!history_manager_) {
         return;
     }
@@ -456,7 +457,8 @@ int PdfDocModel::getUndoCount() const {
     if (!history_manager_) {
         return 0;
     }
-    //qWarning() << "[PdfDocModel::getUndoCount]" << history_manager_->getUndoCount() << "\n";
+    // qWarning() << "[PdfDocModel::getUndoCount]" <<
+    // history_manager_->getUndoCount() << "\n";
     return history_manager_->getUndoCount();
 }
 
@@ -464,12 +466,13 @@ int PdfDocModel::getRedoCount() const {
     if (!history_manager_) {
         return 0;
     }
-    //qWarning() << "[PdfDocModel::getRedoCount]" << history_manager_->getRedoCount() << "\n";
+    // qWarning() << "[PdfDocModel::getRedoCount]" <<
+    // history_manager_->getRedoCount() << "\n";
     return history_manager_->getRedoCount();
 }
 
 void PdfDocModel::clearHistory() const {
-    //qWarning() << "[PdfDocModel::clearHistory]";
+    // qWarning() << "[PdfDocModel::clearHistory]";
     if (!history_manager_) {
         return;
     }
@@ -483,25 +486,17 @@ std::vector<pdfcsp::pdf::CAnnotParams> PdfDocModel::getAnnotParams() const {
     return history_manager_->getAnnotsParams();
 }
 
-
 void PdfDocModel::saveImage() {
     if (!history_manager_) {
         history_manager_ = std::make_unique<core::gui::HistoryManager>();
     }
     if (image_future_ && image_future_->isValid()) {
-        history_manager_->addAction(std::make_unique<core::gui::RubberStamp>(
-    core::gui::RubberStamp{
-        params.page_index,
-        params.position_x,
-        params.position_y,
-        params.page_width,
-        params.real_stamp_width,
-        params.page_height,
-        params.stamp_width,
-        params.stamp_height,
-        params.link,
-        image_future_->takeResult()
-    }));
+        history_manager_->addAction(
+            std::make_unique<core::gui::RubberStamp>(core::gui::RubberStamp{
+                params.page_index, params.position_x, params.position_y,
+                params.page_width, params.real_stamp_width, params.page_height,
+                params.stamp_width, params.stamp_height, params.link,
+                image_future_->takeResult()}));
     }
     history_manager_->clearRedo();
     emit updateDoc();

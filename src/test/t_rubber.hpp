@@ -1,17 +1,16 @@
 #ifndef T_RUBBER_HPP
 #define T_RUBBER_HPP
 
-#include <QObject>
 #include <QDir>
+#include <QObject>
 
-
-class TRubber: public QObject {
+class TRubber : public QObject {
     Q_OBJECT
-    public:
+   public:
     explicit TRubber(QObject *parent = nullptr);
 
-    signals:
-    private slots:
+   signals:
+   private slots:
 
     void createRubber1();
 
@@ -19,8 +18,7 @@ class TRubber: public QObject {
 
     void createRubber3();
 
-    private:
-
+   private:
     const QString test_files_dir_ = TEST_FILES_DIR;
     const QString file1_ = test_files_dir_ + "13_cam_CADES-XLT1_1sig.pdf";
     const QString file2_ = test_files_dir_ + "14_acrob_CADES-XLT1.pdf";
@@ -31,10 +29,8 @@ class TRubber: public QObject {
     const QString config_dir_ = home_dir + "/.config/csppdf";
     const QString profile_file_ = QString(TEST_FILES_DIR) + "/profiles.json";
     const QString stamps_file_ = QString(TEST_FILES_DIR) + "/stamps.json";
-    const QString rubber_stamps_file_ = QString(TEST_FILES_DIR) + "/rubber_stamps.json";
-
+    const QString rubber_stamps_file_ =
+        QString(TEST_FILES_DIR) + "/rubber_stamps.json";
 };
 
-
-
-#endif //T_RUBBER_HPP
+#endif  // T_RUBBER_HPP
