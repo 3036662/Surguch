@@ -1074,8 +1074,8 @@
     </message>
     <message>
         <location line="+22"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+36"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+36"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+40"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+40"/>
         <source>Transparency</source>
         <translation>Прозрачность фона</translation>
     </message>
@@ -1113,8 +1113,8 @@
         <translation type="obsolete">Выберите логотип</translation>
     </message>
     <message>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="-568"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="-568"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="-572"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="-572"/>
         <source>Surguch</source>
         <translation>Сургуч</translation>
     </message>

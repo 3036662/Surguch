@@ -60,6 +60,9 @@ private:
     std::unique_ptr<core::gui::BakeRubberResult> result_;
     std::unique_ptr<ImageFuture> image_future_;
     std::unique_ptr<ImageFutureWatcher> image_watcher_;
+
+    // std::chrono::system_clock::time_point start_time_;
+    // std::chrono::system_clock::time_point end_time_;
 };
 
 /// @brief concurrent function to make QImage
