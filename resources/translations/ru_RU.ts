@@ -356,8 +356,8 @@
     <message>
         <location line="+114"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+79"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+90"/>
-        <location filename="../../src/views/Header.qml" line="+90"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+92"/>
+        <location filename="../../src/views/Header.qml" line="+92"/>
         <source>Sign</source>
         <translation>Подписать</translation>
     </message>
@@ -370,9 +370,9 @@
         <location line="+40"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+45"/>
         <location line="+38"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+62"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+64"/>
         <location line="+48"/>
-        <location filename="../../src/views/Header.qml" line="+62"/>
+        <location filename="../../src/views/Header.qml" line="+64"/>
         <location line="+48"/>
         <source>Any file (* *.*)</source>
         <translation>Любой файл (* *.*)</translation>
@@ -399,8 +399,8 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+196"/>
         <location filename="../../build/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+153"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+227"/>
-        <location filename="../../src/views/HeaderSubBar.qml" line="+227"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+230"/>
+        <location filename="../../src/views/HeaderSubBar.qml" line="+230"/>
         <source> of </source>
         <translation> из </translation>
     </message>
@@ -562,8 +562,8 @@
     <message>
         <location line="+85"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+76"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+89"/>
-        <location filename="../../src/views/Main.qml" line="+89"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+92"/>
+        <location filename="../../src/views/Main.qml" line="+92"/>
         <source>The document was changed after signing, but can be restored</source>
         <translation>Документ был изменен после подписи! Присутствует возможность восстановить подписанную версию</translation>
     </message>
@@ -677,10 +677,10 @@
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+699"/>
         <location line="+105"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+564"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+756"/>
-        <location line="+143"/>
-        <location filename="../../src/views/PdfListView.qml" line="+756"/>
-        <location line="+143"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+761"/>
+        <location line="+144"/>
+        <location filename="../../src/views/PdfListView.qml" line="+761"/>
+        <location line="+144"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>
@@ -688,10 +688,10 @@
         <location line="-104"/>
         <location line="+105"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+1"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-142"/>
-        <location line="+143"/>
-        <location filename="../../src/views/PdfListView.qml" line="-142"/>
-        <location line="+143"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-143"/>
+        <location line="+144"/>
+        <location filename="../../src/views/PdfListView.qml" line="-143"/>
+        <location line="+144"/>
         <source>Invalid position</source>
         <translation>Недопустимая позиция</translation>
     </message>

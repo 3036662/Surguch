@@ -197,6 +197,8 @@ RowLayout {
         }
         TopBarButton {
             id: signModeButton
+
+            enabled: false
             icon.source: StyleSheet.pencil_line_icon
             text: qsTr("Sign")
             icon.height: 25
@@ -209,6 +211,7 @@ RowLayout {
                     || profileComboBox.currentIndex === -1) {
                     profileComboBox.popup.open()
                 } else {
+                    headerSubBar.disableTagButton()
                     pdfListView.signMode = !pdfListView.signMode
                     if (!down) {
                         pdfListView.reserRotation()
@@ -248,6 +251,7 @@ RowLayout {
     Keys.onPressed: event => {
         if (event.key === Qt.Key_Escape
             && pdfListView.signMode) {
+            headerSubBar.enableTagButton()
             pdfListView.signMode = false
             signModeButton.down = false
             event.accepted = true

@@ -78,12 +78,9 @@ ColumnLayout {
         rubberStampPutButton.enabled = true
     }
 
-    function disableTagButton() {
-        rubberStampPutButton.enabled = false
-    }
-
     function clickTagButton() {
         rubberStampPutButton.enabled = true
+        header.disableSignMode()
         pdfListView.tagMode = !pdfListView.tagMode
         pdfListView.tagData = rubberStampPutButton.tag_data
         pdfModel.prepareImage(JSON.parse(rubberStampPutButton.tag_data))
@@ -100,6 +97,12 @@ ColumnLayout {
         if (redo) {
             redoCount = redo
         }
+    }
+
+    function disableTagButton() {
+        rubberStampPutButton.enabled = false
+        rubberStampPutButton.down = false
+        pdfListView.tagMode = false
     }
 
     spacing: 1
@@ -348,7 +351,7 @@ ColumnLayout {
 
             property var tag_data
 
-            enabled: !!tag_data
+            enabled: !!tag_data && !pdfListView.signMode
             flat: true
             icon.width: 20
             icon.height: 20
@@ -357,6 +360,7 @@ ColumnLayout {
             icon.source: StyleSheet.tag_icon
             onClicked: {
                 console.debug("create tag")
+                header.disableSignMode()
                 pdfListView.tagMode = !pdfListView.tagMode
                 pdfListView.tagData = tag_data
                 pdfModel.prepareImage(JSON.parse(tag_data))
@@ -370,6 +374,7 @@ ColumnLayout {
         Keys.onPressed: event => {
             if (event.key === Qt.Key_Escape
                 && pdfListView.tagMode) {
+                header.enableSignMode()
                 pdfListView.tagMode = false
                 rubberStampPutButton.down = false
                 event.accepted = true
@@ -381,6 +386,7 @@ ColumnLayout {
         ToolButton {
             id: rubberStampDialogButton
 
+            enabled: !pdfListView.signMode
             flat: true
             icon.width: 20
             icon.height: 10
@@ -404,6 +410,7 @@ ColumnLayout {
         }
         ToolButton {
             id: searchButton
+            enabled: !pdfListView.signMode && !pdfListView.tagMode
             flat: true
             icon.source: StyleSheet.search_icon
             icon.width: 20

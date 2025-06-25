@@ -67,6 +67,10 @@ ListView {
         signal
     canZoomOut
 
+    signal enableSign()
+
+    signal enableTag()
+
     signal stampLocationSelected(var stamp_location_info, var path)
 
     signal tagPlaced()
@@ -90,6 +94,7 @@ ListView {
         signMode = false
         signInProgress = true
         stampLocationSelected(location_data, tmpFile)
+        enableTag()
         forceActiveFocus()
     }
 
@@ -890,6 +895,7 @@ ListView {
                         root.tagInProgress = true
                         root.forceActiveFocus()
                         root.tag_placing = false
+                        enableSign()
                     }
                 }
 
