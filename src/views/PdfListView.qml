@@ -36,6 +36,7 @@ ListView {
     property bool tagMode: false
     property bool tagInProgress: false
     property bool size_estimated: false
+    property bool tag_placing: false
     property var tagData
     property var ratio: 3
     property double startX
@@ -786,7 +787,7 @@ ListView {
                     console.debug("enter height = " + tagCross.height)
                     let t_data = JSON.parse(tagData)
                     tagCross.width = t_data.tag_width * width / 100
-                    console.warn("enter width" + tagCross.width)
+                    console.debug("enter width" + tagCross.width)
                     if (root.ratio > 0) {
                         tagCross.height = tagCross.width / root.ratio
                     }
@@ -806,9 +807,9 @@ ListView {
                 }
 
                 onPositionChanged: {
-                    if (pressed &&
-                        Math.abs(startX - mouseX) > 10 &&
-                        Math.abs(startY - mouseY) > 10) {
+                    if ((pressed &&
+                        Math.abs(startX - mouseX) > 10) || root.tag_placing) {
+                        root.tag_placing = true
                         if (mouseX > startX) {
                             tagCross.x = startX
                             tagCross.width = mouseX - startX
@@ -821,7 +822,7 @@ ListView {
                             tagCross.y = startY
                             tagCross.height = tagCross.width / root.ratio
                         } else {
-                            tagCross.y = mouseY
+                            //tagCross.y = mouseY
                             tagCross.height = tagCross.width / root.ratio
                         }
                         if (tagCross.x < 0 || tagCross.x + tagCross.width > pdfPage.width
@@ -888,6 +889,7 @@ ListView {
                         pdfModel.placeRubberStamp(rubber_stamp_data)
                         root.tagInProgress = true
                         root.forceActiveFocus()
+                        root.tag_placing = false
                     }
                 }
 

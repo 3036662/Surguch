@@ -84,7 +84,7 @@ Item {
                 text_area_background: "#1A1D1F"
                 combo_box_background: "#31363B"
                 tooltip_background: "#31363B"
-                icon_color: "#D8D8D8"
+                icon_color: "gray"
             }
         },
         State {
@@ -127,7 +127,7 @@ Item {
                 text_area_background: "#FCFCFC"
                 combo_box_background: "#EFF0F1"
                 tooltip_background: "#FCFCFC"
-                icon_color: "#232629"
+                icon_color: "gray"
             }
         }
     ]

@@ -22,6 +22,7 @@ Dialog {
         anchors.fill: parent
         model: rubberStampModel
         spacing: 1
+        clip: true
         rightMargin: scrollBar.width + 2
 
         ScrollBar.vertical: ScrollBar {

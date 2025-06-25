@@ -126,8 +126,6 @@ RowLayout {
                 onActivated: {
                     profileComboBox.displayText = profileComboBox.textAt(
                         currentIndex)
-                    //open profile info panel
-                    //rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
                     // set the certificates for select
                     rightSideBar.edit_profile.cert_data_raw
                         = profileComboBox.model.getUserCertsJSON()
@@ -138,6 +136,8 @@ RowLayout {
                     rightSideBar.edit_profile.profiles_model = profileComboBox.model
                     // if create a new profile, set an empty data
                     if (currentValue === "new") {
+                        //open profile info panel
+                        rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
                         rightSideBar.edit_profile.profile_data = ""
                         rightSideBar.edit_profile.profile_id = -1
                         // ele set current profile data

@@ -93,8 +93,8 @@ struct RubberParams {
     quint8 bg_opacity = 0;
     quint64 border_width = 10;
     quint32 border_radius = 10;
-    double stamp_width = 0;
-    double stamp_height = 0;
+    double stamp_width = 900;
+    double stamp_height = 300;
     double real_stamp_width = 900;
     quint64 annotation_width = 900;
     quint64 font_size = 0;
