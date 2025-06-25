@@ -412,20 +412,21 @@ std::vector<pdfcsp::pdf::CAnnotParams> createAnnotParams(const std::vector<std::
     std::vector<pdfcsp::pdf::CAnnotParams> cparams;
     std::for_each(params.begin(), params.end(), [&cparams](const std::shared_ptr<RubberStamp> &p) {
         cparams.emplace_back(pdfcsp::pdf::CAnnotParams{
-        .page_index = p->page_index,
-        .page_width = p->qml_width,
-        .page_height = p->qml_height,
-        .stamp_x = p->position_x,
-        .stamp_y = p->position_y,
-        .stamp_width = p->stamp_width,
-        .stamp_height = p->stamp_height,
-        .img = p->res->data_->img,
-        .img_size = p->res->data_->img_size,
-        .img_mask = p->res->data_->img_mask,
-        .img_mask_size = p->res->data_->img_mask_size,
-        .resolution_x = p->res->data_->resolution_x,
-        .resolution_y = p->res->data_->resolution_y,
-        .link = p->link.empty() ? nullptr : p->link.data()});
+        p->page_index,
+        p->qml_width,
+        p->qml_height,
+        p->position_x,
+        p->position_y,
+        p->stamp_width,
+        p->stamp_height,
+        p->res->data_->img,
+        p->res->data_->img_size,
+        p->res->data_->img_mask,
+        p->res->data_->img_mask_size,
+        p->res->data_->resolution_x,
+        p->res->data_->resolution_y,
+        p->link.empty() ? nullptr : p->link.data()
+    });
     });
     return cparams;
 }

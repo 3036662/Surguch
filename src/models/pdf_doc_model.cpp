@@ -491,16 +491,16 @@ void PdfDocModel::saveImage() {
     if (image_future_ && image_future_->isValid()) {
         history_manager_->addAction(std::make_unique<core::gui::RubberStamp>(
     core::gui::RubberStamp{
-        .page_index = params.page_index,
-        .position_x = params.position_x,
-        .position_y = params.position_y,
-        .qml_width = params.page_width,
-        .real_stamp_qml_width = params.real_stamp_width,
-        .qml_height = params.page_height,
-        .stamp_width = params.stamp_width,
-        .stamp_height = params.stamp_height,
-        .link =  params.link,
-        .res = image_future_->takeResult()
+        params.page_index,
+        params.position_x,
+        params.position_y,
+        params.page_width,
+        params.real_stamp_width,
+        params.page_height,
+        params.stamp_width,
+        params.stamp_height,
+        params.link,
+        image_future_->takeResult()
     }));
     }
     history_manager_->clearRedo();
