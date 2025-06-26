@@ -41,7 +41,5 @@ Dialog {
                 rubber_model: itemView.model
             }
         }
-
     }
-
 }

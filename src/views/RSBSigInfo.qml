@@ -10,18 +10,15 @@ Flickable {
     rightMargin: 10
     topMargin: 10
 
-
     Item {
         width: parent.width
         height: 40
-        RSBCloseButton {
-        }
+        RSBCloseButton {}
     }
 
     Column {
         id: sigInfoContentColumn
         width: parent.width
-
 
         Text {
             text: qsTr("Signature")
@@ -30,14 +27,12 @@ Flickable {
             color: StyleSheet.font_color_extra
         }
 
-
         //////////////////////////////////////
         // signature
         RSideBarStatusMedal {
             title: qsTr("Status")
             value: jsonData !== undefined && jsonData.signature.status
         }
-
 
         Column {
             anchors.left: parent.left
@@ -167,7 +162,7 @@ Flickable {
                 }
                 Repeater {
                     model: modelData.tbs_response_data.responses
-                        !== undefined ? modelData.tbs_response_data.responses : []
+                           !== undefined ? modelData.tbs_response_data.responses : []
                     Column {
                         width: root.width
                         RSideBarStatusMedal {
@@ -203,18 +198,17 @@ Flickable {
             }
         }
 
-
         // ByteRange analasys
         TextPairBool {
             id: fullCoverageStatus
             keyText: qsTr("The signature covers the entire document")
-            value: jsonData !== undefined ? jsonData.full_coverage : false;
+            value: jsonData !== undefined ? jsonData.full_coverage : false
         }
         TextPairBool {
             id: recoverableStatus
             visible: !fullCoverageStatus.value
             keyText: qsTr("It is possible to open a signed version")
-            value: jsonData !== undefined ? jsonData.can_be_casted_to_full_coverage : false;
+            value: jsonData !== undefined ? jsonData.can_be_casted_to_full_coverage : false
         }
 
         // Recover signed document button
@@ -229,7 +223,7 @@ Flickable {
                 anchors.bottom: parent.bottom
 
                 onClicked: {
-                    siglistModel.recoverDoc(jsonData.current_index);
+                    siglistModel.recoverDoc(jsonData.current_index)
                     //recoverDocButton.enabled = false
                 }
             }

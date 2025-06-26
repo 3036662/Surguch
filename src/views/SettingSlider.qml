@@ -8,17 +8,17 @@ Slider {
     property color back_color: StyleSheet.slider_fill_color
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
-        implicitHandleWidth + leftPadding + rightPadding)
+                            implicitHandleWidth + leftPadding + rightPadding)
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
-        implicitHandleHeight + topPadding + bottomPadding)
+                             implicitHandleHeight + topPadding + bottomPadding)
 
     padding: 6
 
     handle: Rectangle {
         x: control.leftPadding + (control.horizontal ? control.visualPosition * (control.availableWidth - width) : (control.availableWidth - width) / 2)
         y: control.topPadding
-            + (control.horizontal ? (control.availableHeight - height) / 2 : control.visualPosition
-                * (control.availableHeight - height))
+           + (control.horizontal ? (control.availableHeight - height) / 2 : control.visualPosition
+                                   * (control.availableHeight - height))
         implicitWidth: 20
         implicitHeight: 20
         radius: width / 2

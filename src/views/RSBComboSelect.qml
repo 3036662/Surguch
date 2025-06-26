@@ -27,7 +27,6 @@ ComboBox {
         required property var model
         required property int index
 
-
         width: control.width
         contentItem: Item {
 
@@ -58,8 +57,8 @@ ComboBox {
                 color: StyleSheet.font_color_extra
             }
             visible: control.highlightedIndex === index && text !== ""
-            text: control.model[index]["tooltip"] !== undefined ?
-                control.model[index]["tooltip"] : "";
+            text: control.model[index]["tooltip"]
+                  !== undefined ? control.model[index]["tooltip"] : ""
         }
     }
 

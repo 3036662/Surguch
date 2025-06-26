@@ -11,7 +11,6 @@ Switch {
     font.family: "Noto Sans"
 
     width: parent.width
-    
 
     indicator: Rectangle {
         implicitWidth: size_w

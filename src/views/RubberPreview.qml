@@ -38,7 +38,6 @@ Item {
         return params
     }
 
-
     function createPreview() {
         processing = true
         let params = setStampData()
@@ -69,7 +68,6 @@ Item {
                     createPreview()
                 }
             }
-
         }
     }
 

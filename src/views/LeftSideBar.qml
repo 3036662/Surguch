@@ -36,7 +36,6 @@ Item {
 
     function setSigCount(sig_count) {
         sigCount = sig_count
-
     }
 
     function updateSource(new_src) {
@@ -48,8 +47,8 @@ Item {
     Layout.minimumWidth: 200
     Layout.fillHeight: true
     Layout.fillWidth: true
-    // Layout.horizontalStretchFactor: 1
 
+    // Layout.horizontalStretchFactor: 1
     Item {
         anchors.fill: parent
 
@@ -63,20 +62,17 @@ Item {
             id: previewListView
             source: root.source
             visible: showState == LeftSideBar.ShowState.Preview
-
         }
 
         SignaturesList {
             id: sigListView
-            visible: showState == LeftSideBar.ShowState.Certs
-                && sigCount > 0
+            visible: showState == LeftSideBar.ShowState.Certs && sigCount > 0
         }
 
         Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.fill: parent
-            visible: showState == LeftSideBar.ShowState.Certs
-                && sigCount === 0
+            visible: showState == LeftSideBar.ShowState.Certs && sigCount === 0
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top

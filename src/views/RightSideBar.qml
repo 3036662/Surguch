@@ -25,8 +25,7 @@ Item {
             //console.warn(data);
             jsonData = JSON.parse(data)
             showState = RightSideBar.ShowState.SigInfo
-            sigInfoPanel.contentY = 0;
-
+            sigInfoPanel.contentY = 0
         } catch (e) {
             console.error("Error parsing JSON" + e.message)
         }
@@ -38,8 +37,8 @@ Item {
     Layout.minimumWidth: 200
     Layout.fillHeight: true
     Layout.fillWidth: true
-    //Layout.horizontalStretchFactor: 1
 
+    //Layout.horizontalStretchFactor: 1
     Rectangle {
         anchors.fill: parent
         //border.color: "#454A4E"

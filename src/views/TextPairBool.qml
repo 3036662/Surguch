@@ -22,5 +22,4 @@ Column {
         color: value ? "green" : "red"
         font.family: "Noto Sans"
     }
-
 }

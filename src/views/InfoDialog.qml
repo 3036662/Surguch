@@ -32,7 +32,8 @@ Dialog {
         }
 
         Text {
-            text: qsTr("Help ") + ("<a href='https://www.altlinux.org/%D0%A1%D1%83%D1%80%D0%B3%D1%83%D1%87'>%1</a>".arg("https://www.altlinux.org/Сургуч"))
+            text: qsTr("Help ") + ("<a href='https://www.altlinux.org/%D0%A1%D1%83%D1%80%D0%B3%D1%83%D1%87'>%1</a>".arg(
+                                       "https://www.altlinux.org/Сургуч"))
             textFormat: Text.RichText
             font.family: "Noto Sans"
             color: StyleSheet.font_color_extra

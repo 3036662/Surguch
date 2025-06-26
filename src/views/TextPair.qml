@@ -32,5 +32,4 @@ Column {
         font.family: "Noto Sans"
         color: StyleSheet.font_color_extra
     }
-
 }

@@ -86,7 +86,6 @@ Dialog {
         rubberStampPreview.stamp_data = rubber_stamp_params
     }
 
-
     width: 840
     height: 720
     leftMargin: 10
@@ -186,6 +185,7 @@ Dialog {
                     height: 300
                     //color: "white"
                     Component.onCompleted: {
+
                     }
                 }
 
@@ -198,7 +198,9 @@ Dialog {
 
                 ScrollView {
                     Layout.fillWidth: true
-                    Layout.maximumHeight: Math.min(rubberStampText.implicitHeight, font.pixelSize * 5 + 20)
+                    Layout.maximumHeight: Math.min(
+                                              rubberStampText.implicitHeight,
+                                              font.pixelSize * 5 + 20)
                     visible: typeSwitch.checked
 
                     RSBTextArea {
@@ -210,7 +212,6 @@ Dialog {
                         placeholderTextColor: "grey"
                         font.family: "Noto Sans"
                         color: StyleSheet.font_color_extra
-
 
                         onTextChanged: {
                             updatePreview()
@@ -268,10 +269,11 @@ Dialog {
                             stampName.forceActiveFocus()
                             return
                         }
-                        if (stamp_id < 0 && !rubber_model.uniqueStampName(stampName.text)) {
+                        if (stamp_id < 0 && !rubber_model.uniqueStampName(
+                                    stampName.text)) {
                             stampName.forceActiveFocus()
                             errorMessageDialog.text = qsTr(
-                                "Stamp with this name already exists")
+                                        "Stamp with this name already exists")
                             errorMessageDialog.open()
                             return
                         }
@@ -291,7 +293,8 @@ Dialog {
                         stamp_json["B"] = blueColor.value
                         stamp_json["bg_transparent"] = transparencySwitch.checked ? 1 : 0
                         const new_stamp_data = JSON.stringify(stamp_json)
-                        console.warn(rubber_model.saveRubberStamps(new_stamp_data))
+                        console.warn(rubber_model.saveRubberStamps(
+                                         new_stamp_data))
                         rubberStampEditor.visible = false
                         stamp_data = null
                     }
@@ -397,7 +400,9 @@ Dialog {
 
                 ScrollView {
                     Layout.fillWidth: true
-                    Layout.maximumHeight: Math.min(rubberStampText.implicitHeight, font.pixelSize * 5 + 20)
+                    Layout.maximumHeight: Math.min(
+                                              rubberStampText.implicitHeight,
+                                              font.pixelSize * 5 + 20)
                     visible: typeSwitch.checked
 
                     RSBTextArea {
@@ -418,7 +423,8 @@ Dialog {
                     ScrollBar.vertical: ScrollBar {
                         Layout.fillWidth: true
                         anchors.right: parent.right
-                        policy: (rubberStampText.lineCount > 5) ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff
+                        policy: (rubberStampText.lineCount
+                                 > 5) ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff
                     }
                 }
 
@@ -434,7 +440,7 @@ Dialog {
                     id: fontName
                     Layout.fillWidth: true
                     visible: typeSwitch.checked
-                    model: fontHelper.cyrillicFamilies(); //Qt.fontFamilies()
+                    model: fontHelper.cyrillicFamilies() //Qt.fontFamilies()
                     wheelEnabled: true
 
                     onActivated: {
