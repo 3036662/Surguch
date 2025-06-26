@@ -59,10 +59,11 @@ QSGNode *RubberPreviewRender::updatePaintNode(
         QSGTexture *texture = window()->createTextureFromImage(
             (*result_->image_)
                 .scaled(400,
-                        300 * (static_cast<double>(
-                                  result_->data_->resolution_y /
-                                  static_cast<double>(
-                                      result_->data_->resolution_x))),
+                        static_cast<int>(
+                            300 * (static_cast<double>(
+                                      result_->data_->resolution_y /
+                                      static_cast<double>(
+                                          result_->data_->resolution_x)))),
                         Qt::KeepAspectRatio));
         setHeight(300 *
                   (static_cast<double>(
@@ -80,8 +81,10 @@ QSGNode *RubberPreviewRender::updatePaintNode(
         QSGTexture *texture = window()->createTextureFromImage(
             (*result_->image_)
                 .scaled(
-                    400 * (static_cast<double>(result_->data_->resolution_x) /
-                           static_cast<double>(result_->data_->resolution_y)),
+                    static_cast<int>(
+                        400 *
+                        (static_cast<double>(result_->data_->resolution_x) /
+                         static_cast<double>(result_->data_->resolution_y))),
                     300, Qt::KeepAspectRatio));
         setHeight(300);
         setWidth(400 * (static_cast<double>(result_->data_->resolution_x) /
@@ -207,7 +210,7 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
             default_weight = tmp_weight;
         }
         params_.font_weight = default_weight;
-        //qWarning() << "weight:" << params_.font_weight;
+        // qWarning() << "weight:" << params_.font_weight;
     }
     if (qvparams.contains("border_color_red")) {
         params_.border_color.R = qvparams.value("border_color_red").toUInt();
@@ -246,8 +249,8 @@ core::gui::SharedRubberParamWrapper RubberPreviewRender::createParams() const {
     if (!params_wrapper->qb_img_path.isEmpty()) {
         pod_params.src_img_path = params_wrapper->qb_img_path.data();
     }
-    pod_params.target_x = params_.stamp_width;
-    pod_params.target_y = params_.stamp_height;
+    pod_params.target_x = std::ceil<uint64_t>(params_.stamp_width);
+    pod_params.target_y = std::ceil<uint64_t>(params_.stamp_height);
     pod_params.stamp_preserve_ratio = params_.stamp_preserve_ratio;
     pod_params.create_from_image = params_.create_from_image;
     params_wrapper->qb_annotation_text = params_.annotation_text.toUtf8();

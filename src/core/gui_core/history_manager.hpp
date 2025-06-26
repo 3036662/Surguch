@@ -51,10 +51,10 @@ class HistoryManager : public QObject {
     std::vector<pdfcsp::pdf::CAnnotParams> getAnnotsParams();
 
     /// @brief get undo action size
-    int getUndoCount() const;
+    size_t getUndoCount() const;
 
     /// @brief get redo action size
-    int getRedoCount() const;
+    size_t getRedoCount() const;
 
    private:
     std::vector<EditActions> undo_actions_;

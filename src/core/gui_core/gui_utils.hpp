@@ -14,7 +14,7 @@ std::unique_ptr<BakeResult> prepareStampImage(
 SignParams preparePreviewParams(const QVariantMap& qvparams);
 
 /// @brief Gather all parameters (pdfcsp::pdf::CSignParam)
-SharedSignParamWrapper createParams(SignParams params);
+SharedSignParamWrapper createParams(const SignParams& params);
 
 std::unique_ptr<BakeRubberResult> prepareImage(
     const SharedRubberParamWrapper& params);

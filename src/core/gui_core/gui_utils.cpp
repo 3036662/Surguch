@@ -162,7 +162,7 @@ SignParams preparePreviewParams(const QVariantMap &qvparams) {
 }
 
 /// @brief Gather all parameters (pdfcsp::pdf::CSignParam)
-SharedSignParamWrapper createParams(SignParams params_) {
+SharedSignParamWrapper createParams(const SignParams &params_) {
     auto params_wrapper = std::make_shared<CSignParamsWrapper>();
     pdfcsp::pdf::CSignParams &pod_params = params_wrapper->pod_params;
     pod_params.page_index = params_.page_index;
@@ -259,7 +259,7 @@ RubberParams prepareParams(const QVariantMap &qvparams) {
         zoom = qvparams.value("zoom_on_rubber_render").toDouble();
     }
     if (qvparams.contains("page_index")) {
-        params.page_index = qvparams.value("page_index").toUInt();
+        params.page_index = qvparams.value("page_index").toInt();
     }
     if (qvparams.contains("stamp_x")) {
         params.position_x = qvparams.value("stamp_x").toDouble();
@@ -291,7 +291,8 @@ RubberParams prepareParams(const QVariantMap &qvparams) {
         params.real_stamp_width = qvparams.value("annotation_width").toUInt();
         params.annotation_width = qvparams["annotation_width"].toUInt();
         if (zoom > 0 && zoom < 1) {
-            params.annotation_width = params.annotation_width / zoom;
+            params.annotation_width =
+                std::ceil<quint64>(params.annotation_width / zoom);
         }
     }
     if (qvparams.contains("border_width")) {
@@ -346,7 +347,7 @@ RubberParams prepareParams(const QVariantMap &qvparams) {
             default_weight = tmp_weight;
         }
         params.font_weight = default_weight;
-        //qWarning() << "weight:" << params.font_weight;
+        // qWarning() << "weight:" << params.font_weight;
     }
     if (qvparams.contains("border_color_red")) {
         params.border_color.R = qvparams.value("border_color_red").toUInt();
@@ -385,8 +386,8 @@ SharedRubberParamWrapper createParams(const RubberParams &params) {
     if (!paramswrapper->qb_img_path.isEmpty()) {
         pod_params.src_img_path = paramswrapper->qb_img_path.data();
     }
-    pod_params.target_x = params.stamp_width;
-    pod_params.target_y = params.stamp_height;
+    pod_params.target_x = std::ceil<uint64_t>(params.stamp_width);
+    pod_params.target_y = std::ceil<uint64_t>(params.stamp_height);
     pod_params.stamp_preserve_ratio = params.stamp_preserve_ratio;
     pod_params.create_from_image = params.create_from_image;
     paramswrapper->qb_annotation_text = params.annotation_text.toUtf8();

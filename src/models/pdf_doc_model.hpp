@@ -113,10 +113,10 @@ class PdfDocModel : public QAbstractListModel {
     Q_INVOKABLE void redoRubberStamp();
 
     /// @brief get undo actions size
-    Q_INVOKABLE int getUndoCount() const;
+    [[nodiscard]] Q_INVOKABLE size_t getUndoCount() const;
 
     /// @brief get redo actions size
-    Q_INVOKABLE int getRedoCount() const;
+    [[nodiscard]] Q_INVOKABLE size_t getRedoCount() const;
 
     /// @brief clear history
     Q_INVOKABLE void clearHistory() const;
@@ -130,7 +130,7 @@ class PdfDocModel : public QAbstractListModel {
     getNeedlesForPage(size_t page_index);
 
     /// @brief search for text
-    Q_INVOKABLE void performSearch(QString needle);
+    Q_INVOKABLE void performSearch(const QString &needle);
 
     Q_INVOKABLE void jumpToNeedle(int needle_index);
 

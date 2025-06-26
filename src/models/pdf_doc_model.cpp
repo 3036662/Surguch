@@ -126,7 +126,7 @@ void PdfDocModel::setSource(const QString &path) {
     if (history_manager_ != nullptr) {
         history_manager_->clearHistory();
     }
-    //qWarning() << "path = " << path;
+    // qWarning() << "path = " << path;
     processFileDelete();
     fzctx_ = fz_new_context(nullptr, nullptr, 500000000);
     fz_try(fzctx_) {
@@ -339,7 +339,7 @@ PdfDocModel::NeedleRectsOnPage PdfDocModel::getNeedlesForPage(
 }
 
 /// @brief search for text
-void PdfDocModel::performSearch(QString needle) {
+void PdfDocModel::performSearch(const QString &needle) {
     qWarning() << "search for " << needle;
     if (text_extractor_) {
         text_extractor_->performSearch(needle, false);
@@ -453,7 +453,7 @@ void PdfDocModel::redoRubberStamp() {
     emit updateDoc();
 }
 
-int PdfDocModel::getUndoCount() const {
+size_t PdfDocModel::getUndoCount() const {
     if (!history_manager_) {
         return 0;
     }
@@ -462,7 +462,7 @@ int PdfDocModel::getUndoCount() const {
     return history_manager_->getUndoCount();
 }
 
-int PdfDocModel::getRedoCount() const {
+size_t PdfDocModel::getRedoCount() const {
     if (!history_manager_) {
         return 0;
     }
