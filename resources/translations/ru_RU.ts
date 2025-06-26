@@ -458,8 +458,8 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+74"/>
         <location filename="../../build/src/gui_pdf_csp/views/LeftSideBar.qml" line="+72"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+78"/>
-        <location filename="../../src/views/LeftSideBar.qml" line="+78"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+84"/>
+        <location filename="../../src/views/LeftSideBar.qml" line="+84"/>
         <source>No signatures</source>
         <translation>Подписи отсутствуют</translation>
     </message>
@@ -680,10 +680,10 @@
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+761"/>
         <location line="+144"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+564"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+765"/>
-        <location line="+142"/>
-        <location filename="../../src/views/PdfListView.qml" line="+765"/>
-        <location line="+142"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+770"/>
+        <location line="+152"/>
+        <location filename="../../src/views/PdfListView.qml" line="+770"/>
+        <location line="+152"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>
@@ -691,10 +691,10 @@
         <location line="-143"/>
         <location line="+144"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+1"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-141"/>
-        <location line="+142"/>
-        <location filename="../../src/views/PdfListView.qml" line="-141"/>
-        <location line="+142"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-151"/>
+        <location line="+152"/>
+        <location filename="../../src/views/PdfListView.qml" line="-151"/>
+        <location line="+152"/>
         <source>Invalid position</source>
         <translation>Недопустимая позиция</translation>
     </message>

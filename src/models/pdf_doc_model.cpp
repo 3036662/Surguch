@@ -126,7 +126,7 @@ void PdfDocModel::setSource(const QString &path) {
     if (history_manager_ != nullptr) {
         history_manager_->clearHistory();
     }
-    qWarning() << "path = " << path;
+    //qWarning() << "path = " << path;
     processFileDelete();
     fzctx_ = fz_new_context(nullptr, nullptr, 500000000);
     fz_try(fzctx_) {

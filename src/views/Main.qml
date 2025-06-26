@@ -307,8 +307,8 @@ ApplicationWindow {
         headerSubBar.showPreviews.connect(leftSideBar.showPreviews)
         headerSubBar.showCerts.connect(leftSideBar.showCerts)
         //enable buttons for stamps
-        pdfListView.enableSign.connect(header.enableSignMode)
-        pdfListView.enableTag.connect(headerSubBar.enableTagButton)
+        pdfListView.quitSignMode.connect(header.quitSignMode)
+        pdfListView.disableTagMode.connect(headerSubBar.disableTagMode)
         // search
         headerSubBar.searchDialog.searchRequired.connect(pdfModel.performSearch)
         pdfModel.searchCompleted.connect(pdfListView.searchCompleted)

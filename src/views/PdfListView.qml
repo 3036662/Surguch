@@ -67,9 +67,9 @@ ListView {
         signal
     canZoomOut
 
-    signal enableSign()
+    signal quitSignMode()
 
-    signal enableTag()
+    signal disableTagMode()
 
     signal stampLocationSelected(var stamp_location_info, var path)
 
@@ -95,7 +95,6 @@ ListView {
         signMode = false
         signInProgress = true
         stampLocationSelected(location_data, tmpFile)
-        enableTag()
         forceActiveFocus()
     }
 
@@ -720,6 +719,7 @@ ListView {
                 enabled: root.signMode || root.signInProgress
                 anchors.fill: parent
                 hoverEnabled: true
+                acceptedButtons: Qt.RightButton | Qt.LeftButton
 
                 onEntered: {
                     cross.visible = root.signInProgress ? false : true
@@ -729,7 +729,12 @@ ListView {
                     cross.visible = false
                     cursorShape = Qt.ArrowCursor
                 }
-                onClicked: {
+                onClicked: (mouse) => {
+                    if ((mouse.button === Qt.RightButton) && root.signMode) {
+                        quitSignMode()
+                        mouse.accepted = true
+                    }
+
                     if (root.signMode && !root.signInProgress
                         && cross.valid_position) {
                         let location_data = {
@@ -791,6 +796,7 @@ ListView {
                 anchors.fill: parent
                 hoverEnabled: true
                 cursorShape: Qt.CrossCursor
+                acceptedButtons: Qt.RightButton | Qt.LeftButton
 
                 onEntered: {
                     console.debug("enter height = " + tagCross.height)
@@ -809,13 +815,20 @@ ListView {
                     cursorShape = Qt.ArrowCursor
                 }
 
+                onClicked: (mouse) => {
+                    if ((mouse.button === Qt.RightButton) && root.tagMode) {
+                        disableTagMode()
+                        mouse.accepted = true
+                    }
+                }
+
                 onPressed: {
                     root.interactive = false
                     root.startX = mouseX
                     root.startY = mouseY
                 }
 
-                onPositionChanged: {
+                onPositionChanged: (mouse) => {
                     if ((pressed &&
                         Math.abs(startX - mouseX) > 10) || root.tag_placing) {
                         root.tag_placing = true
@@ -854,8 +867,11 @@ ListView {
                     }
                 }
 
-                onReleased: {
-                    if (root.tagMode && tagCross.valid_position) {
+                onReleased: (mouse) => {
+                    if ((mouse.button === Qt.RightButton) && root.tagMode) {
+                        disableTagMode()
+                        mouse.accepted = true
+                    } else if (root.tagMode && tagCross.valid_position) {
                         //console.warn("pdflistview tagdata = " + tagData)
                         let t_data = JSON.parse(tagData)
                         let rubber_stamp_data = {
@@ -897,7 +913,6 @@ ListView {
                         root.tagInProgress = true
                         root.forceActiveFocus()
                         root.tag_placing = false
-                        enableSign()
                     }
                 }
 
