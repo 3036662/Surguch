@@ -11,7 +11,7 @@ class FontHelper : public QObject {
    public:
     explicit FontHelper(QObject *parent = nullptr) : QObject(parent) {}
 
-    Q_INVOKABLE QStringList cyrillicFamilies() {
+    static Q_INVOKABLE QStringList cyrillicFamilies()  {
         return QFontDatabase::families(QFontDatabase::Cyrillic);
     }
 };

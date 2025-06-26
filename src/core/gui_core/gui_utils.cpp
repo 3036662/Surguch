@@ -426,14 +426,14 @@ std::vector<pdfcsp::pdf::CAnnotParams> createAnnotParams(
     std::vector<pdfcsp::pdf::CAnnotParams> cparams;
     std::for_each(
         params.begin(), params.end(),
-        [&cparams](const std::shared_ptr<RubberStamp> &p) {
+        [&cparams](const std::shared_ptr<RubberStamp> &param) {
             cparams.emplace_back(pdfcsp::pdf::CAnnotParams{
-                p->page_index, p->qml_width, p->qml_height, p->position_x,
-                p->position_y, p->stamp_width, p->stamp_height,
-                p->res->data_->img, p->res->data_->img_size,
-                p->res->data_->img_mask, p->res->data_->img_mask_size,
-                p->res->data_->resolution_x, p->res->data_->resolution_y,
-                p->link.empty() ? nullptr : p->link.data()});
+                param->page_index, param->qml_width, param->qml_height, param->position_x,
+                param->position_y, param->stamp_width, param->stamp_height,
+                param->res->data_->img, param->res->data_->img_size,
+                param->res->data_->img_mask, param->res->data_->img_mask_size,
+                param->res->data_->resolution_x, param->res->data_->resolution_y,
+                param->link.empty() ? nullptr : param->link.data()});
         });
     return cparams;
 }
