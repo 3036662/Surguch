@@ -54,6 +54,7 @@ PdfDocModel::PdfDocModel(QObject *parent)
     QWindow *p_window = nullptr;
     QScreen *p_screen = nullptr;
     const QWindowList window_list = QGuiApplication::topLevelWindows();
+    // NOLINTNEXTLINE
     if (!window_list.isEmpty() && (p_window = window_list.at(0)) != nullptr &&
         (p_screen = p_window->screen()) != nullptr) {
         physical_screen_dpi_ = p_screen->physicalDotsPerInch();

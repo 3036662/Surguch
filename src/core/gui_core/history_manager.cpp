@@ -27,9 +27,8 @@ std::vector<HistoryManager::EditActions> HistoryManager::getActionsOnPage(
             }
         }
         return actions_on_page;
-    } else {
-        return {};
     }
+    return {};
 }
 
 void HistoryManager::clearRedo() {

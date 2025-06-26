@@ -78,7 +78,7 @@ QSGNode *RubberPreviewRender::updatePaintNode(
     }
     if (result_->data_->resolution_y > 300 &&
         result_->data_->resolution_y > result_->data_->resolution_x) {
-        QSGTexture *texture = window()->createTextureFromImage(
+        texture = window()->createTextureFromImage(
             (*result_->image_)
                 .scaled(
                     static_cast<int>(
@@ -94,17 +94,15 @@ QSGNode *RubberPreviewRender::updatePaintNode(
             rectNode->setRect(QRectF(0, 0, width(), height()));
         }
         return rectNode;
-    } else {
-        QSGTexture *texture =
-            window()->createTextureFromImage((*result_->image_));
-        setWidth(result_->data_->resolution_x);
-        setHeight(result_->data_->resolution_y);
-        if (texture != nullptr) {
-            rectNode->setTexture(texture);
-            rectNode->setRect(QRectF(0, 0, width(), height()));
-        }
-        return rectNode;
     }
+    texture = window()->createTextureFromImage((*result_->image_));
+    setWidth(result_->data_->resolution_x);
+    setHeight(result_->data_->resolution_y);
+    if (texture != nullptr) {
+        rectNode->setTexture(texture);
+        rectNode->setRect(QRectF(0, 0, width(), height()));
+    }
+    return rectNode;
     if (texture != nullptr) {
         rectNode->setTexture(texture);
         rectNode->setRect(QRectF(0, 0, width(), height()));
@@ -201,7 +199,7 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
         const QStringList styles = QFontDatabase::styles(params_.font_family);
         qsizetype index_regular =
             styles.indexOf("regular", Qt::CaseInsensitive);
-        if (index_regular < 0 && styles.size() > 0) {
+        if (index_regular < 0 && !styles.empty()) {
             index_regular = 0;
         }
         tmp_weight = default_weight = QFontDatabase::weight(
@@ -249,8 +247,8 @@ core::gui::SharedRubberParamWrapper RubberPreviewRender::createParams() const {
     if (!params_wrapper->qb_img_path.isEmpty()) {
         pod_params.src_img_path = params_wrapper->qb_img_path.data();
     }
-    pod_params.target_x = std::ceil<uint64_t>(params_.stamp_width);
-    pod_params.target_y = std::ceil<uint64_t>(params_.stamp_height);
+    pod_params.target_x = static_cast<uint64_t>(params_.stamp_width);
+    pod_params.target_y = static_cast<uint64_t>(params_.stamp_height);
     pod_params.stamp_preserve_ratio = params_.stamp_preserve_ratio;
     pod_params.create_from_image = params_.create_from_image;
     params_wrapper->qb_annotation_text = params_.annotation_text.toUtf8();

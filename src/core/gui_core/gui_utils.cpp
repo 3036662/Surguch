@@ -49,6 +49,7 @@ std::unique_ptr<BakeResult> prepareStampImage(
             result->data_->resolution_y, result->data_->resolution_x * 4,
             QImage::Format_RGBA8888,
             [](void *ptr) {
+                // NOLINTNEXTLINE
                 delete static_cast<std::vector<unsigned char> *>(ptr);
             },
             p_vec);
@@ -243,6 +244,7 @@ std::unique_ptr<BakeRubberResult> prepareImage(
             result->data_->resolution_y, result->data_->resolution_x * 4,
             QImage::Format_RGBA8888,
             [](void *ptr) {
+                // NOLINTNEXTLINE
                 delete static_cast<std::vector<unsigned char> *>(ptr);
             },
             p_vec);
@@ -290,9 +292,10 @@ RubberParams prepareParams(const QVariantMap &qvparams) {
     if (qvparams.contains("annotation_width")) {
         params.real_stamp_width = qvparams.value("annotation_width").toUInt();
         params.annotation_width = qvparams["annotation_width"].toUInt();
+
         if (zoom > 0 && zoom < 1) {
-            params.annotation_width =
-                std::ceil<quint64>(params.annotation_width / zoom);
+            params.annotation_width = static_cast<quint64>(
+                static_cast<double>(params.annotation_width) / zoom);
         }
     }
     if (qvparams.contains("border_width")) {
@@ -338,7 +341,7 @@ RubberParams prepareParams(const QVariantMap &qvparams) {
         const QStringList styles = QFontDatabase::styles(params.font_family);
         qsizetype index_regular =
             styles.indexOf("regular", Qt::CaseInsensitive);
-        if (index_regular < 0 && styles.size() > 0) {
+        if (index_regular < 0 && !styles.empty()) {
             index_regular = 0;
         }
         tmp_weight = default_weight = QFontDatabase::weight(
@@ -386,8 +389,8 @@ SharedRubberParamWrapper createParams(const RubberParams &params) {
     if (!paramswrapper->qb_img_path.isEmpty()) {
         pod_params.src_img_path = paramswrapper->qb_img_path.data();
     }
-    pod_params.target_x = std::ceil<uint64_t>(params.stamp_width);
-    pod_params.target_y = std::ceil<uint64_t>(params.stamp_height);
+    pod_params.target_x = static_cast<uint64_t>(params.stamp_width);
+    pod_params.target_y = static_cast<uint64_t>(params.stamp_height);
     pod_params.stamp_preserve_ratio = params.stamp_preserve_ratio;
     pod_params.create_from_image = params.create_from_image;
     paramswrapper->qb_annotation_text = params.annotation_text.toUtf8();
@@ -428,11 +431,13 @@ std::vector<pdfcsp::pdf::CAnnotParams> createAnnotParams(
         params.begin(), params.end(),
         [&cparams](const std::shared_ptr<RubberStamp> &param) {
             cparams.emplace_back(pdfcsp::pdf::CAnnotParams{
-                param->page_index, param->qml_width, param->qml_height, param->position_x,
-                param->position_y, param->stamp_width, param->stamp_height,
-                param->res->data_->img, param->res->data_->img_size,
-                param->res->data_->img_mask, param->res->data_->img_mask_size,
-                param->res->data_->resolution_x, param->res->data_->resolution_y,
+                param->page_index, param->qml_width, param->qml_height,
+                param->position_x, param->position_y, param->stamp_width,
+                param->stamp_height, param->res->data_->img,
+                param->res->data_->img_size, param->res->data_->img_mask,
+                param->res->data_->img_mask_size,
+                param->res->data_->resolution_x,
+                param->res->data_->resolution_y,
                 param->link.empty() ? nullptr : param->link.data()});
         });
     return cparams;

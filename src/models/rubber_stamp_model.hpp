@@ -43,7 +43,7 @@ class RubberStampModel : public QAbstractListModel {
 
    private:
     /// @brief generate config for basic rubber stamps
-    QString generateConfig() const;
+    [[nodiscard]] QString generateConfig() const;
 
     /// @brief readRubberStamps from JSON file in
     /// @details /HOME/USER/.config/pdfcsp/rubber_stamps.json

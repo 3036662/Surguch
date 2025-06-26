@@ -24,7 +24,7 @@ class HistoryManager : public QObject {
     Q_OBJECT
 
    public:
-    HistoryManager(QObject* parent = nullptr);
+    explicit HistoryManager(QObject* parent = nullptr);
 
     using EditActions = std::shared_ptr<RubberStamp>;
 

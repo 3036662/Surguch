@@ -28,6 +28,10 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <shared_mutex>
 
 #include "gui_core/gui_utils.hpp"
+
+// internal
+namespace {
+
 inline std::vector<unsigned char> glueImageWithMask(
     const unsigned char *img, size_t img_size, const unsigned char *img_mask,
     size_t mask_size) {
@@ -50,6 +54,7 @@ inline std::vector<unsigned char> glueImageWithMask(
     }
     return result;
 }
+}  // namespace
 
 PdfPageRender::PdfPageRender() {
     setFlag(QQuickItem::ItemHasContents, true);
