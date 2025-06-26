@@ -346,7 +346,7 @@ RubberParams prepareParams(const QVariantMap &qvparams) {
             default_weight = tmp_weight;
         }
         params.font_weight = default_weight;
-        qWarning() << "weight:" << params.font_weight;
+        //qWarning() << "weight:" << params.font_weight;
     }
     if (qvparams.contains("border_color_red")) {
         params.border_color.R = qvparams.value("border_color_red").toUInt();

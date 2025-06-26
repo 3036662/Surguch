@@ -207,7 +207,7 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
             default_weight = tmp_weight;
         }
         params_.font_weight = default_weight;
-        qWarning() << "weight:" << params_.font_weight;
+        //qWarning() << "weight:" << params_.font_weight;
     }
     if (qvparams.contains("border_color_red")) {
         params_.border_color.R = qvparams.value("border_color_red").toUInt();

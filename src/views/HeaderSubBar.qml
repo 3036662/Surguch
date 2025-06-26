@@ -80,7 +80,6 @@ ColumnLayout {
 
     function clickTagButton() {
         rubberStampPutButton.enabled = true
-        header.disableSignMode()
         pdfListView.tagMode = !pdfListView.tagMode
         pdfListView.tagData = rubberStampPutButton.tag_data
         pdfModel.prepareImage(JSON.parse(rubberStampPutButton.tag_data))
@@ -99,10 +98,9 @@ ColumnLayout {
         }
     }
 
-    function disableTagButton() {
-        rubberStampPutButton.enabled = false
-        rubberStampPutButton.down = false
+    function disableTagMode() {
         pdfListView.tagMode = false
+        rubberStampPutButton.down = false
     }
 
     spacing: 1
@@ -329,7 +327,7 @@ ColumnLayout {
 
                 Layout.alignment: Qt.AlignVCenter
                 model: [qsTr("Automatic"), "75%", "100%", "125%", "150%"]
-                currentIndex: 0
+                currentIndex: 2
                 implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
                 anchors.verticalCenter: parent.verticalCenter
                 popup.y: comboBoxZoom.height
@@ -351,7 +349,7 @@ ColumnLayout {
 
             property var tag_data
 
-            enabled: !!tag_data && !pdfListView.signMode
+            enabled: !!tag_data
             flat: true
             icon.width: 20
             icon.height: 20
@@ -359,8 +357,8 @@ ColumnLayout {
             rightPadding: 5
             icon.source: StyleSheet.tag_icon
             onClicked: {
-                console.debug("create tag")
-                header.disableSignMode()
+                //console.debug("create tag")
+                header.quitSignMode()
                 pdfListView.tagMode = !pdfListView.tagMode
                 pdfListView.tagData = tag_data
                 pdfModel.prepareImage(JSON.parse(tag_data))
@@ -386,7 +384,6 @@ ColumnLayout {
         ToolButton {
             id: rubberStampDialogButton
 
-            enabled: !pdfListView.signMode
             flat: true
             icon.width: 20
             icon.height: 10
@@ -396,6 +393,7 @@ ColumnLayout {
             bottomPadding: 5
             icon.source: StyleSheet.chevron_down
             onClicked: {
+                header.quitSignMode()
                 if (rubberStampDialog.visible) {
                     rubberStampDialog.close()
                 } else {

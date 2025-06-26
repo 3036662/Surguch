@@ -39,6 +39,10 @@ Item {
 
     }
 
+    function updateSource(new_src) {
+        source = new_src
+    }
+
     Layout.maximumWidth: 300
     Layout.preferredWidth: 300
     Layout.minimumWidth: 200

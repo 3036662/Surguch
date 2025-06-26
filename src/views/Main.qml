@@ -330,6 +330,8 @@ ApplicationWindow {
         pdfModel.signaturesFound.connect(siglistModel.updateSigList)
         // add rubber stamp to document
         pdfListView.tagPlaced.connect(headerSubBar.enableTagButton)
+        // sync pdflistpreview with changed source of pdflistview
+        pdfListView.updateLSB.connect(leftSideBar.updateSource)
         // open file error
         pdfModel.errorOpenFile.connect(function (err_string) {
             errorMessageDialog.text = err_string

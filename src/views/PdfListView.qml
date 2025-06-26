@@ -75,6 +75,8 @@ ListView {
 
     signal tagPlaced()
 
+    signal updateLSB(var source)
+
     signal updateHistory(int undo, int redo)
 
     function proceedSigning(location_data) {
@@ -90,7 +92,6 @@ ListView {
             //console.warn("new source: " + tmpFile)
         }
         //console.warn("starting to sign")
-        //console.warn(pdfModel.getSource())
         signMode = false
         signInProgress = true
         stampLocationSelected(location_data, tmpFile)
@@ -516,6 +517,7 @@ ListView {
     }
 
     onSourceChanged: {
+        //console.warn("pdflistview source = " + source)
         if (source === "") {
             return
         }
@@ -527,10 +529,11 @@ ListView {
         delegateRotation = 0
         pageIndToPreserveWhenZoom = 0
         pdfModel.setSource(source)
+        tagInProgress = false
         if (sourceIsTmp) {
             pdfModel.deleteFileLater(source)
         }
-        setZoom(-1)
+        setZoom(100)
         if (leftSideBar.sigCount === 0) {
             leftSideBar.showPreviews()
         } else {
@@ -549,6 +552,7 @@ ListView {
         let undoCount = pdfModel.getUndoCount()
         let redoCount = pdfModel.getRedoCount()
         updateHistory(undoCount, redoCount)
+        updateLSB(source)
     }
 
     onZoomPageFactChanged: {
@@ -883,8 +887,6 @@ ListView {
                             "link": t_data.stamp_link
                         }
 
-                        console.warn("tag width = " + tagCross.width)
-                        console.warn("tag height = " + tagCross.height)
                         root.size_estimated = false
                         tagCross.visible = false
                         cursorShape = Qt.BusyCursor

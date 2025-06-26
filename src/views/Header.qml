@@ -15,7 +15,7 @@ RowLayout {
     }
 
     function disableSignMode() {
-        console.warn("disable sign mode")
+        //console.warn("disable sign mode")
         signModeButton.down = false
         signModeButton.enabled = false
         pdfListView.signMode = false
@@ -26,6 +26,11 @@ RowLayout {
         signModeButton.enabled = true
         pdfListView.signMode = false
         pdfListView.signInProgress = false
+    }
+
+    function quitSignMode() {
+        pdfListView.signMode = false
+        signModeButton.down = false
     }
 
     function launchSaveFileWithQuit(quit_after_save) {
@@ -211,7 +216,7 @@ RowLayout {
                     || profileComboBox.currentIndex === -1) {
                     profileComboBox.popup.open()
                 } else {
-                    headerSubBar.disableTagButton()
+                    headerSubBar.disableTagMode()
                     pdfListView.signMode = !pdfListView.signMode
                     if (!down) {
                         pdfListView.reserRotation()

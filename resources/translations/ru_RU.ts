@@ -319,8 +319,8 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+52"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+52"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+52"/>
-        <location filename="../../src/views/Header.qml" line="+52"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+57"/>
+        <location filename="../../src/views/Header.qml" line="+57"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
@@ -399,8 +399,8 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+230"/>
         <location filename="../../build/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+153"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+230"/>
-        <location filename="../../src/views/HeaderSubBar.qml" line="+230"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+228"/>
+        <location filename="../../src/views/HeaderSubBar.qml" line="+228"/>
         <source> of </source>
         <translation> из </translation>
     </message>
@@ -458,8 +458,8 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+74"/>
         <location filename="../../build/src/gui_pdf_csp/views/LeftSideBar.qml" line="+72"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+74"/>
-        <location filename="../../src/views/LeftSideBar.qml" line="+74"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+78"/>
+        <location filename="../../src/views/LeftSideBar.qml" line="+78"/>
         <source>No signatures</source>
         <translation>Подписи отсутствуют</translation>
     </message>
@@ -565,8 +565,8 @@
     <message>
         <location line="+92"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+76"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+92"/>
-        <location filename="../../src/views/Main.qml" line="+92"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+94"/>
+        <location filename="../../src/views/Main.qml" line="+94"/>
         <source>The document was changed after signing, but can be restored</source>
         <translation>Документ был изменен после подписи! Присутствует возможность восстановить подписанную версию</translation>
     </message>
@@ -680,10 +680,10 @@
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+761"/>
         <location line="+144"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+564"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+761"/>
-        <location line="+144"/>
-        <location filename="../../src/views/PdfListView.qml" line="+761"/>
-        <location line="+144"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+765"/>
+        <location line="+142"/>
+        <location filename="../../src/views/PdfListView.qml" line="+765"/>
+        <location line="+142"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>
@@ -691,10 +691,10 @@
         <location line="-143"/>
         <location line="+144"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+1"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-143"/>
-        <location line="+144"/>
-        <location filename="../../src/views/PdfListView.qml" line="-143"/>
-        <location line="+144"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-141"/>
+        <location line="+142"/>
+        <location filename="../../src/views/PdfListView.qml" line="-141"/>
+        <location line="+142"/>
         <source>Invalid position</source>
         <translation>Недопустимая позиция</translation>
     </message>
@@ -1141,7 +1141,7 @@
         <translation>Создать тег</translation>
     </message>
     <message>
-        <location line="+63"/>
+        <location line="+64"/>
         <source>Standard config location cannot be determined, using home</source>
         <translation type="unfinished"></translation>
     </message>
