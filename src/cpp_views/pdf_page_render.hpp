@@ -94,6 +94,9 @@ class PdfPageRender : public QQuickItem {
     void widthGoalChanged();
 
    private:
+    /// @brief render rubber stamps on top of page
+    void renderRubberStamps();
+
     fz_document *fzdoc_ = nullptr;
     fz_context *fzctx_ = nullptr;
     int page_number_ = 0;

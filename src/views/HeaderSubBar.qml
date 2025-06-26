@@ -10,19 +10,27 @@ ColumnLayout {
 
     property alias searchDialog: searchDialog
 
-    signal zoomInClicked
-    signal zoomOutClicked
+        signal
+    zoomInClicked
+        signal
+    zoomOutClicked
 
     signal zoomSelected(int newZoom)
 
     signal scrollToPage(int pageNumber)
 
-    signal rotateClockwise
-    signal rotateCounterClockWise
-    signal showPreviews
-    signal showCerts
-    signal undoAction
-    signal redoAction
+        signal
+    rotateClockwise
+        signal
+    rotateCounterClockWise
+        signal
+    showPreviews
+        signal
+    showCerts
+        signal
+    undoAction
+        signal
+    redoAction
 
     function changePageCount(newCount) {
         page_number.pageCount = newCount
@@ -120,7 +128,8 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             flat: true
@@ -136,7 +145,8 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             flat: true
@@ -149,11 +159,12 @@ ColumnLayout {
 
             onClicked: {
                 printer.print(pdfListView.source, pdfListView.count,
-                              pdfListView.landscape)
+                    pdfListView.landscape)
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             flat: true
@@ -220,7 +231,8 @@ ColumnLayout {
             color: StyleSheet.font_color_extra
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             flat: true
@@ -250,7 +262,8 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             id: zoomOutButton
@@ -291,21 +304,21 @@ ColumnLayout {
                 onCurrentIndexChanged: {
                     let newZoom = 0
                     switch (currentIndex) {
-                    case 0:
-                        newZoom = -1 //auto
-                        break
-                    case 1:
-                        newZoom = 75
-                        break
-                    case 2:
-                        newZoom = 100
-                        break
-                    case 3:
-                        newZoom = 125
-                        break
-                    case 4:
-                        newZoom = 150
-                        break
+                        case 0:
+                            newZoom = -1 //auto
+                            break
+                        case 1:
+                            newZoom = 75
+                            break
+                        case 2:
+                            newZoom = 100
+                            break
+                        case 3:
+                            newZoom = 125
+                            break
+                        case 4:
+                            newZoom = 150
+                            break
                     }
                     if (newZoom != 0) {
                         zoomSelected(newZoom)
@@ -327,7 +340,8 @@ ColumnLayout {
         }
 
         // rubberStamps
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             id: rubberStampPutButton
@@ -355,16 +369,16 @@ ColumnLayout {
         }
 
         Keys.onPressed: event => {
-                            if (event.key === Qt.Key_Escape
-                                && pdfListView.tagMode) {
-                                header.enableSignMode()
-                                pdfListView.tagMode = false
-                                rubberStampPutButton.down = false
-                                event.accepted = true
-                                return
-                            }
-                            event.accepted = false
-                        }
+            if (event.key === Qt.Key_Escape
+                && pdfListView.tagMode) {
+                header.enableSignMode()
+                pdfListView.tagMode = false
+                rubberStampPutButton.down = false
+                event.accepted = true
+                return
+            }
+            event.accepted = false
+        }
 
         ToolButton {
             id: rubberStampDialogButton
@@ -388,7 +402,8 @@ ColumnLayout {
         }
 
         // search
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
         ToolButton {
             id: searchButton
             enabled: !pdfListView.signMode && !pdfListView.tagMode
@@ -441,7 +456,7 @@ ColumnLayout {
         enabled: undoCount > 0
         sequence: "Ctrl+Z"
         onActivated: {
-            console.warn("undo")
+            //console.warn("undo")
             undoAction()
             updateHistory()
         }
@@ -453,7 +468,7 @@ ColumnLayout {
         enabled: redoCount > 0
         sequence: "Ctrl+Y"
         onActivated: {
-            console.warn("redo")
+            //console.warn("redo")
             redoAction()
         }
     }

@@ -144,72 +144,7 @@ QSGNode *PdfPageRender::updatePaintNode(
                     delete[] buff;
                 },
                 render_result.buf);
-            {
-                const std::lock_guard<std::mutex> lock(mutex_);
-                if (!rubber_stamps_.empty()) {
-                    for (const auto &stamps_ : rubber_stamps_) {
-                        if (stamps_->res && stamps_->res->image_ != nullptr) {
-                            // auto start =
-                            // std::chrono::high_resolution_clock::now();
-                            QPainter painter(image_.get());
-                            // rotate the coordinate system
-                            painter.rotate(custom_rotation_);
-                            // move the coordinate system
-                            int img_width = image_->width();
-                            int img_height = image_->height();
-                            switch (static_cast<int>(custom_rotation_)) {
-                                case 90:
-                                    painter.translate(0, -image_->width());
-                                    std::swap(img_height, img_width);
-                                    break;
-                                case 180:
-                                    painter.translate(-image_->width(),
-                                                      -image_->height());
-                                    break;
-                                case 270:
-                                    painter.translate(-image_->height(), 0);
-                                    std::swap(img_height, img_width);
-                                    break;
-                                default:
-                                    painter.translate(0, 0);
-                                    break;
-                            }
-
-                            const double ratio =
-                                static_cast<double>(
-                                    stamps_->res->data_->resolution_x) /
-                                static_cast<double>(
-                                    stamps_->res->data_->resolution_y);
-                            const int target_width = static_cast<int>(
-                                stamps_->real_stamp_qml_width /
-                                stamps_->qml_width * img_width);
-                            const int target_height = static_cast<int>(
-                                stamps_->real_stamp_qml_width / ratio /
-                                stamps_->qml_height * img_height);
-
-                            const QImage stamp_scaled =
-                                stamps_->res->image_->scaled(
-                                    target_width, target_height,
-                                    Qt::KeepAspectRatio);
-                            painter.drawImage(
-                                static_cast<int>(stamps_->position_x /
-                                                 stamps_->qml_width *
-                                                 img_width),
-                                static_cast<int>(stamps_->position_y /
-                                                 stamps_->qml_height *
-                                                 img_height),
-                                stamp_scaled);
-                            // auto end =
-                            // std::chrono::high_resolution_clock::now();
-                            // std::chrono::duration<double, std::milli>
-                            // duration =123
-                            //     end - start;
-                            // qWarning() << "pos x: " << stamps_->position_x;
-                            // qWarning() << "pos y: " << stamps_->position_y;
-                        }
-                    }
-                }
-            }
+            renderRubberStamps();
         } catch (const std::exception &ex) {
             qWarning() << "[PdfPageRender] " << ex.what();
             image_ = std::make_unique<QImage>(size().toSize(),
@@ -226,6 +161,68 @@ QSGNode *PdfPageRender::updatePaintNode(
     return rectNode;
 }
 // NOLINTEND(cppcoreguidelines-owning-memory)
+
+
+/// @brief render rubber stamps on top of page
+void PdfPageRender::renderRubberStamps() {
+    const std::lock_guard<std::mutex> lock(mutex_);
+    if (!rubber_stamps_.empty()) {
+        for (const auto &stamps_ : rubber_stamps_) {
+            if (stamps_->res && stamps_->res->image_ != nullptr) {
+                // auto start =
+                // std::chrono::high_resolution_clock::now();
+                QPainter painter(image_.get());
+                // rotate the coordinate system
+                painter.rotate(custom_rotation_);
+                // move the coordinate system
+                int img_width = image_->width();
+                int img_height = image_->height();
+                switch (static_cast<int>(custom_rotation_)) {
+                    case 90:
+                        painter.translate(0, -image_->width());
+                        std::swap(img_height, img_width);
+                        break;
+                    case 180:
+                        painter.translate(-image_->width(), -image_->height());
+                        break;
+                    case 270:
+                        painter.translate(-image_->height(), 0);
+                        std::swap(img_height, img_width);
+                        break;
+                    default:
+                        painter.translate(0, 0);
+                        break;
+                }
+
+                const double ratio =
+                    static_cast<double>(stamps_->res->data_->resolution_x) /
+                    static_cast<double>(stamps_->res->data_->resolution_y);
+                const int target_width =
+                    static_cast<int>(stamps_->real_stamp_qml_width /
+                                     stamps_->qml_width * img_width);
+                const int target_height =
+                    static_cast<int>(stamps_->real_stamp_qml_width / ratio /
+                                     stamps_->qml_height * img_height);
+
+                const QImage stamp_scaled = stamps_->res->image_->scaled(
+                    target_width, target_height, Qt::KeepAspectRatio);
+                painter.drawImage(
+                    static_cast<int>(stamps_->position_x / stamps_->qml_width *
+                                     img_width),
+                    static_cast<int>(stamps_->position_y / stamps_->qml_height *
+                                     img_height),
+                    stamp_scaled);
+                // auto end =
+                // std::chrono::high_resolution_clock::now();
+                // std::chrono::duration<double, std::milli>
+                // duration =123
+                //     end - start;
+                // qWarning() << "pos x: " << stamps_->position_x;
+                // qWarning() << "pos y: " << stamps_->position_y;
+            }
+        }
+    }
+}
 
 /// setters to connect with the low-level MuPdf from pdf_doc_model
 void PdfPageRender::setDoc(fz_document *fzdoc) { fzdoc_ = fzdoc; }
