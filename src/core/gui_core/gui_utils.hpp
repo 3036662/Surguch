@@ -6,27 +6,28 @@
 
 namespace core::gui {
 
-/// @brief concurrent function to make QImage
+/// @brief concurrent function to make QImage for sign stamp
 std::unique_ptr<BakeResult> prepareStampImage(
     const SharedSignParamWrapper& params);
 
-/// @brief prepare preview params for later use
+/// @brief prepare sign stamp preview params for later use
 SignParams preparePreviewParams(const QVariantMap& qvparams);
 
-/// @brief Gather all parameters (pdfcsp::pdf::CSignParam)
+/// @brief Gather all sign stamp parameters (pdfcsp::pdf::CSignParam)
 SharedSignParamWrapper createParams(const SignParams& params);
 
+/// @brief concurrent function to make QImage for rubber stamp
 std::unique_ptr<BakeRubberResult> prepareImage(
     const SharedRubberParamWrapper& params);
 
-inline std::vector<unsigned char>* glueImageWithMask(
-    const unsigned char* img, size_t img_size, const unsigned char* img_mask,
-    size_t mask_size);
-
+/// @brief prepare rubber stamp preview params for later use
 RubberParams prepareParams(const QVariantMap& qvparams);
 
+/// @brief Gather all rubber stamp parameters (pdfcsp::pdf::CAnnotParam)
 SharedRubberParamWrapper createParams(const RubberParams& params);
 
+
+/// @brief create rubber stamps params for embedding into pdf
 std::vector<pdfcsp::pdf::CAnnotParams> createAnnotParams(
     const std::vector<std::shared_ptr<RubberStamp>>& params);
 

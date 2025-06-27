@@ -7,6 +7,7 @@
 
 namespace core::gui {
 
+/// @brief function to glue image with its mask for transparency
 inline std::vector<unsigned char> *glueImageWithMask(
     const unsigned char *const img, size_t img_size,
     const unsigned char *img_mask, size_t mask_size) {
@@ -30,6 +31,7 @@ inline std::vector<unsigned char> *glueImageWithMask(
     return result.release();
 }
 
+/// @brief concurrent function to make QImage for sign stamp
 std::unique_ptr<BakeResult> prepareStampImage(
     const SharedSignParamWrapper &params) {
     auto result = std::make_unique<BakeResult>(BakeResult{
@@ -59,7 +61,7 @@ std::unique_ptr<BakeResult> prepareStampImage(
     return result;
 }
 
-/// @brief prepare preview params for later use
+/// @brief prepare sign stamp preview params for later use
 SignParams preparePreviewParams(const QVariantMap &qvparams) {
     SignParams params_;
     if (qvparams.contains("bg_transparent")) {
@@ -162,7 +164,7 @@ SignParams preparePreviewParams(const QVariantMap &qvparams) {
     return params_;
 }
 
-/// @brief Gather all parameters (pdfcsp::pdf::CSignParam)
+/// @brief Gather all sign stamp parameters (pdfcsp::pdf::CSignParam)
 SharedSignParamWrapper createParams(const SignParams &params_) {
     auto params_wrapper = std::make_shared<CSignParamsWrapper>();
     pdfcsp::pdf::CSignParams &pod_params = params_wrapper->pod_params;
@@ -225,6 +227,7 @@ SharedSignParamWrapper createParams(const SignParams &params_) {
     return params_wrapper;
 }
 
+/// @brief concurrent function to make QImage for rubber stamp
 std::unique_ptr<BakeRubberResult> prepareImage(
     const SharedRubberParamWrapper &params) {
     auto result = std::make_unique<BakeRubberResult>(BakeRubberResult{
@@ -254,6 +257,7 @@ std::unique_ptr<BakeRubberResult> prepareImage(
     return result;
 }
 
+/// @brief prepare rubber stamp preview params for later use
 RubberParams prepareParams(const QVariantMap &qvparams) {
     RubberParams params;
     double zoom = 1;
@@ -382,6 +386,7 @@ RubberParams prepareParams(const QVariantMap &qvparams) {
     return params;
 }
 
+/// @brief Gather all rubber stamp parameters (pdfcsp::pdf::CAnnotParam)
 SharedRubberParamWrapper createParams(const RubberParams &params) {
     auto paramswrapper = std::make_shared<CRubberParamsWrapper>();
     pdfcsp::pdf::RubberStampParams &pod_params = paramswrapper->pod_params;
@@ -424,6 +429,7 @@ SharedRubberParamWrapper createParams(const RubberParams &params) {
     return paramswrapper;
 }
 
+/// @brief create rubber stamps params for embedding into pdf
 std::vector<pdfcsp::pdf::CAnnotParams> createAnnotParams(
     const std::vector<std::shared_ptr<RubberStamp>> &params) {
     std::vector<pdfcsp::pdf::CAnnotParams> cparams;

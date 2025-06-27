@@ -14,6 +14,7 @@ class TagCreator : public QObject {
    public:
     explicit TagCreator(QObject *parent = nullptr);
 
+    /// @brief emdbed annotations into pdf
     static Q_INVOKABLE QString
     embedAnnot(const std::vector<pdfcsp::pdf::CAnnotParams> &params,
                const QString &file_path);

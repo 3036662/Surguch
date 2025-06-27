@@ -8,6 +8,7 @@ namespace core {
 
 TagCreator::TagCreator(QObject *parent) : QObject{parent} {}
 
+/// @brief create rubber stamps params for embedding into pdf
 QString TagCreator::embedAnnot(
     const std::vector<pdfcsp::pdf::CAnnotParams> &params,
     const QString &file_path) {

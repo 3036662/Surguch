@@ -9,7 +9,6 @@
 #include <memory>
 #include <shared_mutex>
 
-#include "pdf_csp_c.hpp"
 #include "rubber_structs.hpp"
 
 namespace core::gui {

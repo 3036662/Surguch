@@ -12,7 +12,7 @@ struct RGBColor {
     quint8 B = 0;
 };
 
-/// @brief strucute for holding image data and contructed image for renderring
+/// @brief structure for holding image data and constructed image for rendering
 struct BakeResult {
     std::unique_ptr<pdfcsp::pdf::BakeSignatureStampResult,
                     void (*)(pdfcsp::pdf::BakeSignatureStampResult *)>
@@ -20,7 +20,7 @@ struct BakeResult {
     std::unique_ptr<QImage> image_;
 };
 
-// utility structure for storing parameters for library
+/// @brief utility structure for storing sign stamp parameters for library
 struct CSignParamsWrapper {
     QByteArray qb_logo_path;
     QByteArray qb_config_path;
@@ -41,6 +41,7 @@ struct CSignParamsWrapper {
 
 using SharedSignParamWrapper = std::shared_ptr<CSignParamsWrapper>;
 
+/// @brief utility for sign stamp data from QML
 struct SignParams {
     bool bg_transparent = true;
     quint8 bg_opacity = 0;
@@ -69,7 +70,7 @@ struct SignParams {
     RGBColor border_color;
 };
 
-// utility structure for storing parameters for library
+/// @brief utility structure for storing rubber stamps parameters for library
 struct CRubberParamsWrapper {
     QByteArray qb_img_path;
     QByteArray qb_annotation_text;
@@ -80,6 +81,7 @@ struct CRubberParamsWrapper {
 
 using SharedRubberParamWrapper = std::shared_ptr<CRubberParamsWrapper>;
 
+/// @brief utility structure for rubber stamp params from QML
 struct RubberParams {
     bool bg_transparent = false;
     bool create_from_image = false;
@@ -115,16 +117,16 @@ struct BakeRubberResult {
     std::unique_ptr<QImage> image_;
 };
 
-/// @brief structure for holding all needed for render data
+/// @brief structure for holding all needed for rubber stamp render data
 struct RubberStamp {
-    int page_index;
-    double position_x;
-    double position_y;
-    double qml_width;
-    double real_stamp_qml_width;
-    double qml_height;
-    double stamp_width;
-    double stamp_height;
+    int page_index = 0;
+    double position_x = 0;
+    double position_y = 0;
+    double qml_width = 900;
+    double real_stamp_qml_width = 300;
+    double qml_height = 300;
+    double stamp_width = 300;
+    double stamp_height = 100;
     std::string link;
     std::unique_ptr<BakeRubberResult> res;
 };

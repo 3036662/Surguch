@@ -52,12 +52,6 @@ Item {
     Item {
         anchors.fill: parent
 
-        Rectangle {
-            anchors.fill: parent
-            border.color: "#454A4E"
-            color: StyleSheet.edit_background
-        }
-
         PreviewListView {
             id: previewListView
             source: root.source
