@@ -4,9 +4,12 @@ import QtQuick.Dialogs
 import QtQuick.Layouts
 import alt.pdfcsp.pdfModel
 import alt.pdfcsp.signatureCreator
+import alt.pdfcsp.tagCreator
 import alt.pdfcsp.profilesModel
+import alt.pdfcsp.rubberStampModel
 import alt.pdfcsp.signaturesListModel
 import alt.pdfcsp.printerLauncher
+import StyleSheet
 
 ApplicationWindow {
     id: root_window
@@ -14,7 +17,10 @@ ApplicationWindow {
     width: 1000
     height: 480
     visible: true
+    visibility: Window.Maximized
     title: qsTr("Surguch")
+
+    property string focusOwnerId
 
     // --------------------------------------
     // header
@@ -30,6 +36,11 @@ ApplicationWindow {
             HeaderSubBar {
                 id: headerSubBar
                 visible: pdfListView.source != ""
+
+                function placeTagStamp(rubber_stamp_data) {//let tag_data = rubber_stamp_data
+                    //console.warn("mainqml" + JSON.stringify(tag_data))
+                    //pdfModel.placeRubberStamp(tag_data)
+                }
             }
         }
     }
@@ -51,7 +62,6 @@ ApplicationWindow {
         RightSideBar {
             id: rightSideBar
         }
-
     }
 
     // --------------------------------------
@@ -95,15 +105,34 @@ ApplicationWindow {
     }
 
     // --------------------------------------
+    // modal
+    StampEditor {
+        id: stampEditor
+    }
+
+    RubberStampEditor {
+        id: rubberStampEditor
+    }
+
+    InfoDialog {
+        id: appInfoDialog
+    }
+
+    // --------------------------------------
     // instantinate cpp models
     MuPdfModel {
         id: pdfModel
         mustProcessSignatures: true
         mustDeleteTmpFiles: true
+        mustExtractText: true
     }
 
     ProfilesModel {
         id: profilesModel
+    }
+
+    RubberStampModel {
+        id: rubberStampModel
     }
 
     SignaturesListModel {
@@ -114,11 +143,15 @@ ApplicationWindow {
         id: printer
     }
 
+    TagCreator {
+        id: tagCreator
+    }
+
     SignatureCreator {
         id: sigCreator
 
         // common function to gather parameters used in resizeAim and signDoc
-        function gatherParams(location_data) {
+        function gatherParams(location_data, path) {
             let curr_profile = JSON.parse(header.getCurrentProfileValue())
             let cert_array = JSON.parse(profilesModel.getUserCertsJSON())
             // console.warn(JSON.stringify(rightSideBar.edit_profile.cert_array));
@@ -132,6 +165,10 @@ ApplicationWindow {
                 errorMessageDialog.open()
                 throw new Error('Certificate data not found')
             }
+            let stamps_json = JSON.parse(profilesModel.getUserStampsJSON())
+            let user_stamp = stamps_json.find(stamp => {
+                                                  return curr_profile.stamp_type === stamp.title
+                                              })
             // gather all information needed to create a signature visual representation
             let params = {
                 "page_index": location_data.page_index,
@@ -152,9 +189,19 @@ ApplicationWindow {
                     " till ") + cert_array[cert_index].not_after_readable,
                 "stamp_title": qsTr("THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE"),
                 "stamp_type": curr_profile.stamp_type,
+                "text_color_red": user_stamp.R,
+                "text_color_green": user_stamp.G,
+                "text_color_blue": user_stamp.B,
+                "border_color_red": user_stamp.R,
+                "border_color_green": user_stamp.G,
+                "border_color_blue": user_stamp.B,
+                "border_width": user_stamp.border_width,
+                "border_radius": user_stamp.border_radius,
+                "bg_transparent": user_stamp.transparent,
+                "bg_opacity": 1,
                 "cades_type": curr_profile.CADES_format,
                 "tsp_url": curr_profile.tsp_url,
-                "file_to_sign_path": pdfModel.getSource()
+                "file_to_sign_path": path
             }
             //console.warn(JSON.stringify(params))
             return params
@@ -174,12 +221,12 @@ ApplicationWindow {
         }
 
         // sign the document
-        function signDoc(location_data) {
+        function signDoc(location_data, path) {
             try {
                 if (typeof (location_data) == "undefined") {
                     return
                 }
-                let params = gatherParams(location_data)
+                let params = gatherParams(location_data, path)
                 sigCreator.createSignature(params)
             } catch (e) {
                 console.warn("signDoc" + e)
@@ -199,12 +246,9 @@ ApplicationWindow {
                 } else if (result.err_string === "CERT_CHAINING_ERR") {
                     errorMessageDialog.text = qsTr(
                                 "Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.")
-                } else if (result.err_string ==="TIMEOUT"){
-                    errorMessageDialog.text =qsTr(
-                                "Error.Timeout exceeded."
-                                )
-                }
-                else {
+                } else if (result.err_string === "TIMEOUT") {
+                    errorMessageDialog.text = qsTr("Error.Timeout exceeded.")
+                } else {
                     errorMessageDialog.text = qsTr("Common error")
                 }
                 errorMessageDialog.open()
@@ -220,6 +264,7 @@ ApplicationWindow {
             header.enableSignMode()
         }
     }
+
 
     // --------------------------------------
     //  connect the events
@@ -254,9 +299,25 @@ ApplicationWindow {
         pdfListView.canZoom.connect(headerSubBar.enableZoom)
         pdfListView.minZoomReached.connect(headerSubBar.disableZoomOut)
         pdfListView.canZoomOut.connect(headerSubBar.enableZoomOut)
+        ///sync action history
+        headerSubBar.undoAction.connect(pdfListView.undo)
+        headerSubBar.redoAction.connect(pdfListView.redo)
+        pdfListView.updateHistory.connect(headerSubBar.updateHistory)
         // toggle from preview to certs in left sidebat
         headerSubBar.showPreviews.connect(leftSideBar.showPreviews)
         headerSubBar.showCerts.connect(leftSideBar.showCerts)
+        // screen DPI changed
+        pdfModel.screenDpiChanged.connect(pdfListView.redrawAndPreservePosion)
+        //enable buttons for stamps
+        pdfListView.quitSignMode.connect(header.quitSignMode)
+        pdfListView.disableTagMode.connect(headerSubBar.disableTagMode)
+        // search
+        headerSubBar.searchDialog.searchRequired.connect(pdfModel.performSearch)
+        pdfModel.searchCompleted.connect(pdfListView.searchCompleted)
+        pdfModel.searchCompleted.connect(
+                    headerSubBar.searchDialog.searchCompleted)
+        headerSubBar.searchDialog.jumpToNeedle.connect(pdfModel.jumpToNeedle)
+        pdfModel.jumpToNeedleCompleted.connect(pdfListView.jumpToNeedle)
         // sign the document
         pdfListView.stampLocationSelected.connect(header.disableSignMode)
         pdfListView.stampLocationSelected.connect(sigCreator.signDoc)
@@ -269,6 +330,10 @@ ApplicationWindow {
         pdfModel.signaturesCounted.connect(leftSideBar.setSigCount)
         // call SignaturesListModel to update the signatures list and validate all signatures
         pdfModel.signaturesFound.connect(siglistModel.updateSigList)
+        // add rubber stamp to document
+        pdfListView.tagPlaced.connect(headerSubBar.enableTagButton)
+        // sync pdflistpreview with changed source of pdflistview
+        pdfListView.updateLSB.connect(leftSideBar.updateSource)
         // open file error
         pdfModel.errorOpenFile.connect(function (err_string) {
             errorMessageDialog.text = err_string
@@ -351,6 +416,8 @@ ApplicationWindow {
             // disable signing for damaged document
             header.disableSignMode()
         })
+        // set themes
+        StyleSheet.state = themeStyle
     }
 
     // ---------------------------------------------

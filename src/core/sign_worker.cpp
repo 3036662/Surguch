@@ -92,6 +92,16 @@ SignWorker::SharedParamWrapper SignWorker::createParams() const {
     }
     params_wrapper->qb_tsp_url = params_.tsp_url.toUtf8();
     pod_params.tsp_link = params_wrapper->qb_tsp_url.data();
+    pod_params.text_color.red = params_.text_color.R;
+    pod_params.text_color.green = params_.text_color.G;
+    pod_params.text_color.blue = params_.text_color.B;
+    pod_params.border_color.red = params_.border_color.R;
+    pod_params.border_color.green = params_.border_color.G;
+    pod_params.border_color.blue = params_.border_color.B;
+    pod_params.border_width = params_.border_width;
+    pod_params.border_radius = params_.border_radius;
+    pod_params.bg_transparent = params_.bg_transparent;
+    pod_params.bg_opacity = params_.bg_opacity;
     return params_wrapper;
 }
 

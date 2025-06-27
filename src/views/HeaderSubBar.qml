@@ -1,29 +1,49 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import StyleSheet
 
 ColumnLayout {
 
-    signal zoomInClicked
-    signal zoomOutClicked
+    property int redoCount: 0
+    property int undoCount: 0
+
+    property alias searchDialog: searchDialog
+
+        signal
+    zoomInClicked
+        signal
+    zoomOutClicked
+
     signal zoomSelected(int newZoom)
+
     signal scrollToPage(int pageNumber)
-    signal rotateClockwise
-    signal rotateCounterClockWise
-    signal showPreviews
-    signal showCerts
+
+        signal
+    rotateClockwise
+        signal
+    rotateCounterClockWise
+        signal
+    showPreviews
+        signal
+    showCerts
+        signal
+    undoAction
+        signal
+    redoAction
 
     function changePageCount(newCount) {
         page_number.pageCount = newCount
         pageNumberInputValidator.top = newCount + 1
     }
+
     function changedCurrPage(newIndex) {
         page_number.currPage = newIndex
         pageNumberInput.text = newIndex
     }
 
     function updateZoomValue(zoom) {
-        if (zoom===-1){
+        if (zoom === -1) {
             comboBoxZoom.currentIndex = -1
             comboBoxZoom.displayText = comboBoxZoom.model[0]
             return
@@ -48,6 +68,41 @@ ColumnLayout {
         zoomOutButton.enabled = false
     }
 
+    function setTagData(value) {
+        rubberStampPutButton.tag_data = value
+    }
+
+    function enableTagButton() {
+        console.debug("enabling tag button")
+        rubberStampPutButton.down = false
+        rubberStampPutButton.enabled = true
+    }
+
+    function clickTagButton() {
+        rubberStampPutButton.enabled = true
+        pdfListView.tagMode = !pdfListView.tagMode
+        pdfListView.tagData = rubberStampPutButton.tag_data
+        pdfModel.prepareImage(JSON.parse(rubberStampPutButton.tag_data))
+        if (!rubberStampPutButton.down) {
+            pdfListView.reserRotation()
+        }
+        rubberStampPutButton.down = !rubberStampPutButton.down
+    }
+
+    function updateHistory(undo, redo) {
+        if (undo) {
+            undoCount = undo
+        }
+        if (redo) {
+            redoCount = redo
+        }
+    }
+
+    function disableTagMode() {
+        pdfListView.tagMode = false
+        rubberStampPutButton.down = false
+    }
+
     spacing: 1
 
     Rectangle {
@@ -62,7 +117,7 @@ ColumnLayout {
         ToolButton {
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/book.svg"
+            icon.source: StyleSheet.book_icon
             icon.width: 20
             icon.height: 20
             leftPadding: 40
@@ -73,12 +128,13 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/pen_tool.svg"
+            icon.source: StyleSheet.pen_tool_icon
             icon.width: 20
             icon.height: 20
             leftPadding: 40
@@ -89,12 +145,31 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/arrow-circle-down.svg"
+            icon.source: StyleSheet.printer_icon
+            icon.width: 20
+            icon.height: 20
+            leftPadding: 5
+            rightPadding: 5
+
+            onClicked: {
+                printer.print(pdfListView.source, pdfListView.count,
+                    pdfListView.landscape)
+            }
+        }
+
+        HeaderToolSeparator {
+        }
+
+        ToolButton {
+            flat: true
+            display: AbstractButton.IconOnly
+            icon.source: StyleSheet.arrow_down_icon
             icon.width: 20
             icon.height: 20
             leftPadding: 5
@@ -111,7 +186,7 @@ ColumnLayout {
 
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/arrow-circle-up.svg"
+            icon.source: StyleSheet.arrow_up_icon
             icon.width: 20
             icon.height: 20
             leftPadding: 5
@@ -153,14 +228,16 @@ ColumnLayout {
             text: currPage + qsTr(" of ") + pageCount
             anchors.margins: 10
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/arrow_back_curve.svg"
+            icon.source: StyleSheet.arrow_back_icon
             icon.width: 20
             icon.height: 20
             leftPadding: 5
@@ -174,7 +251,7 @@ ColumnLayout {
         ToolButton {
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/arrow_forward_curve.svg"
+            icon.source: StyleSheet.arrow_forward_icon
             icon.width: 20
             icon.height: 20
             leftPadding: 5
@@ -185,7 +262,8 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             id: zoomOutButton
@@ -194,7 +272,7 @@ ColumnLayout {
             }
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/minus-circle.svg"
+            icon.source: StyleSheet.minus_circle_icon
             icon.width: 20
             icon.height: 20
             leftPadding: 5
@@ -208,7 +286,7 @@ ColumnLayout {
             }
             flat: true
             display: AbstractButton.IconOnly
-            icon.source: "qrc:/icons/plus-circle.svg"
+            icon.source: StyleSheet.plus_circle_icon
             icon.width: 20
             icon.height: 20
             leftPadding: 5
@@ -226,21 +304,21 @@ ColumnLayout {
                 onCurrentIndexChanged: {
                     let newZoom = 0
                     switch (currentIndex) {
-                    case 0:
-                        newZoom = -1 //auto
-                        break
-                    case 1:
-                        newZoom = 75
-                        break
-                    case 2:
-                        newZoom = 100
-                        break
-                    case 3:
-                        newZoom = 125
-                        break
-                    case 4:
-                        newZoom = 150
-                        break
+                        case 0:
+                            newZoom = -1 //auto
+                            break
+                        case 1:
+                            newZoom = 75
+                            break
+                        case 2:
+                            newZoom = 100
+                            break
+                        case 3:
+                            newZoom = 125
+                            break
+                        case 4:
+                            newZoom = 150
+                            break
                     }
                     if (newZoom != 0) {
                         zoomSelected(newZoom)
@@ -249,7 +327,7 @@ ColumnLayout {
 
                 Layout.alignment: Qt.AlignVCenter
                 model: [qsTr("Automatic"), "75%", "100%", "125%", "150%"]
-                currentIndex: 0
+                currentIndex: 2
                 implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
                 anchors.verticalCenter: parent.verticalCenter
                 popup.y: comboBoxZoom.height
@@ -261,32 +339,83 @@ ColumnLayout {
             }
         }
 
-        // search
+        // rubberStamps
+        HeaderToolSeparator {
+        }
 
-        //HeaderToolSeparator {}
-        // Row {
-        //     Rectangle {
-        //         width: 10
-        //         height: parent.height
-        //         color: "transparent"
-        //     }
-        //     TextField {
-        //         placeholderText: qsTr("Search")
-        //         maximumLength: 100
-        //         Layout.preferredWidth: 150
-        //         horizontalAlignment: TextInput.AlignLeft
-        //         rightPadding: 30
-        //         Button {
-        //             flat: true
-        //             icon.source: "qrc:/icons/search-custom.svg"
-        //             anchors.top: parent.top
-        //             anchors.bottom: parent.bottom
-        //             height: 24
-        //             smooth: true
-        //             anchors.right: parent.right
-        //         }
-        //     }
-        // }
+        ToolButton {
+            id: rubberStampPutButton
+
+            property var tag_data
+
+            enabled: !!tag_data
+            flat: true
+            icon.width: 20
+            icon.height: 20
+            leftPadding: 5
+            rightPadding: 5
+            icon.source: StyleSheet.tag_icon
+            onClicked: {
+                //console.debug("create tag")
+                header.quitSignMode()
+                pdfListView.tagMode = !pdfListView.tagMode
+                pdfListView.tagData = tag_data
+                pdfModel.prepareImage(JSON.parse(tag_data))
+                if (!down) {
+                    pdfListView.reserRotation()
+                }
+                down = !down
+            }
+        }
+
+        Keys.onPressed: event => {
+            if (event.key === Qt.Key_Escape
+                && pdfListView.tagMode) {
+                header.enableSignMode()
+                pdfListView.tagMode = false
+                rubberStampPutButton.down = false
+                event.accepted = true
+                return
+            }
+            event.accepted = false
+        }
+
+        ToolButton {
+            id: rubberStampDialogButton
+
+            flat: true
+            icon.width: 20
+            icon.height: 10
+            leftPadding: 5
+            rightPadding: 5
+            topPadding: 5
+            bottomPadding: 5
+            icon.source: StyleSheet.chevron_down
+            onClicked: {
+                header.quitSignMode()
+                if (rubberStampDialog.visible) {
+                    rubberStampDialog.close()
+                } else {
+                    rubberStampDialog.open()
+                }
+            }
+        }
+
+        // search
+        HeaderToolSeparator {
+        }
+        ToolButton {
+            id: searchButton
+            enabled: !pdfListView.signMode && !pdfListView.tagMode
+            flat: true
+            icon.source: StyleSheet.search_icon
+            icon.width: 20
+            icon.height: 20
+            leftPadding: 5
+            rightPadding: 5
+            onClicked: searchDialog.open()
+        }
+
         Rectangle {
             color: "transparent"
             Layout.fillHeight: true
@@ -303,5 +432,44 @@ ColumnLayout {
         //     rightPadding: 5
         //     Layout.alignment: Qt.AlignRight
         // }
+    }
+
+    SearchDialog {
+        id: searchDialog
+    }
+
+    RubberStampDialog {
+        id: rubberStampDialog
+    }
+
+    Shortcut {
+        sequence : "Ctrl+F"
+        onActivated: {
+            searchDialog.open()
+            searchDialog.focus = true
+        }
+    }
+
+    Shortcut {
+        id: undoShortcut
+
+        enabled: undoCount > 0
+        sequence: "Ctrl+Z"
+        onActivated: {
+            //console.warn("undo")
+            undoAction()
+            updateHistory()
+        }
+    }
+
+    Shortcut {
+        id: redoShortcut
+
+        enabled: redoCount > 0
+        sequence: "Ctrl+Y"
+        onActivated: {
+            //console.warn("redo")
+            redoAction()
+        }
     }
 }

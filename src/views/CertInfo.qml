@@ -1,4 +1,5 @@
 import QtQuick
+import StyleSheet
 
 Item {
     id: root
@@ -9,12 +10,12 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: "#fcfcfc"
+        color: StyleSheet.text_area_background
     }
 
     Flickable {
         width: parent.width
-        height: parent.height    
+        height: parent.height
         topMargin: 10
         anchors.horizontalCenter: parent.horizontalCenter
         contentHeight: content.height * 1.1
@@ -31,7 +32,7 @@ Item {
                 width: parent.width
                 keyText: qsTr("Status")
                 value: root.cert !== undefined ? root.cert.trust_status : ""
-            }            
+            }
 
             TextPair {
                 width: parent.width

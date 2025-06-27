@@ -32,8 +32,20 @@ SignatureCreator::SignatureCreator(QObject *parent) : QObject{parent} {}
 SignWorker::SignParams SignatureCreator::createWorkerParams(
     const QVariantMap &qvparams) {
     SignWorker::SignParams params{};
+    if (qvparams.contains("bg_transparent")) {
+        params.bg_transparent = qvparams.value("bg_transparent").toBool();
+    }
+    if (qvparams.contains("bg_opacity")) {
+        params.bg_opacity = qvparams.value("bg_opacity").toUInt();
+    }
     if (qvparams.contains("page_index")) {
         params.page_index = qvparams.value("page_index").toInt();
+    }
+    if (qvparams.contains("border_width")) {
+        params.border_width = qvparams.value("border_width").toUInt();
+    }
+    if (qvparams.contains("border_radius")) {
+        params.border_radius = qvparams.value("border_radius").toUInt();
     }
     if (qvparams.contains("page_width")) {
         params.page_width = qvparams.value("page_width").toReal();
@@ -93,6 +105,24 @@ SignWorker::SignParams SignatureCreator::createWorkerParams(
     if (qvparams.contains("stamp_title")) {
         params.stamp_title = qvparams.value("stamp_title").toString();
     }
+    if (qvparams.contains("border_color_red")) {
+        params.border_color.R = qvparams.value("border_color_red").toUInt();
+    }
+    if (qvparams.contains("border_color_green")) {
+        params.border_color.G = qvparams.value("border_color_green").toUInt();
+    }
+    if (qvparams.contains("border_color_blue")) {
+        params.border_color.B = qvparams.value("border_color_blue").toUInt();
+    }
+    if (qvparams.contains("text_color_red")) {
+        params.text_color.R = qvparams.value("text_color_red").toUInt();
+    }
+    if (qvparams.contains("text_color_green")) {
+        params.text_color.G = qvparams.value("text_color_green").toUInt();
+    }
+    if (qvparams.contains("text_color_blue")) {
+        params.text_color.B = qvparams.value("text_color_blue").toUInt();
+    }
     return params;
 }
 
@@ -103,7 +133,9 @@ SignWorker::SignParams SignatureCreator::createWorkerParams(
 bool SignatureCreator::createSignature(const QVariantMap &qvparams) {
     qWarning() << "[SignatureCreator::CreateSignature]";
     auto params = createWorkerParams(qvparams);
+    // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
     p_worker_ = new SignWorker();
+    // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
     p_sign_thread_ = new QThread();
     p_worker_->moveToThread(p_sign_thread_);
     // start job
@@ -133,7 +165,7 @@ bool SignatureCreator::createSignature(const QVariantMap &qvparams) {
         p_sign_thread_ = nullptr;
     });
     p_sign_thread_->start();
-    ;
+    //qWarning() << "[SignatureCreator::createSignature] started signing";
     return true;
 }
 
@@ -150,7 +182,9 @@ void SignatureCreator::estimateStampResizeFactor(const QVariantMap &qvparams) {
         qWarning() << "estimateStampResizeFactor is alreary running";
         return;
     }
+    // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
     p_worker_resize_img_ = new SignWorker();
+    // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
     p_resize_img_thread_ = new QThread();
     p_worker_resize_img_->moveToThread(p_resize_img_thread_);
     // start job

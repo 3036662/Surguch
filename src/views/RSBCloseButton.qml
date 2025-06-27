@@ -1,13 +1,14 @@
 import QtQuick
 import QtQuick.Controls
+import StyleSheet
 
 ToolButton {
     flat: true
     display: AbstractButton.IconOnly
-    icon.source: "qrc:/icons/close_icon.svg"
+    icon.source: StyleSheet.close_icon
     icon.width: 20
     icon.height: 20
-    icon.color: "black"
+    icon.color: StyleSheet.font_color
     leftPadding: 0
     topPadding: 0
     rightPadding: 0

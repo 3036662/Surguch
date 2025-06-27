@@ -1,34 +1,31 @@
 import QtQuick
 import QtQuick.Controls
+import StyleSheet
 
 Flickable {
     width: parent.width
     height: parent.height
-    contentHeight: sigInfoContentColumn.height+20
+    contentHeight: sigInfoContentColumn.height + 20
     leftMargin: 10
     rightMargin: 10
     topMargin: 10
 
-
-
-    Item{
-        width:parent.width
-        height:40
+    Item {
+        width: parent.width
+        height: 40
         RSBCloseButton {}
     }
 
     Column {
-        id : sigInfoContentColumn
+        id: sigInfoContentColumn
         width: parent.width
-
 
         Text {
             text: qsTr("Signature")
             font.weight: Font.DemiBold
             font.family: "Noto Sans"
-
+            color: StyleSheet.font_color_extra
         }
-
 
         //////////////////////////////////////
         // signature
@@ -36,7 +33,6 @@ Flickable {
             title: qsTr("Status")
             value: jsonData !== undefined && jsonData.signature.status
         }
-
 
         Column {
             anchors.left: parent.left
@@ -104,6 +100,7 @@ Flickable {
                     topPadding: 10
                     bottomPadding: 10
                     font.family: "Noto Sans"
+                    color: StyleSheet.font_color_extra
                 }
                 RSideBarStatusMedal {
                     title: qsTr("Status")
@@ -161,6 +158,7 @@ Flickable {
                     topPadding: 10
                     bottomPadding: 10
                     font.family: "Noto Sans"
+                    color: StyleSheet.font_color_extra
                 }
                 Repeater {
                     model: modelData.tbs_response_data.responses
@@ -200,18 +198,18 @@ Flickable {
             }
         }
 
-
         // ByteRange analasys
         TextPairBool {
             id: fullCoverageStatus
             keyText: qsTr("The signature covers the entire document")
-            value: jsonData !== undefined ? jsonData.full_coverage : false;
+            value: jsonData !== undefined ? jsonData.full_coverage : false
+            status_text_color: value ? "green" : "red"
         }
         TextPairBool {
             id: recoverableStatus
-            visible:!fullCoverageStatus.value
+            visible: !fullCoverageStatus.value
             keyText: qsTr("It is possible to open a signed version")
-            value: jsonData !== undefined ? jsonData.can_be_casted_to_full_coverage  : false;
+            value: jsonData !== undefined ? jsonData.can_be_casted_to_full_coverage : false
         }
 
         // Recover signed document button
@@ -226,7 +224,7 @@ Flickable {
                 anchors.bottom: parent.bottom
 
                 onClicked: {
-                    siglistModel.recoverDoc(jsonData.current_index);
+                    siglistModel.recoverDoc(jsonData.current_index)
                     //recoverDocButton.enabled = false
                 }
             }

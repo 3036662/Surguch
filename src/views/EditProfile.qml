@@ -1,16 +1,21 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 import Qt.labs.platform
 import QtCore
+import StyleSheet
 
 Flickable {
     id: root
 
     property var cert_data_raw
+    property var stamps_data_raw
     property string profile_data
     property var profile_json
     property var cert_array
     property var cert_combo_model
+    property var stamps_array
+    property var stamps_combo_model
     property var profiles_model
     property int profile_id: -1
 
@@ -38,7 +43,7 @@ Flickable {
                     selectCadesFormatCombo.displayText
                             = selectCadesFormatCombo.model[cades_format_indx].title
                 }
-                const stamp_type_indx = selectStampTypeCombo.indexOfValue(
+                const stamp_type_indx = selectStampTypeCombo.find(
                                           profile_json.stamp_type)
                 selectStampTypeCombo.currentIndex = stamp_type_indx
                 selectStampTypeCombo.item_selected = true
@@ -48,7 +53,7 @@ Flickable {
                 }
                 logoPath.text = profile_json.logo_path
                 tspUrlEdit.text = profile_json.tsp_url
-                root.contentY=10;
+                root.contentY = 10
             } catch (e) {
                 console.error("Error parsing JSON" + e.message)
             }
@@ -74,7 +79,7 @@ Flickable {
 
     width: parent.width
     height: parent.height
-    contentHeight: profileColumn.height+30
+    contentHeight: profileColumn.height + 30
     leftMargin: 10
     rightMargin: 10
     topMargin: 10
@@ -82,7 +87,7 @@ Flickable {
     RSBCloseButton {}
 
     Column {
-        id : profileColumn
+        id: profileColumn
         width: parent.width
 
         Text {
@@ -91,12 +96,13 @@ Flickable {
             topPadding: 10
             bottomPadding: 10
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         TextPair {
-             visible:false
-             id: profileIdTextPair
-             keyText: qsTr("Profile id")
+            visible: false
+            id: profileIdTextPair
+            keyText: qsTr("Profile id")
         }
 
         // profile name
@@ -104,53 +110,33 @@ Flickable {
             text: qsTr("Profile name")
             bottomPadding: 5
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         RSBTextArea {
             id: profileName
             placeholderText: qsTr("Enter profile name")
+            color: StyleSheet.font_color_extra
 
             onTextChanged: {
                 let validInput = profileName.text.match(/^S+$/)
-                if (!validInput) {                    
+                if (!validInput) {
                     profileName.text = profileName.text.replace(/\s/g, '')
                     profileName.cursorPosition = profileName.text.length
                 }
-                if (profileName.text.length>50){
-                    profileName.text=profileName.text.slice(0,50);
+                if (profileName.text.length > 50) {
+                    profileName.text = profileName.text.slice(0, 50)
                 }
             }
-        }
-
-        RightSBHorizontalDelimiter {
-            width: parent.width
-        }
-
-        // use by default switch
-        RSBSwitch {
-            id: useAsDefaultProfileSwitch
-            topPadding: 5
-            bottomPadding: 5
-            text: qsTr("Use this profile by default")
-        }
-
-        RightSBHorizontalDelimiter {
-            width: parent.width
-        }
-
-        Text {
-            text: qsTr("Mandatory settings")
-            font.weight: Font.DemiBold
-            topPadding: 10
-            bottomPadding: 10
-            font.family: "Noto Sans"
         }
 
         // certificate choice
         Text {
             text: qsTr("Certificate")
-            bottomPadding: 5
+            topPadding: 10
+            bottomPadding: 10
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         RSBComboSelect {
@@ -164,12 +150,42 @@ Flickable {
             displayText: displayTextDefault
         }
 
+        RightSBHorizontalDelimiter {
+            width: parent.width
+            topPadding: 7
+            bottomPadding: 7
+        }
+
+        // use by default switch
+        RSBSwitch {
+            id: useAsDefaultProfileSwitch
+            topPadding: 5
+            bottomPadding: 5
+            text: qsTr("Use this profile by default")
+        }
+
+        RightSBHorizontalDelimiter {
+            width: parent.width
+            topPadding: 10
+            bottomPadding: 10
+        }
+
+        Text {
+            text: qsTr("Signature")
+            font.weight: Font.DemiBold
+            topPadding: 10
+            bottomPadding: 10
+            font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
+        }
+
         // Cades format
         Text {
             topPadding: 5
             text: qsTr("Cades type")
             bottomPadding: 5
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         RSBComboSelect {
@@ -187,46 +203,6 @@ Flickable {
             property string displayTextDefault: qsTr("Select Cades format")
         }
 
-        // stamp settings
-        Text {
-            topPadding: 10
-            text: qsTr("Stamp appearance")
-            bottomPadding: 5
-            font.family: "Noto Sans"
-        }
-
-        RSBComboSelect {
-            id: selectStampTypeCombo
-            model: [{
-                    "title": "ГОСТ"
-                }]
-            textRole: "title"
-            valueRole: "title"
-            displayText: displayTextDefault
-            property string displayTextDefault: qsTr("Select stamp type")
-        }
-
-        // select a logo
-        Text {
-            topPadding: 10
-            text: qsTr("Company logo")
-            bottomPadding: 5
-            font.family: "Noto Sans"
-        }
-
-        RSBTextArea {
-            id: logoPath
-            placeholderText: qsTr("Select a logo")
-
-            MouseArea {
-                anchors.fill: parent
-
-                onClicked: {
-                    imgFileDialog.open()
-                }
-            }
-        }
-
         // tsp url
         Column {
             id: tspUrlWrapper
@@ -239,11 +215,13 @@ Flickable {
                 text: qsTr("TSP server URL")
                 bottomPadding: 5
                 font.family: "Noto Sans"
+                color: StyleSheet.font_color_extra
             }
 
             RSBTextArea {
                 id: tspUrlEdit
                 placeholderText: qsTr("Enter TSP service url")
+                color: StyleSheet.font_color_extra
                 inputMethodHints: Qt.ImhUrlCharactersOnly
                 property bool valid_url: false
 
@@ -260,6 +238,143 @@ Flickable {
             }
         }
 
+        Text {
+            text: qsTr("Stamp")
+            font.weight: Font.DemiBold
+            topPadding: 10
+            bottomPadding: 10
+            font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
+        }
+
+        // stamp settings
+        RowLayout {
+            width: parent.width
+
+            Text {
+                topPadding: 10
+                text: qsTr("Stamp appearance")
+                bottomPadding: 5
+                font.family: "Noto Sans"
+                color: StyleSheet.font_color_extra
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
+            }
+
+            ToolButton {
+                id: editButton
+                flat: true
+                display: AbstractButton.IconOnly
+                icon.width: 15
+                icon.height: 15
+                leftPadding: 5
+                rightPadding: 5
+                topPadding: 5
+                bottomPadding: 5
+                font.family: "Noto Sans"
+                icon.source: StyleSheet.wrench_icon
+                enabled: selectStampTypeCombo.currentText !== "ГОСТ"
+
+                onClicked: {
+                    stampEditor.stamp_data = selectStampTypeCombo.currentValue
+                    stampEditor.profiles_model = profiles_model
+                    let data = {
+                        "CADES_format": selectCadesFormatCombo.currentValue,
+                        "cert_serial": selectCertificateCombo.currentValue,
+                        "logo_path": logoPath.text,
+                        "tsp_url": ""
+                    }
+                    //console.warn(JSON.stringify(data))
+                    stampEditor.profile_data = JSON.stringify(data)
+                    stampEditor.updateStampForm()
+                    stampEditor.editState = true
+                    stampEditor.visible = true
+                }
+            }
+        }
+
+        RowLayout {
+            width: parent.width
+
+            RSBComboSelect {
+                id: selectStampTypeCombo
+                Layout.fillWidth: true
+                model: root.stamps_combo_model
+                textRole: "title"
+                valueRole: "value"
+                displayText: displayTextDefault
+                enabled: selectCertificateCombo.item_selected
+                         && selectCadesFormatCombo.item_selected
+                property string displayTextDefault: qsTr("Select stamp type")
+
+                onActivated: {
+                    if (currentValue === "new") {
+                        stampEditor.profiles_model = profiles_model
+                        let data = {
+                            "CADES_format": selectCadesFormatCombo.currentValue,
+                            "cert_serial": selectCertificateCombo.currentValue,
+                            "logo_path": logoPath.text,
+                            "tsp_url": ""
+                        }
+                        //console.warn(JSON.stringify(data))
+                        stampEditor.profile_data = JSON.stringify(data)
+                        stampEditor.stamp_data = null
+                        stampEditor.updateStampForm()
+                        stampEditor.visible = true
+                    }
+                }
+            }
+        }
+
+        Connections {
+            target: profilesModel
+
+            // when model has successfully saved the stamp
+            function onStampsSaved(val) {
+                // update stamp combobox
+                rightSideBar.edit_profile.stamps_data_raw = profiles_model.getUserStampsJSON()
+                // select saved stamp in the header combo
+                const indx = selectStampTypeCombo.find(val)
+                selectStampTypeCombo.displayText = selectStampTypeCombo.textAt(
+                            indx)
+                selectStampTypeCombo.currentIndex = indx
+            }
+
+            function onStampDeleted(title) {
+                if (title !== "") {
+                    // update stamp combobox
+                    rightSideBar.edit_profile.stamps_data_raw = profiles_model.getUserStampsJSON()
+                    selectStampTypeCombo.currentIndex = 0
+                    selectStampTypeCombo.displayText = selectStampTypeCombo.defaultText
+                }
+            }
+        }
+
+        // select a logo
+        Text {
+            topPadding: 10
+            text: qsTr("Company logo")
+            bottomPadding: 5
+            font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
+        }
+
+        RSBTextArea {
+            id: logoPath
+            placeholderText: qsTr("Select a logo")
+            color: StyleSheet.font_color_extra
+
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: {
+                    imgFileDialog.open()
+                }
+            }
+        }
+
         // Save button
         Item {
             width: parent.width
@@ -267,20 +382,26 @@ Flickable {
 
             Button {
                 id: saveButton
-                width: text.length
-                       < deleteProfileButton.text.length ? deleteProfileButton.width : 150
+                display: AbstractButton.TextBesideIcon
+                icon.source: StyleSheet.save_icon
+                icon.width: 20
+                icon.height: 20
+                width: logoPath.width
+                //width: text.length
+                //     < deleteProfileButton.text.length ? deleteProfileButton.width : 150
                 text: qsTr("Save profile")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
                 font.family: "Noto Sans"
 
                 onClicked: {
-                    if (profile_id<0 &&
-                        !profiles_model.uniqueName(profileName.text)){
+                    if (profile_id < 0 && !profiles_model.uniqueName(
+                                profileName.text)) {
                         profileName.forceActiveFocus()
                         root.contentY = 10
-                        errorMessageDialog.text=qsTr("Profile with this name already exists");
-                        errorMessageDialog.open();
+                        errorMessageDialog.text = qsTr(
+                                    "Profile with this name already exists")
+                        errorMessageDialog.open()
                         return
                     }
                     if (profileName.text === "") {
@@ -317,7 +438,7 @@ Flickable {
                     profile_json["use_as_default"] = useAsDefaultProfileSwitch.checked
                     profile_json["cert_serial"] = selectCertificateCombo.currentValue
                     profile_json["CADES_format"] = selectCadesFormatCombo.currentValue
-                    profile_json["stamp_type"] = selectStampTypeCombo.currentValue
+                    profile_json["stamp_type"] = selectStampTypeCombo.currentText
                     profile_json["logo_path"] = logoPath.text
                     profile_json["tsp_url"] = tspUrlEdit.text
                     const new_profile_data = JSON.stringify(profile_json)
@@ -329,12 +450,18 @@ Flickable {
         // delete profile
         Item {
             width: parent.width
+
             height: 50
             Button {
                 id: deleteProfileButton
+                display: AbstractButton.TextBesideIcon
+                icon.source: StyleSheet.trash_icon
+                icon.width: 20
+                icon.height: 20
                 text: qsTr("Delete profile")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
+                width: logoPath.width
                 font.family: "Noto Sans"
 
                 onClicked: {
@@ -364,7 +491,7 @@ Flickable {
 
     onCert_data_rawChanged: {
         if (cert_data_raw) {
-            try {               
+            try {
                 cert_array = JSON.parse(cert_data_raw)
                 //console.warn(JSON.stringify(cert_array));
                 cert_combo_model = cert_array.map(item => {
@@ -372,9 +499,27 @@ Flickable {
                                                       res.title = item.subject_common_name
                                                       + " " + item.serial
                                                       res.serial = item.serial
-                                                      res.tooltip =qsTr("Issuer: ")+ item.issuer_common_name;
+                                                      res.tooltip = qsTr(
+                                                          "Issuer: ") + item.issuer_common_name
                                                       return res
                                                   })
+            } catch (e) {
+                console.error("Error " + e.message)
+            }
+        }
+    }
+
+    onStamps_data_rawChanged: {
+        if (stamps_data_raw) {
+            try {
+                stamps_array = JSON.parse(stamps_data_raw)
+                //console.warn(stamps_data_raw)
+                stamps_combo_model = stamps_array.map(item => {
+                                                          let res = {}
+                                                          res.title = item.title
+                                                          res.value = (item.id === 0) ? "new" : item
+                                                          return res
+                                                      })
             } catch (e) {
                 console.error("Error " + e.message)
             }

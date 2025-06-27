@@ -21,18 +21,25 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QGuiApplication>
 #include <QIcon>
 #include <QLocale>
+#include <QPalette>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QTranslator>
+#include <QtConcurrent>
 
+#include "core/font_helper.hpp"
 #include "core/signature_creator.hpp"
+#include "core/tag_creator.hpp"
 #include "cpp_views/pdf_page_render.hpp"
+#include "cpp_views/preview_render.hpp"
+#include "cpp_views/rubber_preview_render.hpp"
 #include "models/pdf_doc_model.hpp"
 #include "models/profiles_model.hpp"
+#include "models/rubber_stamp_model.hpp"
 #include "models/signatures_list_model.hpp"
 #include "printer_launcher.hpp"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     // tranlsation
     QTranslator translator;
     const QString locale = QLocale::system().name();
@@ -49,15 +56,28 @@ int main(int argc, char *argv[]) {
     // register types
     qmlRegisterType<PdfPageRender>("alt.pdfcsp.pdfRender", 0, 1,
                                    "PdfPageRender");
+    qmlRegisterType<PreviewRender>("alt.pdfcsp.previewRender", 0, 1,
+                                   "PreviewRender");
+    qmlRegisterType<RubberPreviewRender>("alt.pdfcsp.rubberPreviewRender", 0, 1,
+                                         "RubberPreviewRender");
     qmlRegisterType<PdfDocModel>("alt.pdfcsp.pdfModel", 0, 1, "MuPdfModel");
     qmlRegisterType<SignaturesListModel>("alt.pdfcsp.signaturesListModel", 0, 1,
                                          "SignaturesListModel");
     qmlRegisterType<ProfilesModel>("alt.pdfcsp.profilesModel", 0, 1,
                                    "ProfilesModel");
+    qmlRegisterType<RubberStampModel>("alt.pdfcsp.rubberStampModel", 0, 1,
+                                      "RubberStampModel");
     qmlRegisterType<core::SignatureCreator>("alt.pdfcsp.signatureCreator", 0, 1,
                                             "SignatureCreator");
+    qmlRegisterType<core::TagCreator>("alt.pdfcsp.tagCreator", 0, 1,
+                                      "TagCreator");
     qmlRegisterType<core::PrinterLauncher>("alt.pdfcsp.printerLauncher", 0, 1,
                                            "PrinterLauncher");
+    qmlRegisterSingletonType(QUrl("qrc:/StyleSheet.qml"), "StyleSheet", 0, 1,
+                             "StyleSheet");
+
+    qmlRegisterType<core::FontHelper>("alt.pdfcsp.fontHelper", 0, 1,
+                                      "FontHelper");
     // run the app
     QQmlApplicationEngine engine;
     const QStringList args = QApplication::arguments();
@@ -70,10 +90,20 @@ int main(int argc, char *argv[]) {
 
     // determine the KDE version
     QString kde_version = "";
+    QString theme_style = "";
     if (qEnvironmentVariable("XDG_CURRENT_DESKTOP") == "KDE") {
         kde_version = qEnvironmentVariable("KDE_SESSION_VERSION");
     }
     engine.rootContext()->setContextProperty("kdeVersion", kde_version);
+    const QPalette defaultPalette;
+    const auto text = defaultPalette.color(QPalette::WindowText);
+    const auto window = defaultPalette.color(QPalette::Window);
+    if (text.lightness() > window.lightness()) {
+        theme_style = "dark";
+    } else {
+        theme_style = "light";
+    }
+    engine.rootContext()->setContextProperty("themeStyle", theme_style);
 
 #if QT_LOAD_FROM_MODULE == 1
     engine.loadFromModule("gui_pdf_csp", "Main");

@@ -47,7 +47,7 @@ void FileRecoverWorker::recoverFileWithByteRange(const QString &path,
     const QString postfix = ".recovered";
     QFile dest_file(tpm_dir + prefix + finfo.fileName() + postfix);
     if (dest_file.exists()) {
-        dest_file.remove();
+        std::ignore = dest_file.remove();
     }
     // create new destination file
     if (dest_file.open(QIODevice::WriteOnly)) {

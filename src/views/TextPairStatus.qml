@@ -1,4 +1,5 @@
 import QtQuick
+import StyleSheet
 
 Column {
 
@@ -8,6 +9,7 @@ Column {
     Text {
         text: keyText
         font.family: "Noto Sans"
+        color: StyleSheet.font_color_extra
     }
     Text {
         id: titleText
@@ -43,6 +45,6 @@ Column {
             if (value === "bad") {
                 return "red"
             }
-        }    
+        }
     }
 }

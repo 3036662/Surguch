@@ -1,7 +1,9 @@
 import QtQuick
 import QtQuick.Controls
+import StyleSheet
+
 Column {
-    id:root
+    id: root
 
     property string keyText
     property string value
@@ -9,23 +11,25 @@ Column {
 
     width: parent.width
 
-    Text{
-        text:keyText
+    Text {
+        text: keyText
         font.family: "Noto Sans"
+        color: StyleSheet.font_color_extra
     }
-    TextArea{
+    TextArea {
         background: Rectangle {
-            border.color:"transparent"
+            border.color: "transparent"
+            color: "transparent"
         }
 
         width: parent.width
         readOnly: true
         selectByMouse: true
-        wrapMode:Text.WordWrap
+        wrapMode: Text.WordWrap
         //maximumLineCount: 5
-        text:value
-        color: "grey"
+        text: value
+        //color: "grey"
         font.family: "Noto Sans"
+        color: StyleSheet.font_color_extra
     }
-
 }

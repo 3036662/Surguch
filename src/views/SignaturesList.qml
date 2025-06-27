@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import StyleSheet
 
 ListView {
     id: root
@@ -43,6 +44,7 @@ ListView {
                     maximumLineCount: 3
                     font.pointSize: text.length > 40 ? 5 : 10
                     font.family: "Noto Sans"
+                    color: StyleSheet.font_color_extra
                 }
                 Text {
                     visible: model.empty
@@ -51,6 +53,7 @@ ListView {
                     topPadding: 5
                     font.pointSize: sigTitle.font.pointSize / 1.5
                     font.family: "Noto Sans"
+                    color: StyleSheet.font_color_extra
                 }
             }
             Item {
@@ -62,7 +65,7 @@ ListView {
                 Image {
                     width: 20
                     height: 20
-                    source: model.checkStatus === false ? "qrc:/icons/medal-ribbon.svg" : (model.valid === true ? "qrc:/icons/medal-ribbon-green.svg" : "qrc:/icons/medal-ribbon-pink.svg")
+                    source: model.checkStatus === false ? StyleSheet.medal_icon : (model.valid === true ? StyleSheet.medal_green_icon : StyleSheet.medal_pink_icon)
                 }
             }
             MouseArea {

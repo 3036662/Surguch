@@ -21,14 +21,19 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QFuture>
+#include <QFutureWatcher>
 #include <QGuiApplication>
+#include <QImage>
 #include <QMimeDatabase>
 #include <QScreen>
 #include <QThread>
 #include <QUrl>
 #include <QWindow>
+#include <QtConcurrent>
 
 #include "core/signature_processor.hpp"
+#include "core/utils.hpp"
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
 
@@ -49,6 +54,7 @@ PdfDocModel::PdfDocModel(QObject *parent)
     QWindow *p_window = nullptr;
     QScreen *p_screen = nullptr;
     const QWindowList window_list = QGuiApplication::topLevelWindows();
+    // NOLINTNEXTLINE
     if (!window_list.isEmpty() && (p_window = window_list.at(0)) != nullptr &&
         (p_screen = p_window->screen()) != nullptr) {
         physical_screen_dpi_ = p_screen->physicalDotsPerInch();
@@ -58,7 +64,6 @@ PdfDocModel::PdfDocModel(QObject *parent)
             if (screen != nullptr && process_signatures_) {  // if main view
                 physical_screen_dpi_ = screen->physicalDotsPerInch();
                 screenDpiChanged();
-                redrawAll();
             }
         });
     }
@@ -72,6 +77,13 @@ PdfDocModel::~PdfDocModel() {
     if (fzctx_ != nullptr) {
         fz_drop_context(fzctx_);
     }
+    if (fzdoc_text_ != nullptr) {
+        fz_drop_document(fzctx_text_, fzdoc_text_);
+    }
+    if (fzctx_text_ != nullptr) {
+        fz_drop_context(fzctx_text_);
+    }
+
     file_source_.clear();  // drop current source to allow deletion
     processFileDelete();   // delete temp files
 }
@@ -111,6 +123,10 @@ void PdfDocModel::setSource(const QString &path) {
     fz_drop_document(fzctx_, fzdoc_);
     fz_drop_context(fzctx_);
     file_source_.clear();
+    if (history_manager_ != nullptr) {
+        history_manager_->clearHistory();
+    }
+    // qWarning() << "path = " << path;
     processFileDelete();
     fzctx_ = fz_new_context(nullptr, nullptr, 500000000);
     fz_try(fzctx_) {
@@ -136,7 +152,7 @@ void PdfDocModel::setSource(const QString &path) {
     }
 
     bool mu_exception_caught = false;
-    bool was_repaired=false;
+    bool was_repaired = false;
     fz_try(fzctx_) {
         // open the pdf file
         fzdoc_ = fz_open_document(fzctx_, local_path_std.c_str());
@@ -147,8 +163,8 @@ void PdfDocModel::setSource(const QString &path) {
         if (pdfdoc_ == nullptr) {
             qWarning("Not a pdf document");
         }
-        if( pdf_was_repaired(fzctx_,pdfdoc_)>0){
-            was_repaired=true;
+        if (pdf_was_repaired(fzctx_, pdfdoc_) > 0) {
+            was_repaired = true;
         }
         emit beginResetModel();
         page_count_ = fz_count_pages(fzctx_, fzdoc_);
@@ -161,8 +177,8 @@ void PdfDocModel::setSource(const QString &path) {
         }
         // get the number of pages
         emit endResetModel();
-        if (was_repaired && process_signatures_){
-           emit docWasRepaired();
+        if (was_repaired && process_signatures_) {
+            emit docWasRepaired();
         }
     }
     fz_catch(fzctx_) {
@@ -179,6 +195,35 @@ void PdfDocModel::setSource(const QString &path) {
     if (process_signatures_) {
         processSignatures();
     }
+    // Extract text
+    if (extract_text_) {
+        fz_drop_document(fzctx_text_, fzdoc_text_);
+        fz_drop_context(fzctx_text_);
+        fzctx_text_ = fz_new_context(nullptr, nullptr, 100000000);
+        bool text_ctx_err_catched = false;
+        fz_var(fzdoc_text_);
+        fz_var(text_ctx_err_catched);
+        fz_try(fzctx_text_) {
+            fz_set_aa_level(fzctx_text_, 0);
+            fz_register_document_handlers(fzctx_text_);
+            fzdoc_text_ = fz_open_document(fzctx_text_, local_path_std.c_str());
+            if (fzdoc_text_ == nullptr) {
+                qWarning("Can't open file");
+            }
+        }
+        fz_catch(fzctx_text_) {
+            text_ctx_err_catched = true;
+            fz_report_error(fzctx_text_);
+        }
+        if (!text_ctx_err_catched) {
+            text_extractor_ =
+                std::make_unique<core::TextExtractor>(fzctx_text_, fzdoc_text_);
+            text_extractor_->updateCache();
+            QObject::connect(text_extractor_.get(),
+                             &core::TextExtractor::searchCompleted, this,
+                             &PdfDocModel::handleSearchCompleted);
+        };
+    }
 }
 
 /// @brief get current source path
@@ -192,7 +237,7 @@ pdf_document *PdfDocModel::getPdfDoc() const { return pdfdoc_; }
 
 /// @brief resert the whole model
 void PdfDocModel::redrawAll() {
-    // qWarning() << "redraw all";
+    // qWarning() << "[PdfDocModel] redraw all";
     beginResetModel();
     endResetModel();
 }
@@ -251,17 +296,18 @@ Q_INVOKABLE void PdfDocModel::deleteFileLater(QString path) {
 }
 
 /// @brief the 'save file as' implementation
-Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(const QString &path,
+Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(const QString &curr_path,
+                                               const QString &path,
                                                bool delete_curr_source) {
     const QString dest_path = QUrl(path).toString(QUrl::PreferLocalFile);
-    QFile src_file(file_source_);
+    QFile src_file(curr_path);
     if (!src_file.exists()) {
         qWarning() << "[SaveCurrSourceTo] source file does not exist";
         return false;
     }
     QFile dest_file(dest_path);
     if (dest_file.exists()) {
-        dest_file.remove();
+        std::ignore = dest_file.remove();
     }
 
     if (!src_file.copy(dest_path)) {
@@ -280,6 +326,180 @@ void PdfDocModel::showInFolder() {
     const QUrl folder_url = QUrl::fromLocalFile(
         QFileInfo(file_source_).absoluteDir().absolutePath());
     QDesktopServices::openUrl(folder_url);
+}
+
+/// @brief returns a vector of rectangles to highligt
+PdfDocModel::NeedleRectsOnPage PdfDocModel::getNeedlesForPage(
+    size_t page_index) {
+    // qWarning() << "getNeedlesForPage" << page_index;
+    if (!text_extractor_) {
+        return nullptr;
+    }
+    return text_extractor_->getNeedlesForPage(page_index);
+}
+
+/// @brief search for text
+void PdfDocModel::performSearch(const QString &needle) {
+    qWarning() << "search for " << needle;
+    if (text_extractor_) {
+        text_extractor_->performSearch(needle, false);
+    }
+}
+
+void PdfDocModel::handleSearchCompleted() {
+    if (!text_extractor_) {
+        return;
+    }
+    const auto needles_total = text_extractor_->getNeedlesTotal();
+    if (needles_total > std::numeric_limits<int>::max()) {
+        qWarning() << "[PdfDocModel] needles_total is too big";
+        return;
+    }
+    const auto needle = text_extractor_->getNeedlePageAndXY(0);
+    qWarning() << "first needle was found on page" << needle.first;
+    if (needle.first > std::numeric_limits<int>::max()) {
+        qWarning() << "[handleSearchCompleted] page index is to big for int";
+    }
+    emit searchCompleted(static_cast<int>(needle.first),
+                         static_cast<int>(needles_total), needle.second.first,
+                         needle.second.second);
+}
+
+void PdfDocModel::jumpToNeedle(int needle_index) {
+    if (needle_index < 0 || !text_extractor_) {
+        return;
+    }
+    const auto needle = text_extractor_->getNeedlePageAndXY(needle_index);
+    if (needle.first > std::numeric_limits<int>::max()) {
+        qWarning()
+            << "[PdfDocModel::jumpToNeedle] the page index is to big for int";
+    }
+    emit jumpToNeedleCompleted(static_cast<int>(needle.first),
+                               needle.second.first, needle.second.second);
+    // qWarning() << "[PdfDocModel] Jump to needle " << needle_index;
+}
+
+std::shared_ptr<core::TextExtractor::RectToHiglightCurrent>
+PdfDocModel::getCurrentNeedleRect(size_t page_index) {
+    if (!text_extractor_) {
+        return nullptr;
+    }
+    return text_extractor_->getCurrentNeedleRect(page_index);
+}
+
+void PdfDocModel::placeRubberStamp(const QVariantMap &qvparams) {
+    params = core::gui::prepareParams(qvparams);
+    auto params_wrapper = core::gui::createParams(params);
+    image_watcher_ = std::make_unique<ImageFutureWatcher>();
+    QObject::connect(image_watcher_.get(), &ImageFutureWatcher::finished,
+                     [this]() {
+                         // qWarning() << "finished";
+                         saveImage();
+                     });
+    image_future_ = std::make_unique<ImageFuture>(
+        QtConcurrent::run(core::gui::prepareImage, params_wrapper));
+    image_watcher_->setFuture(*image_future_);
+}
+
+void PdfDocModel::prepareImage(const QVariantMap &qvparams) {
+    params = core::gui::prepareParams(qvparams);
+    auto params_wrapper = core::gui::createParams(params);
+    image_watcher_ = std::make_unique<ImageFutureWatcher>();
+    QObject::connect(image_watcher_.get(), &ImageFutureWatcher::finished,
+                     [this]() {
+                         // qWarning() << "finished";
+                         estimateTagHeight();
+                     });
+    image_future_ = std::make_unique<ImageFuture>(
+        QtConcurrent::run(core::gui::prepareImage, params_wrapper));
+    image_watcher_->setFuture(*image_future_);
+}
+
+void PdfDocModel::estimateTagHeight() {
+    if (image_future_ && image_future_->isValid()) {
+        auto result = image_future_->takeResult();
+        if (result != nullptr && result->data_ != nullptr) {
+            auto ratio = static_cast<double>(result->data_->resolution_x) /
+                         static_cast<double>(result->data_->resolution_y);
+            // qWarning() << "[EstimateTagHeight]" << ratio;
+            emit sizeReady(ratio);
+        }
+    }
+}
+
+std::vector<std::shared_ptr<core::gui::RubberStamp>>
+PdfDocModel::getRubberStampForPage(size_t page_index) const {
+    if (!history_manager_) {
+        return {};
+    }
+    return history_manager_->getActionsOnPage(page_index);
+}
+
+void PdfDocModel::undoRubberStamp() {
+    if (!history_manager_) {
+        return;
+    }
+    history_manager_->undoAction();
+
+    emit updateDoc();
+}
+
+void PdfDocModel::redoRubberStamp() {
+    if (!history_manager_) {
+        return;
+    }
+    history_manager_->redoAction();
+
+    emit updateDoc();
+}
+
+size_t PdfDocModel::getUndoCount() const {
+    if (!history_manager_) {
+        return 0;
+    }
+    // qWarning() << "[PdfDocModel::getUndoCount]" <<
+    // history_manager_->getUndoCount() << "\n";
+    return history_manager_->getUndoCount();
+}
+
+size_t PdfDocModel::getRedoCount() const {
+    if (!history_manager_) {
+        return 0;
+    }
+    // qWarning() << "[PdfDocModel::getRedoCount]" <<
+    // history_manager_->getRedoCount() << "\n";
+    return history_manager_->getRedoCount();
+}
+
+void PdfDocModel::clearHistory() const {
+    // qWarning() << "[PdfDocModel::clearHistory]";
+    if (!history_manager_) {
+        return;
+    }
+    history_manager_->clearHistory();
+}
+
+std::vector<pdfcsp::pdf::CAnnotParams> PdfDocModel::getAnnotParams() const {
+    if (!history_manager_) {
+        return {};
+    }
+    return history_manager_->getAnnotsParams();
+}
+
+void PdfDocModel::saveImage() {
+    if (!history_manager_) {
+        history_manager_ = std::make_unique<core::gui::HistoryManager>();
+    }
+    if (image_future_ && image_future_->isValid()) {
+        history_manager_->addAction(
+            std::make_unique<core::gui::RubberStamp>(core::gui::RubberStamp{
+                params.page_index, params.position_x, params.position_y,
+                params.page_width, params.real_stamp_width, params.page_height,
+                params.stamp_width, params.stamp_height, params.link,
+                image_future_->takeResult()}));
+    }
+    history_manager_->clearRedo();
+    emit updateDoc();
 }
 
 // NOLINTEND(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)

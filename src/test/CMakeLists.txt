@@ -4,38 +4,121 @@ set(CMAKE_AUTOMOC ON)
 
 enable_testing(true)
 
+include_directories(${CMAKE_SOURCE_DIR}/src/)
+include_directories(${MUPDF_INCLUDE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/src/core/csp_c_bridge)
+include_directories(${PDFCSP_INCLUDE_DIR})
+include_directories(${PDFCSP_INCLUDE_DIR}csp/checks)
+include_directories(${PDFCSP_INCLUDE_DIR}/csp)
+
+file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/testfiles/")
+set(TEST_DIR "${CMAKE_BINARY_DIR}/testfiles/")
+set(TEST_FILES_DIR "${CMAKE_SOURCE_DIR}/test_files/")
+message("Test files will be created here:${TEST_DIR}/test_files")
+add_definitions(-DTEST_DIR="${TEST_DIR}")
+add_definitions(-DTEST_FILES_DIR="${TEST_FILES_DIR}")
+
+
+#-------------------------------
+#common test
+
 qt_add_executable(test1 test_common.cpp
-    t_signature.hpp t_signature.cpp)
+        t_signature.hpp t_signature.cpp)
 
-add_test(NAME test1 COMMAND mytest)
 
-target_include_directories(test1 PUBLIC ${CMAKE_SOURCE_DIR}/src/)
-target_include_directories(test1 PRIVATE ${MUPDF_INCLUDE_DIR})
+#-------------------------------
+# search
 
-target_include_directories(test1 PUBLIC ${CMAKE_SOURCE_DIR}/src/core/csp_c_bridge)
+qt_add_executable(test_search
+        test_search.cpp
+        tsearch.hpp tsearch.cpp)
 
-target_include_directories(test1 PUBLIC
-    ${PDFCSP_INCLUDE_DIR}
+qt_add_executable(test_search2
+        tsearch_multhreaded.cpp)
+
+
+#-------------------------------
+# preview
+
+qt_add_executable(test_preview test_preview.cpp
+        t_stamp.hpp t_stamp.cpp
+        ${CMAKE_SOURCE_DIR}/src/cpp_views/preview_render.hpp
+        ${CMAKE_SOURCE_DIR}/src/cpp_views/preview_render.cpp
 )
 
-target_include_directories(test1 PUBLIC
-    ${PDFCSP_INCLUDE_DIR}csp/checks
+#-------------------------------
+# rubber
+
+qt_add_executable(test_rubber test_rubber.cpp
+        t_rubber.hpp t_rubber.cpp
+        ${CMAKE_SOURCE_DIR}/src/cpp_views/rubber_preview_render.hpp
+        ${CMAKE_SOURCE_DIR}/src/cpp_views/rubber_preview_render.cpp
 )
 
-target_include_directories(test1 PUBLIC
-    ${PDFCSP_INCLUDE_DIR}csp
+#-------------------------------
+# gui utils
+
+qt_add_executable(test_gui_utils test_guiutils.cpp
+        t_guiutils.hpp t_guiutils.cpp
 )
 
-target_link_libraries(test1 PRIVATE Qt::Test)
-target_link_libraries(test1  PRIVATE appcore)
-target_link_libraries(test1  PRIVATE models)
-target_link_libraries(test1  PRIVATE csp_c_bridge_qt)
+#-------------------------------
+#link test1
 
-target_link_libraries(test1
-     PRIVATE ${PDFCSP_LINK_PATH}
-)
-
+target_link_libraries(test1 PRIVATE Qt::Test Qt6::Quick)
+target_link_libraries(test1 PRIVATE appcore)
+target_link_libraries(test1 PUBLIC gui_core)
+target_link_libraries(test1 PRIVATE models)
+target_link_libraries(test1 PRIVATE csp_c_bridge_qt)
+target_link_libraries(test1 PRIVATE ${PDFCSP_LINK_PATH})
 # harcoded mupdf linkage
 target_link_libraries(test1 PRIVATE ${MUPDF_LINK_PATH})
 
-target_compile_definitions(test1 PUBLIC -DTEST_FILES_DIR="${CMAKE_SOURCE_DIR}/test_files/")
+
+#-------------------------------
+# ling test_preview
+
+target_link_libraries(test_preview PUBLIC Qt::Test Qt6::Quick Qt6::Concurrent)
+target_link_libraries(test_preview PUBLIC appcore)
+target_link_libraries(test_preview PUBLIC gui_core)
+target_link_libraries(test_preview PUBLIC models)
+target_link_libraries(test_preview PUBLIC csp_c_bridge_qt)
+target_link_libraries(test_preview PUBLIC ${PDFCSP_LINK_PATH})
+target_link_libraries(test_preview PRIVATE ${MUPDF_LINK_PATH}) # harcoded mupdf linkage
+
+#-------------------------------
+# ling test_rubber
+
+target_link_libraries(test_rubber PUBLIC Qt::Test Qt6::Quick Qt6::Concurrent)
+target_link_libraries(test_rubber PUBLIC appcore)
+target_link_libraries(test_rubber PUBLIC gui_core)
+target_link_libraries(test_rubber PUBLIC models)
+target_link_libraries(test_rubber PUBLIC csp_c_bridge_qt)
+target_link_libraries(test_rubber PUBLIC ${PDFCSP_LINK_PATH})
+target_link_libraries(test_rubber PRIVATE ${MUPDF_LINK_PATH}) # harcoded mupdf linkage
+
+#-------------------------------
+# ling test_gui_utils
+
+target_link_libraries(test_gui_utils PUBLIC Qt::Test Qt6::Quick Qt6::Concurrent)
+target_link_libraries(test_gui_utils PUBLIC appcore)
+target_link_libraries(test_gui_utils PUBLIC gui_core)
+target_link_libraries(test_gui_utils PUBLIC models)
+target_link_libraries(test_gui_utils PUBLIC csp_c_bridge_qt)
+target_link_libraries(test_gui_utils PUBLIC ${PDFCSP_LINK_PATH})
+target_link_libraries(test_gui_utils PRIVATE ${MUPDF_LINK_PATH}) # harcoded mupdf linkage
+
+#-------------------------------
+# link test_search
+target_link_libraries(test_search PUBLIC Qt::Test)
+target_link_libraries(test_search PUBLIC appcore csp_c_bridge_qt)
+target_link_libraries(test_search
+        PUBLIC ${MUPDF_LINK_PATH} PRIVATE ${PDFCSP_LINK_PATH}
+)
+target_link_libraries(test_search2 PUBLIC appcore csp_c_bridge_qt)
+target_link_libraries(test_search2
+        PUBLIC ${MUPDF_LINK_PATH} PRIVATE ${PDFCSP_LINK_PATH}
+)
+
+
+#-------------------------------

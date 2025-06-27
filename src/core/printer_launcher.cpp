@@ -56,6 +56,7 @@ void PrinterLauncher::print(const QString &src_file, int page_count,
     if (print_dialog.exec() == QDialog::Accepted) {
         auto options = createPrintCommand(printer, src_file);
         if (!options.empty()) {
+            // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
             auto *process = new QProcess();
             // finished
             connect(process, &QProcess::finished,
@@ -175,10 +176,12 @@ QStringList PrinterLauncher::createPrintCommand(const QPrinter &printer,
     // native options
     {
         // HACK qtbase/src/printsupport/kernel/qcups_p.h
+        // NOLINTBEGIN
         QStringList dialog_options =
             printer.printEngine()
                 ->property(QPrintEngine::PrintEnginePropertyKey(0xfe00))
                 .toStringList();
+        // NOLINTEND
         for (auto i = 0; i < dialog_options.count(); i += 2) {
             res.append(kKeyO);
             QString tmp = dialog_options[i];
