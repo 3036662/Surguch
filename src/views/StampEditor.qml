@@ -67,8 +67,10 @@ Dialog {
         stampPreview.stamp_data = stamp_params
     }
 
-    width: 400
-    height: 700
+    width: 460
+    height: 715
+    leftMargin: 10
+    rightMargin: 10
     visible: false
     modal: true
     x: (parent.width - width) / 2
@@ -85,6 +87,10 @@ Dialog {
 
             Label {
                 text: qsTr("Stamp editor")
+                font.family: "Noto Sans"
+                font.weight: Font.DemiBold
+                topPadding: 10
+                bottomPadding: 10
             }
 
             Rectangle {
@@ -117,7 +123,7 @@ Dialog {
             color: StyleSheet.font_color_extra
         }
 
-        TextArea {
+        RSBTextArea {
             id: stampName
             Layout.fillWidth: true
             placeholderText: qsTr("Enter stamp name")
@@ -126,6 +132,18 @@ Dialog {
             wrapMode: Text.WordWrap
             placeholderTextColor: "grey"
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
+
+            onTextChanged: {
+                let validInput = stampName.text.match(/^S+$/)
+                if (!validInput) {
+                    stampName.text = stampName.text.replace(/\s/g, '')
+                    stampName.cursorPosition = stampName.text.length
+                }
+                if (stampName.text.length > 50) {
+                    stampName.text = stampName.text.slice(0, 50)
+                }
+            }
         }
 
         Text {
@@ -199,7 +217,7 @@ Dialog {
             id: borderRadius
             Layout.fillWidth: true
             snapMode: Slider.SnapOnRelease
-            from: 0
+            from: 1
             to: 70
             stepSize: 1
 
@@ -221,6 +239,7 @@ Dialog {
                 id: redColor
 
                 Layout.fillWidth: true
+                Layout.maximumWidth: 380
                 snapMode: Slider.SnapOnRelease
                 from: 0
                 to: 255
@@ -230,6 +249,10 @@ Dialog {
                 onValueChanged: {
                     updatePreview()
                 }
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
             }
 
             Text {
@@ -245,6 +268,7 @@ Dialog {
                 id: greenColor
 
                 Layout.fillWidth: true
+                Layout.maximumWidth: 380
                 snapMode: Slider.SnapOnRelease
                 from: 0
                 to: 255
@@ -254,6 +278,10 @@ Dialog {
                 onValueChanged: {
                     updatePreview()
                 }
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
             }
 
             Text {
@@ -270,6 +298,7 @@ Dialog {
                 id: blueColor
 
                 Layout.fillWidth: true
+                Layout.maximumWidth: 380
                 snapMode: Slider.SnapOnRelease
                 from: 0
                 to: 255
@@ -279,6 +308,10 @@ Dialog {
                 onValueChanged: {
                     updatePreview()
                 }
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
             }
 
             Text {
@@ -302,9 +335,12 @@ Dialog {
                 Layout.fillWidth: true
             }
 
-            Switch {
+            SettingSwitch {
                 id: transparencySwitch
-                scale: 1.5
+
+                onToggled: {
+                    updatePreview()
+                }
             }
         }
 
@@ -315,22 +351,23 @@ Dialog {
         Button {
             Layout.fillWidth: true
             text: qsTr("Save")
+            font.family: "Noto Sans"
             display: AbstractButton.TextBesideIcon
             icon.source: StyleSheet.save_icon
             icon.width: 20
             icon.height: 20
 
             onClicked: {
+                if (stampName.text === "") {
+                    stampName.forceActiveFocus()
+                    return
+                }
                 if (stamp_id < 0 && !profiles_model.uniqueStampName(
                             stampName.text)) {
                     stampName.forceActiveFocus()
                     errorMessageDialog.text = qsTr(
                                 "Stamp with this name already exists")
                     errorMessageDialog.open()
-                    return
-                }
-                if (stampName.text === "") {
-                    stampName.forceActiveFocus()
                     return
                 }
                 stamp_json = {}
@@ -354,6 +391,7 @@ Dialog {
 
             Layout.fillWidth: true
             text: qsTr("Delete")
+            font.family: "Noto Sans"
             display: AbstractButton.TextBesideIcon
             icon.source: StyleSheet.trash_icon
             icon.width: 20

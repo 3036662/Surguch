@@ -13,6 +13,7 @@ Dialog {
     property string prev_needle
 
     signal searchRequired(string needle)
+
     signal jumpToNeedle(int needle_index)
 
     function searchCompleted(first_needle_page, total_needles) {
@@ -28,12 +29,19 @@ Dialog {
         }
     }
 
-    width: 325
+    width: 350
     height: 50
     x: searchButton.x - width / 2
     y: parent.y
     modal: false
     closePolicy: Popup.CloseOnEscape
+
+    background: Rectangle {
+        color: StyleSheet.text_area_background
+        radius: 5
+        border.color: StyleSheet.slider_border_color
+        border.width: 1
+    }
 
     onOpened: {
         root_window.focusOwnerId = "searchDialog"
@@ -56,7 +64,7 @@ Dialog {
             anchors.verticalCenter: parent.verticalCenter
             height: parent.height - 5
             color: "transparent"
-            border.color: "#caccce"
+            border.color: "transparent"
             border.width: 1
             radius: 4
             TextInput {
@@ -98,38 +106,50 @@ Dialog {
         }
 
         Rectangle {
-            width: 10
+            width: 60
             height: parent.height
             color: "transparent"
-        }
-        Control {
-            height: parent.height
-            width: childrenRect.width
-            Text {
-                text: currentIndex + "/" + needlesCount
-                color: StyleSheet.font_color_extra
-                anchors.verticalCenter: parent.verticalCenter
-                verticalAlignment: Text.AlignVCenter
+
+            Control {
+                id: symCount
+                height: parent.height
+                width: childrenRect.width
+                anchors.centerIn: parent
+                Text {
+                    text: currentIndex + "/" + needlesCount
+                    color: StyleSheet.font_color_extra
+                    anchors.verticalCenter: parent.verticalCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
             }
         }
+
+        ToolSeparator {
+            padding: vertical ? 10 : 2
+            topPadding: vertical ? 2 : 10
+            bottomPadding: vertical ? 2 : 10
+
+            contentItem: Rectangle {
+                implicitWidth: parent.vertical ? 1 : 32
+                implicitHeight: parent.vertical ? 32 : 1
+                color: StyleSheet.icon_color
+            }
+        }
+
         Rectangle {
             width: 10
-            height: parent.height
-            color: "transparent"
         }
 
         ToolButton {
             height: parent.height
             flat: true
-            display: AbstractButton.IconOnly
             icon.source: StyleSheet.chevron_down
             icon.width: 20
-            icon.height: 20
-            leftPadding: 0
-            topPadding: 0
-            rightPadding: 0
-            bottomPadding: 0
-            width: 25
+            icon.height: 10
+            leftPadding: 5
+            topPadding: 5
+            rightPadding: 5
+            bottomPadding: 5
 
             onClicked: {
                 if (searchDialog.currentIndex < searchDialog.needlesCount) {
@@ -142,15 +162,13 @@ Dialog {
         ToolButton {
             height: parent.height
             flat: true
-            display: AbstractButton.IconOnly
             icon.source: StyleSheet.chevron_up
             icon.width: 20
-            icon.height: 20
-            leftPadding: 0
-            topPadding: 0
-            rightPadding: 0
-            bottomPadding: 0
-            width: 25
+            icon.height: 10
+            leftPadding: 5
+            topPadding: 5
+            rightPadding: 5
+            bottomPadding: 5
             onClicked: {
                 if (searchDialog.currentIndex > 1) {
                     searchDialog.currentIndex -= 1
@@ -162,15 +180,13 @@ Dialog {
         ToolButton {
             height: parent.height
             flat: true
-            display: AbstractButton.IconOnly
             icon.source: StyleSheet.close_icon
             icon.width: 20
             icon.height: 20
-            leftPadding: 0
-            topPadding: 0
-            rightPadding: 0
-            bottomPadding: 0
-            width: 25
+            leftPadding: 5
+            topPadding: 5
+            rightPadding: 5
+            bottomPadding: 5
             onClicked: {
                 searchDialog.close()
             }

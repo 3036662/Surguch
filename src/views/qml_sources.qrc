@@ -29,5 +29,11 @@
         <file>StampEditor.qml</file>
         <file>SettingSlider.qml</file>
         <file>SearchDialog.qml</file>
+        <file>RubberStampDialog.qml</file>
+        <file>RubberStampItem.qml</file>
+        <file>RubberStampEditor.qml</file>
+        <file>RubberPreview.qml</file>
+        <file>InfoDialog.qml</file>
+        <file>SettingSwitch.qml</file>
     </qresource>
 </RCC>

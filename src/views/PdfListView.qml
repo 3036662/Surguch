@@ -33,6 +33,16 @@ ListView {
     property bool signMode: false
     property bool signInProgress: false
     // --------
+    //tag stamps
+    property bool tagMode: false
+    property bool tagInProgress: false
+    property bool size_estimated: false
+    property bool tag_placing: false
+    property var tagData
+    property var ratio: 3
+    property double startX
+    property double startY
+    // --------
     //aim
     property double aimResizeX: 1
     property double aimResizeY: 1
@@ -40,15 +50,65 @@ ListView {
     property bool aimResizeInProgress: false
 
     signal pagesCountChanged(int count)
+
     signal currPageChanged(int index)
+
     signal pageWidthUpdate(int width)
+
     signal zoomFactorUpdate(double zoom)
+
     signal hScrollUpdate(int posX)
+
     signal maxZoomReached
     signal canZoom
     signal minZoomReached
     signal canZoomOut
-    signal stampLocationSelected(var stamp_location_info)
+
+    signal quitSignMode
+
+    signal disableTagMode
+
+    signal stampLocationSelected(var stamp_location_info, var path)
+
+    signal tagPlaced
+
+    signal updateLSB(var source)
+
+    signal updateHistory(int undo, int redo)
+
+    function proceedSigning(location_data) {
+        //console.warn(pdfModel.getSource())
+        let tmpFile = pdfModel.getSource()
+        if (tagInProgress) {
+            //console.warn("embedding tags")
+            tagInProgress = false
+            tmpFile = tagCreator.embedAnnot(pdfModel.getAnnotParams(),
+                                            pdfModel.getSource())
+            pdfModel.deleteFileLater(tmpFile)
+            //openTmpFile(tmpFile)
+            //console.warn("NEW SOURCE AFTER EMBEDDING RUBBER STAMPS");
+            //console.warn("new source: " + tmpFile)
+        }
+        //console.warn("starting to sign")
+        signMode = false
+        signInProgress = true
+        stampLocationSelected(location_data, tmpFile)
+        forceActiveFocus()
+    }
+
+    function undo() {
+        pdfModel.undoRubberStamp()
+        let undoCount = pdfModel.getUndoCount()
+        let redoCount = pdfModel.getRedoCount()
+        updateHistory(undoCount, redoCount)
+    }
+
+    function redo() {
+        pdfModel.redoRubberStamp()
+        let undoCount = pdfModel.getUndoCount()
+        let redoCount = pdfModel.getRedoCount()
+        updateHistory(undoCount, redoCount)
+    }
 
     function zoomIn() {
         prevZoom = zoomPageFact
@@ -209,13 +269,14 @@ ListView {
 
     function openFile(file) {
         sourceIsTmp = false
+        source = ""
         source = file
     }
 
-    function saveTo(dest) {
+    function saveTo(file, dest) {
         if (dest) {
             // The second parameter will let the model delete the source file.
-            if (model.saveCurrSourceTo(dest, sourceIsTmp)) {
+            if (model.saveCurrSourceTo(file, dest, sourceIsTmp)) {
                 openFile(dest)
             }
         }
@@ -451,6 +512,10 @@ ListView {
     }
 
     onSourceChanged: {
+        //console.warn("pdflistview source = " + source)
+        if (source === "") {
+            return
+        }
         lastPageHeight = 0
         lastPageWidth = 0
         lastPageUsedSize = 0
@@ -459,10 +524,11 @@ ListView {
         delegateRotation = 0
         pageIndToPreserveWhenZoom = 0
         pdfModel.setSource(source)
+        tagInProgress = false
         if (sourceIsTmp) {
             pdfModel.deleteFileLater(source)
         }
-        setZoom(-1)
+        setZoom(100)
         if (leftSideBar.sigCount === 0) {
             leftSideBar.showPreviews()
         } else {
@@ -478,12 +544,16 @@ ListView {
         scrollToPage(1)
         currPageChanged(1)
         tryToGetFocus()
+        let undoCount = pdfModel.getUndoCount()
+        let redoCount = pdfModel.getRedoCount()
+        updateHistory(undoCount, redoCount)
+        updateLSB(source)
     }
 
     onZoomPageFactChanged: {
         // preserve the position
         let pos = preservePosition()
-        //console.warn(JSON.stringify(pos))
+        console.debug(JSON.stringify(pos))
         pdfModel.redrawAll()
         zoomFactorUpdate(zoomPageFact)
         jumpToPosition(pos)
@@ -587,9 +657,20 @@ ListView {
                 }
             }
 
+            function updateTagCrossSize() {
+                if (root.tagMode) {
+                    let t_data = JSON.parse(tagData)
+                    tagCross.width = t_data.tag_width * pdfPage.width / 100
+                    tagCross.height = tagCross.width / root.ratio
+                    console.warn("tag width = " + tagCross.width)
+                    console.warn("tag height = " + tagCross.height)
+                }
+            }
+
             onWidthChanged: {
                 root.pageWidth = width
                 updateCrossSize()
+                updateTagCrossSize()
                 if (width > 0) {
                     lastPageWidth = width
                 }
@@ -603,6 +684,7 @@ ListView {
             onHeightChanged: {
                 root.pageHeight = height
                 updateCrossSize()
+                updateTagCrossSize()
                 landscape = pdfPage.width > pdfPage.height
                 if (height > 0) {
                     root.lastPageHeight = height
@@ -611,6 +693,7 @@ ListView {
 
             onAimResizeStatusChanged: {
                 updateCrossSize()
+                updateTagCrossSize()
             }
 
             Component.onCompleted: {
@@ -619,6 +702,8 @@ ListView {
                 setPageNumber(model.display)
                 // highlight the needles
                 setNeedleHighlightRects(pdfModel.getNeedlesForPage(
+                                            model.display))
+                pdfPage.setRubberStamps(pdfModel.getRubberStampForPage(
                                             model.display))
                 if (width > 0 && root.hScrollPos > 0 && root.hScrollPos < 1) {
                     root.contentX = width * root.hScrollPos
@@ -639,6 +724,7 @@ ListView {
                 enabled: root.signMode || root.signInProgress
                 anchors.fill: parent
                 hoverEnabled: true
+                acceptedButtons: Qt.RightButton | Qt.LeftButton
 
                 onEntered: {
                     cross.visible = root.signInProgress ? false : true
@@ -648,26 +734,29 @@ ListView {
                     cross.visible = false
                     cursorShape = Qt.ArrowCursor
                 }
-                onClicked: {
-                    if (root.signMode && !root.signInProgress
-                            && cross.valid_position) {
-                        let location_data = {
-                            "page_index": index,
-                            "page_width": width,
-                            "page_height": height,
-                            "stamp_x": cross.x,
-                            "stamp_y": cross.y,
-                            "stamp_width": cross.width,
-                            "stamp_height": cross.height
-                        }
-                        cross.visible = false
-                        cursorShape = Qt.BusyCursor
-                        root.signMode = false
-                        root.signInProgress = true
-                        stampLocationSelected(location_data)
-                        root.forceActiveFocus()
-                    }
-                }
+                onClicked: mouse => {
+                               if ((mouse.button === Qt.RightButton)
+                                   && root.signMode) {
+                                   quitSignMode()
+                                   mouse.accepted = true
+                               }
+
+                               if (root.signMode && !root.signInProgress
+                                   && cross.valid_position) {
+                                   let location_data = {
+                                       "page_index": index,
+                                       "page_width": width,
+                                       "page_height": height,
+                                       "stamp_x": cross.x,
+                                       "stamp_y": cross.y,
+                                       "stamp_width": cross.width,
+                                       "stamp_height": cross.height
+                                   }
+                                   cross.visible = false
+                                   cursorShape = Qt.BusyCursor
+                                   root.proceedSigning(location_data)
+                               }
+                           }
 
                 onPositionChanged: {
                     cross.x = mouseX - cross.width / 2
@@ -703,6 +792,189 @@ ListView {
                         color: cross.valid_position ? "blue" : "red"
                         font.family: "Noto Sans"
                     }
+                }
+            }
+
+            MouseArea {
+                id: rubberMouseArea
+
+                enabled: root.tagMode
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.CrossCursor
+                acceptedButtons: Qt.RightButton | Qt.LeftButton
+
+                onEntered: {
+                    console.debug("enter height = " + tagCross.height)
+                    let t_data = JSON.parse(tagData)
+                    tagCross.width = t_data.tag_width * width / 100
+                    console.debug("enter width" + tagCross.width)
+                    if (root.ratio > 0) {
+                        tagCross.height = tagCross.width / root.ratio
+                    }
+                    tagCross.visible = true
+                    cursorShape = Qt.CrossCursor
+                }
+
+                onExited: {
+                    tagCross.visible = false
+                    cursorShape = Qt.ArrowCursor
+                }
+
+                onClicked: mouse => {
+                               if ((mouse.button === Qt.RightButton)
+                                   && root.tagMode) {
+                                   disableTagMode()
+                                   mouse.accepted = true
+                               }
+                           }
+
+                onPressed: {
+                    root.interactive = false
+                    root.startX = mouseX
+                    root.startY = mouseY
+                }
+
+                onPositionChanged: mouse => {
+                                       if ((pressed && Math.abs(
+                                                startX - mouseX) > 10)
+                                           || root.tag_placing) {
+                                           root.tag_placing = true
+                                           if (mouseX > startX) {
+                                               tagCross.x = startX
+                                               tagCross.width = mouseX - startX
+                                           } else {
+                                               tagCross.x = mouseX
+                                               tagCross.width = startX - mouseX
+                                           }
+
+                                           if (mouseY > startY) {
+                                               tagCross.y = startY
+                                               tagCross.height = tagCross.width / root.ratio
+                                           } else {
+                                               //tagCross.y = mouseY
+                                               tagCross.height = tagCross.width / root.ratio
+                                           }
+                                           if (tagCross.x < 0
+                                               || tagCross.x + tagCross.width > pdfPage.width
+                                               || tagCross.y < 0
+                                               || tagCross.y + tagCross.height > pdfPage.height) {
+                                               tagCross.valid_position = false
+                                           } else {
+                                               tagCross.valid_position = true
+                                           }
+                                       } else {
+                                           tagCross.x = mouseX
+                                           tagCross.y = mouseY
+                                           if (tagCross.x < 0
+                                               || tagCross.x + tagCross.width > pdfPage.width
+                                               || tagCross.y < 0
+                                               || tagCross.y + tagCross.height > pdfPage.height) {
+                                               tagCross.valid_position = false
+                                           } else {
+                                               tagCross.valid_position = true
+                                           }
+                                       }
+                                   }
+
+                onReleased: mouse => {
+                                if ((mouse.button === Qt.RightButton)
+                                    && root.tagMode) {
+                                    disableTagMode()
+                                    mouse.accepted = true
+                                } else if (root.tagMode
+                                           && tagCross.valid_position) {
+                                    //console.warn("pdflistview tagdata = " + tagData)
+                                    let t_data = JSON.parse(tagData)
+                                    let rubber_stamp_data = {
+                                        "page_index": index,
+                                        "page_width": width,
+                                        "page_height": height,
+                                        "stamp_x": tagCross.x,
+                                        "stamp_y": tagCross.y,
+                                        "stamp_width": tagCross.width,
+                                        "stamp_height": tagCross.height,
+                                        "create_from_image": t_data.create_from_image,
+                                        "img_path": t_data.img_path,
+                                        "border_width": t_data.border_width,
+                                        "border_radius": t_data.border_radius,
+                                        "text_color_red": t_data.R,
+                                        "text_color_green": t_data.G,
+                                        "text_color_blue": t_data.B,
+                                        "border_color_red": t_data.R,
+                                        "border_color_green": t_data.G,
+                                        "border_color_blue": t_data.B,
+                                        "bg_color_red": t_data.R,
+                                        "bg_color_green": t_data.G,
+                                        "bg_color_blue": t_data.B,
+                                        "font_family": t_data.font_family,
+                                        "stamp_text": t_data.stamp_text,
+                                        "bg_transparent": t_data.bg_transparent,
+                                        "annotation_width": tagCross.width,
+                                        "zoom_on_rubber_render": root.zoomPageFact,
+                                        "link": t_data.stamp_link
+                                    }
+
+                                    root.size_estimated = false
+                                    tagCross.visible = false
+                                    cursorShape = Qt.BusyCursor
+                                    root.tagMode = false
+                                    console.debug("exit tag mode")
+                                    root.interactive = true
+                                    pdfModel.placeRubberStamp(rubber_stamp_data)
+                                    root.tagInProgress = true
+                                    root.forceActiveFocus()
+                                    root.tag_placing = false
+                                }
+                            }
+
+                Rectangle {
+                    id: tagCross
+
+                    property string defaultText: qsTr("Stamp position")
+                    property string invalidPositionText: qsTr(
+                                                             "Invalid position")
+                    property bool valid_position: true
+
+                    color: "transparent"
+                    border.color: valid_position ? "blue" : "red"
+                    border.width: 2
+                    visible: false
+
+                    Text {
+                        topPadding: 10
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: tagCross.valid_position ? tagCross.defaultText : tagCross.invalidPositionText
+                        color: tagCross.valid_position ? "blue" : "red"
+                        font.family: "Noto Sans"
+                    }
+                }
+            }
+
+            Connections {
+                target: pdfModel
+
+                function onSizeReady(calc_ratio) {
+                    // add rubber stamps on render
+                    root.ratio = calc_ratio
+                    let t_data = JSON.parse(tagData)
+                    tagCross.width = t_data.tag_width * width / 100
+                    tagCross.height = tagCross.width / calc_ratio
+                    root.size_estimated = true
+                    console.debug("size ready height = " + tagCross.height)
+                    console.debug("size ready width = " + tagCross.width)
+                    console.debug("size ready = " + ratio)
+                }
+
+                function onUpdateDoc() {
+                    // add rubber stamps on render
+                    pdfPage.setRubberStamps(pdfModel.getRubberStampForPage(
+                                                model.display))
+                    tagPlaced()
+
+                    let undoCount = pdfModel.getUndoCount()
+                    let redoCount = pdfModel.getRedoCount()
+                    updateHistory(undoCount, redoCount)
                 }
             }
         }

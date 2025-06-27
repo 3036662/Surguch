@@ -4,7 +4,9 @@ import QtQuick.Dialogs
 import QtQuick.Layouts
 import alt.pdfcsp.pdfModel
 import alt.pdfcsp.signatureCreator
+import alt.pdfcsp.tagCreator
 import alt.pdfcsp.profilesModel
+import alt.pdfcsp.rubberStampModel
 import alt.pdfcsp.signaturesListModel
 import alt.pdfcsp.printerLauncher
 import StyleSheet
@@ -34,6 +36,11 @@ ApplicationWindow {
             HeaderSubBar {
                 id: headerSubBar
                 visible: pdfListView.source != ""
+
+                function placeTagStamp(rubber_stamp_data) {//let tag_data = rubber_stamp_data
+                    //console.warn("mainqml" + JSON.stringify(tag_data))
+                    //pdfModel.placeRubberStamp(tag_data)
+                }
             }
         }
     }
@@ -103,6 +110,14 @@ ApplicationWindow {
         id: stampEditor
     }
 
+    RubberStampEditor {
+        id: rubberStampEditor
+    }
+
+    InfoDialog {
+        id: appInfoDialog
+    }
+
     // --------------------------------------
     // instantinate cpp models
     MuPdfModel {
@@ -116,6 +131,10 @@ ApplicationWindow {
         id: profilesModel
     }
 
+    RubberStampModel {
+        id: rubberStampModel
+    }
+
     SignaturesListModel {
         id: siglistModel
     }
@@ -124,11 +143,15 @@ ApplicationWindow {
         id: printer
     }
 
+    TagCreator {
+        id: tagCreator
+    }
+
     SignatureCreator {
         id: sigCreator
 
         // common function to gather parameters used in resizeAim and signDoc
-        function gatherParams(location_data) {
+        function gatherParams(location_data, path) {
             let curr_profile = JSON.parse(header.getCurrentProfileValue())
             let cert_array = JSON.parse(profilesModel.getUserCertsJSON())
             // console.warn(JSON.stringify(rightSideBar.edit_profile.cert_array));
@@ -178,7 +201,7 @@ ApplicationWindow {
                 "bg_opacity": 1,
                 "cades_type": curr_profile.CADES_format,
                 "tsp_url": curr_profile.tsp_url,
-                "file_to_sign_path": pdfModel.getSource()
+                "file_to_sign_path": path
             }
             //console.warn(JSON.stringify(params))
             return params
@@ -198,12 +221,12 @@ ApplicationWindow {
         }
 
         // sign the document
-        function signDoc(location_data) {
+        function signDoc(location_data, path) {
             try {
                 if (typeof (location_data) == "undefined") {
                     return
                 }
-                let params = gatherParams(location_data)
+                let params = gatherParams(location_data, path)
                 sigCreator.createSignature(params)
             } catch (e) {
                 console.warn("signDoc" + e)
@@ -271,17 +294,23 @@ ApplicationWindow {
         headerSubBar.rotateClockwise.connect(pdfListView.rotateClockWise)
         headerSubBar.rotateCounterClockWise.connect(
                     pdfListView.rotateCounterClockWise)
-        headerSubBar.se
         // enable/disable zoom
         pdfListView.maxZoomReached.connect(headerSubBar.disableZoom)
         pdfListView.canZoom.connect(headerSubBar.enableZoom)
         pdfListView.minZoomReached.connect(headerSubBar.disableZoomOut)
         pdfListView.canZoomOut.connect(headerSubBar.enableZoomOut)
+        ///sync action history
+        headerSubBar.undoAction.connect(pdfListView.undo)
+        headerSubBar.redoAction.connect(pdfListView.redo)
+        pdfListView.updateHistory.connect(headerSubBar.updateHistory)
         // toggle from preview to certs in left sidebat
         headerSubBar.showPreviews.connect(leftSideBar.showPreviews)
         headerSubBar.showCerts.connect(leftSideBar.showCerts)
         // screen DPI changed
         pdfModel.screenDpiChanged.connect(pdfListView.redrawAndPreservePosion)
+        //enable buttons for stamps
+        pdfListView.quitSignMode.connect(header.quitSignMode)
+        pdfListView.disableTagMode.connect(headerSubBar.disableTagMode)
         // search
         headerSubBar.searchDialog.searchRequired.connect(pdfModel.performSearch)
         pdfModel.searchCompleted.connect(pdfListView.searchCompleted)
@@ -301,6 +330,10 @@ ApplicationWindow {
         pdfModel.signaturesCounted.connect(leftSideBar.setSigCount)
         // call SignaturesListModel to update the signatures list and validate all signatures
         pdfModel.signaturesFound.connect(siglistModel.updateSigList)
+        // add rubber stamp to document
+        pdfListView.tagPlaced.connect(headerSubBar.enableTagButton)
+        // sync pdflistpreview with changed source of pdflistview
+        pdfListView.updateLSB.connect(leftSideBar.updateSource)
         // open file error
         pdfModel.errorOpenFile.connect(function (err_string) {
             errorMessageDialog.text = err_string

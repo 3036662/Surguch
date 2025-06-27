@@ -19,9 +19,12 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #define PDF_PAGE_RENDER_HPP
 
 #include <QImage>
+#include <QList>
 #include <QQuickItem>
 #include <memory>
+#include <mutex>
 
+#include "core/gui_core/rubber_structs.hpp"
 #include "core/mu_page_render.hpp"
 #include "mupdf/fitz.h"
 
@@ -66,6 +69,10 @@ class PdfPageRender : public QQuickItem {
     Q_INVOKABLE void setCurrentNeedleRect(
         const std::shared_ptr<std::pair<size_t, fz_rect>> &);
 
+    /// @brief set rubber stamps for page
+    Q_INVOKABLE void setRubberStamps(
+        std::vector<std::shared_ptr<core::gui::RubberStamp>> rubber_stamps);
+
     /// @brief the goal with of element
     Q_PROPERTY(float widthGoal MEMBER width_goal_ NOTIFY widthGoalChanged);
     /// @brief the goal zoom of element
@@ -87,6 +94,9 @@ class PdfPageRender : public QQuickItem {
     void widthGoalChanged();
 
    private:
+    /// @brief render rubber stamps on top of page
+    void renderRubberStamps();
+
     fz_document *fzdoc_ = nullptr;
     fz_context *fzctx_ = nullptr;
     int page_number_ = 0;
@@ -102,6 +112,8 @@ class PdfPageRender : public QQuickItem {
     float result_zoom_last_ = 1;
     float custom_rotation_ = 0;
     core::utils::NeedleRectsOnPage needles_;  // not owning
+    std::vector<std::shared_ptr<core::gui::RubberStamp>> rubber_stamps_;
+    std::mutex mutex_;
 };
 
 #endif  // PDF_PAGE_RENDER_HPP

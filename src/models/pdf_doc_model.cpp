@@ -21,14 +21,19 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QFuture>
+#include <QFutureWatcher>
 #include <QGuiApplication>
+#include <QImage>
 #include <QMimeDatabase>
 #include <QScreen>
 #include <QThread>
 #include <QUrl>
 #include <QWindow>
+#include <QtConcurrent>
 
 #include "core/signature_processor.hpp"
+#include "core/utils.hpp"
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
 
@@ -49,6 +54,7 @@ PdfDocModel::PdfDocModel(QObject *parent)
     QWindow *p_window = nullptr;
     QScreen *p_screen = nullptr;
     const QWindowList window_list = QGuiApplication::topLevelWindows();
+    // NOLINTNEXTLINE
     if (!window_list.isEmpty() && (p_window = window_list.at(0)) != nullptr &&
         (p_screen = p_window->screen()) != nullptr) {
         physical_screen_dpi_ = p_screen->physicalDotsPerInch();
@@ -117,6 +123,10 @@ void PdfDocModel::setSource(const QString &path) {
     fz_drop_document(fzctx_, fzdoc_);
     fz_drop_context(fzctx_);
     file_source_.clear();
+    if (history_manager_ != nullptr) {
+        history_manager_->clearHistory();
+    }
+    // qWarning() << "path = " << path;
     processFileDelete();
     fzctx_ = fz_new_context(nullptr, nullptr, 500000000);
     fz_try(fzctx_) {
@@ -227,7 +237,7 @@ pdf_document *PdfDocModel::getPdfDoc() const { return pdfdoc_; }
 
 /// @brief resert the whole model
 void PdfDocModel::redrawAll() {
-    qWarning() << "[PdfDocModel] redraw all";
+    // qWarning() << "[PdfDocModel] redraw all";
     beginResetModel();
     endResetModel();
 }
@@ -286,10 +296,11 @@ Q_INVOKABLE void PdfDocModel::deleteFileLater(QString path) {
 }
 
 /// @brief the 'save file as' implementation
-Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(const QString &path,
+Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(const QString &curr_path,
+                                               const QString &path,
                                                bool delete_curr_source) {
     const QString dest_path = QUrl(path).toString(QUrl::PreferLocalFile);
-    QFile src_file(file_source_);
+    QFile src_file(curr_path);
     if (!src_file.exists()) {
         qWarning() << "[SaveCurrSourceTo] source file does not exist";
         return false;
@@ -328,7 +339,7 @@ PdfDocModel::NeedleRectsOnPage PdfDocModel::getNeedlesForPage(
 }
 
 /// @brief search for text
-void PdfDocModel::performSearch(QString needle) {
+void PdfDocModel::performSearch(const QString &needle) {
     qWarning() << "search for " << needle;
     if (text_extractor_) {
         text_extractor_->performSearch(needle, false);
@@ -375,4 +386,120 @@ PdfDocModel::getCurrentNeedleRect(size_t page_index) {
     }
     return text_extractor_->getCurrentNeedleRect(page_index);
 }
+
+void PdfDocModel::placeRubberStamp(const QVariantMap &qvparams) {
+    params = core::gui::prepareParams(qvparams);
+    auto params_wrapper = core::gui::createParams(params);
+    image_watcher_ = std::make_unique<ImageFutureWatcher>();
+    QObject::connect(image_watcher_.get(), &ImageFutureWatcher::finished,
+                     [this]() {
+                         // qWarning() << "finished";
+                         saveImage();
+                     });
+    image_future_ = std::make_unique<ImageFuture>(
+        QtConcurrent::run(core::gui::prepareImage, params_wrapper));
+    image_watcher_->setFuture(*image_future_);
+}
+
+void PdfDocModel::prepareImage(const QVariantMap &qvparams) {
+    params = core::gui::prepareParams(qvparams);
+    auto params_wrapper = core::gui::createParams(params);
+    image_watcher_ = std::make_unique<ImageFutureWatcher>();
+    QObject::connect(image_watcher_.get(), &ImageFutureWatcher::finished,
+                     [this]() {
+                         // qWarning() << "finished";
+                         estimateTagHeight();
+                     });
+    image_future_ = std::make_unique<ImageFuture>(
+        QtConcurrent::run(core::gui::prepareImage, params_wrapper));
+    image_watcher_->setFuture(*image_future_);
+}
+
+void PdfDocModel::estimateTagHeight() {
+    if (image_future_ && image_future_->isValid()) {
+        auto result = image_future_->takeResult();
+        if (result != nullptr && result->data_ != nullptr) {
+            auto ratio = static_cast<double>(result->data_->resolution_x) /
+                         static_cast<double>(result->data_->resolution_y);
+            // qWarning() << "[EstimateTagHeight]" << ratio;
+            emit sizeReady(ratio);
+        }
+    }
+}
+
+std::vector<std::shared_ptr<core::gui::RubberStamp>>
+PdfDocModel::getRubberStampForPage(size_t page_index) const {
+    if (!history_manager_) {
+        return {};
+    }
+    return history_manager_->getActionsOnPage(page_index);
+}
+
+void PdfDocModel::undoRubberStamp() {
+    if (!history_manager_) {
+        return;
+    }
+    history_manager_->undoAction();
+
+    emit updateDoc();
+}
+
+void PdfDocModel::redoRubberStamp() {
+    if (!history_manager_) {
+        return;
+    }
+    history_manager_->redoAction();
+
+    emit updateDoc();
+}
+
+size_t PdfDocModel::getUndoCount() const {
+    if (!history_manager_) {
+        return 0;
+    }
+    // qWarning() << "[PdfDocModel::getUndoCount]" <<
+    // history_manager_->getUndoCount() << "\n";
+    return history_manager_->getUndoCount();
+}
+
+size_t PdfDocModel::getRedoCount() const {
+    if (!history_manager_) {
+        return 0;
+    }
+    // qWarning() << "[PdfDocModel::getRedoCount]" <<
+    // history_manager_->getRedoCount() << "\n";
+    return history_manager_->getRedoCount();
+}
+
+void PdfDocModel::clearHistory() const {
+    // qWarning() << "[PdfDocModel::clearHistory]";
+    if (!history_manager_) {
+        return;
+    }
+    history_manager_->clearHistory();
+}
+
+std::vector<pdfcsp::pdf::CAnnotParams> PdfDocModel::getAnnotParams() const {
+    if (!history_manager_) {
+        return {};
+    }
+    return history_manager_->getAnnotsParams();
+}
+
+void PdfDocModel::saveImage() {
+    if (!history_manager_) {
+        history_manager_ = std::make_unique<core::gui::HistoryManager>();
+    }
+    if (image_future_ && image_future_->isValid()) {
+        history_manager_->addAction(
+            std::make_unique<core::gui::RubberStamp>(core::gui::RubberStamp{
+                params.page_index, params.position_x, params.position_y,
+                params.page_width, params.real_stamp_width, params.page_height,
+                params.stamp_width, params.stamp_height, params.link,
+                image_future_->takeResult()}));
+    }
+    history_manager_->clearRedo();
+    emit updateDoc();
+}
+
 // NOLINTEND(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)

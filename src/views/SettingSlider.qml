@@ -19,8 +19,8 @@ Slider {
         y: control.topPadding
            + (control.horizontal ? (control.availableHeight - height) / 2 : control.visualPosition
                                    * (control.availableHeight - height))
-        implicitWidth: 28
-        implicitHeight: 28
+        implicitWidth: 20
+        implicitHeight: 20
         radius: width / 2
         color: StyleSheet.slider_handle_color
         border.width: control.visualFocus ? 4 : 2
@@ -30,8 +30,8 @@ Slider {
     background: Rectangle {
         x: control.leftPadding + (control.horizontal ? 0 : (control.availableWidth - width) / 2)
         y: control.topPadding + (control.horizontal ? (control.availableHeight - height) / 2 : 0)
-        implicitWidth: control.horizontal ? 200 : 6
-        implicitHeight: control.horizontal ? 6 : 200
+        implicitWidth: control.horizontal ? 200 : 5
+        implicitHeight: control.horizontal ? 5 : 200
         width: control.horizontal ? control.availableWidth : implicitWidth
         height: control.horizontal ? implicitHeight : control.availableHeight
         radius: 3
@@ -40,8 +40,8 @@ Slider {
 
         Rectangle {
             y: control.horizontal ? 0 : control.visualPosition * parent.height
-            width: control.horizontal ? control.position * parent.width : 6
-            height: control.horizontal ? 6 : control.position * parent.height
+            width: control.horizontal ? control.position * parent.width : 5
+            height: control.horizontal ? 5 : control.position * parent.height
 
             radius: 3
             color: control.back_color

@@ -5,13 +5,15 @@ import StyleSheet
 TextArea {
     id: root
     background: Rectangle {
-        border.color: root.text === "" ? "red" : "lightGrey"
+        border.color: StyleSheet.slider_border_color
+        color: StyleSheet.text_area_background
     }
     width: parent.width
     selectByMouse: true
     wrapMode: Text.WordWrap
     placeholderText: qsTr("Placeholder text")
-    placeholderTextColor: "grey"
+    placeholderTextColor: StyleSheet.font_color
     color: StyleSheet.font_color
     font.family: "Noto Sans"
+    //font.color: font_color_extra
 }

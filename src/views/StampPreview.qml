@@ -81,6 +81,11 @@ Item {
         stampPreview.createImage(params)
     }
 
+    Image {
+        anchors.fill: parent
+        source: "qrc:/chess_bg.jpg"
+    }
+
     PreviewRender {
         id: stampPreview
         width: parent.width

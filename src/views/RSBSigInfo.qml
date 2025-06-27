@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import StyleSheet
 
 Flickable {
     width: parent.width
@@ -23,6 +24,7 @@ Flickable {
             text: qsTr("Signature")
             font.weight: Font.DemiBold
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         //////////////////////////////////////
@@ -98,6 +100,7 @@ Flickable {
                     topPadding: 10
                     bottomPadding: 10
                     font.family: "Noto Sans"
+                    color: StyleSheet.font_color_extra
                 }
                 RSideBarStatusMedal {
                     title: qsTr("Status")
@@ -155,6 +158,7 @@ Flickable {
                     topPadding: 10
                     bottomPadding: 10
                     font.family: "Noto Sans"
+                    color: StyleSheet.font_color_extra
                 }
                 Repeater {
                     model: modelData.tbs_response_data.responses

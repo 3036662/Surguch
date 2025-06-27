@@ -96,6 +96,7 @@ Flickable {
             topPadding: 10
             bottomPadding: 10
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         TextPair {
@@ -109,12 +110,13 @@ Flickable {
             text: qsTr("Profile name")
             bottomPadding: 5
             font.family: "Noto Sans"
-            color: StyleSheet.font_color
+            color: StyleSheet.font_color_extra
         }
 
         RSBTextArea {
             id: profileName
             placeholderText: qsTr("Enter profile name")
+            color: StyleSheet.font_color_extra
 
             onTextChanged: {
                 let validInput = profileName.text.match(/^S+$/)
@@ -131,8 +133,10 @@ Flickable {
         // certificate choice
         Text {
             text: qsTr("Certificate")
-            bottomPadding: 5
+            topPadding: 10
+            bottomPadding: 10
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         RSBComboSelect {
@@ -148,6 +152,8 @@ Flickable {
 
         RightSBHorizontalDelimiter {
             width: parent.width
+            topPadding: 7
+            bottomPadding: 7
         }
 
         // use by default switch
@@ -160,6 +166,8 @@ Flickable {
 
         RightSBHorizontalDelimiter {
             width: parent.width
+            topPadding: 10
+            bottomPadding: 10
         }
 
         Text {
@@ -168,6 +176,7 @@ Flickable {
             topPadding: 10
             bottomPadding: 10
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         // Cades format
@@ -176,6 +185,7 @@ Flickable {
             text: qsTr("Cades type")
             bottomPadding: 5
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         RSBComboSelect {
@@ -205,11 +215,13 @@ Flickable {
                 text: qsTr("TSP server URL")
                 bottomPadding: 5
                 font.family: "Noto Sans"
+                color: StyleSheet.font_color_extra
             }
 
             RSBTextArea {
                 id: tspUrlEdit
                 placeholderText: qsTr("Enter TSP service url")
+                color: StyleSheet.font_color_extra
                 inputMethodHints: Qt.ImhUrlCharactersOnly
                 property bool valid_url: false
 
@@ -232,14 +244,55 @@ Flickable {
             topPadding: 10
             bottomPadding: 10
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         // stamp settings
-        Text {
-            topPadding: 10
-            text: qsTr("Stamp appearance")
-            bottomPadding: 5
-            font.family: "Noto Sans"
+        RowLayout {
+            width: parent.width
+
+            Text {
+                topPadding: 10
+                text: qsTr("Stamp appearance")
+                bottomPadding: 5
+                font.family: "Noto Sans"
+                color: StyleSheet.font_color_extra
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
+            }
+
+            ToolButton {
+                id: editButton
+                flat: true
+                display: AbstractButton.IconOnly
+                icon.width: 15
+                icon.height: 15
+                leftPadding: 5
+                rightPadding: 5
+                topPadding: 5
+                bottomPadding: 5
+                font.family: "Noto Sans"
+                icon.source: StyleSheet.wrench_icon
+                enabled: selectStampTypeCombo.currentText !== "ГОСТ"
+
+                onClicked: {
+                    stampEditor.stamp_data = selectStampTypeCombo.currentValue
+                    stampEditor.profiles_model = profiles_model
+                    let data = {
+                        "CADES_format": selectCadesFormatCombo.currentValue,
+                        "cert_serial": selectCertificateCombo.currentValue,
+                        "logo_path": logoPath.text,
+                        "tsp_url": ""
+                    }
+                    //console.warn(JSON.stringify(data))
+                    stampEditor.profile_data = JSON.stringify(data)
+                    stampEditor.updateStampForm()
+                    stampEditor.editState = true
+                    stampEditor.visible = true
+                }
+            }
         }
 
         RowLayout {
@@ -273,46 +326,11 @@ Flickable {
                     }
                 }
             }
-
-            Rectangle {
-                Layout.fillWidth: true
-            }
-
-            ToolButton {
-                id: editButton
-                Layout.fillWidth: true
-                flat: true
-                display: AbstractButton.TextBesideIcon
-                icon.width: 30
-                icon.height: 30
-                leftPadding: 10
-                rightPadding: 10
-                topPadding: 10
-                bottomPadding: 10
-                font.family: "Noto Sans"
-                icon.source: StyleSheet.wrench_icon
-                enabled: selectStampTypeCombo.currentText !== "ГОСТ"
-
-                onClicked: {
-                    stampEditor.stamp_data = selectStampTypeCombo.currentValue
-                    stampEditor.profiles_model = profiles_model
-                    let data = {
-                        "CADES_format": selectCadesFormatCombo.currentValue,
-                        "cert_serial": selectCertificateCombo.currentValue,
-                        "logo_path": logoPath.text,
-                        "tsp_url": ""
-                    }
-                    //console.warn(JSON.stringify(data))
-                    stampEditor.profile_data = JSON.stringify(data)
-                    stampEditor.updateStampForm()
-                    stampEditor.editState = true
-                    stampEditor.visible = true
-                }
-            }
         }
 
         Connections {
             target: profilesModel
+
             // when model has successfully saved the stamp
             function onStampsSaved(val) {
                 // update stamp combobox
@@ -340,11 +358,13 @@ Flickable {
             text: qsTr("Company logo")
             bottomPadding: 5
             font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
         }
 
         RSBTextArea {
             id: logoPath
             placeholderText: qsTr("Select a logo")
+            color: StyleSheet.font_color_extra
 
             MouseArea {
                 anchors.fill: parent
@@ -366,7 +386,7 @@ Flickable {
                 icon.source: StyleSheet.save_icon
                 icon.width: 20
                 icon.height: 20
-                width: root.width
+                width: logoPath.width
                 //width: text.length
                 //     < deleteProfileButton.text.length ? deleteProfileButton.width : 150
                 text: qsTr("Save profile")
@@ -441,7 +461,7 @@ Flickable {
                 text: qsTr("Delete profile")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
-                width: root.width
+                width: logoPath.width
                 font.family: "Noto Sans"
 
                 onClicked: {

@@ -1,6 +1,8 @@
+<?xml version="1.0"?>
 <RCC>
     <qresource prefix="/">
         <file>translations/ru_RU.qm</file>
+        <file>chess_bg.jpg</file>
         <file>app_icons/SealWax-1_32.png</file>
         <file>StyleSheet.qml</file>
         <file>icons/light/wrench.svg</file>
@@ -53,5 +55,9 @@
         <file>icons/dark/chevron_up.svg</file>
         <file>icons/light/chevron_up.svg</file>
         <file>icons/light/chevron_down.svg</file>
+        <file>icons/light/tag_icon.svg</file>
+        <file>icons/dark/tag_icon.svg</file>
+        <file>icons/light/info_icon.svg</file>
+        <file>icons/dark/info_icon.svg</file>
     </qresource>
 </RCC>

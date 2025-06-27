@@ -15,7 +15,7 @@ RowLayout {
     }
 
     function disableSignMode() {
-        console.warn("disable sign mode")
+        //console.warn("disable sign mode")
         signModeButton.down = false
         signModeButton.enabled = false
         pdfListView.signMode = false
@@ -26,6 +26,11 @@ RowLayout {
         signModeButton.enabled = true
         pdfListView.signMode = false
         pdfListView.signInProgress = false
+    }
+
+    function quitSignMode() {
+        pdfListView.signMode = false
+        signModeButton.down = false
     }
 
     function launchSaveFileWithQuit(quit_after_save) {
@@ -74,6 +79,31 @@ RowLayout {
             spacing: 2
             id: comboBox_row
             height: parent.height
+
+            Rectangle {
+                width: 5
+                height: parent.height
+                color: "transparent"
+            }
+            TopBarButton {
+                icon.source: StyleSheet.wrench_icon
+                enabled: profileComboBox.currentValue !== "new"
+
+                onClicked: {
+                    //open profile info panel
+                    rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
+                    // set the certificates for select
+                    rightSideBar.edit_profile.cert_data_raw
+                            = profileComboBox.model.getUserCertsJSON()
+                    //set the stamps for select
+                    rightSideBar.edit_profile.stamps_data_raw
+                            = profileComboBox.model.getUserStampsJSON()
+                    // set a reference to this model
+                    rightSideBar.edit_profile.profiles_model = profileComboBox.model
+                    rightSideBar.edit_profile.profile_data = profileComboBox.currentValue
+                }
+            }
+
             Rectangle {
                 width: 5
                 height: parent.height
@@ -101,8 +131,6 @@ RowLayout {
                 onActivated: {
                     profileComboBox.displayText = profileComboBox.textAt(
                                 currentIndex)
-                    //open profile info panel
-                    rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
                     // set the certificates for select
                     rightSideBar.edit_profile.cert_data_raw
                             = profileComboBox.model.getUserCertsJSON()
@@ -113,6 +141,8 @@ RowLayout {
                     rightSideBar.edit_profile.profiles_model = profileComboBox.model
                     // if create a new profile, set an empty data
                     if (currentValue === "new") {
+                        //open profile info panel
+                        rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
                         rightSideBar.edit_profile.profile_data = ""
                         rightSideBar.edit_profile.profile_id = -1
                         // ele set current profile data
@@ -135,32 +165,9 @@ RowLayout {
                 }
             }
 
-            Rectangle {
-                width: 5
-                height: parent.height
-                color: "transparent"
-            }
-            TopBarButton {
-                icon.source: StyleSheet.wrench_icon
-                enabled: profileComboBox.currentValue !== "new"
-
-                onClicked: {
-                    //open profile info panel
-                    rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
-                    // set the certificates for select
-                    rightSideBar.edit_profile.cert_data_raw
-                            = profileComboBox.model.getUserCertsJSON()
-                    //set the stamps for select
-                    rightSideBar.edit_profile.stamps_data_raw
-                            = profileComboBox.model.getUserStampsJSON()
-                    // set a reference to this model
-                    rightSideBar.edit_profile.profiles_model = profileComboBox.model
-                    rightSideBar.edit_profile.profile_data = profileComboBox.currentValue
-                }
-            }
-
             Connections {
                 target: profilesModel
+
                 // when model has successfully saved the profile
                 function onProfileSaved(val) {
                     // select saved profile in the header combo
@@ -195,6 +202,8 @@ RowLayout {
         }
         TopBarButton {
             id: signModeButton
+
+            //enabled: false
             icon.source: StyleSheet.pencil_line_icon
             text: qsTr("Sign")
             icon.height: 25
@@ -207,6 +216,7 @@ RowLayout {
                         || profileComboBox.currentIndex === -1) {
                     profileComboBox.popup.open()
                 } else {
+                    headerSubBar.disableTagMode()
                     pdfListView.signMode = !pdfListView.signMode
                     if (!down) {
                         pdfListView.reserRotation()
@@ -215,6 +225,22 @@ RowLayout {
                 }
             }
         }
+    }
+
+    Rectangle {
+        Layout.fillWidth: true
+    }
+
+    ToolButton {
+        id: info_button
+
+        flat: true
+        icon.source: StyleSheet.info_icon
+        icon.width: 20
+        icon.height: 20
+        leftPadding: 5
+        rightPadding: 5
+        onClicked: appInfoDialog.open()
     }
 
     // ToolButton {
@@ -229,6 +255,7 @@ RowLayout {
     Keys.onPressed: event => {
                         if (event.key === Qt.Key_Escape
                             && pdfListView.signMode) {
+                            headerSubBar.enableTagButton()
                             pdfListView.signMode = false
                             signModeButton.down = false
                             event.accepted = true
@@ -265,8 +292,19 @@ RowLayout {
                            StandardPaths.DocumentsLocation)
 
         onAccepted: {
+            pdfModel.mustExtractText = false
+            let tmp_file = tagCreator.embedAnnot(pdfModel.getAnnotParams(),
+                                                 pdfModel.getSource())
+            if (tmp_file === "") {
+                tmp_file = pdfModel.getSource()
+            }
+            console.warn(tmp_file)
+            pdfModel.clearHistory()
             console.warn(currentFile)
-            pdfListView.saveTo(currentFile)
+            pdfListView.saveTo(tmp_file, currentFile)
+            pdfModel.deleteFileLater(tmp_file)
+            pdfModel.mustExtractText = true
+            headerSubBar.updateHistory()
             if (quitAfterSave) {
                 Qt.quit()
             }
@@ -302,8 +340,18 @@ RowLayout {
         folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
 
         onAccepted: {
+            pdfModel.mustExtractText = false
+            let tmp_file = tagCreator.embedAnnot(pdfModel.getAnnotParams(),
+                                                 pdfModel.getSource())
+            if (tmp_file === "") {
+                tmp_file = pdfModel.getSource()
+            }
+            pdfModel.clearHistory()
             console.warn(currentFile)
-            pdfListView.saveTo(currentFile)
+            pdfListView.saveTo(tmp_file, currentFile)
+            pdfModel.deleteFileLater(tmp_file)
+            pdfModel.mustExtractText = true
+            headerSubBar.updateHistory()
             if (quitAfterSave) {
                 Qt.quit()
             }

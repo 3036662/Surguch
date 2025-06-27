@@ -1,27 +1,32 @@
 add_library(appcore OBJECT
-    mu_page_render.hpp mu_page_render.cpp
-    signature_processor.hpp signature_processor.cpp
-    pdf_obj_keeper.hpp pdf_obj_keeper.cpp
-    raw_signature.hpp raw_signature.cpp
-    utils.hpp
-    utils.cpp
-    signatures_validator.hpp signatures_validator.cpp
-    signature_creator.hpp signature_creator.cpp
-    sign_worker.hpp sign_worker.cpp
-    file_recover_worker.hpp file_recover_worker.cpp
-    printer_launcher.hpp printer_launcher.cpp
-    text_extractor.hpp text_extractor.cpp
+        mu_page_render.hpp mu_page_render.cpp
+        signature_processor.hpp signature_processor.cpp
+        pdf_obj_keeper.hpp pdf_obj_keeper.cpp
+        raw_signature.hpp raw_signature.cpp
+        utils.hpp
+        utils.cpp
+        signatures_validator.hpp signatures_validator.cpp
+        signature_creator.hpp signature_creator.cpp
+        sign_worker.hpp sign_worker.cpp
+        file_recover_worker.hpp file_recover_worker.cpp
+        printer_launcher.hpp printer_launcher.cpp
+        text_extractor.hpp text_extractor.cpp
+        tag_creator.cpp
+        tag_creator.hpp
+        font_helper.hpp
 )
 
 
 add_subdirectory(csp_c_bridge)
 
+add_subdirectory(gui_core)
+
 target_include_directories(appcore PUBLIC
-    ${PDFCSP_INCLUDE_DIR}/c_bridge
+        ${PDFCSP_INCLUDE_DIR}/c_bridge
 )
 
 target_include_directories(appcore PUBLIC
-    ${PDFCSP_INCLUDE_DIR}/pdf
+        ${PDFCSP_INCLUDE_DIR}/pdf
 )
 
 target_include_directories(appcore PRIVATE ${MUPDF_INCLUDE_DIR})
@@ -30,7 +35,7 @@ target_include_directories(appcore PRIVATE .)
 
 
 target_link_libraries(appcore
-     PRIVATE ${PDFCSP_PDF_LINK_PATH}
+        PRIVATE ${PDFCSP_PDF_LINK_PATH}
 )
 
 target_link_libraries(appcore PUBLIC csp_c_bridge_qt)

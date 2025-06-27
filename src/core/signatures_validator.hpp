@@ -26,7 +26,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace core {
 
-/*
 /**
  * @brief Describes suggested trust level for the document
  * @details wrapped into QObject to be seen from QML

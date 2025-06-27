@@ -176,10 +176,12 @@ QStringList PrinterLauncher::createPrintCommand(const QPrinter &printer,
     // native options
     {
         // HACK qtbase/src/printsupport/kernel/qcups_p.h
+        // NOLINTBEGIN
         QStringList dialog_options =
             printer.printEngine()
                 ->property(QPrintEngine::PrintEnginePropertyKey(0xfe00))
                 .toStringList();
+        // NOLINTEND
         for (auto i = 0; i < dialog_options.count(); i += 2) {
             res.append(kKeyO);
             QString tmp = dialog_options[i];

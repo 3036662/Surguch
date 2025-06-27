@@ -5,21 +5,38 @@ import StyleSheet
 
 ColumnLayout {
 
+    property int redoCount: 0
+    property int undoCount: 0
+
     property alias searchDialog: searchDialog
 
-    signal zoomInClicked
-    signal zoomOutClicked
+        signal
+    zoomInClicked
+        signal
+    zoomOutClicked
+
     signal zoomSelected(int newZoom)
+
     signal scrollToPage(int pageNumber)
-    signal rotateClockwise
-    signal rotateCounterClockWise
-    signal showPreviews
-    signal showCerts
+
+        signal
+    rotateClockwise
+        signal
+    rotateCounterClockWise
+        signal
+    showPreviews
+        signal
+    showCerts
+        signal
+    undoAction
+        signal
+    redoAction
 
     function changePageCount(newCount) {
         page_number.pageCount = newCount
         pageNumberInputValidator.top = newCount + 1
     }
+
     function changedCurrPage(newIndex) {
         page_number.currPage = newIndex
         pageNumberInput.text = newIndex
@@ -51,6 +68,41 @@ ColumnLayout {
         zoomOutButton.enabled = false
     }
 
+    function setTagData(value) {
+        rubberStampPutButton.tag_data = value
+    }
+
+    function enableTagButton() {
+        console.debug("enabling tag button")
+        rubberStampPutButton.down = false
+        rubberStampPutButton.enabled = true
+    }
+
+    function clickTagButton() {
+        rubberStampPutButton.enabled = true
+        pdfListView.tagMode = !pdfListView.tagMode
+        pdfListView.tagData = rubberStampPutButton.tag_data
+        pdfModel.prepareImage(JSON.parse(rubberStampPutButton.tag_data))
+        if (!rubberStampPutButton.down) {
+            pdfListView.reserRotation()
+        }
+        rubberStampPutButton.down = !rubberStampPutButton.down
+    }
+
+    function updateHistory(undo, redo) {
+        if (undo) {
+            undoCount = undo
+        }
+        if (redo) {
+            redoCount = redo
+        }
+    }
+
+    function disableTagMode() {
+        pdfListView.tagMode = false
+        rubberStampPutButton.down = false
+    }
+
     spacing: 1
 
     Rectangle {
@@ -76,7 +128,8 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             flat: true
@@ -92,7 +145,8 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             flat: true
@@ -100,16 +154,17 @@ ColumnLayout {
             icon.source: StyleSheet.printer_icon
             icon.width: 20
             icon.height: 20
-            leftPadding: 40
-            rightPadding: 40
+            leftPadding: 5
+            rightPadding: 5
 
             onClicked: {
                 printer.print(pdfListView.source, pdfListView.count,
-                                                     pdfListView.landscape)
+                    pdfListView.landscape)
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             flat: true
@@ -176,7 +231,8 @@ ColumnLayout {
             color: StyleSheet.font_color_extra
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             flat: true
@@ -206,7 +262,8 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderToolSeparator {
+        }
 
         ToolButton {
             id: zoomOutButton
@@ -247,21 +304,21 @@ ColumnLayout {
                 onCurrentIndexChanged: {
                     let newZoom = 0
                     switch (currentIndex) {
-                    case 0:
-                        newZoom = -1 //auto
-                        break
-                    case 1:
-                        newZoom = 75
-                        break
-                    case 2:
-                        newZoom = 100
-                        break
-                    case 3:
-                        newZoom = 125
-                        break
-                    case 4:
-                        newZoom = 150
-                        break
+                        case 0:
+                            newZoom = -1 //auto
+                            break
+                        case 1:
+                            newZoom = 75
+                            break
+                        case 2:
+                            newZoom = 100
+                            break
+                        case 3:
+                            newZoom = 125
+                            break
+                        case 4:
+                            newZoom = 150
+                            break
                     }
                     if (newZoom != 0) {
                         zoomSelected(newZoom)
@@ -270,7 +327,7 @@ ColumnLayout {
 
                 Layout.alignment: Qt.AlignVCenter
                 model: [qsTr("Automatic"), "75%", "100%", "125%", "150%"]
-                currentIndex: 0
+                currentIndex: 2
                 implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
                 anchors.verticalCenter: parent.verticalCenter
                 popup.y: comboBoxZoom.height
@@ -282,14 +339,80 @@ ColumnLayout {
             }
         }
 
+        // rubberStamps
+        HeaderToolSeparator {
+        }
+
+        ToolButton {
+            id: rubberStampPutButton
+
+            property var tag_data
+
+            enabled: !!tag_data
+            flat: true
+            icon.width: 20
+            icon.height: 20
+            leftPadding: 5
+            rightPadding: 5
+            icon.source: StyleSheet.tag_icon
+            onClicked: {
+                //console.debug("create tag")
+                header.quitSignMode()
+                pdfListView.tagMode = !pdfListView.tagMode
+                pdfListView.tagData = tag_data
+                pdfModel.prepareImage(JSON.parse(tag_data))
+                if (!down) {
+                    pdfListView.reserRotation()
+                }
+                down = !down
+            }
+        }
+
+        Keys.onPressed: event => {
+            if (event.key === Qt.Key_Escape
+                && pdfListView.tagMode) {
+                header.enableSignMode()
+                pdfListView.tagMode = false
+                rubberStampPutButton.down = false
+                event.accepted = true
+                return
+            }
+            event.accepted = false
+        }
+
+        ToolButton {
+            id: rubberStampDialogButton
+
+            flat: true
+            icon.width: 20
+            icon.height: 10
+            leftPadding: 5
+            rightPadding: 5
+            topPadding: 5
+            bottomPadding: 5
+            icon.source: StyleSheet.chevron_down
+            onClicked: {
+                header.quitSignMode()
+                if (rubberStampDialog.visible) {
+                    rubberStampDialog.close()
+                } else {
+                    rubberStampDialog.open()
+                }
+            }
+        }
+
         // search
-        HeaderToolSeparator {}
-        Button {
+        HeaderToolSeparator {
+        }
+        ToolButton {
             id: searchButton
+            enabled: !pdfListView.signMode && !pdfListView.tagMode
             flat: true
             icon.source: StyleSheet.search_icon
-            height: 24
-            smooth: true
+            icon.width: 20
+            icon.height: 20
+            leftPadding: 5
+            rightPadding: 5
             onClicked: searchDialog.open()
         }
 
@@ -315,11 +438,38 @@ ColumnLayout {
         id: searchDialog
     }
 
+    RubberStampDialog {
+        id: rubberStampDialog
+    }
+
     Shortcut {
-            sequence: "Ctrl+F"
-            onActivated: {
-                searchDialog.open()
-                searchDialog.focus = true;
-            }
+        sequence : "Ctrl+F"
+        onActivated: {
+            searchDialog.open()
+            searchDialog.focus = true
         }
+    }
+
+    Shortcut {
+        id: undoShortcut
+
+        enabled: undoCount > 0
+        sequence: "Ctrl+Z"
+        onActivated: {
+            //console.warn("undo")
+            undoAction()
+            updateHistory()
+        }
+    }
+
+    Shortcut {
+        id: redoShortcut
+
+        enabled: redoCount > 0
+        sequence: "Ctrl+Y"
+        onActivated: {
+            //console.warn("redo")
+            redoAction()
+        }
+    }
 }

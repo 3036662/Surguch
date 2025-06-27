@@ -33,9 +33,16 @@ Item {
     property string trash_icon
     property string chevron_up
     property string chevron_down
+    property string tag_icon
+    property string info_icon
     property color slider_fill_color
     property color slider_border_color
     property color slider_handle_color
+    property color edit_background
+    property color text_area_background
+    property color combo_box_background
+    property color tooltip_background
+    property color icon_color
     states: [
         State {
             name: "dark"
@@ -68,9 +75,16 @@ Item {
                 save_icon: "qrc:/icons/dark/save.svg"
                 chevron_up: "qrc:/icons/dark/chevron_up.svg"
                 chevron_down: "qrc:/icons/dark/chevron_down.svg"
+                tag_icon: "qrc:/icons/dark/tag_icon.svg"
+                info_icon: "qrc:/icons/dark/info_icon.svg"
                 slider_fill_color: "#454A4E"
                 slider_border_color: "#454A4E"
                 slider_handle_color: "#31363B"
+                edit_background: "#292D32"
+                text_area_background: "#1A1D1F"
+                combo_box_background: "#31363B"
+                tooltip_background: "#31363B"
+                icon_color: "gray"
             }
         },
         State {
@@ -104,9 +118,16 @@ Item {
                 save_icon: "qrc:/icons/light/save.svg"
                 chevron_up: "qrc:/icons/light/chevron_up.svg"
                 chevron_down: "qrc:/icons/light/chevron_down.svg"
+                tag_icon: "qrc:/icons/light/tag_icon.svg"
+                info_icon: "qrc:/icons/light/info_icon.svg"
                 slider_fill_color: "#DADBDC"
                 slider_border_color: "#DADBDC"
-                slider_handle_color: "#EFF0F1"
+                slider_handle_color: "#ffffff"
+                edit_background: "#FFFFFE"
+                text_area_background: "#FCFCFC"
+                combo_box_background: "#EFF0F1"
+                tooltip_background: "#FCFCFC"
+                icon_color: "gray"
             }
         }
     ]

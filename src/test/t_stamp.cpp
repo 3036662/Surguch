@@ -34,7 +34,7 @@ void TStamp::checkParams() {
 }
 
 void TStamp::createPreview() {
-    PreviewRender::SignParams params_;
+    core::gui::SignParams params_;
     params_.bg_opacity = 1;
     params_.bg_transparent = 1;
     params_.border_color.R = 255;
@@ -66,7 +66,7 @@ void TStamp::createPreview() {
     params_.text_color.G = 0;
     params_.text_color.B = 0;
 
-    auto params_wrapper = std::make_shared<PreviewRender::CSignParamsWrapper>();
+    auto params_wrapper = std::make_shared<core::gui::CSignParamsWrapper>();
     pdfcsp::pdf::CSignParams &pod_params = params_wrapper->pod_params;
     pod_params.page_index = params_.page_index;
     pod_params.page_width = params_.page_width;
