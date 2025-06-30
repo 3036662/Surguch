@@ -38,7 +38,7 @@ ListView {
     property bool size_estimated: false
     property bool tag_placing: false
     property var tagData
-    property var ratio: 3
+    property var ratio
     property double startX
     property double startY
     // --------
@@ -797,7 +797,6 @@ ListView {
                 acceptedButtons: Qt.RightButton | Qt.LeftButton
 
                 onEntered: {
-                    console.debug("enter height = " + tagCross.height)
                     let t_data = JSON.parse(tagData)
                     tagCross.width = t_data.tag_width * width / 100
                     console.debug("enter width" + tagCross.width)
@@ -950,12 +949,11 @@ ListView {
                     // add rubber stamps on render
                     root.ratio = calc_ratio
                     let t_data = JSON.parse(tagData)
-                    tagCross.width = t_data.tag_width * width / 100
+                    tagCross.width = t_data.tag_width * pdfPage.width / 100
                     tagCross.height = tagCross.width / calc_ratio
                     root.size_estimated = true
                     console.debug("size ready height = " + tagCross.height)
                     console.debug("size ready width = " + tagCross.width)
-                    console.debug("size ready = " + ratio)
                 }
 
                 function onUpdateDoc() {
