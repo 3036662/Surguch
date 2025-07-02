@@ -45,5 +45,6 @@
         <file>RubberStampListEntry.qml</file>
         <file>SigCreatorWrapper.qml</file>
         <file>DisappearingHint.qml</file>
+        <file>FileTreeView.qml</file>
     </qresource>
 </RCC>

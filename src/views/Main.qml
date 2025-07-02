@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
+import Qt.labs.platform as Labs
 import alt.pdfcsp.pdfModel
 import alt.pdfcsp.signatureCreator
 import alt.pdfcsp.tagCreator
@@ -9,12 +10,21 @@ import alt.pdfcsp.profilesModel
 import alt.pdfcsp.rubberStampModel
 import alt.pdfcsp.signaturesListModel
 import alt.pdfcsp.printerLauncher
+import alt.pdfcsp.surguchLauncher
 import StyleSheet
 import alt.pdfcsp.eventFilterInstaller
 import alt.pdfcsp.wheelFilter
 
 ApplicationWindow {
     id: root_window
+
+    enum ShowType {
+        Empty,
+        Pdf,
+        Files
+    }
+
+    property int showType: Main.ShowType.Empty
 
     width: 1000
     height: 480
@@ -51,16 +61,77 @@ ApplicationWindow {
 
     // --------------------------------------
     // body
+    DropArea {
+        id: pdfDropArea
+        width: parent.width / 2
+        height: parent.height
+        anchors {
+            left: parent.left
+            top: parent.top
+            bottom: parent.bottom
+        }
+
+        onDropped: (drop) => {
+            console.warn("something dropped in pdf area" + drop.urls)
+            fileDropArea.enabled = false
+            width = parent.width
+            let currentFile = Qt.resolvedUrl(drop.urls[0])
+            showType = Main.ShowType.Pdf
+            pdfListView.openFile(currentFile)
+            leftSideBar.source = currentFile
+            rightSideBar.showState = RightSideBar.ShowState.Invisible
+            if (drop.urls.length > 1) {
+                for (let i = 1; i < drop.urls.length; i++) {
+                    let fileUrl = Qt.resolvedUrl(drop.urls[i])
+                    launcher.launchSurguch(fileUrl)
+                }
+            }
+        }
+    }
+
+    DropArea {
+        id: fileDropArea
+
+        width: parent.width / 2
+        height: parent.height
+        anchors {
+            right: parent.right
+            top: parent.top
+            bottom: parent.bottom
+        }
+
+        onDropped: (drop) => {
+            console.warn("something dropped in file area" + drop.urls)
+            pdfDropArea.enabled = false
+            width = parent.width
+            showType = Main.ShowType.Files
+        }
+    }
+
     RowLayout {
         anchors.fill: parent
         spacing: 0
 
+        Item {
+            Layout.fillWidth: true
+            visible: showType === Main.ShowType.Empty
+        }
+
         LeftSideBar {
             id: leftSideBar
+            visible: showType === Main.ShowType.Pdf
+            Layout.alignment: Qt.AlignRight
         }
         PdfListView {
             id: pdfListView
             Layout.preferredWidth: root_window.width - 500
+            visible: showType === Main.ShowType.Pdf
+        }
+
+        FileTreeView {
+            id: fileTreeView
+            Layout.preferredWidth: root_window.width - 500
+            visible: showType === Main.ShowType.Files
         }
 
         RightSideBar {
@@ -137,6 +208,10 @@ ApplicationWindow {
         id: tagCreator
     }
 
+    SurguchLauncher {
+        id: launcher
+    }
+
     SigCreatorWrapper {
         id: sigCreatorWrapper
     }
@@ -172,7 +247,7 @@ ApplicationWindow {
         // rotate
         headerSubBar.rotateClockwise.connect(pdfListView.rotateClockWise)
         headerSubBar.rotateCounterClockWise.connect(
-                    pdfListView.rotateCounterClockWise)
+            pdfListView.rotateCounterClockWise)
         // enable/disable zoom
         pdfListView.maxZoomReached.connect(headerSubBar.disableZoom)
         pdfListView.canZoom.connect(headerSubBar.enableZoom)
@@ -194,7 +269,7 @@ ApplicationWindow {
         headerSubBar.searchDialog.searchRequired.connect(pdfModel.performSearch)
         pdfModel.searchCompleted.connect(pdfListView.searchCompleted)
         pdfModel.searchCompleted.connect(
-                    headerSubBar.searchDialog.searchCompleted)
+            headerSubBar.searchDialog.searchCompleted)
         headerSubBar.searchDialog.jumpToNeedle.connect(pdfModel.jumpToNeedle)
         pdfModel.jumpToNeedleCompleted.connect(pdfListView.jumpToNeedle)
         // sign the document
@@ -218,26 +293,26 @@ ApplicationWindow {
         siglistModel.commonDocStatus.connect(function (status) {
             //console.warn("status:"+status)
             switch (status) {
-            case "kDocCanBeRecovered":
-                errorMessageDialog.text = qsTr(
-                            "The document was changed after signing, but can be restored")
-                errorMessageDialog.open()
-                break
-            case "kDocCantBeTrusted":
-                errorMessageDialog.text = qsTr(
-                            "The document can't be trusted because none of signatures covers the whole document.﻿")
-                errorMessageDialog.open()
-                break
-            case "kDocCanBeRecoveredButSuspicious":
-                errorMessageDialog.text = qsTr(
-                            "The document was changed after signing.Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿")
-                errorMessageDialog.open()
-                break
-            case "kDocSuspiciousPrevious":
-                errorMessageDialog.text = qsTr(
-                            "Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿")
-                errorMessageDialog.open()
-                break
+                case "kDocCanBeRecovered":
+                    errorMessageDialog.text = qsTr(
+                        "The document was changed after signing, but can be restored")
+                    errorMessageDialog.open()
+                    break
+                case "kDocCantBeTrusted":
+                    errorMessageDialog.text = qsTr(
+                        "The document can't be trusted because none of signatures covers the whole document.﻿")
+                    errorMessageDialog.open()
+                    break
+                case "kDocCanBeRecoveredButSuspicious":
+                    errorMessageDialog.text = qsTr(
+                        "The document was changed after signing.Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿")
+                    errorMessageDialog.open()
+                    break
+                case "kDocSuspiciousPrevious":
+                    errorMessageDialog.text = qsTr(
+                        "Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿")
+                    errorMessageDialog.open()
+                    break
             }
         })
         // open the recovered file
@@ -249,7 +324,7 @@ ApplicationWindow {
         // validation failed
         siglistModel.validationFailedForSignature.connect(function (index) {
             errorMessageDialog.text = qsTr(
-                        "Validation failed for signature number") + " " + index
+                "Validation failed for signature number") + " " + index
             errorMessageDialog.open()
         })
         // open document on strart
@@ -258,6 +333,7 @@ ApplicationWindow {
             header.enableSignMode()
             leftSideBar.source = openOnStart
             rightSideBar.showState = RightSideBar.ShowState.Invisible
+            showType = Main.ShowType.Pdf
         }
 
         // no cryptoPro error
@@ -266,11 +342,11 @@ ApplicationWindow {
                 // errorMessageDialog.text = qsTr(
                 //             "CryptoPro CSP 5.0 R3 not found, please check if installed")
                 disappearingHint.showHint(
-                            qsTr("CryptoPro CSP 5.0 R3 not found, please check if installed"),
-                            1500)
+                    qsTr("CryptoPro CSP 5.0 R3 not found, please check if installed"),
+                    1500)
             } else if (profilesModel.errString === "ERR_GET_CERTS") {
                 errorMessageDialog.text = qsTr(
-                            "Failed getting the user's certificates list")
+                    "Failed getting the user's certificates list")
                 errorMessageDialog.open()
             } else {
                 errorMessageDialog.text = "err: " + profilesModel.errString
@@ -289,7 +365,7 @@ ApplicationWindow {
         // invalid pdf
         pdfModel.docWasRepaired.connect(function () {
             errorMessageDialog.text = qsTr(
-                        "Errors were found in the document when it was opened. The document may be displayed incorrectly.")
+                "Errors were found in the document when it was opened. The document may be displayed incorrectly.")
             errorMessageDialog.open()
             // disable signing for damaged document
             header.disableSignMode()

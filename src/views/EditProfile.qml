@@ -34,30 +34,62 @@ Flickable {
                 profileName.text = profile_json.title
                 useAsDefaultProfileSwitch.checked = profile_json.use_as_default
                 const cert_indx = selectCertificateCombo.indexOfValue(
-                                    profile_json.cert_serial)
+                    profile_json.cert_serial)
                 selectCertificateCombo.currentIndex = cert_indx
                 selectCertificateCombo.item_selected = true
                 if (cert_indx !== -1) {
                     selectCertificateCombo.displayText = cert_combo_model[cert_indx].title
                 }
                 const cades_format_indx = selectCadesFormatCombo.indexOfValue(
-                                            profile_json.CADES_format)
+                    profile_json.CADES_format)
                 selectCadesFormatCombo.currentIndex = cades_format_indx
                 selectCadesFormatCombo.item_selected = true
                 if (cades_format_indx !== -1) {
                     selectCadesFormatCombo.displayText
-                            = selectCadesFormatCombo.model[cades_format_indx].title
+                        = selectCadesFormatCombo.model[cades_format_indx].title
                 }
                 const stamp_type_indx = selectStampTypeCombo.find(
-                                          profile_json.stamp_type)
+                    profile_json.stamp_type)
                 selectStampTypeCombo.currentIndex = stamp_type_indx
                 selectStampTypeCombo.item_selected = true
                 if (stamp_type_indx !== -1) {
                     selectStampTypeCombo.displayText
-                            = selectStampTypeCombo.model[stamp_type_indx].title
+                        = selectStampTypeCombo.model[stamp_type_indx].title
                 }
                 logoPath.text = profile_json.logo_path
                 tspUrlEdit.text = profile_json.tsp_url
+                const sign_type_indx = selectFileSignType.indexOfValue(
+                    profile_json.sign_type)
+                selectFileSignType.currentIndex = sign_type_indx
+                selectFileSignType.item_selected = true
+                if (sign_type_indx !== -1) {
+                    selectFileSignType.displayText
+                        = selectFileSignType.model[sign_type_indx].title
+                }
+                const encode_type_indx = selectFileEncodingType.indexOfValue(
+                    profile_json.encode_type)
+                selectFileEncodingType.currentIndex = encode_type_indx
+                selectFileEncodingType.item_selected = true
+                if (encode_type_indx !== -1) {
+                    selectFileEncodingType.displayText
+                        = selectFileEncodingType.model[encode_type_indx].title
+                }
+                const file_ext_indx = selectFileExtension.indexOfValue(
+                    profile_json.file_ext)
+                selectFileExtension.currentIndex = file_ext_indx
+                selectFileExtension.item_selected = true
+                if (file_ext_indx !== -1) {
+                    selectFileExtension.displayText
+                        = selectFileExtension.model[file_ext_indx].title
+                }
+                const archive_type_indx = selectArchive.indexOfValue(
+                    profile_json.archive)
+                selectArchive.currentIndex = archive_type_indx
+                selectArchive.item_selected = true
+                if (archive_type_indx !== -1) {
+                    selectArchive.displayText
+                        = selectArchive.model[archive_type_indx].title
+                }
                 root.contentY = 10
             } catch (e) {
                 console.error("Error parsing JSON" + e.message)
@@ -79,6 +111,18 @@ Flickable {
             selectStampTypeCombo.item_selected = true
             logoPath.text = ""
             tspUrlEdit.text = ""
+            selectFileSignType.currentIndex = 0
+            selectFileSignType.item_selected = false
+            selectFileSignType.displayText = selectFileSignType.displayTextDefault
+            selectFileEncodingType.currentIndex = 0
+            selectFileEncodingType.item_selected = false
+            selectFileEncodingType.displayText = selectFileEncodingType.displayTextDefault
+            selectFileExtension.currentIndex = 0
+            selectFileExtension.item_selected = false
+            selectFileExtension.displayText = selectFileExtension.displayTextDefault
+            selectArchive.currentIndex = 0
+            selectArchive.item_selected = false
+            selectArchive.displayText = selectArchive.displayTextDefault
         }
     }
 
@@ -199,12 +243,12 @@ Flickable {
         InfoPanelComponents.RSBComboSelect {
             id: selectCadesFormatCombo
             model: [{
-                    "title": "CADES_BES"
-                }, {
-                    "title": "CADES_T"
-                }, {
-                    "title": "CADES_XLT1"
-                }]
+                "title": "CADES_BES"
+            }, {
+                "title": "CADES_T"
+            }, {
+                "title": "CADES_XLT1"
+            }]
             textRole: "title"
             valueRole: "title"
             property string displayTextDefault: qsTr("Select Cades format")
@@ -217,8 +261,8 @@ Flickable {
             id: tspUrlWrapper
             width: parent.width
             visible: selectCadesFormatCombo.item_selected
-                     && (selectCadesFormatCombo.currentValue === "CADES_T"
-                         || selectCadesFormatCombo.currentValue === "CADES_XLT1")
+                && (selectCadesFormatCombo.currentValue === "CADES_T"
+                    || selectCadesFormatCombo.currentValue === "CADES_XLT1")
             Text {
                 topPadding: 10
                 text: qsTr("TSP server URL")
@@ -314,7 +358,7 @@ Flickable {
                 textRole: "title"
                 valueRole: "value"
                 enabled: selectCertificateCombo.item_selected
-                         && selectCadesFormatCombo.item_selected
+                    && selectCadesFormatCombo.item_selected
                 property string displayTextDefault: qsTr("Select stamp type")
                 currentIndex: 0
                 item_selected: true
@@ -348,7 +392,7 @@ Flickable {
                 // select saved stamp in the header combo
                 const indx = selectStampTypeCombo.find(val)
                 selectStampTypeCombo.displayText = selectStampTypeCombo.textAt(
-                            indx)
+                    indx)
                 selectStampTypeCombo.currentIndex = indx
             }
 
@@ -409,6 +453,111 @@ Flickable {
             }
         }
 
+        RightSBHorizontalDelimiter {
+            width: parent.width
+            topPadding: 10
+            bottomPadding: 10
+        }
+
+        Text {
+            text: qsTr("File signing")
+            font.weight: Font.DemiBold
+            topPadding: 10
+            bottomPadding: 10
+            font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
+        }
+
+        Text {
+            topPadding: 5
+            text: qsTr("Sign type")
+            bottomPadding: 5
+            font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
+        }
+
+        RSBComboSelect {
+            id: selectFileSignType
+            model: [{
+                "title": "Otsoedenennaya"
+            }, {
+                "title": "Prisoedenennaya"
+            }]
+            textRole: "title"
+            valueRole: "title"
+            displayText: displayTextDefault
+            property string displayTextDefault: qsTr("Select sign format")
+        }
+
+        Text {
+            topPadding: 5
+            text: qsTr("Certificate file encoding")
+            bottomPadding: 5
+            font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
+        }
+
+        RSBComboSelect {
+            id: selectFileEncodingType
+            model: [{
+                "title": "DER"
+            }, {
+                "title": "PEM"
+            }]
+            textRole: "title"
+            valueRole: "title"
+            displayText: displayTextDefault
+            property string displayTextDefault: qsTr("Select encoding type")
+        }
+
+        Text {
+            topPadding: 5
+            text: qsTr("Signature file extension")
+            bottomPadding: 5
+            font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
+        }
+
+        RSBComboSelect {
+            id: selectFileExtension
+            model: [{
+                "title": ".sig"
+            }, {
+                "title": ".sign"
+            }, {
+                "title": ".p7b"
+            }, {
+                "title": ".p7s"
+            }]
+            textRole: "title"
+            valueRole: "title"
+            displayText: displayTextDefault
+            property string displayTextDefault: qsTr("Select signature file extension")
+        }
+
+        Text {
+            topPadding: 5
+            text: qsTr("Create an archive after signing")
+            bottomPadding: 5
+            font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
+        }
+
+        RSBComboSelect {
+            id: selectArchive
+            model: [{
+                "title": "Common ZIP file"
+            }, {
+                "title": "Separate ZIP file"
+            }, {
+                "title": "Don't use"
+            }]
+            textRole: "title"
+            valueRole: "title"
+            displayText: displayTextDefault
+            property string displayTextDefault: qsTr("Select archive after signing")
+        }
+
         // Save button
         Item {
             width: parent.width
@@ -430,11 +579,11 @@ Flickable {
 
                 onClicked: {
                     if (profile_id < 0 && !profiles_model.uniqueName(
-                                profileName.text)) {
+                        profileName.text)) {
                         profileName.forceActiveFocus()
                         root.contentY = 10
                         errorMessageDialog.text = qsTr(
-                                    "Profile with this name already exists")
+                            "Profile with this name already exists")
                         errorMessageDialog.open()
                         return
                     }
@@ -475,6 +624,11 @@ Flickable {
                     profile_json["stamp_type"] = selectStampTypeCombo.currentText
                     profile_json["logo_path"] = logoPath.text
                     profile_json["tsp_url"] = tspUrlEdit.text
+                    profile_json["sign_type"] = selectFileSignType.currentValue
+                    profile_json["encode_type"] = selectFileEncodingType.currentValue
+                    profile_json["file_ext"] = selectFileExtension.currentValue
+                    profile_json["archive"] = selectArchive.currentValue
+
                     const new_profile_data = JSON.stringify(profile_json)
                     if(profiles_model.saveProfile(new_profile_data)){
                         root.profileSaved();
@@ -532,14 +686,14 @@ Flickable {
                 cert_array = JSON.parse(cert_data_raw)
                 //console.warn(JSON.stringify(cert_array));
                 cert_combo_model = cert_array.map(item => {
-                                                      let res = {}
-                                                      res.title = item.subject_common_name
-                                                      + " " + item.serial
-                                                      res.serial = item.serial
-                                                      res.tooltip = qsTr(
-                                                          "Issuer: ") + item.issuer_common_name
-                                                      return res
-                                                  })
+                    let res = {}
+                    res.title = item.subject_common_name
+                        + " " + item.serial
+                    res.serial = item.serial
+                    res.tooltip = qsTr(
+                        "Issuer: ") + item.issuer_common_name
+                    return res
+                })
             } catch (e) {
                 console.error("Error " + e.message)
             }
@@ -552,11 +706,11 @@ Flickable {
                 stamps_array = JSON.parse(stamps_data_raw)
                 //console.warn(stamps_data_raw)
                 stamps_combo_model = stamps_array.map(item => {
-                                                          let res = {}
-                                                          res.title = item.title
-                                                          res.value = (item.id === 0) ? "new" : item
-                                                          return res
-                                                      })
+                    let res = {}
+                    res.title = item.title
+                    res.value = (item.id === 0) ? "new" : item
+                    return res
+                })
             } catch (e) {
                 console.error("Error " + e.message)
             }

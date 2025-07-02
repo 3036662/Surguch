@@ -39,6 +39,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "models/rubber_stamp_model.hpp"
 #include "models/signatures_list_model.hpp"
 #include "printer_launcher.hpp"
+#include "surguch_launcher.hpp"
 
 int main(int argc, char* argv[]) {
     // tranlsation
@@ -74,6 +75,8 @@ int main(int argc, char* argv[]) {
                                       "TagCreator");
     qmlRegisterType<core::PrinterLauncher>("alt.pdfcsp.printerLauncher", 0, 1,
                                            "PrinterLauncher");
+    qmlRegisterType<core::SurguchLauncher>("alt.pdfcsp.surguchLauncher", 0, 1,
+                                           "SurguchLauncher");
     qmlRegisterSingletonType(QUrl("qrc:/StyleSheet.qml"), "StyleSheet", 0, 1,
                              "StyleSheet");
 
