@@ -38,6 +38,7 @@ Item {
     property string trash_icon
     property string chevron_up
     property string chevron_down
+    property string chevron_right
     property string tag_icon
     property string info_icon
     property color slider_fill_color
@@ -82,6 +83,7 @@ Item {
                 save_icon: "qrc:/icons/dark/save.svg"
                 chevron_up: "qrc:/icons/dark/chevron_up.svg"
                 chevron_down: "qrc:/icons/dark/chevron_down.svg"
+                chevron_right: "qrc:/icons/dark/chevron_right.svg"
                 tag_icon: "qrc:/icons/dark/tag_icon.svg"
                 info_icon: "qrc:/icons/dark/info_icon.svg"
                 slider_fill_color: "#454A4E"
@@ -125,6 +127,7 @@ Item {
                 save_icon: "qrc:/icons/light/save.svg"
                 chevron_up: "qrc:/icons/light/chevron_up.svg"
                 chevron_down: "qrc:/icons/light/chevron_down.svg"
+                chevron_right: "qrc:/icons/light/chevron_right.svg"
                 tag_icon: "qrc:/icons/light/tag_icon.svg"
                 info_icon: "qrc:/icons/light/info_icon.svg"
                 slider_fill_color: "#57534C"

@@ -53,8 +53,10 @@
         <file>icons/dark/save.svg</file>
         <file>icons/dark/chevron_down.svg</file>
         <file>icons/dark/chevron_up.svg</file>
+        <file>icons/dark/chevron_right.svg</file>
         <file>icons/light/chevron_up.svg</file>
         <file>icons/light/chevron_down.svg</file>
+        <file>icons/light/chevron_right.svg</file>
         <file>icons/light/tag_icon.svg</file>
         <file>icons/dark/tag_icon.svg</file>
         <file>icons/light/info_icon.svg</file>

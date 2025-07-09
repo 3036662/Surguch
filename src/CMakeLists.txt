@@ -130,6 +130,7 @@ ELSE ()
             QML_FILES views/SigCreatorWrapper.qml
             QML_FILES views/DisappearingHint.qml
             QML_FILES views/FileTreeView.qml
+            QML_FILES views/FileModeHeaderSubBar.qml
     )
 
     qt6_import_qml_plugins(surguch)

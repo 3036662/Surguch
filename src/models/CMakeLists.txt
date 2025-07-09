@@ -7,6 +7,10 @@ add_library(models OBJECT
         profiles_model.cpp
         rubber_stamp_model.cpp
         rubber_stamp_model.hpp
+        file_tree_model.hpp
+        file_tree_model.cpp
+        tree_item.cpp
+        tree_item.hpp
 )
 
 target_include_directories(models PRIVATE ${MUPDF_INCLUDE_DIR})

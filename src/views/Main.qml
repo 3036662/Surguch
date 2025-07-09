@@ -11,6 +11,7 @@ import alt.pdfcsp.rubberStampModel
 import alt.pdfcsp.signaturesListModel
 import alt.pdfcsp.printerLauncher
 import alt.pdfcsp.surguchLauncher
+import alt.pdfcsp.fileTreeModel
 import StyleSheet
 import alt.pdfcsp.eventFilterInstaller
 import alt.pdfcsp.wheelFilter
@@ -49,12 +50,17 @@ ApplicationWindow {
             }
             HeaderSubBar {
                 id: headerSubBar
-                visible: pdfListView.source != ""
+                visible: pdfListView.source != "" && showType === Main.ShowType.Pdf
 
                 function placeTagStamp(rubber_stamp_data) {//let tag_data = rubber_stamp_data
                     //console.warn("mainqml" + JSON.stringify(tag_data))
                     //pdfModel.placeRubberStamp(tag_data)
                 }
+            }
+
+            FileModeHeaderSubBar {
+                id: fileModeHeaderSubBar
+                visible: showType === Main.ShowType.Files
             }
         }
     }
@@ -116,6 +122,11 @@ ApplicationWindow {
             Layout.fillWidth: true
             visible: showType === Main.ShowType.Empty
         }
+        // Rectangle {
+        //     Layout.fillWidth: true
+        //     Layout.fillHeight: true
+        //     color: "red"
+        // }
 
         LeftSideBar {
             id: leftSideBar
@@ -130,7 +141,8 @@ ApplicationWindow {
 
         FileTreeView {
             id: fileTreeView
-            Layout.preferredWidth: root_window.width - 500
+            Layout.fillWidth: true
+            Layout.fillHeight: true
             visible: showType === Main.ShowType.Files
         }
 
@@ -186,6 +198,10 @@ ApplicationWindow {
         mustProcessSignatures: true
         mustDeleteTmpFiles: true
         mustExtractText: true
+    }
+
+    FileTreeModel {
+        id: fileTreeModel
     }
 
     ProfilesModel {

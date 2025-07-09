@@ -38,6 +38,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "models/profiles_model.hpp"
 #include "models/rubber_stamp_model.hpp"
 #include "models/signatures_list_model.hpp"
+#include "models/file_tree_model.hpp"
 #include "printer_launcher.hpp"
 #include "surguch_launcher.hpp"
 
@@ -77,6 +78,8 @@ int main(int argc, char* argv[]) {
                                            "PrinterLauncher");
     qmlRegisterType<core::SurguchLauncher>("alt.pdfcsp.surguchLauncher", 0, 1,
                                            "SurguchLauncher");
+    qmlRegisterType<FileTreeModel>("alt.pdfcsp.fileTreeModel", 0, 1,
+                                            "FileTreeModel");
     qmlRegisterSingletonType(QUrl("qrc:/StyleSheet.qml"), "StyleSheet", 0, 1,
                              "StyleSheet");
 

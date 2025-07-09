@@ -46,5 +46,6 @@
         <file>SigCreatorWrapper.qml</file>
         <file>DisappearingHint.qml</file>
         <file>FileTreeView.qml</file>
+        <file>FileModeHeaderSubBar.qml</file>
     </qresource>
 </RCC>
