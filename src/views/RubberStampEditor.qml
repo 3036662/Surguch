@@ -199,8 +199,8 @@ Dialog {
                 ScrollView {
                     Layout.fillWidth: true
                     Layout.maximumHeight: Math.min(
-                                              rubberStampText.implicitHeight,
-                                              font.pixelSize * 5 + 20)
+                        rubberStampText.implicitHeight,
+                        font.pixelSize * 5 + 20)
                     visible: typeSwitch.checked
 
                     RSBTextArea {
@@ -270,10 +270,10 @@ Dialog {
                             return
                         }
                         if (stamp_id < 0 && !rubber_model.uniqueStampName(
-                                    stampName.text)) {
+                            stampName.text)) {
                             stampName.forceActiveFocus()
                             errorMessageDialog.text = qsTr(
-                                        "Stamp with this name already exists")
+                                "Stamp with this name already exists")
                             errorMessageDialog.open()
                             return
                         }
@@ -294,7 +294,7 @@ Dialog {
                         stamp_json["bg_transparent"] = transparencySwitch.checked ? 1 : 0
                         const new_stamp_data = JSON.stringify(stamp_json)
                         console.warn(rubber_model.saveRubberStamps(
-                                         new_stamp_data))
+                            new_stamp_data))
                         rubberStampEditor.visible = false
                         stamp_data = null
                     }
@@ -401,8 +401,8 @@ Dialog {
                 ScrollView {
                     Layout.fillWidth: true
                     Layout.maximumHeight: Math.min(
-                                              rubberStampText.implicitHeight,
-                                              font.pixelSize * 5 + 20)
+                        rubberStampText.implicitHeight,
+                        font.pixelSize * 5 + 20)
                     visible: typeSwitch.checked
 
                     RSBTextArea {
@@ -424,7 +424,7 @@ Dialog {
                         Layout.fillWidth: true
                         anchors.right: parent.right
                         policy: (rubberStampText.lineCount
-                                 > 5) ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff
+                            > 5) ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff
                     }
                 }
 
@@ -509,12 +509,13 @@ Dialog {
                         id: redColor
 
                         Layout.fillWidth: true
-                        Layout.maximumWidth: 435
+                        Layout.maximumWidth: 345
                         snapMode: Slider.SnapOnRelease
                         from: 0
                         to: 255
                         stepSize: 1
-                        back_color: "red"
+                        back_color: "#ff0000"
+                        gradient_start: "#000000"
 
                         onValueChanged: {
                             updatePreview()
@@ -537,12 +538,13 @@ Dialog {
                         id: greenColor
 
                         Layout.fillWidth: true
-                        Layout.maximumWidth: 435
+                        Layout.maximumWidth: 345
                         snapMode: Slider.SnapOnRelease
                         from: 0
                         to: 255
                         stepSize: 1
-                        back_color: "green"
+                        back_color: "#00ff00"
+                        gradient_start: "#000000"
 
                         onValueChanged: {
                             updatePreview()
@@ -565,12 +567,13 @@ Dialog {
                         id: blueColor
 
                         Layout.fillWidth: true
-                        Layout.maximumWidth: 435
+                        Layout.maximumWidth: 345
                         snapMode: Slider.SnapOnRelease
                         from: 0
                         to: 255
                         stepSize: 1
-                        back_color: "blue"
+                        back_color: "#0000ff"
+                        gradient_start: "#000000"
 
                         onValueChanged: {
                             updatePreview()

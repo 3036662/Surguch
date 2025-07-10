@@ -458,8 +458,8 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+80"/>
         <location filename="../../build/src/gui_pdf_csp/views/LeftSideBar.qml" line="+72"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+80"/>
-        <location filename="../../src/views/LeftSideBar.qml" line="+80"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+74"/>
+        <location filename="../../src/views/LeftSideBar.qml" line="+74"/>
         <source>No signatures</source>
         <translation>Подписи отсутствуют</translation>
     </message>
@@ -681,9 +681,9 @@
         <location line="+158"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+564"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+768"/>
-        <location line="+158"/>
+        <location line="+157"/>
         <location filename="../../src/views/PdfListView.qml" line="+768"/>
-        <location line="+158"/>
+        <location line="+157"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>
@@ -691,10 +691,10 @@
         <location line="-157"/>
         <location line="+158"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+1"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-157"/>
-        <location line="+158"/>
-        <location filename="../../src/views/PdfListView.qml" line="-157"/>
-        <location line="+158"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-156"/>
+        <location line="+157"/>
+        <location filename="../../src/views/PdfListView.qml" line="-156"/>
+        <location line="+157"/>
         <source>Invalid position</source>
         <translation>Недопустимая позиция</translation>
     </message>
@@ -1095,8 +1095,8 @@
     </message>
     <message>
         <location line="+95"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+95"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+95"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+99"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+99"/>
         <source>Stamp border width: </source>
         <translation>Толщина рамки: </translation>
     </message>
@@ -1117,8 +1117,8 @@
     </message>
     <message>
         <location line="-574"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="-574"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="-574"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="-578"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="-578"/>
         <source>Surguch</source>
         <translation>Сургуч</translation>
     </message>
@@ -1226,15 +1226,15 @@
     </message>
     <message>
         <location line="+178"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+178"/>
-        <location filename="../../src/views/StampEditor.qml" line="+178"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+181"/>
+        <location filename="../../src/views/StampEditor.qml" line="+181"/>
         <source>Transparency</source>
         <translation>Прозрачность фона</translation>
     </message>
     <message>
         <location line="-162"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="-162"/>
-        <location filename="../../src/views/StampEditor.qml" line="-162"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="-165"/>
+        <location filename="../../src/views/StampEditor.qml" line="-165"/>
         <source>Stamp border width: </source>
         <translation>Толщина рамки: </translation>
     </message>
@@ -1254,8 +1254,8 @@
     </message>
     <message>
         <location line="+163"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+163"/>
-        <location filename="../../src/views/StampEditor.qml" line="+163"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+166"/>
+        <location filename="../../src/views/StampEditor.qml" line="+166"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>

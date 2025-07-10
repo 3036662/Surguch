@@ -244,7 +244,8 @@ Dialog {
                 from: 0
                 to: 255
                 stepSize: 1
-                back_color: "red"
+                back_color: "#ff0000"
+                gradient_start: "#000000"
 
                 onValueChanged: {
                     updatePreview()
@@ -273,7 +274,8 @@ Dialog {
                 from: 0
                 to: 255
                 stepSize: 1
-                back_color: "green"
+                back_color: "#00ff00"
+                gradient_start: "#000000"
 
                 onValueChanged: {
                     updatePreview()
@@ -303,7 +305,8 @@ Dialog {
                 from: 0
                 to: 255
                 stepSize: 1
-                back_color: "blue"
+                back_color: "#0000ff"
+                gradient_start: "#000000"
 
                 onValueChanged: {
                     updatePreview()
@@ -363,10 +366,10 @@ Dialog {
                     return
                 }
                 if (stamp_id < 0 && !profiles_model.uniqueStampName(
-                            stampName.text)) {
+                    stampName.text)) {
                     stampName.forceActiveFocus()
                     errorMessageDialog.text = qsTr(
-                                "Stamp with this name already exists")
+                        "Stamp with this name already exists")
                     errorMessageDialog.open()
                     return
                 }
