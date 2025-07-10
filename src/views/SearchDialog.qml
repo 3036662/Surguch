@@ -52,6 +52,13 @@ Dialog {
         root_window.focusOwnerId = ""
         searchInput.text = ""
         currentIndex = 0
+        if (!searchDialog.searchInProgress) {
+            searchDialog.searchInProgress = true
+            searchDialog.searchRequired(searchInput.text)
+        } else {
+            searchDialog.needNewSearch = true
+        }
+
     }
 
     Row {
