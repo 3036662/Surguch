@@ -1010,7 +1010,7 @@
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+22"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+22"/>
         <source>Default tag width, % from A4 </source>
-        <translation>Ширина тега по умолчания, % от А4</translation>
+        <translation>Ширина тега по умолчанию, % от А4</translation>
     </message>
     <message>
         <location line="+30"/>
