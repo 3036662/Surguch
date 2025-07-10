@@ -199,9 +199,8 @@ Dialog {
                 ScrollView {
                     Layout.fillWidth: true
                     Layout.maximumHeight: Math.min(
-                        rubberStampText.implicitHeight,
+                        linkName.implicitHeight,
                         font.pixelSize * 5 + 20)
-                    visible: typeSwitch.checked
 
                     RSBTextArea {
                         id: linkName
