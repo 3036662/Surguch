@@ -922,7 +922,7 @@ ListView {
                 Rectangle {
                     id: tagCross
 
-                    property string defaultText: qsTr("Stamp position")
+                    property string defaultText: qsTr("Tag position")
                     property string invalidPositionText: qsTr(
                                                              "Invalid position")
                     property bool valid_position: true

@@ -135,8 +135,8 @@ void RubberPreviewRender::saveImage() {
     // duration.count();
     if (result_ && result_->image_ && result_->image_->width() != 0) {
         // qWarning() << "width " << width();
-         qWarning() << "result->resolution_y " << result_->image_->height();
-         qWarning() << "result->resolution_x " << result_->image_->width();
+        // qWarning() << "result->resolution_y " << result_->image_->height();
+        // qWarning() << "result->resolution_x " << result_->image_->width();
         // setHeight(static_cast<double>(result_->image_->height()) /
         //           result_->image_->width() * width());
         // setWidth(static_cast<double>(params_.annotation_text.size() * 30));
