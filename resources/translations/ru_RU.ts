@@ -370,9 +370,9 @@
         <location line="+49"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+45"/>
         <location line="+38"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+63"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+67"/>
         <location line="+49"/>
-        <location filename="../../src/views/Header.qml" line="+63"/>
+        <location filename="../../src/views/Header.qml" line="+67"/>
         <location line="+49"/>
         <source>Any file (* *.*)</source>
         <translation>Любой файл (* *.*)</translation>
@@ -407,14 +407,18 @@
     <message>
         <location line="+99"/>
         <location filename="../../build/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+98"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+101"/>
-        <location filename="../../src/views/HeaderSubBar.qml" line="+101"/>
         <source>Automatic</source>
         <translation>Авто</translation>
     </message>
     <message>
         <source>Search</source>
         <translation type="vanished">Поиск</translation>
+    </message>
+    <message>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+101"/>
+        <location filename="../../src/views/HeaderSubBar.qml" line="+101"/>
+        <source>Auto</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1212,8 +1216,8 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/SignaturesList.qml" line="+52"/>
         <location filename="../../build/src/gui_pdf_csp/views/SignaturesList.qml" line="+50"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/SignaturesList.qml" line="+52"/>
-        <location filename="../../src/views/SignaturesList.qml" line="+52"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/SignaturesList.qml" line="+49"/>
+        <location filename="../../src/views/SignaturesList.qml" line="+49"/>
         <source>Unsigned (empty)</source>
         <translation>Неподписанная (пустая)</translation>
     </message>

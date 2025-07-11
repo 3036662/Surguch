@@ -243,6 +243,10 @@ RowLayout {
         onClicked: appInfoDialog.open()
     }
 
+    Rectangle {
+        width: 10
+    }
+
     // ToolButton {
     //     flat: true
     //     display: AbstractButton.IconOnly

@@ -326,9 +326,10 @@ ColumnLayout {
                 }
 
                 Layout.alignment: Qt.AlignVCenter
-                model: [qsTr("Automatic"), "75%", "100%", "125%", "150%"]
+                model: [qsTr("Auto"), "75%", "100%", "125%", "150%"]
                 currentIndex: 2
-                implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
+                //implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
+                implicitWidth: StyleSheet.window_size_x === "normal" ? 115 : 70
                 anchors.verticalCenter: parent.verticalCenter
                 popup.y: comboBoxZoom.height
             }
@@ -353,7 +354,6 @@ ColumnLayout {
             icon.width: 20
             icon.height: 20
             leftPadding: 5
-            rightPadding: 5
             icon.source: StyleSheet.tag_icon
             onClicked: {
                 //console.debug("create tag")
@@ -386,7 +386,6 @@ ColumnLayout {
             flat: true
             icon.width: 20
             icon.height: 10
-            leftPadding: 5
             rightPadding: 5
             topPadding: 5
             bottomPadding: 5
@@ -419,7 +418,8 @@ ColumnLayout {
         Rectangle {
             color: "transparent"
             Layout.fillHeight: true
-            Layout.fillWidth: true
+            //Layout.fillWidth: true
+            width: 5
         }
 
         // ToolButton {
