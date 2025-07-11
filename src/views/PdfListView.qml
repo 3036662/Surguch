@@ -58,18 +58,25 @@ ListView {
 
     signal hScrollUpdate(int posX)
 
-    signal maxZoomReached
-    signal canZoom
-    signal minZoomReached
-    signal canZoomOut
+        signal
+    maxZoomReached
+        signal
+    canZoom
+        signal
+    minZoomReached
+        signal
+    canZoomOut
 
-    signal quitSignMode
+        signal
+    quitSignMode
 
-    signal disableTagMode
+        signal
+    disableTagMode
 
     signal stampLocationSelected(var stamp_location_info, var path)
 
-    signal tagPlaced
+        signal
+    tagPlaced
 
     signal updateLSB(var source)
 
@@ -82,7 +89,7 @@ ListView {
             //console.warn("embedding tags")
             tagInProgress = false
             tmpFile = tagCreator.embedAnnot(pdfModel.getAnnotParams(),
-                                            pdfModel.getSource())
+                pdfModel.getSource())
             pdfModel.deleteFileLater(tmpFile)
             //openTmpFile(tmpFile)
             //console.warn("NEW SOURCE AFTER EMBEDDING RUBBER STAMPS");
@@ -289,7 +296,7 @@ ListView {
 
     function tryToGetFocus() {
         if (root_window.focusOwnerId !== ""
-                && root_window.focusOwnerId !== "searchDialog") {
+            && root_window.focusOwnerId !== "searchDialog") {
             root_window.focusOwnerId = "pdfListView"
             forceActiveFocus()
         }
@@ -316,14 +323,14 @@ ListView {
             const maxIter = 10
             // measure the page in to directions (up and down) from the center
             while (pointed === pageIndToPreserveWhenZoom
-                   && iterCounter < maxIter) {
+                && iterCounter < maxIter) {
                 ++a
                 pointed = indexAt(viewMidX, viewMidY - step * a)
             }
             pointed = pageIndToPreserveWhenZoom
             iterCounter = 0
             while (pointed === pageIndToPreserveWhenZoom
-                   && iterCounter < maxIter) {
+                && iterCounter < maxIter) {
                 ++b
                 pointed = indexAt(viewMidX, viewMidY + step * b)
             }
@@ -358,7 +365,7 @@ ListView {
         let usedPageSize = 0
         let lastSizeUsed = false
         console.warn("currPage.pWidth: " + currPage.pWidth
-                     + " currPage.pHeight: " + currPage.pHeight)
+            + " currPage.pHeight: " + currPage.pHeight)
         if (currPage) {
             usedPageSize = rotated90 ? currPage.pWidth : currPage.pHeight
             if (currPage.zoomLast > 0 && currPage.zoomLast !== 1) {
@@ -417,7 +424,7 @@ ListView {
         while (currPage === null && iterCount < 10) {
             ++iterCount
             currPage = itemAt(width / 2,
-                              contentY + height / 2 - spacing * iterCount)
+                contentY + height / 2 - spacing * iterCount)
         }
         return currPage
     }
@@ -428,7 +435,7 @@ ListView {
         while (index === -1 && iterCount < 10) {
             ++iterCount
             index = indexAt(width / 2,
-                            contentY + height / 2 - spacing * iterCount)
+                contentY + height / 2 - spacing * iterCount)
         }
         return index
     }
@@ -449,23 +456,23 @@ ListView {
 
     function updateRatioWithRoration(pos, x_rel, y_rel) {
         switch (delegateRotation) {
-        case 90:
-            pos.ratio = x_rel
-            if (pos.ratio > 0.7) {
-                pos.ratio = 0.7
-            }
-            break
-        case 270:
-            pos.ratio = 1 - x_rel
-            if (pos.ratio > 0.7) {
-                pos.ratio = 0.7
-            }
-            break
-        case 180:
-            pos.ratio = 1 - y_rel
-            break
-        default:
-            pos.ratio = y_rel
+            case 90:
+                pos.ratio = x_rel
+                if (pos.ratio > 0.7) {
+                    pos.ratio = 0.7
+                }
+                break
+            case 270:
+                pos.ratio = 1 - x_rel
+                if (pos.ratio > 0.7) {
+                    pos.ratio = 0.7
+                }
+                break
+            case 180:
+                pos.ratio = 1 - y_rel
+                break
+            default:
+                pos.ratio = y_rel
         }
         if (pos.ratio > 0.9) {
             pos.ratio = 0.9
@@ -586,7 +593,7 @@ ListView {
 
         function updateCurrRect() {
             pdfPage.setCurrentNeedleRect(pdfModel.getCurrentNeedleRect(
-                                             model.display))
+                model.display))
             pdfPage.update()
             console.warn("QML delegate updateCurrRect")
         }
@@ -597,7 +604,7 @@ ListView {
             property int aimResizeStatus: root.aimIsAlreadyResized
             property bool sizeKnown: false
             property int defaultWidth: root.pageWidth > 0
-                                       && !sizeKnown ? root.pageWidth : root.width
+                && !sizeKnown ? root.pageWidth : root.width
 
             customRotation: root.delegateRotation
             anchors.horizontalCenter: width < parent.width ? parent.horizontalCenter : undefined
@@ -612,16 +619,16 @@ ListView {
 
             function updateCrossSize() {
                 if (!root.aimIsAlreadyResized && pdfPage.width > 0
-                        && pdfPage.height > 0) {
+                    && pdfPage.height > 0) {
                     cross.width = pdfPage.width
-                            < pdfPage.height ? Math.round(
-                                                   pdfPage.width * 0.41) : Math.round(
-                                                   pdfPage.width * 0.3)
+                        < pdfPage.height ? Math.round(
+                        pdfPage.width * 0.41) : Math.round(
+                        pdfPage.width * 0.3)
                     if (pdfPage.height != 0) {
                         cross.height = pdfPage.width
-                                < pdfPage.height ? Math.round(
-                                                       pdfPage.height / 9) : Math.round(
-                                                       pdfPage.height / 7)
+                            < pdfPage.height ? Math.round(
+                            pdfPage.height / 9) : Math.round(
+                            pdfPage.height / 7)
                     }
                     // run background estimate of stamp size
                     if (!aimResizeInProgress) {
@@ -640,13 +647,13 @@ ListView {
                 } else {
                     // if the aim is already resized - update with resize factor
                     cross.width = pdfPage.width
-                            < pdfPage.height ? Math.round(
-                                                   pdfPage.width * 0.41 * aimResizeX) : Math.round(
-                                                   pdfPage.width / 3 * aimResizeX)
+                        < pdfPage.height ? Math.round(
+                        pdfPage.width * 0.41 * aimResizeX) : Math.round(
+                        pdfPage.width / 3 * aimResizeX)
                     cross.height = pdfPage.width
-                            < pdfPage.height ? Math.round(
-                                                   pdfPage.height / 9 * aimResizeY) : Math.round(
-                                                   pdfPage.height / 7 * aimResizeY)
+                        < pdfPage.height ? Math.round(
+                        pdfPage.height / 9 * aimResizeY) : Math.round(
+                        pdfPage.height / 7 * aimResizeY)
                 }
             }
 
@@ -694,9 +701,9 @@ ListView {
                 setPageNumber(model.display)
                 // highlight the needles
                 setNeedleHighlightRects(pdfModel.getNeedlesForPage(
-                                            model.display))
+                    model.display))
                 pdfPage.setRubberStamps(pdfModel.getRubberStampForPage(
-                                            model.display))
+                    model.display))
                 if (width > 0 && root.hScrollPos > 0 && root.hScrollPos < 1) {
                     root.contentX = width * root.hScrollPos
                 }
@@ -727,35 +734,35 @@ ListView {
                     cursorShape = Qt.ArrowCursor
                 }
                 onClicked: mouse => {
-                               if ((mouse.button === Qt.RightButton)
-                                   && root.signMode) {
-                                   quitSignMode()
-                                   mouse.accepted = true
-                               }
+                    if ((mouse.button === Qt.RightButton)
+                        && root.signMode) {
+                        quitSignMode()
+                        mouse.accepted = true
+                    }
 
-                               if (root.signMode && !root.signInProgress
-                                   && cross.valid_position) {
-                                   let location_data = {
-                                       "page_index": index,
-                                       "page_width": width,
-                                       "page_height": height,
-                                       "stamp_x": cross.x,
-                                       "stamp_y": cross.y,
-                                       "stamp_width": cross.width,
-                                       "stamp_height": cross.height
-                                   }
-                                   cross.visible = false
-                                   cursorShape = Qt.BusyCursor
-                                   root.proceedSigning(location_data)
-                               }
-                           }
+                    if (root.signMode && !root.signInProgress
+                        && cross.valid_position) {
+                        let location_data = {
+                            "page_index": index,
+                            "page_width": width,
+                            "page_height": height,
+                            "stamp_x": cross.x,
+                            "stamp_y": cross.y,
+                            "stamp_width": cross.width,
+                            "stamp_height": cross.height
+                        }
+                        cross.visible = false
+                        cursorShape = Qt.BusyCursor
+                        root.proceedSigning(location_data)
+                    }
+                }
 
                 onPositionChanged: {
                     cross.x = mouseX - cross.width / 2
                     cross.y = mouseY - cross.height / 2
                     if (cross.x < 0 || cross.x + cross.width > pdfPage.width
-                            || cross.y < 0
-                            || cross.y + cross.height > pdfPage.height) {
+                        || cross.y < 0
+                        || cross.y + cross.height > pdfPage.height) {
                         cross.valid_position = false
                     } else {
                         cross.valid_position = true
@@ -767,7 +774,7 @@ ListView {
 
                     property string defaultText: qsTr("Stamp position")
                     property string invalidPositionText: qsTr(
-                                                             "Invalid position")
+                        "Invalid position")
                     property bool valid_position: true
 
                     width: 0
@@ -813,12 +820,12 @@ ListView {
                 }
 
                 onClicked: mouse => {
-                               if ((mouse.button === Qt.RightButton)
-                                   && root.tagMode) {
-                                   disableTagMode()
-                                   mouse.accepted = true
-                               }
-                           }
+                    if ((mouse.button === Qt.RightButton)
+                        && root.tagMode) {
+                        disableTagMode()
+                        mouse.accepted = true
+                    }
+                }
 
                 onPressed: {
                     root.interactive = false
@@ -827,104 +834,104 @@ ListView {
                 }
 
                 onPositionChanged: mouse => {
-                                       if ((pressed && Math.abs(
-                                                startX - mouseX) > 10)
-                                           || root.tag_placing) {
-                                           root.tag_placing = true
-                                           if (mouseX > startX) {
-                                               tagCross.x = startX
-                                               tagCross.width = mouseX - startX
-                                           } else {
-                                               tagCross.x = mouseX
-                                               tagCross.width = startX - mouseX
-                                           }
+                    if ((pressed && Math.abs(
+                            startX - mouseX) > 10)
+                        || root.tag_placing) {
+                        root.tag_placing = true
+                        if (mouseX > startX) {
+                            tagCross.x = startX
+                            tagCross.width = mouseX - startX
+                        } else {
+                            tagCross.x = mouseX
+                            tagCross.width = startX - mouseX
+                        }
 
-                                           if (mouseY > startY) {
-                                               tagCross.y = startY
-                                               tagCross.height = tagCross.width / root.ratio
-                                           } else {
-                                               //tagCross.y = mouseY
-                                               tagCross.height = tagCross.width / root.ratio
-                                           }
-                                           if (tagCross.x < 0
-                                               || tagCross.x + tagCross.width > pdfPage.width
-                                               || tagCross.y < 0
-                                               || tagCross.y + tagCross.height > pdfPage.height) {
-                                               tagCross.valid_position = false
-                                           } else {
-                                               tagCross.valid_position = true
-                                           }
-                                       } else {
-                                           tagCross.x = mouseX
-                                           tagCross.y = mouseY
-                                           if (tagCross.x < 0
-                                               || tagCross.x + tagCross.width > pdfPage.width
-                                               || tagCross.y < 0
-                                               || tagCross.y + tagCross.height > pdfPage.height) {
-                                               tagCross.valid_position = false
-                                           } else {
-                                               tagCross.valid_position = true
-                                           }
-                                       }
-                                   }
+                        if (mouseY > startY) {
+                            tagCross.y = startY
+                            tagCross.height = tagCross.width / root.ratio
+                        } else {
+                            //tagCross.y = mouseY
+                            tagCross.height = tagCross.width / root.ratio
+                        }
+                        if (tagCross.x < 0
+                            || tagCross.x + tagCross.width > pdfPage.width
+                            || tagCross.y < 0
+                            || tagCross.y + tagCross.height > pdfPage.height) {
+                            tagCross.valid_position = false
+                        } else {
+                            tagCross.valid_position = true
+                        }
+                    } else {
+                        tagCross.x = mouseX
+                        tagCross.y = mouseY
+                        if (tagCross.x < 0
+                            || tagCross.x + tagCross.width > pdfPage.width
+                            || tagCross.y < 0
+                            || tagCross.y + tagCross.height > pdfPage.height) {
+                            tagCross.valid_position = false
+                        } else {
+                            tagCross.valid_position = true
+                        }
+                    }
+                }
 
                 onReleased: mouse => {
-                                if ((mouse.button === Qt.RightButton)
-                                    && root.tagMode) {
-                                    disableTagMode()
-                                    mouse.accepted = true
-                                } else if (root.tagMode
-                                           && tagCross.valid_position) {
-                                    //console.warn("pdflistview tagdata = " + tagData)
-                                    let t_data = JSON.parse(tagData)
-                                    let rubber_stamp_data = {
-                                        "page_index": index,
-                                        "page_width": width,
-                                        "page_height": height,
-                                        "stamp_x": tagCross.x,
-                                        "stamp_y": tagCross.y,
-                                        "stamp_width": tagCross.width,
-                                        "stamp_height": tagCross.height,
-                                        "create_from_image": t_data.create_from_image,
-                                        "img_path": t_data.img_path,
-                                        "border_width": t_data.border_width,
-                                        "border_radius": t_data.border_radius,
-                                        "text_color_red": t_data.R,
-                                        "text_color_green": t_data.G,
-                                        "text_color_blue": t_data.B,
-                                        "border_color_red": t_data.R,
-                                        "border_color_green": t_data.G,
-                                        "border_color_blue": t_data.B,
-                                        "bg_color_red": t_data.R,
-                                        "bg_color_green": t_data.G,
-                                        "bg_color_blue": t_data.B,
-                                        "font_family": t_data.font_family,
-                                        "stamp_text": t_data.stamp_text,
-                                        "bg_transparent": t_data.bg_transparent,
-                                        "annotation_width": tagCross.width,
-                                        "zoom_on_rubber_render": root.zoomPageFact,
-                                        "link": t_data.stamp_link
-                                    }
+                    if ((mouse.button === Qt.RightButton)
+                        && root.tagMode) {
+                        disableTagMode()
+                        mouse.accepted = true
+                    } else if (root.tagMode
+                        && tagCross.valid_position) {
+                        //console.warn("pdflistview tagdata = " + tagData)
+                        let t_data = JSON.parse(tagData)
+                        let rubber_stamp_data = {
+                            "page_index": index,
+                            "page_width": width,
+                            "page_height": height,
+                            "stamp_x": tagCross.x,
+                            "stamp_y": tagCross.y,
+                            "stamp_width": tagCross.width,
+                            "stamp_height": tagCross.height,
+                            "create_from_image": t_data.create_from_image,
+                            "img_path": t_data.img_path,
+                            "border_width": t_data.border_width,
+                            "border_radius": t_data.border_radius,
+                            "text_color_red": t_data.R,
+                            "text_color_green": t_data.G,
+                            "text_color_blue": t_data.B,
+                            "border_color_red": t_data.R,
+                            "border_color_green": t_data.G,
+                            "border_color_blue": t_data.B,
+                            "bg_color_red": t_data.R,
+                            "bg_color_green": t_data.G,
+                            "bg_color_blue": t_data.B,
+                            "font_family": t_data.font_family,
+                            "stamp_text": t_data.stamp_text,
+                            "bg_transparent": t_data.bg_transparent,
+                            "annotation_width": tagCross.width,
+                            "zoom_on_rubber_render": root.zoomPageFact,
+                            "link": t_data.stamp_link
+                        }
 
-                                    root.size_estimated = false
-                                    tagCross.visible = false
-                                    cursorShape = Qt.BusyCursor
-                                    root.tagMode = false
-                                    console.debug("exit tag mode")
-                                    root.interactive = true
-                                    pdfModel.placeRubberStamp(rubber_stamp_data)
-                                    root.tagInProgress = true
-                                    root.forceActiveFocus()
-                                    root.tag_placing = false
-                                }
-                            }
+                        root.size_estimated = false
+                        tagCross.visible = false
+                        cursorShape = Qt.BusyCursor
+                        root.tagMode = false
+                        console.debug("exit tag mode")
+                        root.interactive = true
+                        pdfModel.placeRubberStamp(rubber_stamp_data)
+                        root.tagInProgress = true
+                        root.forceActiveFocus()
+                        root.tag_placing = false
+                    }
+                }
 
                 Rectangle {
                     id: tagCross
 
-                    property string defaultText: qsTr("Tag position")
+                    property string defaultText: qsTr("Mark position")
                     property string invalidPositionText: qsTr(
-                                                             "Invalid position")
+                        "Invalid position")
                     property bool valid_position: true
 
                     color: "transparent"
@@ -959,7 +966,7 @@ ListView {
                 function onUpdateDoc() {
                     // add rubber stamps on render
                     pdfPage.setRubberStamps(pdfModel.getRubberStampForPage(
-                                                model.display))
+                        model.display))
                     tagPlaced()
 
                     let undoCount = pdfModel.getUndoCount()
@@ -1000,46 +1007,46 @@ ListView {
     }
 
     Keys.onPressed: event => {
-                        if (event.key === Qt.Key_Left) {
-                            flick(300, 0)
-                            return
-                        }
-                        if (event.key === Qt.Key_Right) {
-                            flick(-300, 0)
-                        }
-                        if (event.key === Qt.Key_Up) {
-                            flick(0, 300)
-                            return
-                        }
-                        if (event.key === Qt.Key_Down) {
-                            flick(0, -300)
-                        }
-                        if (event.key === Qt.Key_P
-                            && event.modifiers === Qt.ControlModifier) {
-                            printer.print(pdfListView.source,
-                                          pdfListView.count,
-                                          pdfListView.landscape)
-                        }
-                        let currentIndexAtTop = currentPageIndex() + 1
-                        if (!currentIndexAtTop) {
-                            return
-                        }
-                        if (event.key === Qt.Key_PageUp
-                            //|| event.key === Qt.Key_Left
-                            || event.nativeScanCode === 112) {
-                            if (currentIndexAtTop > 0) {
-                                scrollToPage(currentIndexAtTop - 1)
-                            }
-                            event.accepted = true
-                            return
-                        }
-                        if (event.key === Qt.Key_PageDown
-                            || event.key === Qt.Key_Space
-                            //|| event.key === Qt.Key_Right
-                            || event.nativeScanCode === 117) {
-                            scrollToPage(currentIndexAtTop + 1)
-                            event.accepted = true
-                            return
-                        }
-                    }
+        if (event.key === Qt.Key_Left) {
+            flick(300, 0)
+            return
+        }
+        if (event.key === Qt.Key_Right) {
+            flick(-300, 0)
+        }
+        if (event.key === Qt.Key_Up) {
+            flick(0, 300)
+            return
+        }
+        if (event.key === Qt.Key_Down) {
+            flick(0, -300)
+        }
+        if (event.key === Qt.Key_P
+            && event.modifiers === Qt.ControlModifier) {
+            printer.print(pdfListView.source,
+                pdfListView.count,
+                pdfListView.landscape)
+        }
+        let currentIndexAtTop = currentPageIndex() + 1
+        if (!currentIndexAtTop) {
+            return
+        }
+        if (event.key === Qt.Key_PageUp
+            //|| event.key === Qt.Key_Left
+            || event.nativeScanCode === 112) {
+            if (currentIndexAtTop > 0) {
+                scrollToPage(currentIndexAtTop - 1)
+            }
+            event.accepted = true
+            return
+        }
+        if (event.key === Qt.Key_PageDown
+            || event.key === Qt.Key_Space
+            //|| event.key === Qt.Key_Right
+            || event.nativeScanCode === 117) {
+            scrollToPage(currentIndexAtTop + 1)
+            event.accepted = true
+            return
+        }
+    }
 }

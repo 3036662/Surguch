@@ -111,7 +111,7 @@ Dialog {
                 Layout.fillWidth: true
 
                 Label {
-                    text: qsTr("Tag settings")
+                    text: qsTr("Mark settings")
                     font.weight: Font.DemiBold
                     topPadding: 10
                     bottomPadding: 10
@@ -155,7 +155,7 @@ Dialog {
                     Layout.maximumWidth: scrollView.width / 2 - 30
 
                     Text {
-                        text: qsTr("Tag name")
+                        text: qsTr("Mark name")
                         bottomPadding: 5
                         font.family: "Noto Sans"
                         color: StyleSheet.font_color_extra
@@ -164,7 +164,7 @@ Dialog {
                     RSBTextArea {
                         id: stampName
                         Layout.fillWidth: true
-                        placeholderText: qsTr("Enter tag name")
+                        placeholderText: qsTr("Enter mark name")
                         selectByMouse: true
                         wrapMode: Text.WordWrap
                         placeholderTextColor: "grey"
@@ -235,7 +235,7 @@ Dialog {
                         Layout.fillWidth: true
 
                         Text {
-                            text: qsTr("Default tag width, % from A4 ")
+                            text: qsTr("Default mark width, % from A4 ")
                             font.family: "Noto Sans"
                             color: StyleSheet.font_color_extra
                         }

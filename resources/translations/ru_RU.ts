@@ -680,8 +680,8 @@
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+768"/>
         <location line="+158"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+564"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+768"/>
-        <location filename="../../src/views/PdfListView.qml" line="+768"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+775"/>
+        <location filename="../../src/views/PdfListView.qml" line="+775"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>
@@ -699,8 +699,8 @@
     <message>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-1"/>
         <location filename="../../src/views/PdfListView.qml" line="-1"/>
-        <source>Tag position</source>
-        <translation type="unfinished"></translation>
+        <source>Mark position</source>
+        <translation type="unfinished">Позиция метки</translation>
     </message>
 </context>
 <context>
@@ -969,29 +969,23 @@
     <name>RubberStampEditor</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+105"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+114"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+114"/>
         <source>Tag settings</source>
-        <translation>Настройка тега</translation>
+        <translation>Настройка метки</translation>
     </message>
     <message>
         <location line="+39"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+44"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+44"/>
         <source>Tag name</source>
         <translation>Название</translation>
     </message>
     <message>
         <location line="+9"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+9"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+9"/>
         <source>Enter tag name</source>
-        <translation>Мой тег</translation>
+        <translation>Моя метка</translation>
     </message>
     <message>
         <location line="+20"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+20"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+20"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+187"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+187"/>
         <source>Preview</source>
         <translation>Предпросмотр</translation>
     </message>
@@ -1011,15 +1005,13 @@
     </message>
     <message>
         <location line="+22"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+22"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+22"/>
         <source>Default tag width, % from A4 </source>
-        <translation>Ширина тега по умолчанию, % от А4</translation>
+        <translation>Ширина метки по умолчанию, % от А4</translation>
     </message>
     <message>
         <location line="+30"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+30"/>
-        <location filename="../../src/views/RubberStampEditor.qml" line="+30"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+52"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+52"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
@@ -1028,7 +1020,7 @@
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+14"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+14"/>
         <source>Stamp with this name already exists</source>
-        <translation>Штамп с выбранным именем уже существует</translation>
+        <translation>Метка с выбранным именем уже существует</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -1126,6 +1118,30 @@
         <source>Surguch</source>
         <translation>Сургуч</translation>
     </message>
+    <message>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+59"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+59"/>
+        <source>Mark settings</source>
+        <translation>Настройка метки</translation>
+    </message>
+    <message>
+        <location line="+44"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+44"/>
+        <source>Mark name</source>
+        <translation>Название</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+9"/>
+        <source>Enter mark name</source>
+        <translation>Моя метка</translation>
+    </message>
+    <message>
+        <location line="+71"/>
+        <location filename="../../src/views/RubberStampEditor.qml" line="+71"/>
+        <source>Default mark width, % from A4 </source>
+        <translation>Ширина метки по умолчанию, % от А4</translation>
+    </message>
 </context>
 <context>
     <name>RubberStampModel</name>
@@ -1140,9 +1156,13 @@
         <translation>Отклонено</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>CreateStamp</source>
-        <translation>Создать тег</translation>
+        <translation type="obsolete">Создать метку</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create mark</source>
+        <translation>Создать метку</translation>
     </message>
     <message>
         <location line="+64"/>

@@ -12,7 +12,7 @@ RubberStampModel::RubberStampModel(QObject* parent)
     : QAbstractListModel(parent),
       approve_stamp_title_{tr("Approve")},
       decline_stamp_title_{tr("Decline")},
-      create_stamp_title_{tr("CreateStamp")} {
+      create_stamp_title_{tr("Create mark")} {
     role_names_[TitleRole] = "title";
     role_names_[ValueRole] = "value";
     readRubberStamps();
