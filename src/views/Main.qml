@@ -16,6 +16,8 @@ ApplicationWindow {
 
     width: 1000
     height: 480
+    minimumWidth: 800
+    minimumHeight: 600
     visible: true
     visibility: Window.Maximized
     title: qsTr("Surguch")
@@ -156,19 +158,19 @@ ApplicationWindow {
             let cert_array = JSON.parse(profilesModel.getUserCertsJSON())
             // console.warn(JSON.stringify(rightSideBar.edit_profile.cert_array));
             let cert_index = cert_array.findIndex(cert => {
-                                                      return curr_profile.cert_serial
-                                                      === cert.serial
-                                                  })
+                return curr_profile.cert_serial
+                    === cert.serial
+            })
             if (cert_index === -1) {
                 errorMessageDialog.text = qsTr(
-                            "Certificate not found, looks like it was deleted.﻿")
+                    "Certificate not found, looks like it was deleted.﻿")
                 errorMessageDialog.open()
                 throw new Error('Certificate data not found')
             }
             let stamps_json = JSON.parse(profilesModel.getUserStampsJSON())
             let user_stamp = stamps_json.find(stamp => {
-                                                  return curr_profile.stamp_type === stamp.title
-                                              })
+                return curr_profile.stamp_type === stamp.title
+            })
             // gather all information needed to create a signature visual representation
             let params = {
                 "page_index": location_data.page_index,
@@ -185,8 +187,8 @@ ApplicationWindow {
                 "cert_subject": cert_array[cert_index].subject_common_name,
                 "cert_subject_prefix": qsTr("Subject: "),
                 "cert_time_validity": qsTr("Vaildity: ")
-                                      + cert_array[cert_index].not_before_readable + qsTr(
-                    " till ") + cert_array[cert_index].not_after_readable,
+                    + cert_array[cert_index].not_before_readable + qsTr(
+                        " till ") + cert_array[cert_index].not_after_readable,
                 "stamp_title": qsTr("THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE"),
                 "stamp_type": curr_profile.stamp_type,
                 "text_color_red": user_stamp.R,
@@ -239,13 +241,13 @@ ApplicationWindow {
             if (!result.status) {
                 if (result.err_string === "CERT_EXPIRED") {
                     errorMessageDialog.text = qsTr(
-                                "Your certificate is expired.")
+                        "Your certificate is expired.")
                 } else if (result.err_string === "MAYBE_TSP_URL_INVALID") {
                     errorMessageDialog.text = qsTr(
-                                "Common error. It looks like the TSP URL is not valid.")
+                        "Common error. It looks like the TSP URL is not valid.")
                 } else if (result.err_string === "CERT_CHAINING_ERR") {
                     errorMessageDialog.text = qsTr(
-                                "Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.")
+                        "Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.")
                 } else if (result.err_string === "TIMEOUT") {
                     errorMessageDialog.text = qsTr("Error.Timeout exceeded.")
                 } else {
@@ -292,7 +294,7 @@ ApplicationWindow {
         // rotate
         headerSubBar.rotateClockwise.connect(pdfListView.rotateClockWise)
         headerSubBar.rotateCounterClockWise.connect(
-                    pdfListView.rotateCounterClockWise)
+            pdfListView.rotateCounterClockWise)
         // enable/disable zoom
         pdfListView.maxZoomReached.connect(headerSubBar.disableZoom)
         pdfListView.canZoom.connect(headerSubBar.enableZoom)
@@ -312,7 +314,7 @@ ApplicationWindow {
         headerSubBar.searchDialog.searchRequired.connect(pdfModel.performSearch)
         pdfModel.searchCompleted.connect(pdfListView.searchCompleted)
         pdfModel.searchCompleted.connect(
-                    headerSubBar.searchDialog.searchCompleted)
+            headerSubBar.searchDialog.searchCompleted)
         headerSubBar.searchDialog.jumpToNeedle.connect(pdfModel.jumpToNeedle)
         pdfModel.jumpToNeedleCompleted.connect(pdfListView.jumpToNeedle)
         // sign the document
@@ -320,7 +322,7 @@ ApplicationWindow {
         pdfListView.stampLocationSelected.connect(sigCreator.signDoc)
         // stamp size estimated
         sigCreator.stampSizeEstimated.connect(
-                    pdfListView.updateStampResizeFactor)
+            pdfListView.updateStampResizeFactor)
         // sign creation finished
         sigCreator.signCompleted.connect(sigCreator.handleSigResult)
         //  save signatures count in left sidebar
@@ -342,26 +344,26 @@ ApplicationWindow {
         siglistModel.commonDocStatus.connect(function (status) {
             //console.warn("status:"+status)
             switch (status) {
-            case "kDocCanBeRecovered":
-                errorMessageDialog.text = qsTr(
-                            "The document was changed after signing, but can be restored")
-                errorMessageDialog.open()
-                break
-            case "kDocCantBeTrusted":
-                errorMessageDialog.text = qsTr(
-                            "The document can't be trusted because none of signatures covers the whole document.﻿")
-                errorMessageDialog.open()
-                break
-            case "kDocCanBeRecoveredButSuspicious":
-                errorMessageDialog.text = qsTr(
-                            "The document was changed after signing.Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿")
-                errorMessageDialog.open()
-                break
-            case "kDocSuspiciousPrevious":
-                errorMessageDialog.text = qsTr(
-                            "Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿")
-                errorMessageDialog.open()
-                break
+                case "kDocCanBeRecovered":
+                    errorMessageDialog.text = qsTr(
+                        "The document was changed after signing, but can be restored")
+                    errorMessageDialog.open()
+                    break
+                case "kDocCantBeTrusted":
+                    errorMessageDialog.text = qsTr(
+                        "The document can't be trusted because none of signatures covers the whole document.﻿")
+                    errorMessageDialog.open()
+                    break
+                case "kDocCanBeRecoveredButSuspicious":
+                    errorMessageDialog.text = qsTr(
+                        "The document was changed after signing.Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿")
+                    errorMessageDialog.open()
+                    break
+                case "kDocSuspiciousPrevious":
+                    errorMessageDialog.text = qsTr(
+                        "Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿")
+                    errorMessageDialog.open()
+                    break
             }
         })
         // open the recovered file
@@ -373,7 +375,7 @@ ApplicationWindow {
         // validation failed
         siglistModel.validationFailedForSignature.connect(function (index) {
             errorMessageDialog.text = qsTr(
-                        "Validation failed for signature number") + " " + index
+                "Validation failed for signature number") + " " + index
             errorMessageDialog.open()
         })
         // open document on strart
@@ -387,10 +389,10 @@ ApplicationWindow {
         if (profilesModel.errStatus) {
             if (profilesModel.errString === "ERR_NO_CSP_LIB") {
                 errorMessageDialog.text = qsTr(
-                            "CryptoPro CSP 5.0 R3 not found, please check if installed")
+                    "CryptoPro CSP 5.0 R3 not found, please check if installed")
             } else if (profilesModel.errString === "ERR_GET_CERTS") {
                 errorMessageDialog.text = qsTr(
-                            "Failed getting the user's certificates list")
+                    "Failed getting the user's certificates list")
             } else {
                 errorMessageDialog.text = "err: " + profilesModel.errString
             }
@@ -408,7 +410,7 @@ ApplicationWindow {
         // invalid pdf
         pdfModel.docWasRepaired.connect(function () {
             errorMessageDialog.text = qsTr(
-                        "Errors were found in the document when it was opened. The document may be displayed incorrectly.")
+                "Errors were found in the document when it was opened. The document may be displayed incorrectly.")
             errorMessageDialog.open()
             // disable signing for damaged document
             header.disableSignMode()
@@ -456,5 +458,21 @@ ApplicationWindow {
 
     UnsavedChangesDialog {
         id: undsavedFileDialog
+    }
+
+    onWidthChanged: {
+        if (width <= 900) {
+            StyleSheet.window_size_x = "small_width"
+        } else {
+            StyleSheet.window_size_x = "normal"
+        }
+    }
+
+    onHeightChanged: {
+        if (height <= 600) {
+            StyleSheet.window_size_y = "small_height"
+        } else {
+            StyleSheet.window_size_y = "normal"
+        }
     }
 }

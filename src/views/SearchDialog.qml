@@ -31,7 +31,7 @@ Dialog {
 
     width: 350
     height: 50
-    x: searchButton.x - width / 2
+    x: searchButton.x - width
     y: parent.y
     modal: false
     closePolicy: Popup.CloseOnEscape

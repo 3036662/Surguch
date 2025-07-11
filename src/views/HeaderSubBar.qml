@@ -120,8 +120,8 @@ ColumnLayout {
             icon.source: StyleSheet.book_icon
             icon.width: 20
             icon.height: 20
-            leftPadding: 40
-            rightPadding: 40
+            leftPadding: StyleSheet.window_size_x === "normal" ? 40 : 5
+            rightPadding: StyleSheet.window_size_x === "normal" ? 40 : 5
 
             onClicked: {
                 showPreviews()
@@ -137,8 +137,8 @@ ColumnLayout {
             icon.source: StyleSheet.pen_tool_icon
             icon.width: 20
             icon.height: 20
-            leftPadding: 40
-            rightPadding: 40
+            leftPadding: StyleSheet.window_size_x === "normal" ? 40 : 5
+            rightPadding: StyleSheet.window_size_x === "normal" ? 40 : 5
 
             onClicked: {
                 showCerts()

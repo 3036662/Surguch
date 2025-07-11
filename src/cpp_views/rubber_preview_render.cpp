@@ -49,45 +49,45 @@ QSGNode *RubberPreviewRender::updatePaintNode(
         QSGTexture *texture = window()->createTextureFromImage(*img);
         if (texture != nullptr) {
             rectNode->setTexture(texture);
-            rectNode->setRect(QRectF(0, 0, 400, 300));
+            rectNode->setRect(QRectF(0, 0, 340, 280));
         }
         return rectNode;
     }
     QSGTexture *texture = nullptr;
-    if (result_->data_->resolution_x > 400 &&
+    if (result_->data_->resolution_x > 340 &&
         result_->data_->resolution_x >= result_->data_->resolution_y) {
         QSGTexture *texture = window()->createTextureFromImage(
             (*result_->image_)
-                .scaled(400,
+                .scaled(340,
                         static_cast<int>(
-                            300 * (static_cast<double>(
+                            280 * (static_cast<double>(
                                       result_->data_->resolution_y /
                                       static_cast<double>(
                                           result_->data_->resolution_x)))),
                         Qt::KeepAspectRatio));
-        setHeight(300 *
+        setHeight(280 *
                   (static_cast<double>(
                       result_->data_->resolution_y /
                       static_cast<double>(result_->data_->resolution_x))));
-        setWidth(400);
+        setWidth(340);
         if (texture != nullptr) {
             rectNode->setTexture(texture);
             rectNode->setRect(QRectF(0, 0, width(), height()));
         }
         return rectNode;
     }
-    if (result_->data_->resolution_y > 300 &&
+    if (result_->data_->resolution_y > 280 &&
         result_->data_->resolution_y > result_->data_->resolution_x) {
         texture = window()->createTextureFromImage(
             (*result_->image_)
                 .scaled(
                     static_cast<int>(
-                        400 *
+                        340 *
                         (static_cast<double>(result_->data_->resolution_x) /
                          static_cast<double>(result_->data_->resolution_y))),
-                    300, Qt::KeepAspectRatio));
-        setHeight(300);
-        setWidth(400 * (static_cast<double>(result_->data_->resolution_x) /
+                    280, Qt::KeepAspectRatio));
+        setHeight(280);
+        setWidth(340 * (static_cast<double>(result_->data_->resolution_x) /
                         static_cast<double>(result_->data_->resolution_y)));
         if (texture != nullptr) {
             rectNode->setTexture(texture);
@@ -156,7 +156,7 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
     }
     if (qvparams.contains("stamp_height")) {
         // params_.stamp_height = qvparams.value("height").toUInt();
-        params_.stamp_height = 300;
+        params_.stamp_height = 280;
     }
     if (qvparams.contains("border_width")) {
         params_.border_width = qvparams.value("border_width").toUInt();
@@ -194,7 +194,7 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
     }
     if (qvparams.contains("font_family")) {
         params_.font_family = qvparams.value("font_family").toString();
-        int default_weight = 400;
+        int default_weight = 340;
         int tmp_weight = 0;
         const QStringList styles = QFontDatabase::styles(params_.font_family);
         qsizetype index_regular =
@@ -274,7 +274,7 @@ core::gui::SharedRubberParamWrapper RubberPreviewRender::createParams() const {
     pod_params.font_weight = params_.font_weight;
     pod_params.bg_transparent = params_.bg_transparent;
     pod_params.bg_opacity = params_.bg_opacity;
-    pod_params.annotation_width = 400;  // params_.annotation_text.size() *
+    pod_params.annotation_width = 340;  // params_.annotation_text.size() *
                                         // 100;
     return params_wrapper;
 }

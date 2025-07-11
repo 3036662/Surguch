@@ -8,7 +8,7 @@ Dialog {
 
     width: 300
     height: Math.min(300, itemView.contentHeight + 20)
-    x: rubberStampDialogButton.x - width / 2
+    x: StyleSheet.window_size_x === "small_width" ? rubberStampDialogButton.x - width : rubberStampDialogButton.x - width / 2
     y: parent.y
     clip: true
 
