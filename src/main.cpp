@@ -28,6 +28,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QtConcurrent>
 
 #include "core/font_helper.hpp"
+#include "core/gui_core/custom_event_filter.hpp"
 #include "core/signature_creator.hpp"
 #include "core/tag_creator.hpp"
 #include "cpp_views/pdf_page_render.hpp"
@@ -111,6 +112,10 @@ int main(int argc, char* argv[]) {
     const QUrl url("qrc:/gui_pdf_csp/Main.qml");
     engine.load(url);
 #endif
+
+    auto wheel_filter = std::make_unique<core::WheelEventFilter>(&app);
+    QObject* rootObject = engine.rootObjects().first();
+    rootObject->installEventFilter(wheel_filter.get());
 
     // QDirIterator it(":", QDirIterator::Subdirectories);
     // while (it.hasNext()) {
