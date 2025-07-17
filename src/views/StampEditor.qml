@@ -83,7 +83,6 @@ Dialog {
         clip: true
         ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
-
         ColumnLayout {
             id: editColumn
             width: scrollView.availableWidth
@@ -374,10 +373,10 @@ Dialog {
                         return
                     }
                     if (stamp_id < 0 && !profiles_model.uniqueStampName(
-                        stampName.text)) {
+                                stampName.text)) {
                         stampName.forceActiveFocus()
                         errorMessageDialog.text = qsTr(
-                            "Stamp with this name already exists")
+                                    "Stamp with this name already exists")
                         errorMessageDialog.open()
                         return
                     }

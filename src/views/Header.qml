@@ -56,7 +56,7 @@ RowLayout {
             icon.source: StyleSheet.file_plus_icon
             text: qsTr("Open")
             onClicked: kdeVersion === "5" ? labsFileDialog.open(
-            ) : fileDialog.open()
+                                                ) : fileDialog.open()
         }
 
         TopBarButton {
@@ -71,7 +71,7 @@ RowLayout {
             text: qsTr("Save as ...")
             enabled: pdfListView.source.length > 0
             onClicked: kdeVersion === "5" ? labsSaveFileDialog.open(
-            ) : saveFileDialog.open()
+                                                ) : saveFileDialog.open()
         }
 
         Row {
@@ -94,10 +94,10 @@ RowLayout {
                     rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
                     // set the certificates for select
                     rightSideBar.edit_profile.cert_data_raw
-                        = profileComboBox.model.getUserCertsJSON()
+                            = profileComboBox.model.getUserCertsJSON()
                     //set the stamps for select
                     rightSideBar.edit_profile.stamps_data_raw
-                        = profileComboBox.model.getUserStampsJSON()
+                            = profileComboBox.model.getUserStampsJSON()
                     // set a reference to this model
                     rightSideBar.edit_profile.profiles_model = profileComboBox.model
                     rightSideBar.edit_profile.profile_data = profileComboBox.currentValue
@@ -130,13 +130,13 @@ RowLayout {
 
                 onActivated: {
                     profileComboBox.displayText = profileComboBox.textAt(
-                        currentIndex)
+                                currentIndex)
                     // set the certificates for select
                     rightSideBar.edit_profile.cert_data_raw
-                        = profileComboBox.model.getUserCertsJSON()
+                            = profileComboBox.model.getUserCertsJSON()
                     //set the stamps for select
                     rightSideBar.edit_profile.stamps_data_raw
-                        = profileComboBox.model.getUserStampsJSON()
+                            = profileComboBox.model.getUserStampsJSON()
                     // set a reference to this model
                     rightSideBar.edit_profile.profiles_model = profileComboBox.model
                     // if create a new profile, set an empty data
@@ -157,7 +157,7 @@ RowLayout {
                         const indx = profileComboBox.indexOfValue(def_profile)
                         //console.warn(indx)
                         profileComboBox.displayText = profileComboBox.textAt(
-                            indx)
+                                    indx)
                         profileComboBox.currentIndex = indx
                     } else {
                         profileComboBox.currentIndex = -1
@@ -213,7 +213,7 @@ RowLayout {
 
             onClicked: {
                 if (profileComboBox.currentValue === "new"
-                    || profileComboBox.currentIndex === -1) {
+                        || profileComboBox.currentIndex === -1) {
                     profileComboBox.popup.open()
                 } else {
                     headerSubBar.disableTagMode()
@@ -257,16 +257,16 @@ RowLayout {
     //     rightPadding: 10
     // }
     Keys.onPressed: event => {
-        if (event.key === Qt.Key_Escape
-            && pdfListView.signMode) {
-            headerSubBar.enableTagButton()
-            pdfListView.signMode = false
-            signModeButton.down = false
-            event.accepted = true
-            return
-        }
-        event.accepted = false
-    }
+                        if (event.key === Qt.Key_Escape
+                            && pdfListView.signMode) {
+                            headerSubBar.enableTagButton()
+                            pdfListView.signMode = false
+                            signModeButton.down = false
+                            event.accepted = true
+                            return
+                        }
+                        event.accepted = false
+                    }
 
     CommonDialods.FileDialog {
         id: fileDialog
@@ -274,7 +274,7 @@ RowLayout {
         //nameFilters: ["PDF files (*.pdf)","Any file (* *.*)"];
         nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
         currentFolder: StandardPaths.writableLocation(
-            StandardPaths.DocumentsLocation)
+                           StandardPaths.DocumentsLocation)
         onAccepted: {
             enableSignMode()
             // source is chosen by user, not a temporary file
@@ -293,12 +293,12 @@ RowLayout {
         defaultSuffix: "pdf"
         nameFilters: [qsTr("PDF files (*.pdf)")]
         currentFolder: StandardPaths.writableLocation(
-            StandardPaths.DocumentsLocation)
+                           StandardPaths.DocumentsLocation)
 
         onAccepted: {
             pdfModel.mustExtractText = false
             let tmp_file = tagCreator.embedAnnot(pdfModel.getAnnotParams(),
-                pdfModel.getSource())
+                                                 pdfModel.getSource())
             if (tmp_file === "") {
                 tmp_file = pdfModel.getSource()
             }
@@ -346,7 +346,7 @@ RowLayout {
         onAccepted: {
             pdfModel.mustExtractText = false
             let tmp_file = tagCreator.embedAnnot(pdfModel.getAnnotParams(),
-                pdfModel.getSource())
+                                                 pdfModel.getSource())
             if (tmp_file === "") {
                 tmp_file = pdfModel.getSource()
             }

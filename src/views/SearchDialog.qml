@@ -58,7 +58,6 @@ Dialog {
         } else {
             searchDialog.needNewSearch = true
         }
-
     }
 
     Row {

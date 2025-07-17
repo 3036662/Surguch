@@ -106,7 +106,8 @@ Dialog {
 
         ColumnLayout {
             id: editColumn
-            width: StyleSheet.window_size_x === "small_width" ? root.availableWidth : scrollView.availableWidth
+            width: StyleSheet.window_size_x
+                   === "small_width" ? root.availableWidth : scrollView.availableWidth
             height: scrollView.availableHeight
 
             RowLayout {
@@ -176,7 +177,8 @@ Dialog {
                         onTextChanged: {
                             let validInput = stampName.text.match(/^S+$/)
                             if (!validInput) {
-                                stampName.text = stampName.text.replace(/\s/g, '')
+                                stampName.text = stampName.text.replace(/\s/g,
+                                                                        '')
                                 stampName.cursorPosition = stampName.text.length
                             }
                             if (stampName.text.length > 50) {
@@ -208,9 +210,8 @@ Dialog {
 
                     ScrollView {
                         Layout.fillWidth: true
-                        Layout.maximumHeight: Math.min(
-                            linkName.implicitHeight,
-                            font.pixelSize * 5 + 20)
+                        Layout.maximumHeight: Math.min(linkName.implicitHeight,
+                                                       font.pixelSize * 5 + 20)
 
                         RSBTextArea {
                             id: linkName
@@ -229,7 +230,8 @@ Dialog {
                         ScrollBar.vertical: ScrollBar {
                             Layout.fillWidth: true
                             anchors.right: parent.right
-                            policy: (linkName.lineCount > 5) ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff
+                            policy: (linkName.lineCount
+                                     > 5) ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff
                         }
                     }
 
@@ -279,10 +281,10 @@ Dialog {
                                 return
                             }
                             if (stamp_id < 0 && !rubber_model.uniqueStampName(
-                                stampName.text)) {
+                                        stampName.text)) {
                                 stampName.forceActiveFocus()
                                 errorMessageDialog.text = qsTr(
-                                    "Stamp with this name already exists")
+                                            "Stamp with this name already exists")
                                 errorMessageDialog.open()
                                 return
                             }
@@ -303,7 +305,7 @@ Dialog {
                             stamp_json["bg_transparent"] = transparencySwitch.checked ? 1 : 0
                             const new_stamp_data = JSON.stringify(stamp_json)
                             console.warn(rubber_model.saveRubberStamps(
-                                new_stamp_data))
+                                             new_stamp_data))
                             rubberStampEditor.visible = false
                             stamp_data = null
                         }
@@ -322,7 +324,8 @@ Dialog {
                         enabled: edit_state
 
                         onClicked: {
-                            if (rubber_model.deleteRubberStamps(root.stamp_id)) {
+                            if (rubber_model.deleteRubberStamps(
+                                        root.stamp_id)) {
                                 rubberStampEditor.visible = false
                                 stamp_data = null
                             }
@@ -411,8 +414,8 @@ Dialog {
                     ScrollView {
                         Layout.fillWidth: true
                         Layout.maximumHeight: Math.min(
-                        rubberStampText.implicitHeight,
-                        font.pixelSize * 5 + 20)
+                                                  rubberStampText.implicitHeight,
+                                                  font.pixelSize * 5 + 20)
                         visible: typeSwitch.checked
 
                         RSBTextArea {
@@ -434,7 +437,7 @@ Dialog {
                             Layout.fillWidth: true
                             anchors.right: parent.right
                             policy: (rubberStampText.lineCount
-                            > 5) ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff
+                                     > 5) ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff
                         }
                     }
 
@@ -457,18 +460,19 @@ Dialog {
                             updatePreview()
                         }
 
-                    popup.onOpened: {
-                        main_window_wheel_filter.dispactch_to_target=true;
-                    }
-                    popup.onClosed: {
-                        main_window_wheel_filter.dispactch_to_target=false;
-                    }
+                        popup.onOpened: {
+                            main_window_wheel_filter.dispactch_to_target = true
+                        }
+                        popup.onClosed: {
+                            main_window_wheel_filter.dispactch_to_target = false
+                        }
                         FontHelper {
                             id: fontHelper
                         }
 
                         Component.onCompleted: {
-                        main_window_wheel_filter.setTargetForDispatch(fontName.popup.contentItem);
+                            main_window_wheel_filter.setTargetForDispatch(
+                                        fontName.popup.contentItem)
                             var index = model.indexOf("Noto Sans")
                             if (index >= 0) {
                                 currentIndex = index
@@ -689,10 +693,11 @@ Dialog {
             fileMode: QLP.FileDialog.OpenFile
             nameFilters: ["Image files (*.png *.jpg *.jpeg *.bmp)"]
             options: QLP.FileDialog.ReadOnly
-            folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+            folder: StandardPaths.writableLocation(
+                        StandardPaths.DocumentsLocation)
             onAccepted: {
                 logoPath.text = currentFile
             }
-            }
         }
     }
+}

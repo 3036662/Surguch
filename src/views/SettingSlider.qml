@@ -9,17 +9,17 @@ Slider {
     property color gradient_start: StyleSheet.slider_fill_color
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
-        implicitHandleWidth + leftPadding + rightPadding)
+                            implicitHandleWidth + leftPadding + rightPadding)
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
-        implicitHandleHeight + topPadding + bottomPadding)
+                             implicitHandleHeight + topPadding + bottomPadding)
 
     padding: 6
 
     handle: Rectangle {
         x: control.leftPadding + (control.horizontal ? control.visualPosition * (control.availableWidth - width) : (control.availableWidth - width) / 2)
         y: control.topPadding
-            + (control.horizontal ? (control.availableHeight - height) / 2 : control.visualPosition
-                * (control.availableHeight - height))
+           + (control.horizontal ? (control.availableHeight - height) / 2 : control.visualPosition
+                                   * (control.availableHeight - height))
         implicitWidth: 20
         implicitHeight: 20
         radius: width / 2
@@ -41,10 +41,12 @@ Slider {
         gradient: Gradient {
             orientation: control.horizontal ? Gradient.Horizontal : Gradient.Vertical
             GradientStop {
-                position: 0.0; color: control.gradient_start
+                position: 0.0
+                color: control.gradient_start
             }
             GradientStop {
-                position: 1.0; color: control.back_color
+                position: 1.0
+                color: control.back_color
             }
         }
     }
