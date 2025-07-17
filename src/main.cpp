@@ -54,8 +54,6 @@ int main(int argc, char* argv[]) {
         QApplication::installTranslator(&translator);
     }
 
-    // auto wheel_filter = std::make_unique<core::WheelEventFilter>(&app);
-
     // register types
     qmlRegisterType<PdfPageRender>("alt.pdfcsp.pdfRender", 0, 1,
                                    "PdfPageRender");
@@ -84,6 +82,9 @@ int main(int argc, char* argv[]) {
 
     qmlRegisterType<core::gui::WheelEventFilter>("alt.pdfcsp.wheelFilter", 1, 0,
                                                  "WheelFilter");
+    // the eventFilterInstaller singleton is utilized to fix the Qt6.4 bug
+    // when the wheel event is not propagated to the popup nested within a
+    // combobox
     auto eventFilterInstaller =
         std::make_unique<core::gui::EventFilterInstaller>();
     qmlRegisterSingletonInstance<core::gui::EventFilterInstaller>(
@@ -123,9 +124,6 @@ int main(int argc, char* argv[]) {
     const QUrl url("qrc:/gui_pdf_csp/Main.qml");
     engine.load(url);
 #endif
-
-    // QObject* rootObject = engine.rootObjects().first();
-    // rootObject->installEventFilter(wheel_filter.get());
 
     // QDirIterator it(":", QDirIterator::Subdirectories);
     // while (it.hasNext()) {

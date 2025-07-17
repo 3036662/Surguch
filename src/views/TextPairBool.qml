@@ -7,6 +7,7 @@ Column {
 
     property string keyText
     property bool value
+    property alias status_text_color: status_text.color
 
     Text {
         id: mainText
@@ -18,6 +19,7 @@ Column {
         color: StyleSheet.font_color_extra
     }
     Text {
+        id: status_text
         text: value ? qsTr("Valid") : qsTr("Invalid")
         color: value ? "green" : "red"
         font.family: "Noto Sans"

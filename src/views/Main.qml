@@ -313,6 +313,8 @@ ApplicationWindow {
         // toggle from preview to certs in left sidebat
         headerSubBar.showPreviews.connect(leftSideBar.showPreviews)
         headerSubBar.showCerts.connect(leftSideBar.showCerts)
+        // screen DPI changed
+        pdfModel.screenDpiChanged.connect(pdfListView.redrawAndPreservePosion)
         //enable buttons for stamps
         pdfListView.quitSignMode.connect(header.quitSignMode)
         pdfListView.disableTagMode.connect(headerSubBar.disableTagMode)
@@ -387,6 +389,7 @@ ApplicationWindow {
         // open document on strart
         if (openOnStart !== "") {
             pdfListView.openFile(openOnStart)
+            header.enableSignMode()
             leftSideBar.source = openOnStart
             rightSideBar.showState = RightSideBar.ShowState.Invisible
         }

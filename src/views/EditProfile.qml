@@ -67,11 +67,9 @@ Flickable {
             selectCertificateCombo.item_selected = false
             selectCertificateCombo.displayText = selectCertificateCombo.displayTextDefault
             selectCadesFormatCombo.currentIndex = 2
-            selectCadesFormatCombo.item_selected = true
-            //selectCadesFormatCombo.displayText = selectCadesFormatCombo.displayTextDefault
+            selectCadesFormatCombo.item_selected = true            
             selectStampTypeCombo.currentIndex = 0
-            selectStampTypeCombo.item_selected = true
-            //selectStampTypeCombo.displayText = selectStampTypeCombo.displayTextDefault
+            selectStampTypeCombo.item_selected = true            
             logoPath.text = ""
             tspUrlEdit.text = ""
         }
@@ -198,8 +196,7 @@ Flickable {
                     "title": "CADES_XLT1"
                 }]
             textRole: "title"
-            valueRole: "title"
-            //displayText: displayTextDefault
+            valueRole: "title"        
             property string displayTextDefault: qsTr("Select Cades format")
             currentIndex: 2
             item_selected: true
@@ -305,8 +302,7 @@ Flickable {
                 Layout.fillWidth: true
                 model: root.stamps_combo_model
                 textRole: "title"
-                valueRole: "value"
-                //displayText: displayTextDefault
+                valueRole: "value"                
                 enabled: selectCertificateCombo.item_selected
                          && selectCadesFormatCombo.item_selected
                 property string displayTextDefault: qsTr("Select stamp type")

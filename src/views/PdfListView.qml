@@ -16,9 +16,10 @@ ListView {
     // page sizes and zoom
     property double zoomPageFact: 1
     property int pageWidth: 0
-    property int lastPageHeight: 0
-    property int lastPageWidth: 0
-    property int lastPageUsedSize: 0
+    property int pageHeight: 0
+    property int lastPageHeight: 0 // used for preservePos
+    property int lastPageWidth: 0 // used for preservePos
+    property int lastPageUsedSize: 0 // used for jumpToPosition
     property double prevZoom: 1
     property bool landscape: false
     property bool zoomAuto: false
@@ -334,7 +335,7 @@ ListView {
             "ratio": pageYRatio,
             "zoom_last": pageLastZoom
         }
-        console.warn("QML PreservsPos:" + JSON.stringify(pos))
+        //console.warn("QML PreservsPos:" + JSON.stringify(pos))
         return pos
     }
 
@@ -350,15 +351,15 @@ ListView {
      *   }
      */
     function jumpToPosition(pos) {
-        console.warn("jump to position:" + JSON.stringify(pos))
+        //console.warn("jump to position:" + JSON.stringify(pos))
         positionViewAtIndex(pos.index, ListView.Beginning)
         let currPage = currentPage()
         let rotated90 = delegateRotation == 90 || delegateRotation == 270
         let currZoom = zoomPageFact
         let usedPageSize = 0
         let lastSizeUsed = false
-        console.warn("currPage.pWidth: " + currPage.pWidth
-                     + " currPage.pHeight: " + currPage.pHeight)
+        // console.warn("currPage.pWidth: " + currPage.pWidth
+        //              + " currPage.pHeight: " + currPage.pHeight)
         if (currPage) {
             usedPageSize = rotated90 ? currPage.pWidth : currPage.pHeight
             if (currPage.zoomLast > 0 && currPage.zoomLast !== 1) {
@@ -374,39 +375,30 @@ ListView {
             zoomRatio = 1
         }
         let pos_mode = ListView.Beginning
-        if (pos.ratio > 0.7) {
-            console.warn("QML pos mode: end")
+        if (pos.ratio > 0.7) {           
             pos_mode = ListView.End
         } else if (pos.ratio > 0.3) {
-            pos_mode = ListView.Center
-            console.warn("QML pos mode: center")
+            pos_mode = ListView.Center        
         }
         let targetYScroll = 0
-        console.warn("zoomRatio: " + zoomRatio)
         if (zoomRatio > 0) {
-            console.warn("usedPageSize:" + usedPageSize)
-            console.warn("root height:" + root.height)
             targetYScroll = pos.ratio * usedPageSize
-            if (lastSizeUsed) {
-                console.warn("last size was used")
+            if (lastSizeUsed) {            
                 targetYScroll *= zoomRatio
                 targetYScroll = 0
             } else {
                 targetYScroll -= root.height / 2
             }
         }
-        console.warn("scrollY " + targetYScroll)
+        //console.warn("scrollY " + targetYScroll)
         if (targetYScroll > 0 && pos.index > 0) {
-            console.warn("targetYScroll > 0")
-            console.warn("pos index: " + pos.index)
+            //console.warn("targetYScroll > 0")
+            //console.warn("pos index: " + pos.index)
             positionViewAtIndex(pos.index, ListView.Beginning)
-            contentY += targetYScroll
-            console.warn("\n")
-        } else {
-            console.warn("QML position at index: " + pos.index)
+            contentY += targetYScroll            
+        } else {            
             // if failed to calculate the exact scroll, use jump mode ( beginning | middle | end )
-            positionViewAtIndex(pos.index, pos_mode)
-            console.warn("\n")
+            positionViewAtIndex(pos.index, pos_mode)        
         }
         root.lastPageUsedSize = usedPageSize
     }
@@ -474,7 +466,7 @@ ListView {
     }
 
     function jumpToNeedle(page_index, rel_x, rel_y) {
-        console.warn("QML jump to needle on page " + page_index)
+        //console.warn("QML jump to needle on page " + page_index)
         let currPage = currentPage()
         // remove current rect from this page
         if (currentPageIndex() !== page_index) {
@@ -489,9 +481,16 @@ ListView {
         pos = updateRatioWithRoration(pos, rel_x, rel_y)
         jumpToPosition(pos)
         currPage = root.itemAtIndex(page_index)
-        console.warn("QML update page at index " + page_index)
+        //console.warn("QML update page at index " + page_index)
         // update current rect
         currPage.updateCurrRect()
+    }
+
+    // redraw but preserve the postiton
+    function redrawAndPreservePosion() {
+        let pos = preservePosition()
+        model.redrawAll()
+        jumpToPosition(pos)
     }
 
     Layout.fillHeight: true
@@ -588,8 +587,14 @@ ListView {
             pdfPage.setCurrentNeedleRect(pdfModel.getCurrentNeedleRect(
                                              model.display))
             pdfPage.update()
-            console.warn("QML delegate updateCurrRect")
+            //console.warn("QML delegate updateCurrRect")
         }
+        onWidthChanged: {
+            if (root.zoomAuto){
+                pdfPage.width=width
+            }
+        }
+
 
         PdfPageRender {
             id: pdfPage
@@ -598,12 +603,14 @@ ListView {
             property bool sizeKnown: false
             property int defaultWidth: root.pageWidth > 0
                                        && !sizeKnown ? root.pageWidth : root.width
+            property int defaultHeight: root.pageHeight
+                                        && !sizeKnown ? root.pageHeight : defaultWidth * 1.42
 
             customRotation: root.delegateRotation
             anchors.horizontalCenter: width < parent.width ? parent.horizontalCenter : undefined
             anchors.rightMargin: verticalScroll.width
             width: defaultWidth
-            height: defaultWidth * 1.42
+            height:defaultHeight
             // utilized,if zoomAuto == false
             zoomGoal: zoomPageFact
             // set goal width only if autoZoom; if autoZoom==true,zoomGoal will be ignored
@@ -675,6 +682,7 @@ ListView {
             }
 
             onHeightChanged: {
+                root.pageHeight = height
                 updateCrossSize()
                 updateTagCrossSize()
                 landscape = pdfPage.width > pdfPage.height
@@ -699,7 +707,7 @@ ListView {
                                             model.display))
                 if (width > 0 && root.hScrollPos > 0 && root.hScrollPos < 1) {
                     root.contentX = width * root.hScrollPos
-                }
+                }                
             }
 
             MouseArea {
@@ -797,6 +805,7 @@ ListView {
                 acceptedButtons: Qt.RightButton | Qt.LeftButton
 
                 onEntered: {
+                    console.debug("enter height = " + tagCross.height)
                     let t_data = JSON.parse(tagData)
                     tagCross.width = t_data.tag_width * width / 100
                     console.debug("enter width" + tagCross.width)
@@ -954,6 +963,7 @@ ListView {
                     root.size_estimated = true
                     console.debug("size ready height = " + tagCross.height)
                     console.debug("size ready width = " + tagCross.width)
+                    console.debug("size ready = " + ratio)
                 }
 
                 function onUpdateDoc() {

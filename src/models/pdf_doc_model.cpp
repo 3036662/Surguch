@@ -64,7 +64,7 @@ PdfDocModel::PdfDocModel(QObject *parent)
             if (screen != nullptr && process_signatures_) {  // if main view
                 physical_screen_dpi_ = screen->physicalDotsPerInch();
                 screenDpiChanged();
-                redrawAll();
+                // redrawAll();
             }
         });
     }
@@ -238,7 +238,7 @@ pdf_document *PdfDocModel::getPdfDoc() const { return pdfdoc_; }
 
 /// @brief resert the whole model
 void PdfDocModel::redrawAll() {
-    qWarning() << "[PdfDocModel] redraw all";
+    // qWarning() << "[PdfDocModel] redraw all";
     beginResetModel();
     endResetModel();
 }

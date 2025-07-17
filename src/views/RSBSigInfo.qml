@@ -203,6 +203,7 @@ Flickable {
             id: fullCoverageStatus
             keyText: qsTr("The signature covers the entire document")
             value: jsonData !== undefined ? jsonData.full_coverage : false
+            status_text_color: value ? "green" : "red"
         }
         TextPairBool {
             id: recoverableStatus

@@ -8,21 +8,33 @@
 
 namespace core::gui {
 
+/**
+ * @brief The EventFilterInstaller class installs the given event filter to the
+ * given QObject
+ */
 class EventFilterInstaller : public QObject {
     Q_OBJECT
    public:
+    /// @brief install the filter
     Q_INVOKABLE void installEventFilter(QObject *target, QObject *filter) {
         target->installEventFilter(filter);
     }
 };
 
+/**
+ * @brief The WheelEventFilter class rethrows the will event to the given turget
+ * @details utilized to fix Qt6.4 bug, when the wheel event is not propagate to
+ * the nested popup
+ */
 class WheelEventFilter : public QObject {
     Q_OBJECT
    public:
     explicit WheelEventFilter(QObject *parent = nullptr) : QObject(parent) {}
 
+    /// @brief the event will be dispatched to target if set to true
     Q_PROPERTY(bool dispactch_to_target MEMBER dispatch_to_target_);
 
+    /// @brief set the tatget
     Q_INVOKABLE void setTargetForDispatch(QObject *target) {
         if (target == nullptr) {
             dispatch_to_target_ = false;
