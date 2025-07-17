@@ -271,6 +271,11 @@ ApplicationWindow {
         }
     }
 
+    WheelFilter{
+        id: main_window_wheel_filter
+    }
+
+
     // --------------------------------------
     //  connect the events
     Component.onCompleted: {
@@ -423,7 +428,7 @@ ApplicationWindow {
         StyleSheet.state = themeStyle
 
 
-                EventFilterInstaller.installEventFilter(this, WheelFilter)
+        EventFilterInstaller.installEventFilter(this,main_window_wheel_filter);
 
     }
 
