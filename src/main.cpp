@@ -54,6 +54,8 @@ int main(int argc, char* argv[]) {
         QApplication::installTranslator(&translator);
     }
 
+    auto wheel_filter = std::make_unique<core::WheelEventFilter>(&app);
+
     // register types
     qmlRegisterType<PdfPageRender>("alt.pdfcsp.pdfRender", 0, 1,
                                    "PdfPageRender");
@@ -79,6 +81,14 @@ int main(int argc, char* argv[]) {
 
     qmlRegisterType<core::FontHelper>("alt.pdfcsp.fontHelper", 0, 1,
                                       "FontHelper");
+    auto eventFilterInstaller = std::make_unique<core::EventFilterInstaller>();
+    qmlRegisterSingletonInstance<core::WheelEventFilter>(
+        "alt.pdfcsp.wheelFilter", 1, 0, "WheelFilter", wheel_filter.get());
+
+    qmlRegisterSingletonInstance<core::EventFilterInstaller>(
+        "alt.pdfcsp.eventFilterInstaller", 1, 0, "EventFilterInstaller",
+        eventFilterInstaller.get());
+
     // run the app
     QQmlApplicationEngine engine;
     const QStringList args = QApplication::arguments();
@@ -113,9 +123,8 @@ int main(int argc, char* argv[]) {
     engine.load(url);
 #endif
 
-    auto wheel_filter = std::make_unique<core::WheelEventFilter>(&app);
-    QObject* rootObject = engine.rootObjects().first();
-    rootObject->installEventFilter(wheel_filter.get());
+    // QObject* rootObject = engine.rootObjects().first();
+    // rootObject->installEventFilter(wheel_filter.get());
 
     // QDirIterator it(":", QDirIterator::Subdirectories);
     // while (it.hasNext()) {

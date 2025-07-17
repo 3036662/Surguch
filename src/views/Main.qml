@@ -10,6 +10,8 @@ import alt.pdfcsp.rubberStampModel
 import alt.pdfcsp.signaturesListModel
 import alt.pdfcsp.printerLauncher
 import StyleSheet
+import alt.pdfcsp.eventFilterInstaller
+import alt.pdfcsp.wheelFilter
 
 ApplicationWindow {
     id: root_window
@@ -65,6 +67,8 @@ ApplicationWindow {
             id: rightSideBar
         }
     }
+
+
 
     // --------------------------------------
     // footer
@@ -417,6 +421,10 @@ ApplicationWindow {
         })
         // set themes
         StyleSheet.state = themeStyle
+
+
+                EventFilterInstaller.installEventFilter(this, WheelFilter)
+
     }
 
     // ---------------------------------------------

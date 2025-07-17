@@ -5,6 +5,8 @@ import Qt.labs.platform as QLP
 import QtCore
 import StyleSheet
 import alt.pdfcsp.fontHelper
+import alt.pdfcsp.eventFilterInstaller
+import alt.pdfcsp.wheelFilter
 
 Dialog {
     id: root
@@ -332,189 +334,196 @@ Dialog {
                     width: 30
                 }
 
-                ColumnLayout {
-                    Layout.preferredWidth: scrollView.width / 2 - 30
-                    Layout.minimumWidth: scrollView.width / 2 - 30
-                    Layout.maximumWidth: scrollView.width / 2 - 30
-                    RowLayout {
-                        Layout.fillWidth: true
+            ColumnLayout {
 
-                        Text {
-                            text: qsTr("Create from text")
-                            Layout.fillWidth: true
-                            color: StyleSheet.font_color_extra
-                            font.family: "Noto Sans"
-                        }
-
-                        Rectangle {
-                            Layout.fillWidth: true
-                        }
-
-                        SettingSwitch {
-                            id: typeSwitch
-
-                            topPadding: 5
-                            bottomPadding: 5
-                            rightPadding: 10
-
-                            onToggled: {
-                                updatePreview()
-                            }
-                        }
+                Component.onCompleted: {
+                        EventFilterInstaller.installEventFilter(this, WheelFilter)
                     }
+                Layout.preferredWidth: root.width / 2 - 30
+                Layout.minimumWidth: root.width / 2 - 30
+                RowLayout {
+                    Layout.fillWidth: true
 
                     Text {
-                        topPadding: 10
-                        text: qsTr("Generate from file (*.png *.jpg *.jpeg *.bmp)")
-                        bottomPadding: 5
-                        font.family: "Noto Sans"
+                        text: qsTr("Create from text")
+                        Layout.fillWidth: true
                         color: StyleSheet.font_color_extra
-                        visible: !typeSwitch.checked
+                        font.family: "Noto Sans"
                     }
 
-                    TextArea {
-                        id: logoPath
-                        placeholderText: qsTr("Select a file")
-                        visible: !typeSwitch.checked
+                    Rectangle {
                         Layout.fillWidth: true
+                    }
+
+                    SettingSwitch {
+                        id: typeSwitch
+
+                        topPadding: 5
+                        bottomPadding: 5
+                        rightPadding: 10
+
+                        onToggled: {
+                            updatePreview()
+                        }
+                    }
+                }
+
+                Text {
+                    topPadding: 10
+                    text: qsTr("Generate from file (*.png *.jpg *.jpeg *.bmp)")
+                    bottomPadding: 5
+                    font.family: "Noto Sans"
+                    color: StyleSheet.font_color_extra
+                    visible: !typeSwitch.checked
+                }
+
+                TextArea {
+                    id: logoPath
+                    placeholderText: qsTr("Select a file")
+                    visible: !typeSwitch.checked
+                    Layout.fillWidth: true
+                    font.family: "Noto Sans"
+                    color: StyleSheet.font_color_extra
+
+                    background: Rectangle {
+                        border.color: StyleSheet.slider_border_color
+                        color: "transparent"
+                    }
+
+                    onTextChanged: {
+                        updatePreview()
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+
+                        onClicked: {
+                            imgFileDialog.open()
+                        }
+                    }
+                }
+
+                Text {
+                    text: qsTr("Text")
+                    bottomPadding: 5
+                    visible: typeSwitch.checked
+                    font.family: "Noto Sans"
+                    color: StyleSheet.font_color_extra
+                }
+
+                ScrollView {
+                    Layout.fillWidth: true
+                    Layout.maximumHeight: Math.min(
+                        rubberStampText.implicitHeight,
+                        font.pixelSize * 5 + 20)
+                    visible: typeSwitch.checked
+
+                    RSBTextArea {
+                        id: rubberStampText
+                        Layout.fillWidth: true
+                        visible: typeSwitch.checked
+                        placeholderText: qsTr("Enter text here")
+                        selectByMouse: true
+                        wrapMode: Text.WordWrap
+                        placeholderTextColor: "grey"
                         font.family: "Noto Sans"
                         color: StyleSheet.font_color_extra
-
-                        background: Rectangle {
-                            border.color: StyleSheet.slider_border_color
-                            color: "transparent"
-                        }
 
                         onTextChanged: {
                             updatePreview()
                         }
+                    }
+                    ScrollBar.vertical: ScrollBar {
+                        Layout.fillWidth: true
+                        anchors.right: parent.right
+                        policy: (rubberStampText.lineCount
+                            > 5) ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff
+                    }
+                }
 
-                        MouseArea {
-                            anchors.fill: parent
+                Text {
+                    text: qsTr("Font")
+                    visible: typeSwitch.checked
+                    bottomPadding: 5
+                    font.family: "Noto Sans"
+                    color: StyleSheet.font_color_extra
+                }
 
-                            onClicked: {
-                                imgFileDialog.open()
-                            }
+                ComboBox {
+                    id: fontName
+                    Layout.fillWidth: true
+                    visible: typeSwitch.checked
+                    model: fontHelper.cyrillicFamilies() //Qt.fontFamilies()
+                    wheelEnabled: true
+
+                    onActivated: {
+                        updatePreview()
+                    }
+
+
+
+
+                    FontHelper {
+                        id: fontHelper
+                    }
+
+                    Component.onCompleted: {
+                          EventFilterInstaller.installEventFilter(this, WheelFilter)
+                        var index = model.indexOf("Noto Sans")
+                        if (index >= 0) {
+                            currentIndex = index
+                        } else {
+                            currentIndex = 0
                         }
                     }
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
 
                     Text {
-                        text: qsTr("Text")
-                        bottomPadding: 5
-                        visible: typeSwitch.checked
-                        font.family: "Noto Sans"
-                        color: StyleSheet.font_color_extra
-                    }
-
-                    ScrollView {
-                        Layout.fillWidth: true
-                        Layout.maximumHeight: Math.min(
-                            rubberStampText.implicitHeight,
-                            font.pixelSize * 5 + 20)
-                        visible: typeSwitch.checked
-
-                        RSBTextArea {
-                            id: rubberStampText
-                            Layout.fillWidth: true
-                            visible: typeSwitch.checked
-                            placeholderText: qsTr("Enter text here")
-                            selectByMouse: true
-                            wrapMode: Text.WordWrap
-                            placeholderTextColor: "grey"
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-
-                            onTextChanged: {
-                                updatePreview()
-                            }
-                        }
-                        ScrollBar.vertical: ScrollBar {
-                            Layout.fillWidth: true
-                            anchors.right: parent.right
-                            policy: (rubberStampText.lineCount
-                                > 5) ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff
-                        }
-                    }
-
-                    Text {
-                        text: qsTr("Font")
-                        visible: typeSwitch.checked
-                        bottomPadding: 5
-                        font.family: "Noto Sans"
-                        color: StyleSheet.font_color_extra
-                    }
-
-                    ComboBox {
-                        id: fontName
+                        text: qsTr("Transparency")
                         Layout.fillWidth: true
                         visible: typeSwitch.checked
-                        model: fontHelper.cyrillicFamilies() //Qt.fontFamilies()
-                        wheelEnabled: true
+                        color: StyleSheet.font_color_extra
+                        font.family: "Noto Sans"
+                        topPadding: 10
+                        bottomPadding: 10
+                    }
 
-                        onActivated: {
+                    Rectangle {
+                        Layout.fillWidth: true
+                        visible: typeSwitch.checked
+                    }
+
+                    SettingSwitch {
+                        id: transparencySwitch
+                        visible: typeSwitch.checked
+
+                        topPadding: 10
+                        bottomPadding: 10
+                        rightPadding: 10
+                        rightInset: 10
+
+                        onToggled: {
                             updatePreview()
                         }
-
-                        FontHelper {
-                            id: fontHelper
-                        }
-
-                        Component.onCompleted: {
-                            var index = model.indexOf("Noto Sans")
-                            if (index >= 0) {
-                                currentIndex = index
-                            } else {
-                                currentIndex = 0
-                            }
-                        }
                     }
+                }
 
-                    RowLayout {
-                        Layout.fillWidth: true
+                Text {
+                    text: qsTr("Color")
+                    visible: typeSwitch.checked
+                    font.family: "Noto Sans"
+                    color: StyleSheet.font_color_extra
+                }
 
-                        Text {
-                            text: qsTr("Transparency")
-                            Layout.fillWidth: true
-                            visible: typeSwitch.checked
-                            color: StyleSheet.font_color_extra
-                            font.family: "Noto Sans"
-                            topPadding: 10
-                            bottomPadding: 10
-                        }
+                RowLayout {
+                    Layout.fillWidth: true
+                    visible: typeSwitch.checked
 
-                        Rectangle {
-                            Layout.fillWidth: true
-                            visible: typeSwitch.checked
-                        }
-
-                        SettingSwitch {
-                            id: transparencySwitch
-                            visible: typeSwitch.checked
-
-                            topPadding: 10
-                            bottomPadding: 10
-                            rightPadding: 10
-                            rightInset: 10
-
-                            onToggled: {
-                                updatePreview()
-                            }
-                        }
-                    }
-
-                    Text {
-                        text: qsTr("Color")
-                        visible: typeSwitch.checked
-                        font.family: "Noto Sans"
-                        color: StyleSheet.font_color_extra
-                    }
-
-                    RowLayout {
-                        Layout.fillWidth: true
-                        visible: typeSwitch.checked
-
-                        SettingSlider {
-                            id: redColor
+                    SettingSlider {
+                        id: redColor
 
                             Layout.fillWidth: true
                             Layout.maximumWidth: 300
@@ -525,25 +534,25 @@ Dialog {
                             back_color: "#ff0000"
                             gradient_start: "#000000"
 
-                            onValueChanged: {
-                                updatePreview()
-                            }
-                        }
-
-                        Text {
-                            text: "R " + redColor.value
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-                            Layout.leftMargin: 5
+                        onValueChanged: {
+                            updatePreview()
                         }
                     }
 
-                    RowLayout {
-                        Layout.fillWidth: true
-                        visible: typeSwitch.checked
+                    Text {
+                        text: "R " + redColor.value
+                        font.family: "Noto Sans"
+                        color: StyleSheet.font_color_extra
+                        Layout.leftMargin: 5
+                    }
+                }
 
-                        SettingSlider {
-                            id: greenColor
+                RowLayout {
+                    Layout.fillWidth: true
+                    visible: typeSwitch.checked
+
+                    SettingSlider {
+                        id: greenColor
 
                             Layout.fillWidth: true
                             Layout.maximumWidth: 300
@@ -554,25 +563,25 @@ Dialog {
                             back_color: "#00ff00"
                             gradient_start: "#000000"
 
-                            onValueChanged: {
-                                updatePreview()
-                            }
-                        }
-
-                        Text {
-                            text: "G " + greenColor.value
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-                            Layout.leftMargin: 5
+                        onValueChanged: {
+                            updatePreview()
                         }
                     }
 
-                    RowLayout {
-                        Layout.fillWidth: true
-                        visible: typeSwitch.checked
+                    Text {
+                        text: "G " + greenColor.value
+                        font.family: "Noto Sans"
+                        color: StyleSheet.font_color_extra
+                        Layout.leftMargin: 5
+                    }
+                }
 
-                        SettingSlider {
-                            id: blueColor
+                RowLayout {
+                    Layout.fillWidth: true
+                    visible: typeSwitch.checked
+
+                    SettingSlider {
+                        id: blueColor
 
                             Layout.fillWidth: true
                             Layout.maximumWidth: 300
@@ -583,97 +592,97 @@ Dialog {
                             back_color: "#0000ff"
                             gradient_start: "#000000"
 
-                            onValueChanged: {
-                                updatePreview()
-                            }
-                        }
-
-                        Text {
-                            text: "B " + blueColor.value
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-                            Layout.leftMargin: 5
-                        }
-                    }
-
-                    RowLayout {
-                        Layout.fillWidth: true
-                        visible: typeSwitch.checked
-
-                        Text {
-                            text: qsTr("Stamp border width: ")
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-                        }
-
-                        Rectangle {
-                            Layout.fillWidth: true
-                        }
-
-                        Text {
-                            id: borderWidthText
-                            text: borderWidth.value
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-                        }
-                    }
-
-                    SettingSlider {
-                        id: borderWidth
-                        Layout.fillWidth: true
-                        visible: typeSwitch.checked
-                        snapMode: Slider.SnapOnRelease
-                        from: 0
-                        to: 20
-                        stepSize: 1
-
                         onValueChanged: {
                             updatePreview()
                         }
                     }
 
-                    RowLayout {
-                        Layout.fillWidth: true
-                        visible: typeSwitch.checked
-
-                        Text {
-                            text: qsTr("Stamp border radius: ")
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-                        }
-
-                        Rectangle {
-                            Layout.fillWidth: true
-                        }
-
-                        Text {
-                            id: borderRadiusText
-                            text: borderRadius.value
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-                        }
+                    Text {
+                        text: "B " + blueColor.value
+                        font.family: "Noto Sans"
+                        color: StyleSheet.font_color_extra
+                        Layout.leftMargin: 5
                     }
+                }
 
-                    SettingSlider {
-                        id: borderRadius
-                        Layout.fillWidth: true
-                        visible: typeSwitch.checked
-                        snapMode: Slider.SnapOnRelease
-                        from: 1
-                        to: 70
-                        stepSize: 1
+                RowLayout {
+                    Layout.fillWidth: true
+                    visible: typeSwitch.checked
 
-                        onValueChanged: {
-                            updatePreview()
-                        }
+                    Text {
+                        text: qsTr("Stamp border width: ")
+                        font.family: "Noto Sans"
+                        color: StyleSheet.font_color_extra
                     }
 
                     Rectangle {
-                        Layout.fillHeight: true
+                        Layout.fillWidth: true
                     }
+
+                    Text {
+                        id: borderWidthText
+                        text: borderWidth.value
+                        font.family: "Noto Sans"
+                        color: StyleSheet.font_color_extra
+                    }
+                }
+
+                SettingSlider {
+                    id: borderWidth
+                    Layout.fillWidth: true
+                    visible: typeSwitch.checked
+                    snapMode: Slider.SnapOnRelease
+                    from: 0
+                    to: 20
+                    stepSize: 1
+
+                    onValueChanged: {
+                        updatePreview()
+                    }
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    visible: typeSwitch.checked
+
+                    Text {
+                        text: qsTr("Stamp border radius: ")
+                        font.family: "Noto Sans"
+                        color: StyleSheet.font_color_extra
+                    }
+
+                    Rectangle {
+                        Layout.fillWidth: true
+                    }
+
+                    Text {
+                        id: borderRadiusText
+                        text: borderRadius.value
+                        font.family: "Noto Sans"
+                        color: StyleSheet.font_color_extra
+                    }
+                }
+
+                SettingSlider {
+                    id: borderRadius
+                    Layout.fillWidth: true
+                    visible: typeSwitch.checked
+                    snapMode: Slider.SnapOnRelease
+                    from: 1
+                    to: 70
+                    stepSize: 1
+
+                    onValueChanged: {
+                        updatePreview()
+                    }
+                }
+
+                Rectangle {
+                    Layout.fillHeight: true
                 }
             }
         }
+    }
 
         QLP.FileDialog {
             id: imgFileDialog
