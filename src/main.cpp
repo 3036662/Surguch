@@ -110,7 +110,7 @@ int main(int argc, char* argv[]) {
     const QPalette defaultPalette;
     const auto text = defaultPalette.color(QPalette::WindowText);
     const auto window = defaultPalette.color(QPalette::Window);
-    if (text.lightness() > window.lightness()) {
+    if (text.lightness() > window.lightness() && kde_version != "5") {
         theme_style = "dark";
     } else {
         theme_style = "light";
