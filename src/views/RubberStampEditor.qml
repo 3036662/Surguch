@@ -101,8 +101,8 @@ Dialog {
         id: scrollView
 
         clip: true
-        ScrollBar.vertical.policy: ScrollBar.AsNeeded
         ScrollBar.horizontal.policy: ScrollBar.AsNeeded
+        ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
         ColumnLayout {
             id: editColumn
@@ -141,10 +141,6 @@ Dialog {
                         root.visible = false
                         resetData()
                     }
-                }
-
-                Rectangle {
-                    width: 15
                 }
             }
 
@@ -529,8 +525,8 @@ Dialog {
                         SettingSlider {
                             id: redColor
 
-                            Layout.fillWidth: true
-                            Layout.maximumWidth: 300
+                            Layout.maximumWidth: StyleSheet.window_size_x === "normal" ? 320 : 300
+                            Layout.minimumWidth: StyleSheet.window_size_x === "normal" ? 320 : 300
                             snapMode: Slider.SnapOnRelease
                             from: 0
                             to: 255
@@ -558,8 +554,8 @@ Dialog {
                         SettingSlider {
                             id: greenColor
 
-                            Layout.fillWidth: true
-                            Layout.maximumWidth: 300
+                            Layout.maximumWidth: StyleSheet.window_size_x === "normal" ? 320 : 300
+                            Layout.minimumWidth: StyleSheet.window_size_x === "normal" ? 320 : 300
                             snapMode: Slider.SnapOnRelease
                             from: 0
                             to: 255
@@ -587,8 +583,8 @@ Dialog {
                         SettingSlider {
                             id: blueColor
 
-                            Layout.fillWidth: true
-                            Layout.maximumWidth: 300
+                            Layout.maximumWidth: StyleSheet.window_size_x === "normal" ? 320 : 300
+                            Layout.minimumWidth: StyleSheet.window_size_x === "normal" ? 320 : 300
                             snapMode: Slider.SnapOnRelease
                             from: 0
                             to: 255

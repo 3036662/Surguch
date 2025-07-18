@@ -112,7 +112,8 @@ ColumnLayout {
             icon.source: StyleSheet.book_icon
             icon.width: 20
             icon.height: 20
-            leftPadding: StyleSheet.window_size_x === "normal" ? 40 : 5
+            leftInset: StyleSheet.window_size_x === "normal" ? 0 : 7
+            leftPadding: StyleSheet.window_size_x === "normal" ? 40 : 12
             rightPadding: StyleSheet.window_size_x === "normal" ? 40 : 5
 
             onClicked: {
@@ -428,7 +429,7 @@ ColumnLayout {
     }
 
     Shortcut {
-        sequence : "Ctrl+F"
+        sequence: "Ctrl+F"
         onActivated: {
             searchDialog.open()
             searchDialog.focus = true
