@@ -43,6 +43,8 @@ Item {
     property color combo_box_background
     property color tooltip_background
     property color icon_color
+    property string window_size_x: "normal"
+    property string window_size_y: "normal"
     states: [
         State {
             name: "dark"

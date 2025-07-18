@@ -39,7 +39,7 @@ ListView {
     property bool size_estimated: false
     property bool tag_placing: false
     property var tagData
-    property var ratio: 3
+    property var ratio
     property double startX
     property double startY
     // --------
@@ -931,7 +931,7 @@ ListView {
                 Rectangle {
                     id: tagCross
 
-                    property string defaultText: qsTr("Stamp position")
+                    property string defaultText: qsTr("Mark position")
                     property string invalidPositionText: qsTr(
                                                              "Invalid position")
                     property bool valid_position: true
@@ -958,7 +958,7 @@ ListView {
                     // add rubber stamps on render
                     root.ratio = calc_ratio
                     let t_data = JSON.parse(tagData)
-                    tagCross.width = t_data.tag_width * width / 100
+                    tagCross.width = t_data.tag_width * pdfPage.width / 100
                     tagCross.height = tagCross.width / calc_ratio
                     root.size_estimated = true
                     console.debug("size ready height = " + tagCross.height)

@@ -6,6 +6,7 @@ Slider {
     id: control
 
     property color back_color: StyleSheet.slider_fill_color
+    property color gradient_start: StyleSheet.slider_fill_color
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitHandleWidth + leftPadding + rightPadding)
@@ -35,16 +36,18 @@ Slider {
         width: control.horizontal ? control.availableWidth : implicitWidth
         height: control.horizontal ? implicitHeight : control.availableHeight
         radius: 3
-        color: control.back_color
         scale: control.horizontal && control.mirrored ? -1 : 1
 
-        Rectangle {
-            y: control.horizontal ? 0 : control.visualPosition * parent.height
-            width: control.horizontal ? control.position * parent.width : 5
-            height: control.horizontal ? 5 : control.position * parent.height
-
-            radius: 3
-            color: control.back_color
+        gradient: Gradient {
+            orientation: control.horizontal ? Gradient.Horizontal : Gradient.Vertical
+            GradientStop {
+                position: 0.0
+                color: control.gradient_start
+            }
+            GradientStop {
+                position: 1.0
+                color: control.back_color
+            }
         }
     }
 }

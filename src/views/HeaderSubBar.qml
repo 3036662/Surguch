@@ -10,27 +10,19 @@ ColumnLayout {
 
     property alias searchDialog: searchDialog
 
-        signal
-    zoomInClicked
-        signal
-    zoomOutClicked
+    signal zoomInClicked
+    signal zoomOutClicked
 
     signal zoomSelected(int newZoom)
 
     signal scrollToPage(int pageNumber)
 
-        signal
-    rotateClockwise
-        signal
-    rotateCounterClockWise
-        signal
-    showPreviews
-        signal
-    showCerts
-        signal
-    undoAction
-        signal
-    redoAction
+    signal rotateClockwise
+    signal rotateCounterClockWise
+    signal showPreviews
+    signal showCerts
+    signal undoAction
+    signal redoAction
 
     function changePageCount(newCount) {
         page_number.pageCount = newCount
@@ -120,16 +112,15 @@ ColumnLayout {
             icon.source: StyleSheet.book_icon
             icon.width: 20
             icon.height: 20
-            leftPadding: 40
-            rightPadding: 40
+            leftPadding: StyleSheet.window_size_x === "normal" ? 40 : 5
+            rightPadding: StyleSheet.window_size_x === "normal" ? 40 : 5
 
             onClicked: {
                 showPreviews()
             }
         }
 
-        HeaderToolSeparator {
-        }
+        HeaderToolSeparator {}
 
         ToolButton {
             flat: true
@@ -137,16 +128,15 @@ ColumnLayout {
             icon.source: StyleSheet.pen_tool_icon
             icon.width: 20
             icon.height: 20
-            leftPadding: 40
-            rightPadding: 40
+            leftPadding: StyleSheet.window_size_x === "normal" ? 40 : 5
+            rightPadding: StyleSheet.window_size_x === "normal" ? 40 : 5
 
             onClicked: {
                 showCerts()
             }
         }
 
-        HeaderToolSeparator {
-        }
+        HeaderToolSeparator {}
 
         ToolButton {
             flat: true
@@ -159,12 +149,11 @@ ColumnLayout {
 
             onClicked: {
                 printer.print(pdfListView.source, pdfListView.count,
-                    pdfListView.landscape)
+                              pdfListView.landscape)
             }
         }
 
-        HeaderToolSeparator {
-        }
+        HeaderToolSeparator {}
 
         ToolButton {
             flat: true
@@ -231,8 +220,7 @@ ColumnLayout {
             color: StyleSheet.font_color_extra
         }
 
-        HeaderToolSeparator {
-        }
+        HeaderToolSeparator {}
 
         ToolButton {
             flat: true
@@ -262,8 +250,7 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {
-        }
+        HeaderToolSeparator {}
 
         ToolButton {
             id: zoomOutButton
@@ -304,21 +291,21 @@ ColumnLayout {
                 onCurrentIndexChanged: {
                     let newZoom = 0
                     switch (currentIndex) {
-                        case 0:
-                            newZoom = -1 //auto
-                            break
-                        case 1:
-                            newZoom = 75
-                            break
-                        case 2:
-                            newZoom = 100
-                            break
-                        case 3:
-                            newZoom = 125
-                            break
-                        case 4:
-                            newZoom = 150
-                            break
+                    case 0:
+                        newZoom = -1 //auto
+                        break
+                    case 1:
+                        newZoom = 75
+                        break
+                    case 2:
+                        newZoom = 100
+                        break
+                    case 3:
+                        newZoom = 125
+                        break
+                    case 4:
+                        newZoom = 150
+                        break
                     }
                     if (newZoom != 0) {
                         zoomSelected(newZoom)
@@ -326,9 +313,10 @@ ColumnLayout {
                 }
 
                 Layout.alignment: Qt.AlignVCenter
-                model: [qsTr("Automatic"), "75%", "100%", "125%", "150%"]
+                model: [qsTr("Auto"), "75%", "100%", "125%", "150%"]
                 currentIndex: 2
-                implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
+                //implicitContentWidthPolicy: ComboBox.ContentItemImplicitWidth
+                implicitWidth: StyleSheet.window_size_x === "normal" ? 115 : 70
                 anchors.verticalCenter: parent.verticalCenter
                 popup.y: comboBoxZoom.height
             }
@@ -340,8 +328,7 @@ ColumnLayout {
         }
 
         // rubberStamps
-        HeaderToolSeparator {
-        }
+        HeaderToolSeparator {}
 
         ToolButton {
             id: rubberStampPutButton
@@ -353,7 +340,6 @@ ColumnLayout {
             icon.width: 20
             icon.height: 20
             leftPadding: 5
-            rightPadding: 5
             icon.source: StyleSheet.tag_icon
             onClicked: {
                 //console.debug("create tag")
@@ -369,16 +355,16 @@ ColumnLayout {
         }
 
         Keys.onPressed: event => {
-            if (event.key === Qt.Key_Escape
-                && pdfListView.tagMode) {
-                header.enableSignMode()
-                pdfListView.tagMode = false
-                rubberStampPutButton.down = false
-                event.accepted = true
-                return
-            }
-            event.accepted = false
-        }
+                            if (event.key === Qt.Key_Escape
+                                && pdfListView.tagMode) {
+                                header.enableSignMode()
+                                pdfListView.tagMode = false
+                                rubberStampPutButton.down = false
+                                event.accepted = true
+                                return
+                            }
+                            event.accepted = false
+                        }
 
         ToolButton {
             id: rubberStampDialogButton
@@ -386,7 +372,6 @@ ColumnLayout {
             flat: true
             icon.width: 20
             icon.height: 10
-            leftPadding: 5
             rightPadding: 5
             topPadding: 5
             bottomPadding: 5
@@ -402,8 +387,7 @@ ColumnLayout {
         }
 
         // search
-        HeaderToolSeparator {
-        }
+        HeaderToolSeparator {}
         ToolButton {
             id: searchButton
             enabled: !pdfListView.signMode && !pdfListView.tagMode
@@ -419,7 +403,8 @@ ColumnLayout {
         Rectangle {
             color: "transparent"
             Layout.fillHeight: true
-            Layout.fillWidth: true
+            //Layout.fillWidth: true
+            width: 5
         }
 
         // ToolButton {
