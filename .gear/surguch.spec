@@ -39,11 +39,11 @@ A gui application for verification and creation of digitally signed pdf document
 %changelog
 * Fri Jun 27 2025 Oleg Proskurin <proskur@altlinux.org> 0.3-alt1
 - New features (Closes:#53303):
-  + Dark themes suppor
+  + Dark themes support
   + Text search
   + Custom signature stamps
   + Custom annotation stamps
-  + Transparent stamps suppot
+  + Transparent stamps support
 
 * Wed Feb 12 2025 Oleg Proskurin <proskur@altlinux.org> 0.2.2-alt1
 - Fix zoom behavior (Closes: #52860, #52859)
