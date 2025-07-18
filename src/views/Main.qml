@@ -10,12 +10,16 @@ import alt.pdfcsp.rubberStampModel
 import alt.pdfcsp.signaturesListModel
 import alt.pdfcsp.printerLauncher
 import StyleSheet
+import alt.pdfcsp.eventFilterInstaller
+import alt.pdfcsp.wheelFilter
 
 ApplicationWindow {
     id: root_window
 
     width: 1000
     height: 480
+    minimumWidth: 800
+    minimumHeight: 600
     visible: true
     visibility: Window.Maximized
     title: qsTr("Surguch")
@@ -265,6 +269,9 @@ ApplicationWindow {
         }
     }
 
+    WheelFilter {
+        id: main_window_wheel_filter
+    }
 
     // --------------------------------------
     //  connect the events
@@ -382,6 +389,7 @@ ApplicationWindow {
         // open document on strart
         if (openOnStart !== "") {
             pdfListView.openFile(openOnStart)
+            header.enableSignMode()
             leftSideBar.source = openOnStart
             rightSideBar.showState = RightSideBar.ShowState.Invisible
         }
@@ -418,6 +426,8 @@ ApplicationWindow {
         })
         // set themes
         StyleSheet.state = themeStyle
+
+        EventFilterInstaller.installEventFilter(this, main_window_wheel_filter)
     }
 
     // ---------------------------------------------
@@ -459,5 +469,21 @@ ApplicationWindow {
 
     UnsavedChangesDialog {
         id: undsavedFileDialog
+    }
+
+    onWidthChanged: {
+        if (width <= 900) {
+            StyleSheet.window_size_x = "small_width"
+        } else {
+            StyleSheet.window_size_x = "normal"
+        }
+    }
+
+    onHeightChanged: {
+        if (height <= 600) {
+            StyleSheet.window_size_y = "small_height"
+        } else {
+            StyleSheet.window_size_y = "normal"
+        }
     }
 }

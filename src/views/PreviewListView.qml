@@ -32,7 +32,6 @@ ListView {
             width: root.width - verticalScroll.width * 2
             widthGoal: width
 
-
             height: width * 1.42
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.rightMargin: verticalScroll.width
@@ -59,7 +58,7 @@ ListView {
     ScrollBar.vertical: ScrollBar {
         id: verticalScroll
         width: 15
-        minimumSize:0.2
+        minimumSize: 0.2
         policy: ScrollBar.AsNeeded // Show scrollbar always
     }
 }

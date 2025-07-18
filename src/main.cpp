@@ -28,6 +28,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QtConcurrent>
 
 #include "core/font_helper.hpp"
+#include "core/gui_core/custom_event_filter.hpp"
 #include "core/signature_creator.hpp"
 #include "core/tag_creator.hpp"
 #include "cpp_views/pdf_page_render.hpp"
@@ -78,6 +79,18 @@ int main(int argc, char* argv[]) {
 
     qmlRegisterType<core::FontHelper>("alt.pdfcsp.fontHelper", 0, 1,
                                       "FontHelper");
+
+    qmlRegisterType<core::gui::WheelEventFilter>("alt.pdfcsp.wheelFilter", 1, 0,
+                                                 "WheelFilter");
+    // the eventFilterInstaller singleton is utilized to fix the Qt6.4 bug
+    // when the wheel event is not propagated to the popup nested within a
+    // combobox
+    auto eventFilterInstaller =
+        std::make_unique<core::gui::EventFilterInstaller>();
+    qmlRegisterSingletonInstance<core::gui::EventFilterInstaller>(
+        "alt.pdfcsp.eventFilterInstaller", 1, 0, "EventFilterInstaller",
+        eventFilterInstaller.get());
+
     // run the app
     QQmlApplicationEngine engine;
     const QStringList args = QApplication::arguments();
@@ -98,7 +111,7 @@ int main(int argc, char* argv[]) {
     const QPalette defaultPalette;
     const auto text = defaultPalette.color(QPalette::WindowText);
     const auto window = defaultPalette.color(QPalette::Window);
-    if (text.lightness() > window.lightness()) {
+    if (text.lightness() > window.lightness() && kde_version != "5") {
         theme_style = "dark";
     } else {
         theme_style = "light";

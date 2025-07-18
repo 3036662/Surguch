@@ -162,7 +162,6 @@ QSGNode *PdfPageRender::updatePaintNode(
 }
 // NOLINTEND(cppcoreguidelines-owning-memory)
 
-
 /// @brief render rubber stamps on top of page
 void PdfPageRender::renderRubberStamps() {
     const std::lock_guard<std::mutex> lock(mutex_);

@@ -4,6 +4,7 @@ add_library(gui_core OBJECT
         rubber_structs.hpp
         gui_utils.cpp
         gui_utils.hpp
+        custom_event_filter.hpp
 )
 
 target_include_directories(gui_core PUBLIC csp_c_bridge)

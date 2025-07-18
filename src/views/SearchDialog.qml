@@ -31,7 +31,7 @@ Dialog {
 
     width: 350
     height: 50
-    x: searchButton.x - width / 2
+    x: searchButton.x - width
     y: parent.y
     modal: false
     closePolicy: Popup.CloseOnEscape
@@ -52,6 +52,12 @@ Dialog {
         root_window.focusOwnerId = ""
         searchInput.text = ""
         currentIndex = 0
+        if (!searchDialog.searchInProgress) {
+            searchDialog.searchInProgress = true
+            searchDialog.searchRequired(searchInput.text)
+        } else {
+            searchDialog.needNewSearch = true
+        }
     }
 
     Row {

@@ -57,7 +57,6 @@ RowLayout {
             text: qsTr("Open")
             onClicked: kdeVersion === "5" ? labsFileDialog.open(
                                                 ) : fileDialog.open()
-            width: 130
         }
 
         TopBarButton {
@@ -88,6 +87,7 @@ RowLayout {
             TopBarButton {
                 icon.source: StyleSheet.wrench_icon
                 enabled: profileComboBox.currentValue !== "new"
+                text: ""
 
                 onClicked: {
                     //open profile info panel
@@ -241,6 +241,10 @@ RowLayout {
         leftPadding: 5
         rightPadding: 5
         onClicked: appInfoDialog.open()
+    }
+
+    Rectangle {
+        width: 10
     }
 
     // ToolButton {

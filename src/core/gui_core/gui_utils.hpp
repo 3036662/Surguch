@@ -26,7 +26,6 @@ RubberParams prepareParams(const QVariantMap& qvparams);
 /// @brief Gather all rubber stamp parameters (pdfcsp::pdf::CAnnotParam)
 SharedRubberParamWrapper createParams(const RubberParams& params);
 
-
 /// @brief create rubber stamps params for embedding into pdf
 std::vector<pdfcsp::pdf::CAnnotParams> createAnnotParams(
     const std::vector<std::shared_ptr<RubberStamp>>& params);
