@@ -525,8 +525,8 @@ Dialog {
                         SettingSlider {
                             id: redColor
 
-                            Layout.maximumWidth: StyleSheet.window_size_x === "normal" ? 320 : 320
-                            Layout.minimumWidth: StyleSheet.window_size_x === "normal" ? 320 : 320
+                            Layout.maximumWidth: 320
+                            Layout.minimumWidth: 320
                             snapMode: Slider.SnapOnRelease
                             from: 0
                             to: 255
@@ -558,8 +558,8 @@ Dialog {
                         SettingSlider {
                             id: greenColor
 
-                            Layout.maximumWidth: StyleSheet.window_size_x === "normal" ? 320 : 320
-                            Layout.minimumWidth: StyleSheet.window_size_x === "normal" ? 320 : 320
+                            Layout.maximumWidth: 320
+                            Layout.minimumWidth: 320
                             snapMode: Slider.SnapOnRelease
                             from: 0
                             to: 255
@@ -591,8 +591,8 @@ Dialog {
                         SettingSlider {
                             id: blueColor
 
-                            Layout.maximumWidth: StyleSheet.window_size_x === "normal" ? 320 : 320
-                            Layout.minimumWidth: StyleSheet.window_size_x === "normal" ? 320 : 320
+                            Layout.maximumWidth: 320
+                            Layout.minimumWidth: 320
                             snapMode: Slider.SnapOnRelease
                             from: 0
                             to: 255
