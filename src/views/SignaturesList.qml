@@ -34,6 +34,7 @@ ListView {
                     Text {
                         width: parent.width
                         id: sigTitle
+                        leftPadding: 15
                         text: model.sigInfo
                         anchors.horizontalCenter: parent.horizontalCenter
                         elide: Text.ElideRight

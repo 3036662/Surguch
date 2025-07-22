@@ -101,6 +101,7 @@ RowLayout {
                     // set a reference to this model
                     rightSideBar.edit_profile.profiles_model = profileComboBox.model
                     rightSideBar.edit_profile.profile_data = profileComboBox.currentValue
+                    rightSideBar.edit_profile.updateProfileForm()
                 }
             }
 

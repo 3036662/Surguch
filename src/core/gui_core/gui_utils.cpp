@@ -438,7 +438,7 @@ std::vector<pdfcsp::pdf::CAnnotParams> createAnnotParams(
         [&cparams](const std::shared_ptr<RubberStamp> &param) {
             cparams.emplace_back(pdfcsp::pdf::CAnnotParams{
                 param->page_index, param->qml_width, param->qml_height,
-                param->position_x, param->position_y, param->stamp_width,
+                param->position_x, param->position_y, param->real_stamp_qml_width,
                 param->stamp_height, param->res->data_->img,
                 param->res->data_->img_size, param->res->data_->img_mask,
                 param->res->data_->img_mask_size,
