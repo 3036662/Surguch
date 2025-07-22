@@ -14,6 +14,9 @@ private slots:
     void ExtractUriAllPages();
     void CacheUri();
 
+    void ExtractUriAllPages_data();
+    void CacheUri_data();
+
 private:
     const std::string test_files_dir_ = TEST_FILES_DIR;
 };
