@@ -131,7 +131,7 @@ Dialog {
                     icon.width: 20
                     icon.height: 20
                     leftPadding: 10
-                    rightPadding: 20
+                    rightPadding: 10
                     topPadding: 10
                     bottomPadding: 10
                     font.family: "Noto Sans"
@@ -335,8 +335,8 @@ Dialog {
 
                 ColumnLayout {
 
-                    Layout.preferredWidth: root.width / 2 - 30
-                    Layout.minimumWidth: root.width / 2 - 30
+                    Layout.preferredWidth: root.width / 2 - 20
+                    Layout.minimumWidth: root.width / 2 - 20
                     RowLayout {
                         Layout.fillWidth: true
 
@@ -525,8 +525,8 @@ Dialog {
                         SettingSlider {
                             id: redColor
 
-                            Layout.maximumWidth: StyleSheet.window_size_x === "normal" ? 320 : 300
-                            Layout.minimumWidth: StyleSheet.window_size_x === "normal" ? 320 : 300
+                            Layout.maximumWidth: 320
+                            Layout.minimumWidth: 320
                             snapMode: Slider.SnapOnRelease
                             from: 0
                             to: 255
@@ -537,6 +537,10 @@ Dialog {
                             onValueChanged: {
                                 updatePreview()
                             }
+                        }
+
+                        Rectangle {
+                            Layout.fillWidth: true
                         }
 
                         Text {
@@ -554,8 +558,8 @@ Dialog {
                         SettingSlider {
                             id: greenColor
 
-                            Layout.maximumWidth: StyleSheet.window_size_x === "normal" ? 320 : 300
-                            Layout.minimumWidth: StyleSheet.window_size_x === "normal" ? 320 : 300
+                            Layout.maximumWidth: 320
+                            Layout.minimumWidth: 320
                             snapMode: Slider.SnapOnRelease
                             from: 0
                             to: 255
@@ -566,6 +570,10 @@ Dialog {
                             onValueChanged: {
                                 updatePreview()
                             }
+                        }
+
+                        Rectangle {
+                            Layout.fillWidth: true
                         }
 
                         Text {
@@ -583,8 +591,8 @@ Dialog {
                         SettingSlider {
                             id: blueColor
 
-                            Layout.maximumWidth: StyleSheet.window_size_x === "normal" ? 320 : 300
-                            Layout.minimumWidth: StyleSheet.window_size_x === "normal" ? 320 : 300
+                            Layout.maximumWidth: 320
+                            Layout.minimumWidth: 320
                             snapMode: Slider.SnapOnRelease
                             from: 0
                             to: 255
@@ -595,6 +603,10 @@ Dialog {
                             onValueChanged: {
                                 updatePreview()
                             }
+                        }
+
+                        Rectangle {
+                            Layout.fillWidth: true
                         }
 
                         Text {

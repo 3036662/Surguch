@@ -1034,7 +1034,7 @@
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+72"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+72"/>
         <source>Default mark width, % from A4 </source>
-        <translation>Ширина метки по умолчания, % от А4</translation>
+        <translation>Ширина метки по умолчанию, % от А4</translation>
     </message>
     <message>
         <location line="+30"/>

@@ -42,8 +42,8 @@ Item {
         source = new_src
     }
 
-    Layout.maximumWidth: StyleSheet.window_size_x === "normal" ? 300 : 200
-    Layout.preferredWidth: StyleSheet.window_size_x === "normal" ? 300 : 200
+    Layout.maximumWidth: 200
+    Layout.preferredWidth: 200
     Layout.minimumWidth: 200
     Layout.fillHeight: true
     Layout.fillWidth: true

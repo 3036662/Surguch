@@ -67,9 +67,11 @@ Flickable {
             selectCertificateCombo.item_selected = false
             selectCertificateCombo.displayText = selectCertificateCombo.displayTextDefault
             selectCadesFormatCombo.currentIndex = 2
-            selectCadesFormatCombo.item_selected = true            
+            selectCadesFormatCombo.displayText = selectCadesFormatCombo.model[2].title
+            selectCadesFormatCombo.item_selected = true
             selectStampTypeCombo.currentIndex = 0
-            selectStampTypeCombo.item_selected = true            
+            selectStampTypeCombo.displayText = selectStampTypeCombo.model[0].title
+            selectStampTypeCombo.item_selected = true
             logoPath.text = ""
             tspUrlEdit.text = ""
         }
@@ -196,7 +198,7 @@ Flickable {
                     "title": "CADES_XLT1"
                 }]
             textRole: "title"
-            valueRole: "title"        
+            valueRole: "title"
             property string displayTextDefault: qsTr("Select Cades format")
             currentIndex: 2
             item_selected: true
@@ -302,11 +304,12 @@ Flickable {
                 Layout.fillWidth: true
                 model: root.stamps_combo_model
                 textRole: "title"
-                valueRole: "value"                
+                valueRole: "value"
                 enabled: selectCertificateCombo.item_selected
                          && selectCadesFormatCombo.item_selected
                 property string displayTextDefault: qsTr("Select stamp type")
                 currentIndex: 0
+                item_selected: true
 
                 onActivated: {
                     if (currentValue === "new") {
@@ -351,13 +354,37 @@ Flickable {
             }
         }
 
-        // select a logo
-        Text {
-            topPadding: 10
-            text: qsTr("Company logo")
-            bottomPadding: 5
-            font.family: "Noto Sans"
-            color: StyleSheet.font_color_extra
+        RowLayout {
+            width: parent.width
+
+            // select a logo
+            Text {
+                topPadding: 10
+                text: qsTr("Company logo")
+                bottomPadding: 5
+                font.family: "Noto Sans"
+                color: StyleSheet.font_color_extra
+            }
+            Rectangle {
+                Layout.fillWidth: true
+            }
+
+            ToolButton {
+                id: deleteLogo
+                flat: true
+                display: AbstractButton.IconOnly
+                icon.width: 15
+                icon.height: 15
+                leftPadding: 5
+                rightPadding: 5
+                topPadding: 5
+                bottomPadding: 5
+                icon.source: StyleSheet.trash_icon
+
+                onClicked: {
+                    logoPath.text = ""
+                }
+            }
         }
 
         RSBTextArea {

@@ -55,6 +55,10 @@ ListView {
         pdfPreviewModel.setSource(source)
     }
 
+    onWidthChanged: {
+        model.redrawAll()
+    }
+
     ScrollBar.vertical: ScrollBar {
         id: verticalScroll
         width: 15
