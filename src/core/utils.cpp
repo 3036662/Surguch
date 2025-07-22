@@ -140,6 +140,92 @@ QString pageToQString(fz_context *fzctx, fz_document *fzdoc, int page_index) {
 }
 
 /**
+ * @brief Extract URIs and their bounding box coordinates from the given page.
+ * @param fzctx the MuPDF context
+ * @param fzdoc the MuPdf document context
+ * @param page_index
+ * @return @see PageUriList, list of PageUriData
+ */
+PageUriList extractAllUriPage(fz_context *fzctx,
+                              fz_document *fzdoc,
+                              int page_index) {
+
+    bool mu_exception_catched = false;
+    fz_page *page = nullptr;
+    fz_var(page);
+
+    PageUriList extracted_uris;
+    fz_try(fzctx) {
+        page = fz_load_page(fzctx, fzdoc, page_index);
+
+        for (auto* page_uri = fz_load_links(fzctx, page); page_uri != nullptr; page_uri = page_uri->next) {
+            if (auto* extracted_uri = page_uri->uri; strlen(extracted_uri) > 0) {
+                PageUriData page_uri_data {
+                    .uri_rect = page_uri->rect,
+                    .uri = extracted_uri
+                };
+                extracted_uris.push_back(page_uri_data);
+            }
+        }
+
+    }
+    fz_always(fzctx) {
+        fz_drop_page(fzctx, page);
+    }
+    fz_catch(fzctx) {
+        mu_exception_catched = true;
+        qWarning() << fz_caught_message(fzctx);
+    }
+
+    if (mu_exception_catched) {
+        throw std::runtime_error("[core::utils::extractAllUriPage] MuPdf error");
+    }
+
+    return extracted_uris;
+}
+
+/**
+ * @brief Extract all URIs from all pages in the document.
+ * @param fzctx the MuPDF context
+ * @param fzdoc the MuPdf document context
+ * @return @see PagesUriCache, null on error
+ * @throws does not throw
+ * @details This function is supposed to be run as an async function.
+ */
+PagesUriCache extractUriAllPages(fz_context *fzctx,
+                                 fz_document *fzdoc) noexcept {
+    if (fzctx == nullptr || fzdoc == nullptr) {
+        qWarning() << "[extractUriAllPages] nullptr recieved\n";
+        return nullptr;
+    }
+    bool exception_catched = false;
+    PagesUriCache result = std::make_unique<std::vector<PagesUriCacheSinglePage>>();
+
+    int page_count = 0;
+    fz_var(page_count);
+    fz_try(fzctx) { page_count = fz_count_pages(fzctx, fzdoc); }
+    fz_catch(fzctx) {
+        exception_catched = true;
+        fz_report_error(fzctx);
+    }
+
+    for (int i = 0; i < page_count; ++i) {
+        try {
+            result->emplace_back(i, extractAllUriPage(fzctx, fzdoc, i));
+        } catch (const std::exception &ex) {
+            qWarning() << ex.what();
+            exception_catched = true;
+        }
+    }
+    if (exception_catched) {
+        qWarning() << "[extractUriAllPages] error occured";
+        return nullptr;
+    }
+
+    return result;
+}
+
+/**
  * @brief Extract all text from all pages in the document.
  * @param fzctx the MuPDF context
  * @param fzdoc the MuPdf document context

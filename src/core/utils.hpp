@@ -44,6 +44,38 @@ std::vector<unsigned char> hexStringToByteArray(const char* str,
  */
 QString pageToQString(fz_context* fzctx, fz_document* fzdoc, int page_index);
 
+struct PageUriData
+{
+    fz_rect uri_rect{0, 0, 0, 0};
+    char* uri = nullptr;
+};
+
+using PageUriList = std::vector<PageUriData>;
+using PagesUriCacheSinglePage = std::pair<size_t, PageUriList>;
+using PagesUriCache = std::unique_ptr<std::vector<PagesUriCacheSinglePage>>;
+
+/**
+ * @brief Extract URIs and their bounding box coordinates from the given page.
+ * @param fzctx the MuPDF context
+ * @param fzdoc the MuPdf document context
+ * @param page_index
+ * @return @see PageUriList, list of PageUriData
+ */
+PageUriList extractAllUriPage(fz_context *fzctx,
+                              fz_document *fzdoc,
+                              int page_index);
+
+/**
+ * @brief Extract all URIs from all pages in the document.
+ * @param fzctx the MuPDF context
+ * @param fzdoc the MuPdf document context
+ * @return @see PagesUriCache, null on error
+ * @throws does not throw
+ * @details This function is supposed to be run as an async function.
+ */
+PagesUriCache extractUriAllPages(fz_context *fzctx,
+                                 fz_document *fzdoc) noexcept;
+
 using PagesTextCacheSinglePage = std::pair<size_t, QString>;
 using PagesTextCache = std::unique_ptr<std::vector<PagesTextCacheSinglePage>>;
 
