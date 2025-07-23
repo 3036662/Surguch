@@ -140,15 +140,61 @@ QString pageToQString(fz_context *fzctx, fz_document *fzdoc, int page_index) {
 }
 
 /**
+ * @brief Clear the list of URIs in the document from overlapping ones.
+ * @param uri_list list of @see PageUriData, URIs extracted from the document
+ * @return @see PageUriList, list of PageUriData sorted by bounding box area
+ */
+PageUriList removeAllCoveredUri(PageUriList const& uri_list) {
+    auto area = [](auto const& rect) {
+        auto [x0, y0, x1, y1] = rect.uri_rect;
+        return std::fabs(x1 - x0) * std::fabs(y1 - y0);
+    };
+
+    auto isCoveredBy = [](auto const& lhs, auto const& rhs) {
+        auto const rect1 = lhs.uri_rect;
+        auto const rect2 = rhs.uri_rect;
+
+        return rect1.x0 >= rect2.x0 && rect1.y0 >= rect2.y0 &&
+            rect1.x1 <= rect2.x1 && rect1.y1 <= rect2.y1;
+    };
+
+    auto sorted_uri_list = uri_list;
+    std::sort(sorted_uri_list.begin(), sorted_uri_list.end(), [&area = std::as_const(area)](auto const& lhs, auto const& rhs) {
+        return area(lhs) > area(rhs);
+    });
+
+    std::vector<PageUriData> result;
+    std::vector<bool> isCovered(sorted_uri_list.size(), false);
+
+    for (size_t i = 0; i < sorted_uri_list.size(); ++i) {
+        if (isCovered[i]) {
+            continue;
+        }
+
+        result.emplace_back(sorted_uri_list[i]);
+
+        for (size_t j = i + 1; j < sorted_uri_list.size(); ++j) {
+            if (!isCovered[j] && isCoveredBy(sorted_uri_list[j], sorted_uri_list[i])) {
+                isCovered[j] = true;
+            }
+        }
+    }
+
+    return result;
+}
+
+/**
  * @brief Extract URIs and their bounding box coordinates from the given page.
  * @param fzctx the MuPDF context
  * @param fzdoc the MuPdf document context
  * @param page_index
+ * @param filter applied to the @see PageUriList
  * @return @see PageUriList, list of PageUriData
  */
 PageUriList extractAllUriPage(fz_context *fzctx,
                               fz_document *fzdoc,
-                              int page_index) {
+                              int page_index,
+                              std::optional<filterUri> filter) {
 
     bool mu_exception_catched = false;
     fz_page *page = nullptr;
@@ -181,6 +227,10 @@ PageUriList extractAllUriPage(fz_context *fzctx,
         throw std::runtime_error("[core::utils::extractAllUriPage] MuPdf error");
     }
 
+    if (filter) {
+        return (*filter)(extracted_uris);
+    }
+
     return extracted_uris;
 }
 
@@ -188,12 +238,14 @@ PageUriList extractAllUriPage(fz_context *fzctx,
  * @brief Extract all URIs from all pages in the document.
  * @param fzctx the MuPDF context
  * @param fzdoc the MuPdf document context
+ * @param filter applied to the @see PageUriList
  * @return @see PagesUriCache, null on error
  * @throws does not throw
  * @details This function is supposed to be run as an async function.
  */
 PagesUriCache extractUriAllPages(fz_context *fzctx,
-                                 fz_document *fzdoc) noexcept {
+                                 fz_document *fzdoc,
+                                 std::optional<filterUri> filter) noexcept {
     if (fzctx == nullptr || fzdoc == nullptr) {
         qWarning() << "[extractUriAllPages] nullptr recieved\n";
         return nullptr;
@@ -211,7 +263,7 @@ PagesUriCache extractUriAllPages(fz_context *fzctx,
 
     for (int i = 0; i < page_count; ++i) {
         try {
-            result->emplace_back(i, extractAllUriPage(fzctx, fzdoc, i));
+            result->emplace_back(i, extractAllUriPage(fzctx, fzdoc, i, std::move(filter)));
         } catch (const std::exception &ex) {
             qWarning() << ex.what();
             exception_catched = true;

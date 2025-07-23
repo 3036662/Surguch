@@ -53,28 +53,40 @@ struct PageUriData
 using PageUriList = std::vector<PageUriData>;
 using PagesUriCacheSinglePage = std::pair<size_t, PageUriList>;
 using PagesUriCache = std::unique_ptr<std::vector<PagesUriCacheSinglePage>>;
+using filterUri = std::function<PageUriList(PageUriList&)>;
+
+/**
+ * @brief Clear the list of URIs in the document from overlapping ones.
+ * @param uri_list list of @see PageUriData, URIs extracted from the document
+ * @return @see PageUriList, list of PageUriData sorted by bounding box area
+ */
+PageUriList removeAllCoveredUri(PageUriList const& uri_list);
 
 /**
  * @brief Extract URIs and their bounding box coordinates from the given page.
  * @param fzctx the MuPDF context
  * @param fzdoc the MuPdf document context
  * @param page_index
+ * @param filter applied to the @see PageUriList
  * @return @see PageUriList, list of PageUriData
  */
 PageUriList extractAllUriPage(fz_context *fzctx,
                               fz_document *fzdoc,
-                              int page_index);
+                              int page_index,
+                              std::optional<filterUri> filter = std::nullopt);
 
 /**
  * @brief Extract all URIs from all pages in the document.
  * @param fzctx the MuPDF context
  * @param fzdoc the MuPdf document context
+ * @param filter applied to the @see PageUriList
  * @return @see PagesUriCache, null on error
  * @throws does not throw
  * @details This function is supposed to be run as an async function.
  */
 PagesUriCache extractUriAllPages(fz_context *fzctx,
-                                 fz_document *fzdoc) noexcept;
+                                 fz_document *fzdoc,
+                                 std::optional<filterUri> filter = std::nullopt) noexcept;
 
 using PagesTextCacheSinglePage = std::pair<size_t, QString>;
 using PagesTextCache = std::unique_ptr<std::vector<PagesTextCacheSinglePage>>;
