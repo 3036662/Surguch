@@ -89,7 +89,7 @@ Dialog {
     }
 
     implicitWidth: 780
-    implicitHeight: Math.min(700, parent.height * 0.9)
+    implicitHeight: Math.min(670, parent.height * 0.85)
     leftMargin: 10
     rightMargin: 10
     modal: true
@@ -116,8 +116,8 @@ Dialog {
                 Label {
                     text: qsTr("Mark settings")
                     font.weight: Font.DemiBold
-                    topPadding: 10
-                    bottomPadding: 10
+                    topPadding: 5
+                    bottomPadding: 5
                     font.family: "Noto Sans"
                 }
 
@@ -155,6 +155,7 @@ Dialog {
 
                     Text {
                         text: qsTr("Mark name")
+                        topPadding: 5
                         bottomPadding: 5
                         font.family: "Noto Sans"
                         color: StyleSheet.font_color_extra
@@ -169,6 +170,8 @@ Dialog {
                         placeholderTextColor: "grey"
                         font.family: "Noto Sans"
                         color: StyleSheet.font_color_extra
+                        topPadding: 5
+                        bottomPadding: 5
 
                         onTextChanged: {
                             let validInput = stampName.text.match(/^S+$/)
@@ -207,7 +210,7 @@ Dialog {
                     ScrollView {
                         Layout.fillWidth: true
                         Layout.maximumHeight: Math.min(linkName.implicitHeight,
-                                                       font.pixelSize * 5 + 20)
+                                                       font.pixelSize * 2 + 20)
 
                         RSBTextArea {
                             id: linkName
@@ -227,7 +230,7 @@ Dialog {
                             Layout.fillWidth: true
                             anchors.right: parent.right
                             policy: (linkName.lineCount
-                                     > 5) ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff
+                                     > 2) ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff
                         }
                     }
 
@@ -326,6 +329,9 @@ Dialog {
                                 stamp_data = null
                             }
                         }
+                    }
+                    Item {
+                        Layout.fillHeight: true
                     }
                 }
 
