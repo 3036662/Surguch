@@ -12,10 +12,13 @@ private slots:
     void BaseTest();
     void ExtractAllUriPage();
     void ExtractUriAllPages();
+    void ExtractUriAllPagesWithFilter();
     void CacheUri();
+    void RemoveAllCoveredUri();
 
     void ExtractUriAllPages_data();
     void CacheUri_data();
+    void RemoveAllCoveredUri_data();
 
 private:
     const std::string test_files_dir_ = TEST_FILES_DIR;

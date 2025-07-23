@@ -304,6 +304,46 @@ void TGolink::ExtractUriAllPages_data() {
     });
 }
 
+void TGolink::ExtractUriAllPagesWithFilter() {
+//    const std::string src_file = test_files_dir_ + "13_cam_CADES-XLT1_1sig.pdf";
+//
+//    // context
+//    fz_context *fzctx = fz_new_context(nullptr, nullptr, 500000000);
+//    QVERIFY(fzctx != nullptr);
+//
+//    // handlers
+//    fz_register_document_handlers(fzctx);
+//
+//    core::utils::PagesUriCache pages_uri_cache = nullptr;
+//    core::utils::PagesUriCache pages_uri_cache_filtered_data = nullptr;
+//
+//    // doc
+//    int page_count = 0;
+//    fz_document *fzdoc = nullptr;
+//    fz_page* page = nullptr;
+//    fz_var(fzdoc);
+//    fz_var(page);
+//    fz_try(fzctx) {
+//        fz_set_aa_level(fzctx, 0);
+//        fz_register_document_handlers(fzctx);
+//        fzdoc = fz_open_document(fzctx, src_file.c_str());
+//        QVERIFY(fzdoc != nullptr);
+//
+//        pages_uri_cache = core::utils::extractUriAllPages(fzctx, fzdoc);
+//        pages_uri_cache_filtered_data = core::utils::extractUriAllPages(fzctx, fzdoc, core::utils::removeAllCoveredUri);
+//    }
+//    fz_catch(fzctx) { fz_report_error(fzctx); }
+//
+//    auto area = [](auto const& rect) {
+//        auto [x0, y0, x1, y1] = rect.uri_rect;
+//        return (x1 - x0) * (y1 - y0);
+//    };
+//
+//    // cleanup
+//    fz_drop_document(fzctx, fzdoc);
+//    fz_drop_context(fzctx);
+}
+
 void TGolink::CacheUri() {
     QFETCH(QString, filepath);
     QFETCH(QVector<size_t>, expected_num_of_uris);
@@ -415,4 +455,92 @@ void TGolink::CacheUri_data() {
         fz_drop_document(fzctx, fzdoc);
         fz_drop_context(fzctx);
     });
+}
+
+void TGolink::RemoveAllCoveredUri() {
+    QFETCH(core::utils::PageUriList, input);
+    QFETCH(core::utils::PageUriList, expected);
+
+    auto processedUriList = core::utils::removeAllCoveredUri(input);
+    QVERIFY(processedUriList.size() == expected.size());
+
+    bool isEqual = true;
+    for (auto [it1, it2] = std::tuple{processedUriList.cbegin(), expected.cbegin()};
+        it1 != processedUriList.cend();
+        ++it1, ++it2) {
+        auto rect1 = it1->uri_rect;
+        auto rect2 = it2->uri_rect;
+
+        if (rect1.x0 != rect2.x0 || rect1.y0 != rect2.y0 ||
+            rect1.x1 != rect2.x1 || rect1.y1 != rect2.y1) {
+            isEqual = false;
+            break;
+        }
+    }
+
+    QVERIFY2(isEqual, "processedUriList and expected list of bounding boxes aren't equal");
+}
+
+void TGolink::RemoveAllCoveredUri_data() {
+    QTest::addColumn<core::utils::PageUriList>("input");
+    QTest::addColumn<core::utils::PageUriList>("expected");
+
+    // test bounding boxes (area of the rectangle)
+    QVector<fz_rect> test_bb_page1 {
+        { 5, 5, 50, 50 }, // 2025
+        { 4, 4, 51, 51 }, // 2209
+        { 10, 10, 45, 45 }, // 1225
+        { 0, 0, 50, 50 }, // 2500
+        { 4, 4, 60, 50 }, // 2576
+        { 4, 4, 57, 57 }, // 2809
+    };
+
+    QVector<fz_rect> test_bb_page2 {
+        { 5, 5, 10, 10 }, // 25
+        { 10, 10, 30, 30 }, // 400
+        { 7, 7, 14, 14 }, // 49
+    };
+
+    // expected result sorted by area in descending order
+
+    // expected bounding boxes
+    QVector<fz_rect> expected_bb_page1 {
+        { 4, 4, 57, 57 }, // 2809
+        { 4, 4, 60, 50 }, // 2576
+        { 0, 0, 50, 50 }, // 2500
+
+    };
+
+    QVector<fz_rect> expected_bb_page2 {
+        { 10, 10, 30, 30 }, // 400
+        { 7, 7, 14, 14 }, // 49
+        { 5, 5, 10, 10 }, // 25
+    };
+
+    std::string test_uri{ "https://ya.ru" };
+
+    core::utils::PageUriList input_data1;
+
+    std::for_each(test_bb_page1.cbegin(), test_bb_page1.cend(), [&](auto const& bounding_box) {
+        input_data1.emplace_back(core::utils::PageUriData{bounding_box, test_uri.data()});
+    });
+
+    core::utils::PageUriList expected_data1;
+    std::for_each(expected_bb_page1.cbegin(), expected_bb_page1.cend(), [&](auto const& bounding_box) {
+        expected_data1.emplace_back(core::utils::PageUriData{bounding_box, test_uri.data()});
+    });
+
+    QTest::newRow("test_data_1") << input_data1 << expected_data1;
+
+    core::utils::PageUriList input_data2;
+    std::for_each(test_bb_page2.cbegin(), test_bb_page2.cend(), [&](auto const& bounding_box) {
+        input_data2.emplace_back(core::utils::PageUriData{bounding_box, test_uri.data()});
+    });
+
+    core::utils::PageUriList expected_data2;
+    std::for_each(expected_bb_page2.cbegin(), expected_bb_page2.cend(), [&](auto const& bounding_box) {
+        expected_data2.emplace_back(core::utils::PageUriData{bounding_box, test_uri.data()});
+    });
+
+    QTest::newRow("test_data_2") << input_data2 << expected_data2;
 }
