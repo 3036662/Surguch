@@ -298,16 +298,16 @@ RowLayout {
 
         onAccepted: {
             pdfModel.mustExtractText = false
-            let tmp_file = tagCreator.embedAnnot(pdfModel.getAnnotParams(),
-                                                 pdfModel.getSource())
-            if (tmp_file === "") {
-                tmp_file = pdfModel.getSource()
+            if (pdfListView.tagInProgress) {
+                let tmp_file = tagCreator.embedAnnot(pdfModel.getAnnotParams(),
+                                                     pdfModel.getSource())
+                pdfListView.openTmpFile(tmp_file)
+                pdfListView.saveTo(tmp_file, currentFile)
+            } else {
+                let tmp_file = pdfModel.getSource()
+                pdfListView.saveTo(tmp_file, currentFile)
             }
-            console.warn(tmp_file)
             pdfModel.clearHistory()
-            console.warn(currentFile)
-            pdfListView.saveTo(tmp_file, currentFile)
-            pdfModel.deleteFileLater(tmp_file)
             pdfModel.mustExtractText = true
             headerSubBar.updateHistory()
             if (quitAfterSave) {
@@ -346,15 +346,16 @@ RowLayout {
 
         onAccepted: {
             pdfModel.mustExtractText = false
-            let tmp_file = tagCreator.embedAnnot(pdfModel.getAnnotParams(),
-                                                 pdfModel.getSource())
-            if (tmp_file === "") {
-                tmp_file = pdfModel.getSource()
+            if (pdfListView.tagInProgress) {
+                let tmp_file = tagCreator.embedAnnot(pdfModel.getAnnotParams(),
+                                                     pdfModel.getSource())
+                pdfListView.openTmpFile(tmp_file)
+                pdfListView.saveTo(tmp_file, currentFile)
+            } else {
+                let tmp_file = pdfModel.getSource()
+                pdfListView.saveTo(tmp_file, currentFile)
             }
             pdfModel.clearHistory()
-            console.warn(currentFile)
-            pdfListView.saveTo(tmp_file, currentFile)
-            pdfModel.deleteFileLater(tmp_file)
             pdfModel.mustExtractText = true
             headerSubBar.updateHistory()
             if (quitAfterSave) {
