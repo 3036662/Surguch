@@ -267,7 +267,11 @@ void PdfDocModel::processFileDelete() {
     if (!process_file_delete_) {
         return;
     }
+
     std::vector<QString> resulting_queue;
+    auto it_last =std::unique(tmp_files_to_delete_.begin(),tmp_files_to_delete_.end());
+    tmp_files_to_delete_.erase(it_last, tmp_files_to_delete_.end());
+
     for (const auto &path : tmp_files_to_delete_) {
         // don't delete curr source
         if (path == file_source_) {
@@ -305,15 +309,20 @@ Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(const QString &curr_path,
         qWarning() << "[SaveCurrSourceTo] source file does not exist";
         return false;
     }
+
+    if (curr_path == dest_path) {
+        qWarning() << "[saveCurrSourceTo] attempt to write file to itself";
+        return true;
+    }
+
     QFile dest_file(dest_path);
     if (dest_file.exists()) {
         std::ignore = dest_file.remove();
     }
-
     if (!src_file.copy(dest_path)) {
-        qWarning() << "Failed to copy file to " << dest_path;
         return false;
     }
+
     // Put the current source in the queue of files that should be deleted.
     if (delete_curr_source) {
         tmp_files_to_delete_.emplace_back(file_source_);

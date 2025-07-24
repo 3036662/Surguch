@@ -269,7 +269,6 @@ ListView {
 
     function openFile(file) {
         sourceIsTmp = false
-        source = ""
         source = file
     }
 
@@ -375,15 +374,15 @@ ListView {
             zoomRatio = 1
         }
         let pos_mode = ListView.Beginning
-        if (pos.ratio > 0.7) {           
+        if (pos.ratio > 0.7) {
             pos_mode = ListView.End
         } else if (pos.ratio > 0.3) {
-            pos_mode = ListView.Center        
+            pos_mode = ListView.Center
         }
         let targetYScroll = 0
         if (zoomRatio > 0) {
             targetYScroll = pos.ratio * usedPageSize
-            if (lastSizeUsed) {            
+            if (lastSizeUsed) {
                 targetYScroll *= zoomRatio
                 targetYScroll = 0
             } else {
@@ -395,10 +394,10 @@ ListView {
             //console.warn("targetYScroll > 0")
             //console.warn("pos index: " + pos.index)
             positionViewAtIndex(pos.index, ListView.Beginning)
-            contentY += targetYScroll            
-        } else {            
+            contentY += targetYScroll
+        } else {
             // if failed to calculate the exact scroll, use jump mode ( beginning | middle | end )
-            positionViewAtIndex(pos.index, pos_mode)        
+            positionViewAtIndex(pos.index, pos_mode)
         }
         root.lastPageUsedSize = usedPageSize
     }
@@ -513,9 +512,6 @@ ListView {
 
     onSourceChanged: {
         //console.warn("pdflistview source = " + source)
-        if (source === "") {
-            return
-        }
         lastPageHeight = 0
         lastPageWidth = 0
         lastPageUsedSize = 0
@@ -589,12 +585,12 @@ ListView {
             pdfPage.update()
             //console.warn("QML delegate updateCurrRect")
         }
+
         onWidthChanged: {
-            if (root.zoomAuto){
-                pdfPage.width=width
+            if (root.zoomAuto) {
+                pdfPage.width = width
             }
         }
-
 
         PdfPageRender {
             id: pdfPage
@@ -610,7 +606,7 @@ ListView {
             anchors.horizontalCenter: width < parent.width ? parent.horizontalCenter : undefined
             anchors.rightMargin: verticalScroll.width
             width: defaultWidth
-            height:defaultHeight
+            height: defaultHeight
             // utilized,if zoomAuto == false
             zoomGoal: zoomPageFact
             // set goal width only if autoZoom; if autoZoom==true,zoomGoal will be ignored
@@ -707,7 +703,7 @@ ListView {
                                             model.display))
                 if (width > 0 && root.hScrollPos > 0 && root.hScrollPos < 1) {
                     root.contentX = width * root.hScrollPos
-                }                
+                }
             }
 
             MouseArea {
