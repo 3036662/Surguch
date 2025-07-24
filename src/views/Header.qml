@@ -301,7 +301,11 @@ RowLayout {
             if (pdfListView.tagInProgress) {
                 let tmp_file = tagCreator.embedAnnot(pdfModel.getAnnotParams(),
                                                      pdfModel.getSource())
+                pdfModel.mustProcessSignatures = false
+                pdfModel.mustExtractText = false
                 pdfListView.openTmpFile(tmp_file)
+                pdfModel.mustProcessSignatures = true
+                pdfModel.mustExtractText = true
                 pdfListView.saveTo(tmp_file, currentFile)
             } else {
                 let tmp_file = pdfModel.getSource()
@@ -349,7 +353,11 @@ RowLayout {
             if (pdfListView.tagInProgress) {
                 let tmp_file = tagCreator.embedAnnot(pdfModel.getAnnotParams(),
                                                      pdfModel.getSource())
+                pdfModel.mustProcessSignatures = false
+                pdfModel.mustExtractText = false
                 pdfListView.openTmpFile(tmp_file)
+                pdfModel.mustProcessSignatures = true
+                pdfModel.mustExtractText = true
                 pdfListView.saveTo(tmp_file, currentFile)
             } else {
                 let tmp_file = pdfModel.getSource()
