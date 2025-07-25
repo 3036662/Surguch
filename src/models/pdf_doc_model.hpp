@@ -137,6 +137,10 @@ class PdfDocModel : public QAbstractListModel {
     Q_INVOKABLE std::shared_ptr<core::TextExtractor::RectToHiglightCurrent>
     getCurrentNeedleRect(size_t page_index);
 
+    /// @brief returns the uri under the cursor
+    [[nodiscard]] Q_INVOKABLE QString getUriByPos(size_t page_index,
+                                                  float mouse_x, float mouse_y) const;
+
    signals:
 
     /// @brief some signatures found

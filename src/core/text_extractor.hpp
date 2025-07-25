@@ -72,6 +72,9 @@ class TextExtractor : public QObject {
     [[nodiscard]] std::shared_ptr<RectToHiglightCurrent> getCurrentNeedleRect(
         size_t page_index);
 
+    [[nodiscard]] QString getTargetUri(size_t page_index,
+                                       core::utils::MousePos const &mouse_pos) const;
+
    signals:
 
     void searchCompleted();

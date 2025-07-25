@@ -239,4 +239,15 @@ TextExtractor::getCurrentNeedleRect(size_t page_index) {
     return std::make_shared<RectToHiglightCurrent>(*current_rect_to_gighlight_);
 }
 
+QString
+TextExtractor::getTargetUri(size_t page_index,
+                            core::utils::MousePos const &mouse_pos) const {
+    auto clickedUri = utils::findUriPage(page_index, mouse_pos, cache_);
+    if (clickedUri == nullptr) {
+        return {};
+    }
+
+    return utils::findUriPage(page_index, mouse_pos, cache_)->uri;
+}
+
 }  // namespace core

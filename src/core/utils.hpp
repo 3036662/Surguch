@@ -51,8 +51,6 @@ struct PageUriData
 };
 
 using PageUriList = std::vector<PageUriData>;
-using PagesUriCacheSinglePage = std::pair<size_t, PageUriList>;
-using PagesUriCache = std::unique_ptr<std::vector<PagesUriCacheSinglePage>>;
 using filterUri = std::function<PageUriList(PageUriList&)>;
 
 /**
@@ -75,20 +73,12 @@ PageUriList extractAllUriPage(fz_context *fzctx,
                               int page_index,
                               std::optional<filterUri> filter = std::nullopt);
 
-/**
- * @brief Extract all URIs from all pages in the document.
- * @param fzctx the MuPDF context
- * @param fzdoc the MuPdf document context
- * @param filter applied to the @see PageUriList
- * @return @see PagesUriCache, null on error
- * @throws does not throw
- * @details This function is supposed to be run as an async function.
- */
-PagesUriCache extractUriAllPages(fz_context *fzctx,
-                                 fz_document *fzdoc,
-                                 std::optional<filterUri> filter = std::nullopt) noexcept;
+struct PagesTextCacheSinglePage {
+    size_t page_index;
+    QString page_text;
+    PageUriList page_uri_list;
+};
 
-using PagesTextCacheSinglePage = std::pair<size_t, QString>;
 using PagesTextCache = std::unique_ptr<std::vector<PagesTextCacheSinglePage>>;
 
 /**
@@ -134,6 +124,19 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString& needle,
                                         size_t page_index, bool case_sensitive,
                                         fz_context* fzctx,
                                         fz_document* fzdoc) noexcept;
+
+using MousePos = std::pair<float, float>;
+
+/**
+ * @brief Find a URI at given position on a given page
+ * @param page_index
+ * @param mouse_pos
+ * @param haystack
+ * @return URI information or nullptr, @see PageUriData
+ */
+std::unique_ptr<PageUriData> findUriPage(size_t page_index,
+                                         MousePos mouse_pos,
+                                         PagesTextCache const& haystack);
 
 }  // namespace core::utils
 

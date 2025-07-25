@@ -235,49 +235,6 @@ PageUriList extractAllUriPage(fz_context *fzctx,
 }
 
 /**
- * @brief Extract all URIs from all pages in the document.
- * @param fzctx the MuPDF context
- * @param fzdoc the MuPdf document context
- * @param filter applied to the @see PageUriList
- * @return @see PagesUriCache, null on error
- * @throws does not throw
- * @details This function is supposed to be run as an async function.
- */
-PagesUriCache extractUriAllPages(fz_context *fzctx,
-                                 fz_document *fzdoc,
-                                 std::optional<filterUri> filter) noexcept {
-    if (fzctx == nullptr || fzdoc == nullptr) {
-        qWarning() << "[extractUriAllPages] nullptr recieved\n";
-        return nullptr;
-    }
-    bool exception_catched = false;
-    PagesUriCache result = std::make_unique<std::vector<PagesUriCacheSinglePage>>();
-
-    int page_count = 0;
-    fz_var(page_count);
-    fz_try(fzctx) { page_count = fz_count_pages(fzctx, fzdoc); }
-    fz_catch(fzctx) {
-        exception_catched = true;
-        fz_report_error(fzctx);
-    }
-
-    for (int i = 0; i < page_count; ++i) {
-        try {
-            result->emplace_back(i, extractAllUriPage(fzctx, fzdoc, i, std::move(filter)));
-        } catch (const std::exception &ex) {
-            qWarning() << ex.what();
-            exception_catched = true;
-        }
-    }
-    if (exception_catched) {
-        qWarning() << "[extractUriAllPages] error occured";
-        return nullptr;
-    }
-
-    return result;
-}
-
-/**
  * @brief Extract all text from all pages in the document.
  * @param fzctx the MuPDF context
  * @param fzdoc the MuPdf document context
@@ -303,7 +260,11 @@ PagesTextCache extractTextAllPages(fz_context *fzctx,
     }
     for (int i = 0; i < page_count; ++i) {
         try {
-            result->emplace_back(i, pageToQString(fzctx, fzdoc, i));
+            PagesTextCacheSinglePage page_cache {
+                static_cast<size_t>(i),
+                std::move(pageToQString(fzctx, fzdoc, i)),
+                std::move(extractAllUriPage(fzctx, fzdoc, i, removeAllCoveredUri)) };
+            result->emplace_back(page_cache);
         } catch (const std::exception &ex) {
             qWarning() << ex.what();
             exception_catched = true;
@@ -334,8 +295,8 @@ std::vector<size_t> findPagesWithText(const QString &needle,
     std::for_each(haystack->cbegin(), haystack->cend(),
                   [&res, &needle,
                    &case_sens](const PagesTextCacheSinglePage &page_cached) {
-                      if (page_cached.second.contains(needle, case_sens)) {
-                          res.push_back(page_cached.first);
+                      if (page_cached.page_text.contains(needle, case_sens)) {
+                          res.push_back(page_cached.page_index);
                       }
                   });
     return res;
@@ -465,6 +426,42 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
         return nullptr;
     }
     return res;
+}
+
+/**
+ * @brief Find a URI at given position on a given page
+ * @param page_index
+ * @param mouse_pos
+ * @param haystack
+ * @return URI information or nullptr, @see PageUriData
+ */
+std::unique_ptr<PageUriData> findUriPage(size_t page_index,
+                                         MousePos mouse_pos,
+                                         PagesTextCache const& haystack) {
+    if (haystack == nullptr || page_index >= haystack->size()) {
+        return {};
+    }
+
+    auto searched_page_it = std::find_if(haystack->cbegin(), haystack->cend(), [&page_index](auto const& page) {
+        return page.page_index == page_index;
+    });
+
+    if (searched_page_it == haystack->cend()) {
+        return {};
+    }
+
+    auto page_uri_list = searched_page_it->page_uri_list;
+    auto searched_uri_it = std::find_if(page_uri_list.cbegin(), page_uri_list.cend(), [&mouse_pos](auto const& uri_info_data) {
+        auto [x0, y0, x1, y1] = uri_info_data.uri_rect;
+        auto [mouse_x, mouse_y] = mouse_pos;
+        return (mouse_x > x0 && mouse_x <= x1 && mouse_y > y0 && mouse_y <= y1);
+    });
+
+    if (searched_uri_it == page_uri_list.cend()) {
+        return {};
+    }
+
+    return std::make_unique<PageUriData>(*searched_uri_it);
 }
 
 }  // namespace core::utils

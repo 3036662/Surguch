@@ -396,6 +396,15 @@ PdfDocModel::getCurrentNeedleRect(size_t page_index) {
     return text_extractor_->getCurrentNeedleRect(page_index);
 }
 
+QString
+PdfDocModel::getUriByPos(size_t page_index, float mouse_x, float mouse_y) const
+{
+    if (!text_extractor_) {
+        return {};
+    }
+    return text_extractor_->getTargetUri(page_index, {mouse_x, mouse_y});
+}
+
 void PdfDocModel::placeRubberStamp(const QVariantMap &qvparams) {
     params = core::gui::prepareParams(qvparams);
     auto params_wrapper = core::gui::createParams(params);
