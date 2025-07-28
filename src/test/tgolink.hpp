@@ -15,6 +15,7 @@ private slots:
     void CacheUri();
     void RemoveAllCoveredUri();
     void RemoveAllCoveredUriTest();
+    void FindUriPage();
 
     void ExtractAllUriPageTest1_data();
     void CacheUri_data();

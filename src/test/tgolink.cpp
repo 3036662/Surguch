@@ -603,3 +603,43 @@ void TGolink::RemoveAllCoveredUriTest_data() {
 
     QTest::newRow("test_data_2") << input_data2 << expected_data2;
 }
+
+void TGolink::FindUriPage()
+{
+    size_t test_page_index = 0;
+    core::utils::MousePos test_mouse_pos { .0F, .0F };
+    core::utils::PagesTextCache test_page_text_cache;
+
+    QVERIFY(core::utils::findUriPage(test_page_index, test_mouse_pos, test_page_text_cache) == nullptr);
+
+    std::string test_uri = "https://ya.ru";
+    core::utils::PageUriData page_uri_data {
+        .uri_rect = { 55, 60, 80, 70 },
+        .uri = test_uri.data()
+    };
+    core::utils::PagesTextCacheSinglePage page_text_single_page {
+        .page_index = test_page_index,
+        .page_text = "clickme!",
+        .page_uri_list = { page_uri_data },
+    };
+
+    test_page_text_cache = std::make_unique<std::vector<core::utils::PagesTextCacheSinglePage>>();
+    test_page_text_cache->push_back(page_text_single_page);
+    QVERIFY(test_page_text_cache->size() == 1);
+
+    // expected nullptr if page_index is >= page_uri_list.size()
+    QVERIFY(core::utils::findUriPage(1, test_mouse_pos, test_page_text_cache) == nullptr);
+
+    test_mouse_pos = { 60, 65 };
+    auto result = core::utils::findUriPage(test_page_index, test_mouse_pos, test_page_text_cache);
+    QVERIFY(result != nullptr);
+
+    auto compRects = [](fz_rect const& lhs, fz_rect const& rhs) {
+        return lhs.x0 == rhs.x0 && lhs.y0 == rhs.y0 &&
+            lhs.x1 == rhs.x1 && lhs.y1 == rhs.y1;
+    };
+
+    // the found element is expected to contain the values from page_uri_data
+    QVERIFY(compRects(result->uri_rect, page_uri_data.uri_rect));
+    QVERIFY(result->uri == test_uri);
+}
