@@ -21,13 +21,13 @@ TreeView {
     }
 
     delegate: Item {
-        implicitWidth: column === 0 ? treeView.width * 2 / 3 - padding * 2 : treeView.width * 1 / 3 - padding * 2
-        implicitHeight: label.implicitHeight * 1.5
+        implicitWidth: treeView.width - padding * 2
+        implicitHeight: nameField.implicitHeight * 1.6
 
         readonly property real indentation: 20
         readonly property real padding: 5
 
-        // Assigned to by TreeView:
+
         required property TreeView treeView
         required property bool isTreeNode
         required property bool expanded
@@ -40,14 +40,16 @@ TreeView {
         Rectangle {
             id: background
             anchors.fill: parent
-            color: row === treeView.currentRow ? "#0085F8" : "transparent"
+            color: "transparent"
+            border.color: row === treeView.currentRow ? "#3daee9" : "transparent"
         }
 
 
         RowLayout {
-            Layout.fillWidth: true
+            anchors.fill: parent
 
             Rectangle {
+                id: indent
                 Layout.preferredWidth: indentation * depth
                 color: "transparent"
             }
@@ -55,8 +57,6 @@ TreeView {
             Image {
                 id: indicator
                 visible: isTreeNode && hasChildren
-                //text: expanded ? "▼" : "▶"
-                //color: "white"
                 source: expanded ? StyleSheet.chevron_down : StyleSheet.chevron_right
                 width: 20
                 height: 20
@@ -66,12 +66,13 @@ TreeView {
                         let index = treeView.index(row, column)
                         treeView.selectionModel.setCurrentIndex(index, ItemSelectionModel.NoUpdate)
                         treeView.toggleExpanded(row)
-                        console.warn(depth)
+                        console.warn(nameField.width)
                     }
                 }
             }
 
             Rectangle {
+                id: treeIndent
                 Layout.preferredWidth: isTreeNode && hasChildren ? indentation : indentation + indicator.width
             }
 
@@ -84,55 +85,73 @@ TreeView {
             }
 
             Label {
-                id: label
-                //x: indicator.x + indicator.width + 5
-                //anchors.verticalCenter: parent.verticalCenter
-                //width: parent.width - padding - x
+                id: nameField
+                Layout.alignment: Qt.AlignLeft
+                Layout.preferredWidth: parent.width * 0.4 - indent.width - treeIndent.width - image.width - indicator.width
+                Layout.maximumWidth: parent.width * 0.4 - indent.width - treeIndent.width - image.width - indicator.width
                 clip: true
-                text: model.file_name
+                text: model.name
                 color: column === 0 ? "white" : "#ABABAB"
-                font.pixelSize: column === 0 ? 14 : 10
-                //horizontalAlignment: isTreeNode ? Text.AlignLeft : Text.AlignRight
-                rightPadding: 10
+                font.pixelSize: column === 0 ? 16 : 10
+                background: Rectangle {
+                    color: "transparent"
+                }
             }
 
             Label {
-                id: label2
-                //x: indicator.x + indicator.width + 5
-                //anchors.verticalCenter: parent.verticalCenter
-                //width: parent.width - padding - x
+                id: sizeField
+                Layout.alignment: Qt.AlignLeft
+                Layout.preferredWidth: parent.width * 0.1
                 clip: true
                 text: model.size
                 color: column === 0 ? "white" : "#ABABAB"
                 font.pixelSize: column === 0 ? 14 : 10
-                //horizontalAlignment: isTreeNode ? Text.AlignLeft : Text.AlignRight
-                rightPadding: 10
             }
 
             Label {
-                id: label3
-                //x: indicator.x + indicator.width + 5
-                //anchors.verticalCenter: parent.verticalCenter
-                //width: parent.width - padding - x
+                id: lastEditField
+                Layout.alignment: Qt.AlignLeft
+                Layout.preferredWidth: parent.width * 0.1
                 clip: true
-                text: model.last_edit
+                text: model.modification_time
                 color: column === 0 ? "white" : "#ABABAB"
                 font.pixelSize: column === 0 ? 14 : 10
-                //horizontalAlignment: isTreeNode ? Text.AlignLeft : Text.AlignRight
-                rightPadding: 10
             }
 
             Label {
-                id: label4
-                //x: indicator.x + indicator.width + 5
-                //anchors.verticalCenter: parent.verticalCenter
-                //width: parent.width - padding - x
+                id: statusField
+                horizontalAlignment: Text.AlignHCenter
+                Layout.alignment: Qt.AlignLeft
+                Layout.preferredWidth: parent.width * 0.10
                 clip: true
                 text: model.status
                 color: column === 0 ? "white" : "#ABABAB"
                 font.pixelSize: column === 0 ? 14 : 10
-                //horizontalAlignment: isTreeNode ? Text.AlignLeft : Text.AlignRight
-                rightPadding: 10
+
+                background: Rectangle {
+                    id: statusBackground
+                    color: "green"
+                    width: statusField.contentWidth + 12
+                    height: statusField.contentHeight + 6
+                    radius: height / 4
+                    anchors.centerIn: parent
+                    visible: statusField.text !== ""
+                }
+            }
+
+            ToolButton {
+                id: deleteBtn
+                icon.source: StyleSheet.trash_icon
+                icon.width: 20
+                icon.height: 20
+                Layout.preferredWidth: parent.width * 0.05
+            }
+
+            Item {
+                Layout.fillWidth: true
+                Layout.maximumWidth: 400
+                Layout.preferredWidth: 300
+                Layout.minimumWidth: 200
             }
         }
     }

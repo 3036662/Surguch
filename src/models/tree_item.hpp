@@ -1,8 +1,7 @@
 #ifndef TREE_ITEM_HPP
 #define TREE_ITEM_HPP
 
-#include <QList>
-#include <QVariant>
+#include <QVariantList>
 
 #include <memory>
 
@@ -23,8 +22,7 @@ public:
     QVariant description() const { return m_description; }
     void setDescription(const QVariant &desc) { m_description = desc; }
 
-    QString id() const {
-        // Assuming ID is stored in column 4 (adjust as needed)
+    [[nodiscard]] QString id() const {
         return item_data_.size() > 4 ? item_data_[4].toString() : QString();
     }
 

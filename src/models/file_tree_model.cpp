@@ -11,18 +11,22 @@ FileTreeModel::FileTreeModel(QObject *parent)
     : QAbstractItemModel(parent)
     , root_item(std::make_unique<TreeItem>(QVariantList{tr("Title")}))
 {
-    QFile file("/home/dv/surguch/surguch/example3.json");
+    QFile file("/home/dv/tree.json");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     const QByteArray file_data = file.readAll();
     file.close();
     const QJsonDocument json_doc = QJsonDocument::fromJson(file_data);
-    if (!json_doc.isArray()) {
-        qWarning() << "[File Model] error parsing JSON";
-        return;
+    if (json_doc.isObject()) {
+        QVariantList itemData;
+        if (json_doc["Type"].toString() == "Root") {
+            itemData << json_doc["Type"].toString();
+            itemData << json_doc["id"].toInt();
+        }
+        QJsonArray const data_ = json_doc["children"].toArray();
+        setupModelData(data_, root_item.get());
+        file.close();
+        qWarning() << "[DEBUG]" << " Positive reading json";
     }
-    QJsonArray const data_ = json_doc.array();
-    setupModelData(data_, root_item.get());
-    file.close();
 }
 
 int FileTreeModel::columnCount(const QModelIndex &parent) const
@@ -113,11 +117,10 @@ int FileTreeModel::rowCount(const QModelIndex &parent) const
 
 QHash<int, QByteArray> FileTreeModel::roleNames() const {
     QHash<int, QByteArray> roles;
-    roles[FileNameRole] = "file_name";
+    roles[FileNameRole] = "name";
     roles[SizeRole] = "size";
-    roles[LastEditRole] = "last_edit";
+    roles[LastEditRole] = "modification_time";
     roles[StatusRole] = "status";
-    roles[HasKidsRole] = "has_kids";
     roles[DescriptionRole] = "description";
     roles[IdRole] = "id";
     return roles;
@@ -127,27 +130,25 @@ void FileTreeModel::setupModelData(const QJsonArray &array, TreeItem *parent) {
     for (const QJsonValue &value : array) {
         if (!value.isObject()) continue;
 
-        QJsonObject obj = value.toObject();
+        QJsonObject const obj = value.toObject();
+        QJsonObject const statArray = obj["stat"].toObject();
 
-        // Prepare item data - add ID as 5th column
         QVariantList itemData;
-        itemData << obj["file_name"].toString();
-        itemData << obj["size"].toInt();
-        itemData << obj["last_edit"].toString();
-        itemData << obj["status"].toString();
-        itemData << obj["id"].toString(); // Add ID
+        itemData << statArray["name"].toString();
+        itemData << statArray["size"].toInt();
+        itemData << QDateTime(QDateTime::fromSecsSinceEpoch(statArray["modification_time"].toInt())).toString();
+        itemData << obj["type"].toString();
+        itemData << obj["id"].toInt();
 
         TreeItem *newItem = new TreeItem(itemData, parent);
         parent->appendChild(std::unique_ptr<TreeItem>(newItem));
 
-        // Store description
         if (obj.contains("description")) {
-            //newItem->setDescription(obj["description"].toVariant());
+            newItem->setDescription(obj["description"].toVariant());
         }
 
-        // Process children
-        if (obj.contains("kid") && obj["kid"].isArray()) {
-            setupModelData(obj["kid"].toArray(), newItem);
+        if (obj.contains("children") && obj["children"].isArray()) {
+            setupModelData(obj["children"].toArray(), newItem);
         }
     }
 }

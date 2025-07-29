@@ -78,7 +78,7 @@ ApplicationWindow {
         }
 
         onDropped: (drop) => {
-            console.warn("something dropped in pdf area" + drop.urls)
+            console.warn("something dropped in pdf area " + drop.urls)
             fileDropArea.enabled = false
             width = parent.width
             let currentFile = Qt.resolvedUrl(drop.urls[0])
