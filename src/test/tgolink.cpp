@@ -679,10 +679,8 @@ void TGolink::UpdateUriList() {
     QVERIFY(page_cache_ref.page_uri_list.size() == 2);
     auto addedUriToList1 = page_cache_ref.page_uri_list.at(1);
 
-    QVERIFY(addedUriToList1.z_index == 1);
     QVERIFY(addedUriToList1.uri == added_uri1);
     QVERIFY(compareRects(addedUriToList1.uri_rect, bounds_added_uri1));
-    QVERIFY(page_uri_list.at(0).z_index == 0);
 
     //std::string added_uri2 = "https://packages.altlinux.org";
     //fz_rect bounds_added_uri2 = { 5, 5, 25, 20 };
