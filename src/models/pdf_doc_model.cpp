@@ -402,6 +402,10 @@ PdfDocModel::getUriByPos(size_t page_index, float mouse_x, float mouse_y) const
     if (!text_extractor_) {
         return {};
     }
+
+    mouse_x *= static_cast<float>(72.0F / physical_screen_dpi_);
+    mouse_y *= static_cast<float>(72.0F / physical_screen_dpi_);
+
     return text_extractor_->getTargetUri(page_index, {mouse_x, mouse_y});
 }
 
@@ -517,7 +521,32 @@ void PdfDocModel::saveImage() {
                 image_future_->takeResult()}));
     }
     history_manager_->clearRedo();
+
+    if (!params.link.empty()) {
+        fz_rect uri_rect {
+            .x0 = static_cast<float>(params.position_x * 72.0F / physical_screen_dpi_),
+            .y0 = static_cast<float>(params.position_y * 72.0F / physical_screen_dpi_),
+            .x1 = static_cast<float>((params.position_x + params.real_stamp_width) * 72.0F / physical_screen_dpi_),
+            .y1 = static_cast<float>((params.position_y + params.stamp_height) * 72.0F / physical_screen_dpi_)
+        };
+        core::utils::PageUriData page_uri_data {
+            .uri_rect = uri_rect,
+            .uri = params.link.data()
+        };
+        text_extractor_->addExternalUri(params.page_index, page_uri_data);
+    }
+
     emit updateDoc();
+}
+
+bool PdfDocModel::mouseOverUri(size_t page_index, float mouse_x, float mouse_y) const {
+	auto factor = static_cast<float>(72.0F / physical_screen_dpi_);
+	core::utils::MousePos mouse_pos {
+		mouse_x * factor,
+		mouse_y * factor
+	};
+
+	return text_extractor_->checkMouseOverUri(page_index, mouse_pos);
 }
 
 // NOLINTEND(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)

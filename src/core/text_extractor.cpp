@@ -242,12 +242,31 @@ TextExtractor::getCurrentNeedleRect(size_t page_index) {
 QString
 TextExtractor::getTargetUri(size_t page_index,
                             core::utils::MousePos const &mouse_pos) const {
-    auto clickedUri = utils::findUriPage(page_index, mouse_pos, cache_);
-    if (clickedUri == nullptr) {
+    auto found_uri_data = utils::findUriPage(page_index, mouse_pos, cache_);
+
+    if (found_uri_data == nullptr) {
         return {};
     }
 
-    return utils::findUriPage(page_index, mouse_pos, cache_)->uri;
+    return found_uri_data->uri;
+}
+
+void TextExtractor::addExternalUri(size_t page_index, utils::PageUriData const& uri_data) {
+    if (!cache_) {
+        return;
+    }
+
+    utils::addExternalUri(page_index, uri_data, cache_);
+}
+
+bool TextExtractor::checkMouseOverUri(size_t page_index, utils::MousePos const& mouse_pos) {
+    if (!cache_) {
+        return false;
+    }
+
+    auto res = utils::findUriPage(page_index, mouse_pos, cache_);
+
+    return res != nullptr;
 }
 
 }  // namespace core

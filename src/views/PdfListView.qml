@@ -985,10 +985,41 @@ ListView {
     }
 
     MouseArea {
+        //id: targetArea
         anchors.fill: parent
-        acceptedButtons: Qt.NoButton
+        acceptedButtons: Qt.LeftButton
+        //hoverEnabled: true
+        //acceptedButtons: Qt.NoButton
 
         Connections {
+            //function onPositionChanged(mouse) {
+            //    const pos = preservePosition()
+            //    let relativePosX = (mouse.x + contentX) / pos.zoom_last
+            //    let relativePosY = (mouse.y + contentY) / pos.zoom_last;
+            //    if (pdfModel.mouseOverUri(currentPageIndex(), relativePosX, relativePosY)) {
+            //        targetArea.cursorShape = Qt.OpenHandCursor
+            //    } else {
+            //        targetArea.cursorShape = Qt.ArrowCursor
+            //    }
+            //    mouse.accepted = true
+            //}
+
+            function onPressed(mouse) {
+                if (mouse.modifiers === Qt.ControlModifier) {
+                    const pos = preservePosition()
+                    const mouseX = (mouse.x + contentX) / pos.zoom_last
+                    const mouseY = (mouse.y + contentY) / pos.zoom_last;
+                    const externalUri = pdfModel.getUriByPos(currentPageIndex(), mouseX, mouseY)
+
+                    if (externalUri) {
+                        Qt.openUrlExternally(externalUri)
+                    }
+
+                    mouse.accepted = true
+                    return
+                }
+                mouse.accepted = false
+            }
             function onWheel(event) {
                 if (event.modifiers === Qt.ControlModifier) {
                     if (event.angleDelta.y > 0) {

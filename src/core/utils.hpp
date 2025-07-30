@@ -138,6 +138,17 @@ std::unique_ptr<PageUriData> findUriPage(size_t page_index,
                                          MousePos mouse_pos,
                                          PagesTextCache const& haystack);
 
+/*
+ * @brief add an URI to the cache's URI list
+ * @param page_index
+ * @param uri_data
+ * @param haystack
+ */
+void addExternalUri(size_t page_index,
+		    PageUriData const& uri_data,
+                    PagesTextCache const& haystack);
+
+
 }  // namespace core::utils
 
 #endif  // UTILS_HPP

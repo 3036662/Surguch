@@ -2,6 +2,7 @@
 #define TEXT_EXTRACTOR_HPP
 #include <QFuture>
 #include <QFutureWatcher>
+#include <QMouseEvent>
 #include <shared_mutex>
 
 #include "mupdf/fitz.h"
@@ -74,6 +75,15 @@ class TextExtractor : public QObject {
 
     [[nodiscard]] QString getTargetUri(size_t page_index,
                                        core::utils::MousePos const &mouse_pos) const;
+   /**
+    * @brief check if there is an URI at the given mouse positions
+    * @param mouse_pos mouse cursor position
+    * @return true if the URI is found, otherwise false
+    */
+    [[nodiscard]] bool checkMouseOverUri(size_t page_index, utils::MousePos const& mouse_pos);
+
+    void saveExternalUri() const;
+    void addExternalUri(size_t page_index, utils::PageUriData const& uri_data);
 
    signals:
 

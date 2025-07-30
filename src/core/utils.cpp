@@ -454,14 +454,27 @@ std::unique_ptr<PageUriData> findUriPage(size_t page_index,
     auto searched_uri_it = std::find_if(page_uri_list.cbegin(), page_uri_list.cend(), [&mouse_pos](auto const& uri_info_data) {
         auto [x0, y0, x1, y1] = uri_info_data.uri_rect;
         auto [mouse_x, mouse_y] = mouse_pos;
-        return (mouse_x > x0 && mouse_x <= x1 && mouse_y > y0 && mouse_y <= y1);
+        return (mouse_x >= x0 && mouse_x <= x1 && mouse_y >= y0 && mouse_y <= y1);
     });
 
-    if (searched_uri_it == page_uri_list.cend()) {
+    if (searched_uri_it == page_uri_list.end()) {
         return {};
     }
 
     return std::make_unique<PageUriData>(*searched_uri_it);
+}
+
+/*
+ * @brief add an URI to the cache's URI list
+ * @param page_index
+ * @param uri_data
+ * @param haystack
+ */
+void addExternalUri(size_t page_index,
+                    PageUriData const& uri_data,
+                    PagesTextCache const& haystack) {
+    decltype(auto) page_data = haystack->at(page_index);
+    page_data.page_uri_list.push_back(uri_data);
 }
 
 }  // namespace core::utils
