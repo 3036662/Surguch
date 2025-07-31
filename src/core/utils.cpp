@@ -466,17 +466,4 @@ std::unique_ptr<PageUriList> findAllUriPage(size_t page_index,
     return result;
 }
 
-/*
- * @brief add an URI to the cache's URI list
- * @param page_index
- * @param uri_data
- * @param haystack
- */
-void addExternalUri(size_t page_index,
-                    PageUriData const& uri_data,
-                    PagesTextCache const& haystack) {
-    decltype(auto) page_data = haystack->at(page_index);
-    page_data.page_uri_list.push_back(uri_data);
-}
-
 }  // namespace core::utils

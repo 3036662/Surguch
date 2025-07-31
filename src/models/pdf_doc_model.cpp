@@ -526,21 +526,6 @@ void PdfDocModel::saveImage() {
                 image_future_->takeResult()}));
     }
     history_manager_->clearRedo();
-
-    //if (!params.link.empty()) {
-    //    fz_rect uri_rect {
-    //        .x0 = static_cast<float>(params.position_x * 72.0F / physical_screen_dpi_),
-    //        .y0 = static_cast<float>(params.position_y * 72.0F / physical_screen_dpi_),
-    //        .x1 = static_cast<float>((params.position_x + params.real_stamp_width) * 72.0F / physical_screen_dpi_),
-    //        .y1 = static_cast<float>((params.position_y + params.stamp_height) * 72.0F / physical_screen_dpi_)
-    //    };
-    //    core::utils::PageUriData page_uri_data {
-    //        .uri_rect = uri_rect,
-    //        .uri = params.link.data()
-    //    };
-    //    text_extractor_->addExternalUri(params.page_index, page_uri_data);
-    //}
-
     emit updateDoc();
 }
 

@@ -255,14 +255,6 @@ TextExtractor::getTargetAllUriPage(size_t page_index,
     return uri_list;
 }
 
-void TextExtractor::addExternalUri(size_t page_index, utils::PageUriData const& uri_data) {
-    if (!cache_) {
-        return;
-    }
-
-    utils::addExternalUri(page_index, uri_data, cache_);
-}
-
 bool TextExtractor::checkMouseOverUri(size_t page_index, utils::MousePos const& mouse_pos) {
     if (!cache_) {
         return false;
