@@ -138,8 +138,8 @@ class PdfDocModel : public QAbstractListModel {
     getCurrentNeedleRect(size_t page_index);
 
     /// @brief returns the uri under the cursor
-    [[nodiscard]] Q_INVOKABLE QString getUriByPos(size_t page_index,
-                                                  float mouse_x, float mouse_y) const;
+    [[nodiscard]] Q_INVOKABLE QStringList getUriByPos(size_t page_index,
+                                                      float mouse_x, float mouse_y) const;
     /// @brief true if the mouse is over the URI, otherwise false
     [[nodiscard]] Q_INVOKABLE bool mouseOverUri(size_t page_index, float mouse_x, float mouse_y) const;
 

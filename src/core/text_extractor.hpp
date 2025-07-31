@@ -73,8 +73,9 @@ class TextExtractor : public QObject {
     [[nodiscard]] std::shared_ptr<RectToHiglightCurrent> getCurrentNeedleRect(
         size_t page_index);
 
-    [[nodiscard]] QString getTargetUri(size_t page_index,
-                                       core::utils::MousePos const &mouse_pos) const;
+    // @brief retrieve all URIs on the given page using provided mouse cursor positions
+    [[nodiscard]] std::unique_ptr<QStringList> getTargetAllUriPage(size_t page_index,
+                                                                   core::utils::MousePos const &mouse_pos) const;
    /**
     * @brief check if there is an URI at the given mouse positions
     * @param mouse_pos mouse cursor position

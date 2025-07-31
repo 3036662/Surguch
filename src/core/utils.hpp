@@ -128,15 +128,15 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString& needle,
 using MousePos = std::pair<float, float>;
 
 /**
- * @brief Find a URI at given position on a given page
+ * @brief Find all URIs at given position on a given page
  * @param page_index
  * @param mouse_pos
  * @param haystack
- * @return URI information or nullptr, @see PageUriData
+ * @return list of URIs @see PageUriData or nullptr
  */
-std::unique_ptr<PageUriData> findUriPage(size_t page_index,
-                                         MousePos mouse_pos,
-                                         PagesTextCache const& haystack);
+std::unique_ptr<PageUriList> findAllUriPage(size_t page_index,
+                                           MousePos mouse_pos,
+                                            PagesTextCache const& haystack);
 
 /*
  * @brief add an URI to the cache's URI list

@@ -239,16 +239,20 @@ TextExtractor::getCurrentNeedleRect(size_t page_index) {
     return std::make_shared<RectToHiglightCurrent>(*current_rect_to_gighlight_);
 }
 
-QString
-TextExtractor::getTargetUri(size_t page_index,
-                            core::utils::MousePos const &mouse_pos) const {
-    auto found_uri_data = utils::findUriPage(page_index, mouse_pos, cache_);
-
-    if (found_uri_data == nullptr) {
+std::unique_ptr<QStringList>
+TextExtractor::getTargetAllUriPage(size_t page_index,
+                                   core::utils::MousePos const &mouse_pos) const {
+    auto found_uri_data = utils::findAllUriPage(page_index, mouse_pos, cache_);
+    if (!found_uri_data || found_uri_data->empty()) {
         return {};
     }
 
-    return found_uri_data->uri;
+    auto uri_list = std::make_unique<QStringList>();
+    std::for_each(found_uri_data->cbegin(), found_uri_data->cend(), [&uri_list](auto const& uri_data) {
+        uri_list->emplace_back(uri_data.uri);
+    });
+
+    return uri_list;
 }
 
 void TextExtractor::addExternalUri(size_t page_index, utils::PageUriData const& uri_data) {
@@ -264,9 +268,9 @@ bool TextExtractor::checkMouseOverUri(size_t page_index, utils::MousePos const& 
         return false;
     }
 
-    auto res = utils::findUriPage(page_index, mouse_pos, cache_);
+    auto res = utils::findAllUriPage(page_index, mouse_pos, cache_);
 
-    return res != nullptr;
+    return !res->empty();
 }
 
 }  // namespace core

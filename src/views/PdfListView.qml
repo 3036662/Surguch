@@ -985,35 +985,37 @@ ListView {
     }
 
     MouseArea {
-        //id: targetArea
+        id: docView
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton
-        //hoverEnabled: true
+        hoverEnabled: !root.tagMode
         //acceptedButtons: Qt.NoButton
 
         Connections {
-            //function onPositionChanged(mouse) {
-            //    const pos = preservePosition()
-            //    let relativePosX = (mouse.x + contentX) / pos.zoom_last
-            //    let relativePosY = (mouse.y + contentY) / pos.zoom_last;
-            //    if (pdfModel.mouseOverUri(currentPageIndex(), relativePosX, relativePosY)) {
-            //        targetArea.cursorShape = Qt.OpenHandCursor
-            //    } else {
-            //        targetArea.cursorShape = Qt.ArrowCursor
-            //    }
-            //    mouse.accepted = true
-            //}
+            function onPositionChanged(mouse) {
+                if (source) {
+                    const pos = preservePosition()
+                    let relativePosX = (mouse.x + contentX) / pos.zoom_last
+                    let relativePosY = (mouse.y + contentY) / pos.zoom_last;
+                    if (pdfModel.mouseOverUri(currentPageIndex(), relativePosX, relativePosY)) {
+                        docView.cursorShape = Qt.OpenHandCursor
+                    } else {
+                        docView.cursorShape = Qt.ArrowCursor
+                    }
+                    mouse.accepted = true
+                    return
+                }
+                mouse.accepted = false
+            }
 
             function onPressed(mouse) {
                 if (mouse.modifiers === Qt.ControlModifier) {
                     const pos = preservePosition()
                     const mouseX = (mouse.x + contentX) / pos.zoom_last
                     const mouseY = (mouse.y + contentY) / pos.zoom_last;
-                    const externalUri = pdfModel.getUriByPos(currentPageIndex(), mouseX, mouseY)
 
-                    if (externalUri) {
-                        Qt.openUrlExternally(externalUri)
-                    }
+                    const externalUri = pdfModel.getUriByPos(currentPageIndex(), mouseX, mouseY)
+                    externalUri.forEach(uri => Qt.openUrlExternally(uri))
 
                     mouse.accepted = true
                     return

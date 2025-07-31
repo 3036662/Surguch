@@ -210,6 +210,7 @@ PageUriList extractAllUriPage(fz_context *fzctx,
                     .uri_rect = page_uri->rect,
                     .uri = extracted_uri
                 };
+
                 extracted_uris.push_back(page_uri_data);
             }
         }
@@ -429,15 +430,15 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
 }
 
 /**
- * @brief Find a URI at given position on a given page
+ * @brief Find all URIs at given position on a given page
  * @param page_index
  * @param mouse_pos
  * @param haystack
- * @return URI information or nullptr, @see PageUriData
+ * @return list of URIs @see PageUriData or nullptr
  */
-std::unique_ptr<PageUriData> findUriPage(size_t page_index,
-                                         MousePos mouse_pos,
-                                         PagesTextCache const& haystack) {
+std::unique_ptr<PageUriList> findAllUriPage(size_t page_index,
+                                            MousePos mouse_pos,
+                                            PagesTextCache const& haystack) {
     if (haystack == nullptr || page_index >= haystack->size()) {
         return {};
     }
@@ -450,18 +451,19 @@ std::unique_ptr<PageUriData> findUriPage(size_t page_index,
         return {};
     }
 
-    auto page_uri_list = searched_page_it->page_uri_list;
-    auto searched_uri_it = std::find_if(page_uri_list.cbegin(), page_uri_list.cend(), [&mouse_pos](auto const& uri_info_data) {
-        auto [x0, y0, x1, y1] = uri_info_data.uri_rect;
+    decltype(auto) page_uri_list = std::as_const(searched_page_it->page_uri_list);
+    auto result = std::make_unique<PageUriList>();
+    for (auto const& uri_info_data : std::as_const(page_uri_list)) {
         auto [mouse_x, mouse_y] = mouse_pos;
-        return (mouse_x >= x0 && mouse_x <= x1 && mouse_y >= y0 && mouse_y <= y1);
-    });
+        auto [x0, y0, x1, y1] = uri_info_data.uri_rect;
 
-    if (searched_uri_it == page_uri_list.end()) {
-        return {};
+        if (mouse_x >= x0 && mouse_x <= x1 &&
+            mouse_y >= y0 && mouse_y <= y1) {
+            result->emplace_back(uri_info_data);
+        }
     }
 
-    return std::make_unique<PageUriData>(*searched_uri_it);
+    return result;
 }
 
 /*
