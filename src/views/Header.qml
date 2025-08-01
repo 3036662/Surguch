@@ -12,6 +12,8 @@ import "header_bar_components" as HeaderBarComponents
 RowLayout {
     id: toolbar_layout
 
+    signal changeShowType(int newType)
+
     function getCurrentProfileValue() {
         return profileComboBox.currentValue
     }
@@ -56,12 +58,21 @@ RowLayout {
 
         HeaderBarComponents.TopBarButton {
             icon.source: StyleSheet.file_plus_icon
-            text: qsTr("Open")
+            //text: qsTr("Open")
+            text: qsTr("PDF")
             onClicked: kdeVersion === "5" ? labsFileDialog.open(
-                                                ) : fileDialog.open()
+            ) : fileDialog.open()
         }
 
         HeaderBarComponents.TopBarButton {
+            icon.source: StyleSheet.plus_circle_icon
+            //text: qsTr("Open")
+            text: qsTr("File")
+            onClicked: kdeVersion === "5" ? labsFileDialog.open(
+            ) : fileDialog.open()
+        }
+
+        TopBarButton {
             icon.source: StyleSheet.file_simple_icon
             text: qsTr("Show in folder")
             enabled: pdfListView.source.length > 0 && !pdfListView.sourceIsTmp
@@ -73,7 +84,7 @@ RowLayout {
             text: qsTr("Save as ...")
             enabled: pdfListView.source.length > 0
             onClicked: kdeVersion === "5" ? labsSaveFileDialog.open(
-                                                ) : saveFileDialog.open()
+            ) : saveFileDialog.open()
         }
 
         Row {
@@ -103,10 +114,10 @@ RowLayout {
                     rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
                     // set the certificates for select
                     rightSideBar.edit_profile.cert_data_raw
-                            = profileComboBox.model.getUserCertsJSON()
+                        = profileComboBox.model.getUserCertsJSON()
                     //set the stamps for select
                     rightSideBar.edit_profile.stamps_data_raw
-                            = profileComboBox.model.getUserStampsJSON()
+                        = profileComboBox.model.getUserStampsJSON()
                     // set a reference to this model
                     rightSideBar.edit_profile.profiles_model = profileComboBox.model
                     rightSideBar.edit_profile.profile_data
@@ -317,6 +328,7 @@ RowLayout {
             pdfListView.openFile(currentFile)
             leftSideBar.source = currentFile
             rightSideBar.showState = RightSideBar.ShowState.Invisible
+            changeShowType(1)
         }
     }
 
@@ -353,6 +365,7 @@ RowLayout {
                 Qt.quit()
             }
         }
+
     }
 
     // KDE5 - use lab LabsDialogs
@@ -369,6 +382,7 @@ RowLayout {
             pdfListView.openFile(currentFile)
             leftSideBar.source = currentFile
             rightSideBar.showState = RightSideBar.ShowState.Invisible
+            changeShowType(1)
         }
     }
     // KDE5 - use lab LabsDialogs

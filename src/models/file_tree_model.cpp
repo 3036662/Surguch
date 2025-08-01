@@ -51,8 +51,10 @@ QVariant FileTreeModel::data(const QModelIndex &index, int role) const {
             return item->data(1);
         case LastEditRole:
             return item->data(2);
-        case StatusRole:
+        case TypeRole:
             return item->data(3);
+        case SigStatusRole:
+            return item->data(4);
         case HasKidsRole:
             return item->childCount() > 0;
         case DescriptionRole:
@@ -120,8 +122,9 @@ QHash<int, QByteArray> FileTreeModel::roleNames() const {
     roles[FileNameRole] = "name";
     roles[SizeRole] = "size";
     roles[LastEditRole] = "modification_time";
-    roles[StatusRole] = "status";
+    roles[SigStatusRole] = "sig_status";
     roles[DescriptionRole] = "description";
+    roles[TypeRole] = "type";
     roles[IdRole] = "id";
     return roles;
 }
@@ -136,8 +139,11 @@ void FileTreeModel::setupModelData(const QJsonArray &array, TreeItem *parent) {
         QVariantList itemData;
         itemData << statArray["name"].toString();
         itemData << statArray["size"].toInt();
-        itemData << QDateTime(QDateTime::fromSecsSinceEpoch(statArray["modification_time"].toInt())).toString();
+        itemData << QLocale().toString(QDateTime::fromSecsSinceEpoch(statArray["modification_time"].toInt()), "yyyy.MM.dd hh:mm");
         itemData << obj["type"].toString();
+        if (obj.contains("has_check_result")) {
+            itemData << obj["has_check_result"].toBool();
+        }
         itemData << obj["id"].toInt();
 
         TreeItem *newItem = new TreeItem(itemData, parent);

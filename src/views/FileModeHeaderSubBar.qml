@@ -4,7 +4,6 @@ import QtQuick.Layouts
 import StyleSheet
 
 ColumnLayout {
-    spacing: 1
 
     Rectangle {
         height: 1
@@ -16,11 +15,11 @@ ColumnLayout {
         id: toolbar_subpanel
         spacing: 0
         Layout.fillWidth: true
+        Layout.leftMargin: 5
 
         Text {
             text: "Name"
-            Layout.preferredWidth: parent.width * 0.4 - 1
-            Layout.maximumWidth: parent.width * 0.4 - 1
+            Layout.fillWidth: true
             color: StyleSheet.font_color_extra
         }
 
@@ -50,10 +49,21 @@ ColumnLayout {
         }
 
         Text {
-            text: "Status"
+            text: "Sign"
             horizontalAlignment: Text.AlignHCenter
-            Layout.preferredWidth: parent.width * 0.1 - 1
-            Layout.maximumWidth: parent.width * 0.1 - 1
+            Layout.preferredWidth: parent.width * 0.05 - 1
+            Layout.maximumWidth: parent.width * 0.05 - 1
+            color: StyleSheet.font_color_extra
+        }
+
+        HeaderToolSeparator {
+        }
+
+        Text {
+            text: "MRPA"
+            horizontalAlignment: Text.AlignHCenter
+            Layout.preferredWidth: parent.width * 0.05 - 1
+            Layout.maximumWidth: parent.width * 0.05 - 1
             color: StyleSheet.font_color_extra
         }
 
@@ -77,10 +87,9 @@ ColumnLayout {
             text: "Details"
             color: StyleSheet.font_color_extra
             horizontalAlignment: Text.AlignHCenter
-            Layout.maximumWidth: 400
-            Layout.preferredWidth: parent.width * 0.25 - 1
-            // Layout.maximumWidth: parent.width * 0.25 - 1
-            Layout.minimumWidth: 200
+            Layout.maximumWidth: 300
+            Layout.preferredWidth: 300
+            Layout.minimumWidth: 300
             Layout.fillWidth: true
         }
     }

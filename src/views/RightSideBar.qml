@@ -37,9 +37,9 @@ Item {
     }
 
     visible: showState != RightSideBar.ShowState.Invisible
-    Layout.maximumWidth: 400
+    Layout.maximumWidth: 300
     Layout.preferredWidth: 300
-    Layout.minimumWidth: 200
+    Layout.minimumWidth: 300
     Layout.fillHeight: true
     Layout.fillWidth: true
 

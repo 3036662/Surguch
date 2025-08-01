@@ -61,5 +61,7 @@
         <file>icons/dark/tag_icon.svg</file>
         <file>icons/light/info_icon.svg</file>
         <file>icons/dark/info_icon.svg</file>
+        <file>icons/light/box.svg</file>
+        <file>icons/dark/box.svg</file>
     </qresource>
 </RCC>

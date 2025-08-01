@@ -47,6 +47,12 @@ ApplicationWindow {
             spacing: 2
             Header {
                 id: header
+
+                onChangeShowType: newType => {
+                    showType = newType
+                    fileDropArea.enabled = false
+                    pdfDropArea.width = parent.width
+                }
             }
             HeaderSubBar {
                 id: headerSubBar
@@ -77,7 +83,7 @@ ApplicationWindow {
             bottom: parent.bottom
         }
 
-        onDropped: (drop) => {
+        onDropped: drop => {
             console.warn("something dropped in pdf area " + drop.urls)
             fileDropArea.enabled = false
             width = parent.width
@@ -106,7 +112,7 @@ ApplicationWindow {
             bottom: parent.bottom
         }
 
-        onDropped: (drop) => {
+        onDropped: drop => {
             console.warn("something dropped in file area" + drop.urls)
             pdfDropArea.enabled = false
             width = parent.width
@@ -122,11 +128,6 @@ ApplicationWindow {
             Layout.fillWidth: true
             visible: showType === Main.ShowType.Empty
         }
-        // Rectangle {
-        //     Layout.fillWidth: true
-        //     Layout.fillHeight: true
-        //     color: "red"
-        // }
 
         LeftSideBar {
             id: leftSideBar
@@ -141,8 +142,7 @@ ApplicationWindow {
 
         FileTreeView {
             id: fileTreeView
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+            Layout.preferredWidth: root_window.width - 500
             visible: showType === Main.ShowType.Files
         }
 

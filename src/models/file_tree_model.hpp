@@ -13,9 +13,10 @@ class FileTreeModel: public QAbstractItemModel {
         FileNameRole = Qt::UserRole + 1,
         SizeRole,
         LastEditRole,
-        StatusRole,
+        SigStatusRole,
         HasKidsRole,
         DescriptionRole,
+        TypeRole,
         IdRole
     };
 
