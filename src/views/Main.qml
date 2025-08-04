@@ -142,7 +142,16 @@ ApplicationWindow {
 
         FileTreeView {
             id: fileTreeView
-            Layout.preferredWidth: root_window.width - 500
+
+            property int sizeColumn: fileModeHeaderSubBar.sizeColumn
+            property int editColumn: fileModeHeaderSubBar.editColumn
+            property int signColumn: fileModeHeaderSubBar.signColumn
+            property int mrpaColumn: fileModeHeaderSubBar.mrpaColumn
+            property int deleteColumn: fileModeHeaderSubBar.deleteColumn
+
+            Layout.preferredWidth: root_window.width - 300
+            Layout.maximumWidth: root_window.width - 300
+            Layout.minimumWidth: root_window.width - 300
             visible: showType === Main.ShowType.Files
         }
 

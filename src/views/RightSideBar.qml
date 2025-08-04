@@ -14,12 +14,15 @@ Item {
     enum ShowState {
         Invisible,
         SigInfo,
-        ProfileInfo
+        ProfileInfo,
+        Certs,
+        Mrpa
     }
 
     property alias edit_profile: edit_profile_panel
     property int showState: RightSideBar.ShowState.Invisible
     property var jsonData
+    property int sigCount: 0
 
     function showData(data) {
         try {
@@ -70,5 +73,10 @@ Item {
             showState = RightSideBar.ShowState.Invisible
         }
 
+    }
+
+    SignaturesList {
+        id: rSigListView
+        visible: showState == LeftSideBar.ShowState.Certs && sigCount > 0
     }
 }

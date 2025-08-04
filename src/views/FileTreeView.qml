@@ -9,10 +9,8 @@ TreeView {
     id: treeView
 
     Layout.fillHeight: true
-    Layout.fillWidth: true
     Layout.leftMargin: 5
-    Layout.minimumWidth: 200
-    Layout.alignment: Qt.AlignHCenter
+    Layout.alignment: Qt.AlignLeft
 
     clip: true
     model: fileTreeModel
@@ -89,7 +87,6 @@ TreeView {
             Rectangle {
                 id: treeIndent
 
-                Layout.preferredWidth: hasChildren ? indentation : indentation + 20
                 Layout.minimumWidth: hasChildren ? indentation : indentation + 20
                 Layout.maximumWidth: hasChildren ? indentation : indentation + 20
             }
@@ -98,15 +95,14 @@ TreeView {
 
                 height: 15
                 source: getImageForNode(model.type)
-                visible: column === 0 ? true : false
+                visible: column === 0
                 width: 15
             }
             Label {
                 id: nameField
 
-                Layout.alignment: Qt.AlignLeft
-                Layout.maximumWidth: treeView.width * 0.4 - indent.width - treeIndent.width - image.width - indicator.width
-                Layout.minimumWidth: treeView.width * 0.4 - indent.width - treeIndent.width - image.width - indicator.width
+                Layout.fillWidth: true
+                Layout.leftMargin: 5
                 ToolTip.delay: 500
                 ToolTip.text: model.name
                 ToolTip.visible: nameArea.containsMouse
@@ -127,37 +123,29 @@ TreeView {
                 id: sizeField
 
                 Layout.alignment: Qt.AlignLeft
-                Layout.preferredWidth: treeView.width * 0.1
+                Layout.preferredWidth: sizeColumn
                 clip: true
                 color: StyleSheet.font_color_extra
                 font.pixelSize: column === 0 ? 14 : 10
+                horizontalAlignment: Text.AlignHCenter
                 text: model.size
-                background: Rectangle {
-                    anchors.fill: parent
-                    color: "transparent"
-                    border.color: "red"
-                }
             }
             Label {
                 id: lastEditField
 
                 Layout.alignment: Qt.AlignLeft
-                Layout.preferredWidth: treeView.width * 0.1
+                Layout.preferredWidth: editColumn
                 clip: true
                 color: StyleSheet.font_color_extra
                 font.pixelSize: column === 0 ? 14 : 10
+                horizontalAlignment: Text.AlignHCenter
                 text: model.modification_time
-                background: Rectangle {
-                    anchors.fill: parent
-                    color: "transparent"
-                    border.color: "red"
-                }
             }
             Label {
                 id: signStatusField
 
                 Layout.alignment: Qt.AlignLeft
-                Layout.preferredWidth: treeView.width * 0.05
+                Layout.preferredWidth: signColumn
                 clip: true
                 color: StyleSheet.font_color_extra
                 font.pixelSize: column === 0 ? 14 : 10
@@ -197,7 +185,7 @@ TreeView {
                 id: mrpaStatusField
 
                 Layout.alignment: Qt.AlignLeft
-                Layout.preferredWidth: treeView.width * 0.05
+                Layout.preferredWidth: mrpaColumn
                 clip: true
                 color: StyleSheet.font_color_extra
                 font.pixelSize: column === 0 ? 14 : 10
@@ -219,7 +207,7 @@ TreeView {
                         hoverEnabled: true
 
                         onClicked: {
-                            rightSideBar.showState = RightSideBar.ShowState.SigInfo;
+                            rightSideBar.showState = RightSideBar.ShowState.Certs;
                         }
                         onEntered: {
                             cursorShape = Qt.PointingHandCursor;
@@ -235,7 +223,7 @@ TreeView {
                 id: deleteBtn
 
                 visible: depth === 0
-                Layout.preferredWidth: treeView.width * 0.05
+                Layout.preferredWidth: deleteColumn
                 icon.height: 20
                 icon.source: StyleSheet.trash_icon
                 icon.width: 20
@@ -247,19 +235,7 @@ TreeView {
                 id: dummyDelete
 
                 visible: !deleteBtn.visible
-                Layout.preferredWidth: treeView.width * 0.05
-            }
-
-            Rectangle {
-                id: dummyItem
-
-                visible: !rightSideBar.visible
-                color: "transparent"
-                border.color: "red"
-                Layout.fillWidth: true
-                Layout.maximumWidth: 300
-                Layout.minimumWidth: 300
-                Layout.preferredWidth: 300
+                Layout.preferredWidth: deleteColumn
             }
         }
 

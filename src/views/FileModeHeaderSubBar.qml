@@ -4,6 +4,12 @@ import QtQuick.Layouts
 import StyleSheet
 
 ColumnLayout {
+    
+    property int sizeColumn: parent.width * 0.1 - 1
+    property int editColumn: parent.width * 0.1 - 1
+    property int signColumn: parent.width * 0.05 - 1
+    property int mrpaColumn: parent.width * 0.05 - 1
+    property int deleteColumn: parent.width * 0.05 - 1
 
     Rectangle {
         height: 1
@@ -29,8 +35,8 @@ ColumnLayout {
         Text {
             text: "Size"
             horizontalAlignment: Text.AlignHCenter
-            Layout.preferredWidth: parent.width * 0.1 - 1
-            Layout.maximumWidth: parent.width * 0.1 - 1
+            Layout.preferredWidth: sizeColumn
+            Layout.maximumWidth: sizeColumn
             color: StyleSheet.font_color_extra
         }
 
@@ -40,8 +46,8 @@ ColumnLayout {
         Text {
             text: "Last edit"
             horizontalAlignment: Text.AlignHCenter
-            Layout.preferredWidth: parent.width * 0.1 - 1
-            Layout.maximumWidth: parent.width * 0.1 - 1
+            Layout.preferredWidth: editColumn
+            Layout.maximumWidth: editColumn
             color: StyleSheet.font_color_extra
         }
 
@@ -76,8 +82,8 @@ ColumnLayout {
             icon.source: StyleSheet.trash_icon
             icon.width: 20
             icon.height: 20
-            Layout.preferredWidth: parent.width * 0.05 - 1
-            Layout.maximumWidth: parent.width * 0.05 - 1
+            Layout.preferredWidth: deleteColumn
+            Layout.maximumWidth: deleteColumn
         }
 
         HeaderToolSeparator {
