@@ -8,11 +8,11 @@ namespace core {
 
 SurguchLauncher::SurguchLauncher(QObject *parent) : QObject{parent} {}
 
-void SurguchLauncher::launchSurguch(const QUrl& file){
+void SurguchLauncher::launchSurguch(const QUrl &file) {
     // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
     auto *process = new QProcess();
     connect(process, &QProcess::finished,
-                    [process] { process->deleteLater(); });
+            [process] { process->deleteLater(); });
     //  error
     connect(process, &QProcess::errorOccurred,
             [process](QProcess::ProcessError err) {
@@ -24,6 +24,5 @@ void SurguchLauncher::launchSurguch(const QUrl& file){
     process->setArguments({file.toLocalFile()});
     process->start(surguch_executable_, {file.toLocalFile()});
 }
-
 
 }  // namespace core

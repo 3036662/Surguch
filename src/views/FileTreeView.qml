@@ -41,6 +41,8 @@ TreeView {
                     return StyleSheet.box_icon;
                 case "Mrpa":
                     return StyleSheet.file_simple_icon;
+                default:
+                    return "";
             }
         }
 
@@ -80,22 +82,24 @@ TreeView {
                         let index = treeView.index(row, column);
                         treeView.selectionModel.setCurrentIndex(index, ItemSelectionModel.NoUpdate);
                         treeView.toggleExpanded(row);
-                        //console.warn(nameField.width);
                     }
                 }
             }
             Rectangle {
                 id: treeIndent
 
-                Layout.minimumWidth: hasChildren ? indentation : indentation + 20
-                Layout.maximumWidth: hasChildren ? indentation : indentation + 20
+                color: "transparent"
+
+                Layout.fillHeight: true
+                Layout.minimumWidth: hasChildren ? indentation : indentation + 10
+                Layout.maximumWidth: hasChildren ? indentation : indentation + 10
             }
             Image {
                 id: image
 
                 height: 15
                 source: getImageForNode(model.type)
-                visible: column === 0
+                visible: column === 0 && model.type !== "temp"
                 width: 15
             }
             Label {
@@ -129,7 +133,15 @@ TreeView {
                 font.pixelSize: column === 0 ? 14 : 10
                 horizontalAlignment: Text.AlignHCenter
                 text: model.size
+                visible: model.type !== "temp"
             }
+
+            BusyIndicator {
+                id: size_busy_indicator
+                visible: model.type === "temp"
+                Layout.preferredWidth: sizeColumn
+            }
+
             Label {
                 id: lastEditField
 
@@ -140,7 +152,15 @@ TreeView {
                 font.pixelSize: column === 0 ? 14 : 10
                 horizontalAlignment: Text.AlignHCenter
                 text: model.modification_time
+                visible: model.type !== "temp"
             }
+
+            BusyIndicator {
+                id: date_busy_indicator
+                visible: model.type === "temp"
+                Layout.preferredWidth: editColumn
+            }
+
             Label {
                 id: signStatusField
 
@@ -150,7 +170,8 @@ TreeView {
                 color: StyleSheet.font_color_extra
                 font.pixelSize: column === 0 ? 14 : 10
                 horizontalAlignment: Text.AlignHCenter
-                text: model.sig_status
+                text: model.type
+                visible: model.sig_status
 
                 background: Rectangle {
                     color: "green"
@@ -181,6 +202,12 @@ TreeView {
                 }
             }
 
+            BusyIndicator {
+                id: sign_busy_indicator
+                visible: !model.sig_status
+                Layout.preferredWidth: signColumn
+            }
+
             Label {
                 id: mrpaStatusField
 
@@ -191,6 +218,7 @@ TreeView {
                 font.pixelSize: column === 0 ? 14 : 10
                 horizontalAlignment: Text.AlignHCenter
                 text: model.sig_status
+                visible: model.sig_status
 
                 background: Rectangle {
                     color: "green"
@@ -219,6 +247,13 @@ TreeView {
                 }
             }
 
+            BusyIndicator {
+                id: mrpa_busy_indicator
+
+                visible: !model.sig_status
+                Layout.preferredWidth: mrpaColumn
+            }
+
             ToolButton {
                 id: deleteBtn
 
@@ -229,6 +264,10 @@ TreeView {
                 icon.width: 20
                 height: 20
                 width: 20
+
+                onClicked: {
+                    fileTreeModel.deleteNode(row, model.uid)
+                }
             }
 
             Item {

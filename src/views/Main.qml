@@ -114,6 +114,7 @@ ApplicationWindow {
 
         onDropped: drop => {
             console.warn("something dropped in file area" + drop.urls)
+            fileTreeModel.addNode(drop.urls)
             pdfDropArea.enabled = false
             width = parent.width
             showType = Main.ShowType.Files
