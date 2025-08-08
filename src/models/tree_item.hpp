@@ -16,6 +16,7 @@ struct FileData{
     std::vector<int> mrpa_ids;
     QString name;
     QString type;
+    QString full_path;
 };
 
 class TreeItem {
@@ -33,6 +34,8 @@ class TreeItem {
     [[nodiscard]] FileData data() const;
 
     void deleteItem(QUuid id);
+
+    void deleteChildren();
 
    private:
     std::vector<std::shared_ptr<TreeItem>> child_items_;

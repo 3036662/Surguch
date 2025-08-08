@@ -6,6 +6,8 @@
 #include <QJsonObject>
 #include <QStack>
 #include <QStringList>
+#include <iostream>
+#include <thread>
 
 FileTreeModel::FileTreeModel(QObject *parent)
     : QAbstractItemModel(parent),
@@ -129,24 +131,18 @@ bool FileTreeModel::addNode(const QStringList& file_list) {
                 file_array.append(QUrl(file_name).toLocalFile());
             });
 
-            // waiting Oleg
-            QFile file("/home/dv/tree3.json");
-            file.open(QIODevice::ReadOnly | QIODevice::Text);
-            const QByteArray file_data = file.readAll();
-            file.close();
-            const QJsonDocument json_doc = QJsonDocument::fromJson(file_data);
-            // waiting Oleg
+            const auto res = tree_.AddFilesJsonList(QJsonDocument(file_array).toJson().toStdString());
+            const QJsonDocument json_doc = QJsonDocument::fromJson(res.value().data());
 
             if (json_doc.isObject()) {
                 beginInsertRows(QModelIndex(), root_item->childCount(),
-                            root_item->childCount());
+                            root_item->childCount() + file_list.size() -1 );
                 QJsonArray const data_ = json_doc["children"].toArray();
                 setupModelData(data_, root_item.get());
-                file.close();
                 qWarning() << "[DEBUG]" << " Positive reading json";
                 endInsertRows();
             }
-            ctx_available_ = false;
+            //ctx_available_ = false;
             return true;
         } else {
             QJsonArray data_;
@@ -170,11 +166,37 @@ bool FileTreeModel::addNode(const QStringList& file_list) {
     return false;
 }
 
-bool FileTreeModel::deleteNode(int row, QUuid id) {
-    beginRemoveRows(QModelIndex(), row, row);
-    root_item->deleteItem(id);
-    endRemoveRows();
-    return true;
+bool FileTreeModel::deleteNode(int row, QUuid uid, int id) {
+    if (!ctx_available_) {
+        beginRemoveRows(QModelIndex(), row, row);
+        root_item->deleteItem(uid);
+        endRemoveRows();
+        return true;
+    }
+
+    if (item_map.find(id) != item_map.end()) {
+        if (!item_map.at(id).expired()) {
+            beginResetModel();
+            root_item->deleteChildren();
+            endResetModel();
+            QJsonArray file_array;
+            file_array.append(item_map[id].lock()->data().full_path);
+            auto res = tree_.RemoveFilesJsonList(QJsonDocument(file_array).toJson().toStdString());
+            const QJsonDocument json_doc = QJsonDocument::fromJson(res.value().data());
+
+            if (json_doc.isObject()) {
+                beginInsertRows(QModelIndex(), root_item->childCount(),
+                            root_item->childCount() + res.value().size() -1 );
+                QJsonArray const data_ = json_doc["children"].toArray();
+                setupModelData(data_, root_item.get());
+                qWarning() << "[DEBUG]" << " File removed from ctx";
+                endInsertRows();
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 void FileTreeModel::setupModelData(const QJsonArray &array, TreeItem *parent) {
@@ -209,12 +231,18 @@ void FileTreeModel::setupModelData(const QJsonArray &array, TreeItem *parent) {
         } else {
             fileData.has_check_result = false;
         }
+        if (obj.contains("id")) {
+            fileData.id = obj["id"].toInt();
+        }
+        if (obj.contains("full_path")) {
+            fileData.full_path = obj["full_path"].toString();
+        }
 
         if (obj.contains("assoc_refs_number")) {
             fileData.ref_id_size = obj["assoc_refs_number"].toInt();
         }
         if (obj.contains("refs_ids")) {
-            fileData.ref_ids = obj["ref_ids"].toArray().toVariantList();
+            //fileData.ref_ids = obj["ref_ids"].toArray().toVariantList();
             // qWarning() << "[DEBUG]" << " ref_ids for "
             //            << statArray["name"].toString() << " : "
             //            << obj["ref_ids"].toArray().toVariantList();

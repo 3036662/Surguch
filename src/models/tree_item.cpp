@@ -52,3 +52,8 @@ void TreeItem::deleteItem(QUuid id) {
                        }),
         child_items_.end());
 }
+
+void TreeItem::deleteChildren(){
+    child_items_.clear();
+}
+

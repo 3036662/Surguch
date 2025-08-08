@@ -33,6 +33,10 @@ IF (NOT DEFINED PDFCSP_PDF_LINK_PATH)
     SET(PDFCSP_PDF_LINK_PATH csppdf)
 ENDIF ()
 
+IF (NOT DEFINED PDFCSP_MRPA_LINK_PATH)
+    SET(PDFCSP_MRPA_LINK mrpa)
+ENDIF ()
+
 IF (NOT DEFINED PDFCSP_INCLUDE_DIR)
     SET(PDFCSP_INCLUDE_DIR /usr/include/pdfcsp/)
 ENDIF ()
@@ -41,6 +45,9 @@ IF (NOT DEFINED PDFCSP_PDF_INCLUDE_DIR)
     SET(PDFCSP_PDF_INCLUDE_DIR /usr/include/pdfcsp/)
 ENDIF ()
 
+IF (NOT DEFINED PDFCSP_MRPA_INCLUDE_DIR)
+    SET(PDFCSP_MRPA_INCLUDE_DIR /usr/include/pdfcsp/mrpa/)
+ENDIF ()
 
 #translations
 IF (NOT DEFINED SIBLING_DEPLOY) #dont update translation for every sibling
@@ -197,6 +204,10 @@ target_link_libraries(surguch
 
 target_link_libraries(surguch
         PRIVATE ${PDFCSP_PDF_LINK_PATH}
+)
+
+target_link_libraries(surguch
+        PRIVATE ${PDFCSP_MRPA_LINK_PATH}
 )
 
 target_link_libraries(surguch PRIVATE Qt6::PrintSupport)

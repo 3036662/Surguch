@@ -4,6 +4,8 @@
 #include <QAbstractItemModel>
 #include <QVariant>
 
+#include <doc_archive_public.hpp>
+
 #include "tree_item.hpp"
 
 class FileTreeModel : public QAbstractItemModel {
@@ -43,10 +45,12 @@ class FileTreeModel : public QAbstractItemModel {
 
     Q_INVOKABLE bool addNode(const QStringList& fie_list);
 
-    Q_INVOKABLE bool deleteNode(int row, QUuid uid);
+    Q_INVOKABLE bool deleteNode(int row, QUuid uid, int id);
 
    private:
     void setupModelData(const QJsonArray &doc, TreeItem *parent);
+
+    pdfcsp::DocTree tree_;
 
     std::map<int, std::weak_ptr<TreeItem>> item_map;
     std::shared_ptr<TreeItem> root_item;
