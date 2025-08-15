@@ -2,14 +2,20 @@
 #define FILE_TREE_MODEL_HPP
 
 #include <QAbstractItemModel>
+#include <QFuture>
+#include <QFutureWatcher>
+#include <QJsonArray>
 #include <QVariant>
-
 #include <doc_archive_public.hpp>
 
 #include "tree_item.hpp"
 
 class FileTreeModel : public QAbstractItemModel {
     Q_OBJECT
+
+    enum Operation { Add, Delete, Wasted };
+
+    enum State { Done, RunningDraft, RunningSigns };
 
     enum Roles {
         FileNameRole = Qt::UserRole + 1,
@@ -19,6 +25,7 @@ class FileTreeModel : public QAbstractItemModel {
         HasKidsRole,
         DescriptionRole,
         TypeRole,
+        FullPathRole,
         UidRole,
         IdRole,
         RefsNumberRole,
@@ -27,8 +34,18 @@ class FileTreeModel : public QAbstractItemModel {
         MrpaListRole
     };
 
+    struct OperationData {
+        Operation operation = Wasted;
+        std::optional<int> row;
+        std::optional<QUuid> file_uid;
+        std::optional<int> file_id;
+    };
+
    public:
     explicit FileTreeModel(QObject *parent = nullptr);
+
+    using TreeFuture = QFuture<std::optional<std::string>>;
+    using TreeFutureWatcher = QFutureWatcher<std::optional<std::string>>;
 
     [[nodiscard]] QVariant data(const QModelIndex &index,
                                 int role) const override;
@@ -42,20 +59,31 @@ class FileTreeModel : public QAbstractItemModel {
         const QModelIndex &parent = {}) const override;
 
     Q_INVOKABLE std::vector<int> getCertList(int fie_id);
-
-    Q_INVOKABLE bool addNode(const QStringList& fie_list);
-
-    Q_INVOKABLE bool deleteNode(int row, QUuid uid, int id);
+    Q_INVOKABLE bool addNode(QStringList fie_list);
+    Q_INVOKABLE bool deleteNode(const QString &full_path, int row, QUuid uid,
+                                int id);
+    Q_INVOKABLE void deleteTree();
 
    private:
     void setupModelData(const QJsonArray &doc, TreeItem *parent);
+    void processAdd(const QJsonArray &arr);
+    void processDelete(const QJsonArray &arr);
+    void processDraftTree();
+    void processSignedTree();
+    void addFilesUI(const QStringList &file_list);
+    void deleteFilesUI(int row, QUuid uid, int id);
 
     pdfcsp::DocTree tree_;
+    std::unique_ptr<TreeFuture> tree_future_;
+    std::unique_ptr<TreeFutureWatcher> tree_watcher_;
+
+    std::unordered_map<QString, OperationData> operation_data_;
 
     std::map<int, std::weak_ptr<TreeItem>> item_map;
     std::shared_ptr<TreeItem> root_item;
     QHash<int, QByteArray> role_names_;
 
+    State state_ = Done;
     bool ctx_available_ = true;
 };
 

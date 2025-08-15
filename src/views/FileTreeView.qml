@@ -266,7 +266,7 @@ TreeView {
                 width: 20
 
                 onClicked: {
-                    console.warn("delete node res: " + fileTreeModel.deleteNode(row, model.uid, model.id))
+                    console.warn("delete node res: " + fileTreeModel.deleteNode(model.full_path, row, model.uid, model.id))
                 }
             }
 

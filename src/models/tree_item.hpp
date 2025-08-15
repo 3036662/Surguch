@@ -5,7 +5,7 @@
 #include <QVariantList>
 #include <memory>
 
-struct FileData{
+struct FileData {
     bool has_check_result = false;
     int id = 0;
     int size = 0;
@@ -21,7 +21,7 @@ struct FileData{
 
 class TreeItem {
    public:
-    explicit TreeItem(FileData data, QUuid uid,TreeItem *parentItem = nullptr);
+    explicit TreeItem(FileData data, QUuid uid, TreeItem *parentItem = nullptr);
 
     void appendChild(std::shared_ptr<TreeItem> &&child);
 
@@ -32,6 +32,7 @@ class TreeItem {
     [[nodiscard]] TreeItem *parentItem() const;
     [[nodiscard]] QUuid uid() const;
     [[nodiscard]] FileData data() const;
+    [[nodiscard]] bool contains(const QString &full_path) const;
 
     void deleteItem(QUuid id);
 

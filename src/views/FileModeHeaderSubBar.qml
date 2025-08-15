@@ -4,7 +4,7 @@ import QtQuick.Layouts
 import StyleSheet
 
 ColumnLayout {
-    
+
     property int sizeColumn: parent.width * 0.1 - 1
     property int editColumn: parent.width * 0.1 - 1
     property int signColumn: parent.width * 0.05 - 1
@@ -84,6 +84,10 @@ ColumnLayout {
             icon.height: 20
             Layout.preferredWidth: deleteColumn
             Layout.maximumWidth: deleteColumn
+
+            onClicked: {
+                fileTreeModel.deleteTree()
+            }
         }
 
         HeaderToolSeparator {

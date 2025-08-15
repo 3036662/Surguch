@@ -1,6 +1,6 @@
 #include "tree_item.hpp"
 
-TreeItem::TreeItem(FileData data, QUuid id,TreeItem *parent)
+TreeItem::TreeItem(FileData data, QUuid id, TreeItem *parent)
     : file_data_(std::move(data)), uid_(id), parent_item_(parent) {}
 
 void TreeItem::appendChild(std::shared_ptr<TreeItem> &&child) {
@@ -14,7 +14,7 @@ TreeItem *TreeItem::child(int row) {
 
 int TreeItem::childCount() const { return int(child_items_.size()); }
 
-int TreeItem::columnCount() const { return 5; }
+int TreeItem::columnCount() const { return 1; }
 
 TreeItem *TreeItem::parentItem() const { return parent_item_; }
 
@@ -34,15 +34,16 @@ int TreeItem::row() const {
     return -1;
 }
 
-FileData TreeItem::data() const{
-    return file_data_;
+FileData TreeItem::data() const { return file_data_; }
+
+QUuid TreeItem::uid() const { return uid_; }
+
+bool TreeItem::contains(const QString &full_path) const {
+    return std::any_of(child_items_.begin(), child_items_.end(),
+                       [&full_path](const std::shared_ptr<TreeItem> &treeItem) {
+                           return full_path == treeItem->data().full_path;
+                       });
 }
-
-
-QUuid TreeItem::uid() const{
-    return uid_;
-}
-
 
 void TreeItem::deleteItem(QUuid id) {
     child_items_.erase(
@@ -53,7 +54,4 @@ void TreeItem::deleteItem(QUuid id) {
         child_items_.end());
 }
 
-void TreeItem::deleteChildren(){
-    child_items_.clear();
-}
-
+void TreeItem::deleteChildren() { child_items_.clear(); }
