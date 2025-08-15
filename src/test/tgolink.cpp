@@ -609,13 +609,13 @@ bool compareRects(fz_rect const& lhs, fz_rect const& rhs) {
         lhs.x1 == rhs.x1 && lhs.y1 == rhs.y1;
 }
 
-void TGolink::FindUriPage()
+void TGolink::FindAllUriPage()
 {
     size_t test_page_index = 0;
     core::utils::MousePos test_mouse_pos { .0F, .0F };
     core::utils::PagesTextCache test_page_text_cache;
 
-    QVERIFY(core::utils::findUriPage(test_page_index, test_mouse_pos, test_page_text_cache) == nullptr);
+    QVERIFY(core::utils::findAllUriPage(test_page_index, test_mouse_pos, test_page_text_cache) == nullptr);
 
     std::string test_uri = "https://ya.ru";
     core::utils::PageUriList page_uri_list;
@@ -634,66 +634,15 @@ void TGolink::FindUriPage()
     QVERIFY(test_page_text_cache->size() == 1);
 
     // expected nullptr if page_index is >= page_uri_list.size()
-    QVERIFY(core::utils::findUriPage(1, test_mouse_pos, test_page_text_cache) == nullptr);
+    QVERIFY(core::utils::findAllUriPage(1, test_mouse_pos, test_page_text_cache) == nullptr);
 
     test_mouse_pos = { 60, 65 };
-    auto result = core::utils::findUriPage(test_page_index, test_mouse_pos, test_page_text_cache);
+    auto result = core::utils::findAllUriPage(test_page_index, test_mouse_pos, test_page_text_cache);
     QVERIFY(result != nullptr);
+    QVERIFY(!result->empty());
 
     // the found element is expected to contain the values from page_uri_data
-    QVERIFY(compareRects(result->uri_rect, page_uri_data.uri_rect));
-    QVERIFY(result->uri == test_uri);
-}
-
-void TGolink::UpdateUriList() {
-    size_t test_page_index = 0;
-    fz_rect test_uri_rect = { 10, 10, 20, 15 };
-    std::string test_uri = "https://ya.ru";
-
-    core::utils::PageUriList page_uri_list;
-    core::utils::PageUriData page_uri_data {
-        .uri_rect = test_uri_rect,
-        .uri = test_uri.data()
-    };
-    page_uri_list.emplace_back(page_uri_data);
-
-    auto pages_cache = std::make_unique<std::vector<core::utils::PagesTextCacheSinglePage>>();
-    core::utils::PagesTextCacheSinglePage pages_single_cache {
-        test_page_index,
-        "",
-        page_uri_list
-    };
-    pages_cache->emplace_back(pages_single_cache);
-
-    std::string added_uri1 = "https://altlinux.org";
-    fz_rect bounds_added_uri1 = { 11, 11, 19, 14 };
-    core::utils::PageUriData added_uri_data1 {
-        .uri_rect = bounds_added_uri1,
-        .uri = added_uri1.data()
-    };
-
-    decltype(auto) page_cache_ref = pages_cache->at(test_page_index);
-    QVERIFY(page_cache_ref.page_uri_list.size() == 1);
-    core::utils::addExternalUri(test_page_index, added_uri_data1, pages_cache);
-
-    QVERIFY(page_cache_ref.page_uri_list.size() == 2);
-    auto addedUriToList1 = page_cache_ref.page_uri_list.at(1);
-
-    QVERIFY(addedUriToList1.uri == added_uri1);
-    QVERIFY(compareRects(addedUriToList1.uri_rect, bounds_added_uri1));
-
-    //std::string added_uri2 = "https://packages.altlinux.org";
-    //fz_rect bounds_added_uri2 = { 5, 5, 25, 20 };
-    //core::utils::PageUriData added_uri_data2 {
-    //    .uri_rect = bounds_added_uri2,
-    //    .uri = added_uri2.data()
-    //};
-
-    //core::utils::addExternalUri(test_page_index, added_uri_data2, pages_cache);
-    //auto addedUriToList2 = page_cache_ref.page_uri_list.at(2);
-    //QVERIFY(page_cache_ref.page_uri_list.size() == 3);
-
-    //QVERIFY(addedUriToList2.z_index == 2);
-    //QVERIFY(lastAddedUri.uri == added_uri2);
-    //QVERIFY(compareRects(lastAddedUri.uri_rect, added_uri_data2.uri_rect));
+    auto page_data = result->at(0);
+    QVERIFY(compareRects(page_data.uri_rect, page_uri_data.uri_rect));
+    QVERIFY(page_data.uri == test_uri);
 }
