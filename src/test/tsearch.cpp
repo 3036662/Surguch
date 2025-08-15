@@ -123,9 +123,9 @@ void TSearch::CacheText() {
     std::cout << "cached pages count = " << cache->size() << "\n";
     const bool all_not_empty =
         std::all_of(cache->cbegin(), cache->cend(),
-                    [](const std::pair<size_t, QString> &val) {
+                    [](const core::utils::PagesTextCacheSinglePage &val) {
                         // std::cout << val.second.toStdString() << "\n";
-                        return !val.second.isEmpty();
+                        return !val.page_text.isEmpty();
                     });
     const QString needle1 = "положения";
     QVERIFY(all_not_empty);
@@ -179,9 +179,9 @@ void TSearch::SearchTest1() {
         std::cout << "cached pages count = " << cache->size() << "\n";
         const bool all_not_empty =
             std::all_of(cache->cbegin(), cache->cend(),
-                        [](const std::pair<size_t, QString> &val) {
+                        [](const core::utils::PagesTextCacheSinglePage &val) {
                             // std::cout << val.second.toStdString() << "\n";
-                            return !val.second.isEmpty();
+                            return !val.page_text.isEmpty();
                         });
         QVERIFY(all_not_empty);
 
