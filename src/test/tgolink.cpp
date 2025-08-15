@@ -121,8 +121,9 @@ void TGolink::ExtractAllUriPage() {
         test_files_dir_ + "21_cam_CADES-XLT1_5signs.pdf";
 
     // expected URIs from the 1st page of a document
-    std::vector<std::string> expected_uris{"http://cryptoarm.ru",
-                                           "http://trusted.ru"};
+    QStringList expected_uris {
+        "http://cryptoarm.ru",
+        "http://trusted.ru" };
 
     // context
     fz_context* fzctx = fz_new_context(nullptr, nullptr, 500000000);
@@ -161,9 +162,10 @@ void TGolink::ExtractAllUriPage() {
     fz_catch(fzctx) { fz_report_error(fzctx); }
 
     std::sort(extracted_uris.begin(), extracted_uris.end());
-    QVERIFY2(std::equal(extracted_uris.begin(), extracted_uris.end(),
-                        expected_uris.begin()),
-             "The extracted URIs don't match the expected onces");
+
+    QVERIFY2(std::equal(extracted_uris.cbegin(), extracted_uris.cend(),
+            expected_uris.cbegin()),
+            "The extracted URIs don't match the expected onces");
 
     // cleanup
     fz_drop_document(fzctx, fzdoc);
