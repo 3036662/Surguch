@@ -709,8 +709,47 @@ ListView {
             MouseArea {
                 enabled: !aimMouseArea.enabled
                 anchors.fill: parent
+                hoverEnabled: true
+                onPressed: mouse => {
+                    if (!source) {
+                        mouse.accepted = false
+                        return
+                    }
+
+                    if (mouse.modifiers === Qt.ControlModifier) {
+                        const mousePosX = mouse.x / zoomPageFact
+                        const mousePosY = mouse.y / zoomPageFact
+
+                        const externalUri = pdfModel.getUriByPos(currentPageIndex(), mousePosX, mousePosY)
+                        externalUri.forEach(uri => Qt.openUrlExternally(uri))
+
+                        mouse.accepted = true
+                        return
+                    }
+
+                    mouse.accepted = false
+                }
+
                 onClicked: {
                     root.forceActiveFocus()
+                }
+
+                onPositionChanged: mouse => {
+                    if (source) {
+                        const mousePosX = mouse.x / zoomPageFact
+                        const mousePosY = mouse.y / zoomPageFact
+
+                        if (pdfModel.mouseOverUri(currentPageIndex(), mousePosX, mousePosY)) {
+                            docArea.cursorShape = Qt.OpenHandCursor
+                        } else {
+                            docArea.cursorShape = Qt.ArrowCursor
+                        }
+
+                        mouse.accepted = true
+                        return
+                    }
+
+                    mouse.accepted = false
                 }
             }
 
@@ -985,43 +1024,11 @@ ListView {
     }
 
     MouseArea {
-        id: docView
+        id: docArea
         anchors.fill: parent
-        acceptedButtons: Qt.LeftButton
-        hoverEnabled: !root.tagMode
-        //acceptedButtons: Qt.NoButton
+        acceptedButtons: Qt.NoButton
 
         Connections {
-            function onPositionChanged(mouse) {
-                if (source) {
-                    const pos = preservePosition()
-                    let relativePosX = (mouse.x + contentX) / pos.zoom_last
-                    let relativePosY = (mouse.y + contentY) / pos.zoom_last;
-                    if (pdfModel.mouseOverUri(currentPageIndex(), relativePosX, relativePosY)) {
-                        docView.cursorShape = Qt.OpenHandCursor
-                    } else {
-                        docView.cursorShape = Qt.ArrowCursor
-                    }
-                    mouse.accepted = true
-                    return
-                }
-                mouse.accepted = false
-            }
-
-            function onPressed(mouse) {
-                if (mouse.modifiers === Qt.ControlModifier) {
-                    const pos = preservePosition()
-                    const mouseX = (mouse.x + contentX) / pos.zoom_last
-                    const mouseY = (mouse.y + contentY) / pos.zoom_last;
-
-                    const externalUri = pdfModel.getUriByPos(currentPageIndex(), mouseX, mouseY)
-                    externalUri.forEach(uri => Qt.openUrlExternally(uri))
-
-                    mouse.accepted = true
-                    return
-                }
-                mouse.accepted = false
-            }
             function onWheel(event) {
                 if (event.modifiers === Qt.ControlModifier) {
                     if (event.angleDelta.y > 0) {

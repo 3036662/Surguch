@@ -139,9 +139,11 @@ class PdfDocModel : public QAbstractListModel {
 
     /// @brief returns the uri under the cursor
     [[nodiscard]] Q_INVOKABLE QStringList getUriByPos(size_t page_index,
-                                                      float mouse_x, float mouse_y) const;
+                                                      float mouseX, float mouseY) const;
+
     /// @brief true if the mouse is over the URI, otherwise false
-    [[nodiscard]] Q_INVOKABLE bool mouseOverUri(size_t page_index, float mouse_x, float mouse_y) const;
+    [[nodiscard]] Q_INVOKABLE bool mouseOverUri(size_t page_index,
+                                                float mouseX, float mouseY) const;
 
    signals:
 
@@ -171,11 +173,6 @@ class PdfDocModel : public QAbstractListModel {
 
     /// @brief signal for update after undo or redo
     void updateDoc();
-
-    //void mousePosChanged(int page_index, float mouse_x, float mouse_y);
-
-    /// @brief the mouse cursor is over URI
-    //void cursorOverUri(bool isOver);
 
    private slots:
     void handleSearchCompleted();

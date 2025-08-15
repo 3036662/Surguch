@@ -195,7 +195,6 @@ PageUriList extractAllUriPage(fz_context *fzctx,
                               fz_document *fzdoc,
                               int page_index,
                               std::optional<filterUri> filter) {
-
     bool mu_exception_catched = false;
     fz_page *page = nullptr;
     fz_var(page);
@@ -211,7 +210,7 @@ PageUriList extractAllUriPage(fz_context *fzctx,
                     .uri = extracted_uri
                 };
 
-                extracted_uris.push_back(page_uri_data);
+                extracted_uris.emplace_back(page_uri_data);
             }
         }
 
@@ -263,8 +262,9 @@ PagesTextCache extractTextAllPages(fz_context *fzctx,
         try {
             PagesTextCacheSinglePage page_cache {
                 static_cast<size_t>(i),
-                std::move(pageToQString(fzctx, fzdoc, i)),
-                std::move(extractAllUriPage(fzctx, fzdoc, i, removeAllCoveredUri)) };
+                pageToQString(fzctx, fzdoc, i),
+                extractAllUriPage(fzctx, fzdoc, i, removeAllCoveredUri)
+            };
             result->emplace_back(page_cache);
         } catch (const std::exception &ex) {
             qWarning() << ex.what();
@@ -430,9 +430,9 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
 }
 
 /**
- * @brief Find all URIs at given position on a given page
+ * @brief Find all URIs at given position on a given page.
  * @param page_index
- * @param mouse_pos
+ * @param mouse_pos mouse cursor position in the document in points
  * @param haystack
  * @return list of URIs @see PageUriData or nullptr
  */

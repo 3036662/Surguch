@@ -397,16 +397,16 @@ PdfDocModel::getCurrentNeedleRect(size_t page_index) {
 }
 
 QStringList
-PdfDocModel::getUriByPos(size_t page_index, float mouse_x, float mouse_y) const
+PdfDocModel::getUriByPos(size_t page_index, float mouseX, float mouseY) const
 {
     if (!text_extractor_) {
         return {};
     }
 
-    mouse_x *= static_cast<float>(72.0F / physical_screen_dpi_);
-    mouse_y *= static_cast<float>(72.0F / physical_screen_dpi_);
+    mouseX *= 72/static_cast<float>(physical_screen_dpi_);
+    mouseY *= 72/static_cast<float>(physical_screen_dpi_);
 
-	auto result = text_extractor_->getTargetAllUriPage(page_index, {mouse_x, mouse_y});
+    auto result = text_extractor_->getTargetAllUriPage(page_index, {mouseX, mouseY});
     if (!result) {
         return {};
     }
@@ -529,14 +529,11 @@ void PdfDocModel::saveImage() {
     emit updateDoc();
 }
 
-bool PdfDocModel::mouseOverUri(size_t page_index, float mouse_x, float mouse_y) const {
-	auto factor = static_cast<float>(72.0F / physical_screen_dpi_);
-	core::utils::MousePos mouse_pos {
-		mouse_x * factor,
-		mouse_y * factor
-	};
+bool PdfDocModel::mouseOverUri(size_t page_index, float mouseX, float mouseY) const {
+	mouseX *= 72/static_cast<float>(physical_screen_dpi_);
+	mouseY *= 72/static_cast<float>(physical_screen_dpi_);
 
-	return text_extractor_->checkMouseOverUri(page_index, mouse_pos);
+	return text_extractor_->checkMouseOverUri(page_index, {mouseX, mouseY});
 }
 
 // NOLINTEND(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
