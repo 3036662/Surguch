@@ -239,23 +239,24 @@ TextExtractor::getCurrentNeedleRect(size_t page_index) {
     return std::make_shared<RectToHiglightCurrent>(*current_rect_to_gighlight_);
 }
 
-std::unique_ptr<QStringList>
-TextExtractor::getTargetAllUriPage(size_t page_index,
-                                   core::utils::MousePos const &mouse_pos) const {
+std::unique_ptr<QStringList> TextExtractor::getTargetAllUriPage(
+    size_t page_index, core::utils::MousePos const &mouse_pos) const {
     auto found_uri_data = utils::findAllUriPage(page_index, mouse_pos, cache_);
     if (!found_uri_data || found_uri_data->empty()) {
         return {};
     }
 
     auto uri_list = std::make_unique<QStringList>();
-    std::for_each(found_uri_data->cbegin(), found_uri_data->cend(), [&uri_list](auto const& uri_data) {
-        uri_list->emplace_back(uri_data.uri);
-    });
+    std::for_each(found_uri_data->cbegin(), found_uri_data->cend(),
+                  [&uri_list](auto const &uri_data) {
+                      uri_list->emplace_back(uri_data.uri);
+                  });
 
     return uri_list;
 }
 
-bool TextExtractor::checkMouseOverUri(size_t page_index, utils::MousePos const& mouse_pos) {
+bool TextExtractor::checkMouseOverUri(size_t page_index,
+                                      utils::MousePos const &mouse_pos) {
     if (!cache_) {
         return false;
     }

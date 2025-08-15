@@ -44,8 +44,7 @@ std::vector<unsigned char> hexStringToByteArray(const char* str,
  */
 QString pageToQString(fz_context* fzctx, fz_document* fzdoc, int page_index);
 
-struct PageUriData
-{
+struct PageUriData {
     fz_rect uri_rect{0, 0, 0, 0};
     char* uri = nullptr;
 };
@@ -68,8 +67,7 @@ PageUriList removeAllCoveredUri(PageUriList const& uri_list);
  * @param filter applied to the @see PageUriList
  * @return @see PageUriList, list of PageUriData
  */
-PageUriList extractAllUriPage(fz_context *fzctx,
-                              fz_document *fzdoc,
+PageUriList extractAllUriPage(fz_context* fzctx, fz_document* fzdoc,
                               int page_index,
                               std::optional<filterUri> filter = std::nullopt);
 

@@ -5,10 +5,10 @@
 
 class TGolink : public QObject {
     Q_OBJECT
-public:
+   public:
     explicit TGolink(QObject *parent = nullptr);
 
-private slots:
+   private slots:
     void BaseTest();
     void ExtractAllUriPage();
     void ExtractAllUriPageTest1();
@@ -21,8 +21,8 @@ private slots:
     void CacheUri_data();
     void RemoveAllCoveredUriTest_data();
 
-private:
+   private:
     const std::string test_files_dir_ = TEST_FILES_DIR;
 };
 
-#endif // TGOLINK_HPP
+#endif  // TGOLINK_HPP

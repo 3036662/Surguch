@@ -144,24 +144,25 @@ QString pageToQString(fz_context *fzctx, fz_document *fzdoc, int page_index) {
  * @param uri_list list of @see PageUriData, URIs extracted from the document
  * @return @see PageUriList, list of PageUriData sorted by bounding box area
  */
-PageUriList removeAllCoveredUri(PageUriList const& uri_list) {
-    auto area = [](auto const& rect) {
+PageUriList removeAllCoveredUri(PageUriList const &uri_list) {
+    auto area = [](auto const &rect) {
         auto [x0, y0, x1, y1] = rect.uri_rect;
         return std::fabs(x1 - x0) * std::fabs(y1 - y0);
     };
 
-    auto isCoveredBy = [](auto const& lhs, auto const& rhs) {
+    auto isCoveredBy = [](auto const &lhs, auto const &rhs) {
         auto const rect1 = lhs.uri_rect;
         auto const rect2 = rhs.uri_rect;
 
         return rect1.x0 >= rect2.x0 && rect1.y0 >= rect2.y0 &&
-            rect1.x1 <= rect2.x1 && rect1.y1 <= rect2.y1;
+               rect1.x1 <= rect2.x1 && rect1.y1 <= rect2.y1;
     };
 
     auto sorted_uri_list = uri_list;
-    std::sort(sorted_uri_list.begin(), sorted_uri_list.end(), [&area = std::as_const(area)](auto const& lhs, auto const& rhs) {
-        return area(lhs) > area(rhs);
-    });
+    std::sort(sorted_uri_list.begin(), sorted_uri_list.end(),
+              [&area = std::as_const(area)](auto const &lhs, auto const &rhs) {
+                  return area(lhs) > area(rhs);
+              });
 
     std::vector<PageUriData> result;
     std::vector<bool> isCovered(sorted_uri_list.size(), false);
@@ -174,7 +175,8 @@ PageUriList removeAllCoveredUri(PageUriList const& uri_list) {
         result.emplace_back(sorted_uri_list[i]);
 
         for (size_t j = i + 1; j < sorted_uri_list.size(); ++j) {
-            if (!isCovered[j] && isCoveredBy(sorted_uri_list[j], sorted_uri_list[i])) {
+            if (!isCovered[j] &&
+                isCoveredBy(sorted_uri_list[j], sorted_uri_list[i])) {
                 isCovered[j] = true;
             }
         }
@@ -191,10 +193,8 @@ PageUriList removeAllCoveredUri(PageUriList const& uri_list) {
  * @param filter applied to the @see PageUriList
  * @return @see PageUriList, list of PageUriData
  */
-PageUriList extractAllUriPage(fz_context *fzctx,
-                              fz_document *fzdoc,
-                              int page_index,
-                              std::optional<filterUri> filter) {
+PageUriList extractAllUriPage(fz_context *fzctx, fz_document *fzdoc,
+                              int page_index, std::optional<filterUri> filter) {
     bool mu_exception_catched = false;
     fz_page *page = nullptr;
     fz_var(page);
@@ -203,28 +203,26 @@ PageUriList extractAllUriPage(fz_context *fzctx,
     fz_try(fzctx) {
         page = fz_load_page(fzctx, fzdoc, page_index);
 
-        for (auto* page_uri = fz_load_links(fzctx, page); page_uri != nullptr; page_uri = page_uri->next) {
-            if (auto* extracted_uri = page_uri->uri; strlen(extracted_uri) > 0) {
-                PageUriData page_uri_data {
-                    .uri_rect = page_uri->rect,
-                    .uri = extracted_uri
-                };
+        for (auto *page_uri = fz_load_links(fzctx, page); page_uri != nullptr;
+             page_uri = page_uri->next) {
+            if (auto *extracted_uri = page_uri->uri;
+                strlen(extracted_uri) > 0) {
+                PageUriData page_uri_data{.uri_rect = page_uri->rect,
+                                          .uri = extracted_uri};
 
                 extracted_uris.emplace_back(page_uri_data);
             }
         }
-
     }
-    fz_always(fzctx) {
-        fz_drop_page(fzctx, page);
-    }
+    fz_always(fzctx) { fz_drop_page(fzctx, page); }
     fz_catch(fzctx) {
         mu_exception_catched = true;
         qWarning() << fz_caught_message(fzctx);
     }
 
     if (mu_exception_catched) {
-        throw std::runtime_error("[core::utils::extractAllUriPage] MuPdf error");
+        throw std::runtime_error(
+            "[core::utils::extractAllUriPage] MuPdf error");
     }
 
     if (filter) {
@@ -260,11 +258,9 @@ PagesTextCache extractTextAllPages(fz_context *fzctx,
     }
     for (int i = 0; i < page_count; ++i) {
         try {
-            PagesTextCacheSinglePage page_cache {
-                static_cast<size_t>(i),
-                pageToQString(fzctx, fzdoc, i),
-                extractAllUriPage(fzctx, fzdoc, i, removeAllCoveredUri)
-            };
+            PagesTextCacheSinglePage page_cache{
+                static_cast<size_t>(i), pageToQString(fzctx, fzdoc, i),
+                extractAllUriPage(fzctx, fzdoc, i, removeAllCoveredUri)};
             result->emplace_back(page_cache);
         } catch (const std::exception &ex) {
             qWarning() << ex.what();
@@ -438,27 +434,28 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
  */
 std::unique_ptr<PageUriList> findAllUriPage(size_t page_index,
                                             MousePos mouse_pos,
-                                            PagesTextCache const& haystack) {
+                                            PagesTextCache const &haystack) {
     if (haystack == nullptr || page_index >= haystack->size()) {
         return {};
     }
 
-    auto searched_page_it = std::find_if(haystack->cbegin(), haystack->cend(), [&page_index](auto const& page) {
-        return page.page_index == page_index;
-    });
+    auto searched_page_it = std::find_if(
+        haystack->cbegin(), haystack->cend(), [&page_index](auto const &page) {
+            return page.page_index == page_index;
+        });
 
     if (searched_page_it == haystack->cend()) {
         return {};
     }
 
-    decltype(auto) page_uri_list = std::as_const(searched_page_it->page_uri_list);
+    decltype(auto) page_uri_list =
+        std::as_const(searched_page_it->page_uri_list);
     auto result = std::make_unique<PageUriList>();
-    for (auto const& uri_info_data : std::as_const(page_uri_list)) {
+    for (auto const &uri_info_data : std::as_const(page_uri_list)) {
         auto [mouse_x, mouse_y] = mouse_pos;
         auto [x0, y0, x1, y1] = uri_info_data.uri_rect;
 
-        if (mouse_x >= x0 && mouse_x <= x1 &&
-            mouse_y >= y0 && mouse_y <= y1) {
+        if (mouse_x >= x0 && mouse_x <= x1 && mouse_y >= y0 && mouse_y <= y1) {
             result->emplace_back(uri_info_data);
         }
     }
