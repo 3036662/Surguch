@@ -77,6 +77,7 @@ target_link_libraries(test1 PUBLIC gui_core)
 target_link_libraries(test1 PRIVATE models)
 target_link_libraries(test1 PRIVATE csp_c_bridge_qt)
 target_link_libraries(test1 PRIVATE ${PDFCSP_LINK_PATH})
+target_link_libraries(test1 PRIVATE ${PDFCSP_MRPA_LINK_PATH})
 # harcoded mupdf linkage
 target_link_libraries(test1 PRIVATE ${MUPDF_LINK_PATH})
 
@@ -91,6 +92,7 @@ target_link_libraries(test_preview PUBLIC models)
 target_link_libraries(test_preview PUBLIC csp_c_bridge_qt)
 target_link_libraries(test_preview PUBLIC ${PDFCSP_LINK_PATH})
 target_link_libraries(test_preview PRIVATE ${MUPDF_LINK_PATH}) # harcoded mupdf linkage
+target_link_libraries(test_preview PRIVATE ${PDFCSP_MRPA_LINK_PATH})
 
 #-------------------------------
 # ling test_rubber
@@ -102,6 +104,7 @@ target_link_libraries(test_rubber PUBLIC models)
 target_link_libraries(test_rubber PUBLIC csp_c_bridge_qt)
 target_link_libraries(test_rubber PUBLIC ${PDFCSP_LINK_PATH})
 target_link_libraries(test_rubber PRIVATE ${MUPDF_LINK_PATH}) # harcoded mupdf linkage
+target_link_libraries(test_rubber PRIVATE ${PDFCSP_MRPA_LINK_PATH})
 
 #-------------------------------
 # ling test_gui_utils
@@ -113,6 +116,8 @@ target_link_libraries(test_gui_utils PUBLIC models)
 target_link_libraries(test_gui_utils PUBLIC csp_c_bridge_qt)
 target_link_libraries(test_gui_utils PUBLIC ${PDFCSP_LINK_PATH})
 target_link_libraries(test_gui_utils PRIVATE ${MUPDF_LINK_PATH}) # harcoded mupdf linkage
+target_link_libraries(test_gui_utils PRIVATE ${PDFCSP_MRPA_LINK_PATH})
+
 
 #-------------------------------
 # link test_search
