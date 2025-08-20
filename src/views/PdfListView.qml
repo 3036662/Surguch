@@ -492,6 +492,25 @@ ListView {
         jumpToPosition(pos)
     }
 
+    // calculate the mouse positions in the document, ignoring its rotation
+    function getInvertedMousePos(mouse, pageSize) {
+        const angleRadians = -delegateRotation * Math.PI / 180
+        const angle_sin = Math.sin(angleRadians)
+        const angle_cos = Math.cos(angleRadians)
+        const pageMidX = Math.abs(pageSize.width*angle_cos-pageSize.height*angle_sin) / 2
+        const pageMidY = Math.abs(pageSize.height*angle_cos+pageSize.width*angle_sin) / 2
+
+        const rotatedX = (mouse.x - pageMidX)*angle_cos-(mouse.y - pageMidX)*angle_sin
+        const rotatedY = (mouse.x - pageMidY)*angle_sin+(mouse.y - pageMidY)*angle_cos
+
+        const result = {
+            "x": Math.abs(rotatedX + pageMidX),
+            "y": Math.abs(rotatedY + pageMidY)
+        }
+
+        return result
+    }
+
     Layout.fillHeight: true
     Layout.fillWidth: true
     Layout.leftMargin: 5
@@ -717,8 +736,13 @@ ListView {
                     }
 
                     if (mouse.modifiers === Qt.ControlModifier) {
-                        const mousePosX = mouse.x / zoomPageFact
-                        const mousePosY = mouse.y / zoomPageFact
+                        const pageSize = {
+                            "width": width,
+                            "height": height
+                        }
+                        const mousePos = getInvertedMousePos(mouse, pageSize)
+                        const mousePosX = mousePos.x / zoomPageFact
+                        const mousePosY = mousePos.y / zoomPageFact
 
                         const externalUri = pdfModel.getUriByPos(currentPageIndex(), mousePosX, mousePosY)
                         externalUri.forEach(uri => Qt.openUrlExternally(uri))
@@ -736,8 +760,13 @@ ListView {
 
                 onPositionChanged: mouse => {
                     if (source) {
-                        const mousePosX = mouse.x / zoomPageFact
-                        const mousePosY = mouse.y / zoomPageFact
+                        const pageSize = {
+                            "width": width,
+                            "height": height
+                        }
+                        const mousePos = getInvertedMousePos(mouse, pageSize)
+                        const mousePosX = mousePos.x / zoomPageFact
+                        const mousePosY = mousePos.y / zoomPageFact
 
                         if (pdfModel.mouseOverUri(currentPageIndex(), mousePosX, mousePosY)) {
                             docArea.cursorShape = Qt.OpenHandCursor
