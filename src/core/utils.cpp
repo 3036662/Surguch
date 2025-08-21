@@ -1,5 +1,5 @@
 /* File: utils.cpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -196,25 +196,34 @@ PageUriList removeAllCoveredUri(PageUriList const &uri_list) {
 PageUriList extractAllUriPage(fz_context *fzctx, fz_document *fzdoc,
                               int page_index, std::optional<filterUri> filter) {
     bool mu_exception_catched = false;
+
     fz_page *page = nullptr;
-    fz_var(page);
+    fz_link *link = nullptr;
 
     PageUriList extracted_uris;
+    fz_var(page);
+    fz_var(link);
     fz_try(fzctx) {
         page = fz_load_page(fzctx, fzdoc, page_index);
+        link = fz_load_links(fzctx, page);
 
-        for (auto *page_uri = fz_load_links(fzctx, page); page_uri != nullptr;
+        for (auto *page_uri = link; page_uri != nullptr;
              page_uri = page_uri->next) {
             if (auto *extracted_uri = page_uri->uri;
                 strlen(extracted_uri) > 0) {
+                auto link_dest_info =
+                    fz_resolve_link_dest(fzctx, fzdoc, extracted_uri);
                 PageUriData page_uri_data{.uri_rect = page_uri->rect,
+                                          .dest_page = link_dest_info.loc.page,
                                           .uri = extracted_uri};
-
                 extracted_uris.emplace_back(page_uri_data);
             }
         }
     }
-    fz_always(fzctx) { fz_drop_page(fzctx, page); }
+    fz_always(fzctx) {
+        fz_drop_page(fzctx, page);
+        fz_drop_link(fzctx, link);
+    }
     fz_catch(fzctx) {
         mu_exception_catched = true;
         qWarning() << fz_caught_message(fzctx);
@@ -432,10 +441,9 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
  * @param haystack
  * @return list of URIs @see PageUriData or nullptr
  */
-std::unique_ptr<PageUriList> findAllUriPage(size_t page_index,
-                                            MousePos mouse_pos,
-                                            PagesTextCache const &haystack) {
-    if (haystack == nullptr || page_index >= haystack->size()) {
+PageUriList findAllUriPage(size_t page_index, MousePos mouse_pos,
+                           PagesTextCache const &haystack) {
+    if (!haystack || page_index >= haystack->size()) {
         return {};
     }
 
@@ -443,24 +451,23 @@ std::unique_ptr<PageUriList> findAllUriPage(size_t page_index,
         haystack->cbegin(), haystack->cend(), [&page_index](auto const &page) {
             return page.page_index == page_index;
         });
-
     if (searched_page_it == haystack->cend()) {
         return {};
     }
 
-    decltype(auto) page_uri_list =
-        std::as_const(searched_page_it->page_uri_list);
-    auto result = std::make_unique<PageUriList>();
+    const auto &page_uri_list = searched_page_it->page_uri_list;
+
+    PageUriList uri_data_list;
     for (auto const &uri_info_data : std::as_const(page_uri_list)) {
         auto [mouse_x, mouse_y] = mouse_pos;
         auto [x0, y0, x1, y1] = uri_info_data.uri_rect;
 
         if (mouse_x >= x0 && mouse_x <= x1 && mouse_y >= y0 && mouse_y <= y1) {
-            result->emplace_back(uri_info_data);
+            uri_data_list.emplace_back(uri_info_data);
         }
     }
 
-    return result;
+    return uri_data_list;
 }
 
 }  // namespace core::utils

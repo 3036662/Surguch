@@ -46,7 +46,8 @@ QString pageToQString(fz_context* fzctx, fz_document* fzdoc, int page_index);
 
 struct PageUriData {
     fz_rect uri_rect{0, 0, 0, 0};
-    char* uri = nullptr;
+    int dest_page = -1;
+    QString uri;
 };
 
 using PageUriList = std::vector<PageUriData>;
@@ -132,9 +133,9 @@ using MousePos = std::pair<float, float>;
  * @param haystack
  * @return list of URIs @see PageUriData or nullptr
  */
-std::unique_ptr<PageUriList> findAllUriPage(size_t page_index,
-                                            MousePos mouse_pos,
-                                            PagesTextCache const& haystack);
+PageUriList findAllUriPage(size_t page_index, MousePos mouse_pos,
+                           PagesTextCache const& haystack);
+
 }  // namespace core::utils
 
 #endif  // UTILS_HPP

@@ -489,8 +489,7 @@ ListView {
     function redrawAndPreservePosion() {
         let pos = preservePosition()
         model.redrawAll()
-        jumpToPosition(pos)
-    }
+        jumpToPosition(pos) }
 
     // calculate the mouse positions in the document, ignoring its rotation
     function getInvertedMousePos(mouse, pageSize) {
@@ -744,8 +743,18 @@ ListView {
                         const mousePosX = mousePos.x / zoomPageFact
                         const mousePosY = mousePos.y / zoomPageFact
 
-                        const externalUri = pdfModel.getUriByPos(currentPageIndex(), mousePosX, mousePosY)
-                        externalUri.forEach(uri => Qt.openUrlExternally(uri))
+                        const uriInfoList = pdfModel.getUriByPos(currentPageIndex(), mousePosX, mousePosY)
+                        uriInfoList.forEach(uri_info => {
+                            const dest_page_idx = uri_info.dest_page
+                            if (dest_page_idx >= 0) {
+                                positionViewAtIndex(dest_page_idx, ListView.Beginning)
+                            } else {
+                                const resolvedUri = Qt.resolvedUrl(uri_info.uri)
+                                if (!Qt.openUrlExternally(resolvedUri)) {
+                                    console.warn(`Couldn't open the ${resolvedUri}`)
+                                }
+                            }
+                        })
 
                         mouse.accepted = true
                         return

@@ -397,8 +397,9 @@ PdfDocModel::getCurrentNeedleRect(size_t page_index) {
     return text_extractor_->getCurrentNeedleRect(page_index);
 }
 
-QStringList PdfDocModel::getUriByPos(size_t page_index, float mouseX,
-                                     float mouseY) const {
+PdfDocModel::PageUriInfoList PdfDocModel::getUriByPos(size_t page_index,
+                                                      float mouseX,
+                                                      float mouseY) const {
     if (!text_extractor_) {
         return {};
     }
@@ -412,7 +413,16 @@ QStringList PdfDocModel::getUriByPos(size_t page_index, float mouseX,
         return {};
     }
 
-    return *result;
+    PageUriInfoList uri_info_list;
+    std::for_each(result->cbegin(), result->cend(),
+                  [&uri_info_list](const auto &uri_info) {
+                      QVariantMap uri_info_map;
+                      uri_info_map["uri"] = QString(uri_info.uri);
+                      uri_info_map["dest_page"] = uri_info.dest_page;
+                      uri_info_list.emplace_back(std::move(uri_info_map));
+                  });
+
+    return uri_info_list;
 }
 
 void PdfDocModel::placeRubberStamp(const QVariantMap &qvparams) {

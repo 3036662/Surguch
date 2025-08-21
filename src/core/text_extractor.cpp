@@ -239,31 +239,40 @@ TextExtractor::getCurrentNeedleRect(size_t page_index) {
     return std::make_shared<RectToHiglightCurrent>(*current_rect_to_gighlight_);
 }
 
-std::unique_ptr<QStringList> TextExtractor::getTargetAllUriPage(
-    size_t page_index, core::utils::MousePos const &mouse_pos) const {
-    auto found_uri_data = utils::findAllUriPage(page_index, mouse_pos, cache_);
-    if (!found_uri_data || found_uri_data->empty()) {
+// @brief retrieve all URIs on the given page using provided mouse cursor
+// positions
+std::shared_ptr<utils::PageUriList> TextExtractor::getTargetAllUriPage(
+    size_t page_index, core::utils::MousePos const &mouse_pos) {
+    std::shared_lock lock{cach_mtx_, std::defer_lock};
+
+    if (!lock.try_lock()) {
         return {};
     }
 
-    auto uri_list = std::make_unique<QStringList>();
-    std::for_each(found_uri_data->cbegin(), found_uri_data->cend(),
-                  [&uri_list](auto const &uri_data) {
-                      uri_list->emplace_back(uri_data.uri);
-                  });
+    if (!cache_ || cache_->empty()) {
+        return {};
+    }
 
-    return uri_list;
+    auto found_uri_data = utils::findAllUriPage(page_index, mouse_pos, cache_);
+
+    return std::make_shared<utils::PageUriList>(found_uri_data);
 }
 
 bool TextExtractor::checkMouseOverUri(size_t page_index,
                                       utils::MousePos const &mouse_pos) {
-    if (!cache_) {
-        return false;
+    std::shared_lock lock{cach_mtx_, std::defer_lock};
+    if (!lock.try_lock()) {
+        return {};
     }
 
-    auto res = utils::findAllUriPage(page_index, mouse_pos, cache_);
+    if (!cache_ || cache_->empty()) {
+        return {};
+    }
 
-    return !res->empty();
+    auto result = std::make_unique<utils::PageUriList>(
+        findAllUriPage(page_index, mouse_pos, cache_));
+
+    return !result->empty();
 }
 
 }  // namespace core

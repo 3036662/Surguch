@@ -45,6 +45,7 @@ class PdfDocModel : public QAbstractListModel {
     using ImageFuture = QFuture<std::unique_ptr<core::gui::BakeRubberResult>>;
     using ImageFutureWatcher =
         QFutureWatcher<std::unique_ptr<core::gui::BakeRubberResult>>;
+    using PageUriInfoList = QList<QVariantMap>;
 
     [[nodiscard]] QVariant headerData(int section, Qt::Orientation orientation,
                                       int role) const override;
@@ -138,9 +139,9 @@ class PdfDocModel : public QAbstractListModel {
     getCurrentNeedleRect(size_t page_index);
 
     /// @brief returns the uri under the cursor
-    [[nodiscard]] Q_INVOKABLE QStringList getUriByPos(size_t page_index,
-                                                      float mouseX,
-                                                      float mouseY) const;
+    [[nodiscard]] Q_INVOKABLE PageUriInfoList getUriByPos(size_t page_index,
+                                                          float mouseX,
+                                                          float mouseY) const;
 
     /// @brief true if the mouse is over the URI, otherwise false
     [[nodiscard]] Q_INVOKABLE bool mouseOverUri(size_t page_index, float mouseX,
