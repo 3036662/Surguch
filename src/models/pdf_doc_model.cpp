@@ -545,7 +545,8 @@ bool PdfDocModel::mouseOverUri(size_t page_index, float mouseX,
     mouseX *= 72 / static_cast<float>(physical_screen_dpi_);
     mouseY *= 72 / static_cast<float>(physical_screen_dpi_);
 
-    return text_extractor_->checkMouseOverUri(page_index, {mouseX, mouseY});
+    return text_extractor_ &&
+           text_extractor_->checkMouseOverUri(page_index, {mouseX, mouseY});
 }
 
 // NOLINTEND(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)

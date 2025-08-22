@@ -255,7 +255,7 @@ std::shared_ptr<utils::PageUriList> TextExtractor::getTargetAllUriPage(
 
     auto found_uri_data = utils::findAllUriPage(page_index, mouse_pos, cache_);
 
-    return std::make_shared<utils::PageUriList>(found_uri_data);
+    return std::make_shared<utils::PageUriList>(std::move(found_uri_data));
 }
 
 bool TextExtractor::checkMouseOverUri(size_t page_index,

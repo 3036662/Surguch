@@ -73,7 +73,7 @@ PageUriList extractAllUriPage(fz_context* fzctx, fz_document* fzdoc,
                               std::optional<filterUri> filter = std::nullopt);
 
 struct PagesTextCacheSinglePage {
-    size_t page_index;
+    size_t page_index = 0;
     QString page_text;
     PageUriList page_uri_list;
 };

@@ -145,7 +145,7 @@ QString pageToQString(fz_context *fzctx, fz_document *fzdoc, int page_index) {
  * @return @see PageUriList, list of PageUriData sorted by bounding box area
  */
 PageUriList removeAllCoveredUri(PageUriList const &uri_list) {
-    auto area = [](auto const &rect) {
+    const auto area = [](auto const &rect) {
         auto [x0, y0, x1, y1] = rect.uri_rect;
         return std::fabs(x1 - x0) * std::fabs(y1 - y0);
     };
@@ -160,7 +160,7 @@ PageUriList removeAllCoveredUri(PageUriList const &uri_list) {
 
     auto sorted_uri_list = uri_list;
     std::sort(sorted_uri_list.begin(), sorted_uri_list.end(),
-              [&area = std::as_const(area)](auto const &lhs, auto const &rhs) {
+              [&area](auto const &lhs, auto const &rhs) {
                   return area(lhs) > area(rhs);
               });
 
@@ -209,14 +209,14 @@ PageUriList extractAllUriPage(fz_context *fzctx, fz_document *fzdoc,
 
         for (auto *page_uri = link; page_uri != nullptr;
              page_uri = page_uri->next) {
-            if (auto *extracted_uri = page_uri->uri;
-                strlen(extracted_uri) > 0) {
+            auto *extracted_uri = page_uri->uri;
+            if (extracted_uri != nullptr && extracted_uri[0] != 0x00) {
                 auto link_dest_info =
                     fz_resolve_link_dest(fzctx, fzdoc, extracted_uri);
-                PageUriData page_uri_data{.uri_rect = page_uri->rect,
-                                          .dest_page = link_dest_info.loc.page,
-                                          .uri = extracted_uri};
-                extracted_uris.emplace_back(page_uri_data);
+                PageUriData page_uri_data{page_uri->rect,           //.uri_rect
+                                          link_dest_info.loc.page,  //.dest_page
+                                          extracted_uri};           //.uri
+                extracted_uris.emplace_back(std::move(page_uri_data));
             }
         }
     }
@@ -458,7 +458,7 @@ PageUriList findAllUriPage(size_t page_index, MousePos mouse_pos,
     const auto &page_uri_list = searched_page_it->page_uri_list;
 
     PageUriList uri_data_list;
-    for (auto const &uri_info_data : std::as_const(page_uri_list)) {
+    for (auto const &uri_info_data : page_uri_list) {
         auto [mouse_x, mouse_y] = mouse_pos;
         auto [x0, y0, x1, y1] = uri_info_data.uri_rect;
 
