@@ -32,6 +32,7 @@ void TGolink::BaseTest() {
     int page_count = 0;
     fz_document* fzdoc = nullptr;
     fz_page* page = nullptr;
+    fz_link* link = nullptr;
 
     auto pages_uri_cache_expected =
         std::make_unique<std::vector<core::utils::PagesTextCacheSinglePage>>();
@@ -41,6 +42,7 @@ void TGolink::BaseTest() {
 
     fz_var(page_count);
     fz_var(page);
+    fz_var(link);
     fz_var(fzdoc);
     fz_try(fzctx) {
         fz_set_aa_level(fzctx, 0);
@@ -54,9 +56,11 @@ void TGolink::BaseTest() {
         for (int i = 0; i < page_count; ++i) {
             core::utils::PageUriList uri_list_expected;
             page = fz_load_page(fzctx, fzdoc, i);
+            QVERIFY(page != nullptr);
+            link = fz_load_links(fzctx, page);
 
-            for (auto* page_uri = fz_load_links(fzctx, page);
-                 page_uri != nullptr; page_uri = page_uri->next) {
+            for (auto* page_uri = link; page_uri != nullptr;
+                 page_uri = page_uri->next) {
                 if (auto* extracted_uri = page_uri->uri;
                     strlen(extracted_uri) > 0) {
                     core::utils::PageUriData page_uri_data{
@@ -65,6 +69,7 @@ void TGolink::BaseTest() {
                 }
             }
 
+            fz_drop_link(fzctx, link);
             fz_drop_page(fzctx, page);
             sortUriByDescendingArea(uri_list_expected);
             core::utils::PagesTextCacheSinglePage page_cache{
@@ -93,7 +98,7 @@ void TGolink::BaseTest() {
         for (auto [iit1, iit2] =
                  std::tuple{page.cbegin(), page_expected.cbegin()};
              iit1 != page.cend(); ++iit1, ++iit2) {
-            if (strcmp(iit1->uri, iit2->uri) != 0 ||
+            if (iit1->uri != iit2->uri ||
                 iit1->uri_rect.x0 != iit2->uri_rect.x0 ||
                 iit1->uri_rect.x1 != iit2->uri_rect.x1 ||
                 iit1->uri_rect.y0 != iit2->uri_rect.y0 ||
@@ -121,9 +126,7 @@ void TGolink::ExtractAllUriPage() {
         test_files_dir_ + "21_cam_CADES-XLT1_5signs.pdf";
 
     // expected URIs from the 1st page of a document
-    QStringList expected_uris {
-        "http://cryptoarm.ru",
-        "http://trusted.ru" };
+    QStringList expected_uris{"http://cryptoarm.ru", "http://trusted.ru"};
 
     // context
     fz_context* fzctx = fz_new_context(nullptr, nullptr, 500000000);
@@ -164,8 +167,8 @@ void TGolink::ExtractAllUriPage() {
     std::sort(extracted_uris.begin(), extracted_uris.end());
 
     QVERIFY2(std::equal(extracted_uris.cbegin(), extracted_uris.cend(),
-            expected_uris.cbegin()),
-            "The extracted URIs don't match the expected onces");
+                        expected_uris.cbegin()),
+             "The extracted URIs don't match the expected onces");
 
     // cleanup
     fz_drop_document(fzctx, fzdoc);
@@ -297,9 +300,11 @@ void TGolink::ExtractAllUriPageTest1_data() {
             int page_count = 0;
             fz_document* fzdoc = nullptr;
             fz_page* page = nullptr;
+            fz_link* link = nullptr;
 
             fz_var(fzdoc);
             fz_var(page);
+            fz_var(link);
             fz_try(fzctx) {
                 fz_set_aa_level(fzctx, 0);
                 fz_register_document_handlers(fzctx);
@@ -314,17 +319,19 @@ void TGolink::ExtractAllUriPageTest1_data() {
                 for (int i = 0; i < page_count; ++i) {
                     page = fz_load_page(fzctx, fzdoc, i);
                     QVERIFY(page != nullptr);
+                    link = fz_load_links(fzctx, page);
 
                     core::utils::PageUriList page_uri_list;
-                    for (auto* page_uri = fz_load_links(fzctx, page);
-                         page_uri != nullptr; page_uri = page_uri->next) {
+                    for (auto* page_uri = link; page_uri != nullptr;
+                         page_uri = page_uri->next) {
                         QVERIFY(page_uri != nullptr);
                         if (auto* extracted_uri = page_uri->uri;
                             strlen(extracted_uri) > 0) {
                             core::utils::PageUriData page_uri_data{
                                 .uri_rect = page_uri->rect,
                                 .uri = extracted_uri};
-                            page_uri_list.push_back(page_uri_data);
+                            page_uri_list.emplace_back(
+                                std::move(page_uri_data));
                         }
                     }
 
@@ -336,6 +343,7 @@ void TGolink::ExtractAllUriPageTest1_data() {
                         });
                     pages_uri_list_extracted.emplace_back(uri_list_extracted);
 
+                    fz_drop_link(fzctx, link);
                     fz_drop_page(fzctx, page);
                 }
                 auto const* test_filename =
@@ -427,9 +435,11 @@ void TGolink::CacheUri_data() {
             int page_count = 0;
             fz_document* fzdoc = nullptr;
             fz_page* page = nullptr;
+            fz_link* link = nullptr;
 
             fz_var(fzdoc);
             fz_var(page);
+            fz_var(link);
             fz_try(fzctx) {
                 fz_set_aa_level(fzctx, 0);
                 fz_register_document_handlers(fzctx);
@@ -443,16 +453,18 @@ void TGolink::CacheUri_data() {
                 for (int i = 0; i < page_count; ++i) {
                     page = fz_load_page(fzctx, fzdoc, i);
                     QVERIFY(page != nullptr);
+                    link = fz_load_links(fzctx, page);
 
                     size_t uri_cnt = 0;
-                    for (auto* page_uri = fz_load_links(fzctx, page);
-                         page_uri != nullptr; page_uri = page_uri->next) {
+                    for (auto* page_uri = link; page_uri != nullptr;
+                         page_uri = page_uri->next) {
                         if (strlen(page_uri->uri)) {
                             ++uri_cnt;
                         }
                     }
 
                     num_of_uris_page[i] = uri_cnt;
+                    fz_drop_link(fzctx, link);
                     fz_drop_page(fzctx, page);
                 }
             }
@@ -477,18 +489,18 @@ void TGolink::RemoveAllCoveredUri() {
     QVERIFY(page_uri_list.empty());
 
     fz_rect test_rect_bb1{1, 1, 25, 20};
-    std::string test_uri1 = "https://ya.ru";
+    QString test_uri1 = "https://ya.ru";
     page_uri_list.emplace_back(
-        core::utils::PageUriData{test_rect_bb1, test_uri1.data()});
+        core::utils::PageUriData{test_rect_bb1, -1, test_uri1});
     QVERIFY(page_uri_list.size() == 1);
 
     processed_page_uri_list = core::utils::removeAllCoveredUri(page_uri_list);
     QVERIFY(processed_page_uri_list.size() == 1);
 
     fz_rect test_rect_bb2{5, 5, 35, 25};
-    std::string test_uri2 = "https://altlinux.org";
+    QString test_uri2 = "https://altlinux.org";
     page_uri_list.emplace_back(
-        core::utils::PageUriData{test_rect_bb2, test_uri2.data()});
+        core::utils::PageUriData{test_rect_bb2, -1, test_uri2});
     QVERIFY(page_uri_list.size() == 2);
 
     processed_page_uri_list = core::utils::removeAllCoveredUri(page_uri_list);
@@ -511,9 +523,9 @@ void TGolink::RemoveAllCoveredUri() {
     // must be removed due to URI overlap with bounding box values of
     // test_rect_bb2
     fz_rect test_rect_bb3{10, 10, 30, 20};
-    std::string test_uri3 = "https://packages.altlinux.org";
+    QString test_uri3 = "https://packages.altlinux.org";
     page_uri_list.emplace_back(
-        core::utils::PageUriData{test_rect_bb3, test_uri3.data()});
+        core::utils::PageUriData{test_rect_bb3, -1, test_uri3});
     QVERIFY(page_uri_list.size() == 3);
     processed_page_uri_list = core::utils::removeAllCoveredUri(page_uri_list);
     QVERIFY(processed_page_uri_list.size() == 2);
@@ -589,21 +601,21 @@ void TGolink::RemoveAllCoveredUriTest_data() {
         {5, 5, 10, 10},    // 25
     };
 
-    std::string test_uri{"https://ya.ru"};
+    QString test_uri{"https://ya.ru"};
 
     core::utils::PageUriList input_data1;
 
     std::for_each(test_bb_page1.cbegin(), test_bb_page1.cend(),
                   [&](auto const& bounding_box) {
                       input_data1.emplace_back(core::utils::PageUriData{
-                          bounding_box, test_uri.data()});
+                          bounding_box, -1, test_uri});
                   });
 
     core::utils::PageUriList expected_data1;
     std::for_each(expected_bb_page1.cbegin(), expected_bb_page1.cend(),
                   [&](auto const& bounding_box) {
                       expected_data1.emplace_back(core::utils::PageUriData{
-                          bounding_box, test_uri.data()});
+                          bounding_box, -1, test_uri});
                   });
 
     QTest::newRow("test_data_1") << input_data1 << expected_data1;
@@ -612,14 +624,14 @@ void TGolink::RemoveAllCoveredUriTest_data() {
     std::for_each(test_bb_page2.cbegin(), test_bb_page2.cend(),
                   [&](auto const& bounding_box) {
                       input_data2.emplace_back(core::utils::PageUriData{
-                          bounding_box, test_uri.data()});
+                          bounding_box, -1, test_uri});
                   });
 
     core::utils::PageUriList expected_data2;
     std::for_each(expected_bb_page2.cbegin(), expected_bb_page2.cend(),
                   [&](auto const& bounding_box) {
                       expected_data2.emplace_back(core::utils::PageUriData{
-                          bounding_box, test_uri.data()});
+                          bounding_box, -1, test_uri});
                   });
 
     QTest::newRow("test_data_2") << input_data2 << expected_data2;
@@ -632,16 +644,17 @@ bool compareRects(fz_rect const& lhs, fz_rect const& rhs) {
 
 void TGolink::FindAllUriPage() {
     size_t test_page_index = 0;
-    core::utils::MousePos test_mouse_pos{.0F, .0F};
+    core::utils::MousePos test_mouse_pos{0, 0};
     core::utils::PagesTextCache test_page_text_cache;
 
     QVERIFY(core::utils::findAllUriPage(test_page_index, test_mouse_pos,
-                                        test_page_text_cache) == nullptr);
+                                        test_page_text_cache)
+                .empty());
 
-    std::string test_uri = "https://ya.ru";
+    QString test_uri = "https://ya.ru";
     core::utils::PageUriList page_uri_list;
     core::utils::PageUriData page_uri_data{.uri_rect = {55, 60, 80, 70},
-                                           .uri = test_uri.data()};
+                                           .uri = test_uri};
     core::utils::PagesTextCacheSinglePage page_text_single_page{
         .page_index = test_page_index,
         .page_text = "clickme!",
@@ -654,17 +667,16 @@ void TGolink::FindAllUriPage() {
     QVERIFY(test_page_text_cache->size() == 1);
 
     // expected nullptr if page_index is >= page_uri_list.size()
-    QVERIFY(core::utils::findAllUriPage(1, test_mouse_pos,
-                                        test_page_text_cache) == nullptr);
+    QVERIFY(core::utils::findAllUriPage(1, test_mouse_pos, test_page_text_cache)
+                .empty());
 
     test_mouse_pos = {60, 65};
     auto result = core::utils::findAllUriPage(test_page_index, test_mouse_pos,
                                               test_page_text_cache);
-    QVERIFY(result != nullptr);
-    QVERIFY(!result->empty());
+    QVERIFY(!result.empty());
 
     // the found element is expected to contain the values from page_uri_data
-    auto page_data = result->at(0);
+    const auto& page_data = result[0];
     QVERIFY(compareRects(page_data.uri_rect, page_uri_data.uri_rect));
     QVERIFY(page_data.uri == test_uri);
 }
