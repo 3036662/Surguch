@@ -88,6 +88,18 @@ Dialog {
         rubberStampPreview.stamp_data = rubber_stamp_params
     }
 
+    function prependInternetProtocol(link) {
+        const trimmedLink = link.trim()
+        if (!trimmedLink) {
+            return trimmedLink;
+        }
+
+        const acceptableProtocols = ["http", "https"]
+        const isValidForm = acceptableProtocols.some(prot => trimmedLink.startsWith(`${prot}://`))
+
+        return isValidForm ? trimmedLink : "http://" + trimmedLink
+    }
+
     implicitWidth: 780
     implicitHeight: Math.min(670, parent.height * 0.85)
     leftMargin: 10
@@ -290,7 +302,7 @@ Dialog {
                             stamp_json = {}
                             stamp_json["id"] = stamp_id
                             stamp_json["title"] = stampName.text
-                            stamp_json["stamp_link"] = linkName.text
+                            stamp_json["stamp_link"] = prependInternetProtocol(linkName.text)
                             stamp_json["tag_width"] = tagWidth.value
                             stamp_json["create_from_image"] = typeSwitch.checked ? 0 : 1
                             stamp_json["img_path"] = logoPath.text
