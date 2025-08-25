@@ -32,11 +32,11 @@ Dialog {
                 rubberStampText.text = stamp_json.stamp_text
                 fontName.currentIndex = fontName.find(stamp_json.font_family)
                 transparencySwitch.checked = stamp_json.bg_transparent
-                borderWidth.value = stamp_json.border_width
-                borderRadius.value = stamp_json.border_radius
-                redColor.value = stamp_json.R
-                greenColor.value = stamp_json.G
-                blueColor.value = stamp_json.B
+                borderSettings.border_width = stamp_json.border_width
+                borderSettings.radius = stamp_json.border_radius
+                rgbColorPicker.r = stamp_json.R
+                rgbColorPicker.g = stamp_json.G
+                rgbColorPicker.b = stamp_json.B
             } catch (e) {
                 console.warn("Error parsing JSON " + e.message)
             }
@@ -55,12 +55,12 @@ Dialog {
         typeSwitch.checked = true
         logoPath.text = ""
         rubberStampText.text = qsTr("Surguch")
-        borderRadius.value = 50
-        borderWidth.value = 7
+        borderSettings.radius = 50
+        borderSettings.border_width = 7
         transparencySwitch.checked = false
-        redColor.value = 50
-        greenColor.value = 62
-        blueColor.value = 168
+        rgbColorPicker.r = 50
+        rgbColorPicker.g = 62
+        rgbColorPicker.b = 168
     }
 
     function updatePreview() {
@@ -69,17 +69,17 @@ Dialog {
             "stamp_height": 400,
             "create_from_image": typeSwitch.checked ? 0 : 1,
             "img_path": logoPath.text,
-            "border_width": borderWidth.value,
-            "border_radius": borderRadius.value,
-            "text_color_red": redColor.value,
-            "text_color_green": greenColor.value,
-            "text_color_blue": blueColor.value,
-            "border_color_red": redColor.value,
-            "border_color_green": greenColor.value,
-            "border_color_blue": blueColor.value,
-            "bg_color_red": redColor.value,
-            "bg_color_green": greenColor.value,
-            "bg_color_blue": blueColor.value,
+            "border_width": borderSettings.border_width,
+            "border_radius": borderSettings.radius,
+            "text_color_red": rgbColorPicker.r,
+            "text_color_green": rgbColorPicker.g,
+            "text_color_blue": rgbColorPicker.b,
+            "border_color_red": rgbColorPicker.r,
+            "border_color_green": rgbColorPicker.g,
+            "border_color_blue": rgbColorPicker.b,
+            "bg_color_red": rgbColorPicker.r,
+            "bg_color_green": rgbColorPicker.g,
+            "bg_color_blue": rgbColorPicker.b,
             "font_family": fontName.currentText,
             "annotation_text": rubberStampText.text,
             "bg_transparent": transparencySwitch.checked ? 1 : 0,
@@ -91,11 +91,12 @@ Dialog {
     function prependInternetProtocol(link) {
         const trimmedLink = link.trim()
         if (!trimmedLink) {
-            return trimmedLink;
+            return trimmedLink
         }
 
         const acceptableProtocols = ["http", "https"]
-        const isValidForm = acceptableProtocols.some(prot => trimmedLink.startsWith(`${prot}://`))
+        const isValidForm = acceptableProtocols.some(
+                              prot => trimmedLink.startsWith(`${prot}://`))
 
         return isValidForm ? trimmedLink : "http://" + trimmedLink
     }
@@ -109,21 +110,30 @@ Dialog {
     y: (parent.height - height) / 2
     closePolicy: Popup.NoAutoClose
 
+    // main item
     contentItem: ScrollView {
         id: scrollView
+
+        property bool scrollBarVisible: ScrollBar.vertical.visible
+        property int scrollBarWidth: scrollBarVisible ? ScrollBar.vertical.width : 0
 
         clip: true
         ScrollBar.horizontal.policy: ScrollBar.AsNeeded
         ScrollBar.vertical.policy: ScrollBar.AsNeeded
+        topPadding: StyleSheet.defaultPaddingV
+        bottomPadding: StyleSheet.defaultPaddingV
+        leftPadding: StyleSheet.defaultPaddingH
+        rightPadding: StyleSheet.defaultPaddingH
+        width: root.width
 
         ColumnLayout {
             id: editColumn
-            width: StyleSheet.window_size_x
-                   === "small_width" ? root.availableWidth : scrollView.availableWidth
+            width: scrollView.width - scrollView.scrollBarWidth - 2 * StyleSheet.defaultPaddingH
             height: scrollView.availableHeight
 
+            // top raw (label and close button)
             RowLayout {
-                Layout.fillWidth: true
+                Layout.preferredWidth:  editColumn.width
 
                 Label {
                     text: qsTr("Mark settings")
@@ -156,14 +166,24 @@ Dialog {
                 }
             }
 
+            // main raw
             RowLayout {
+                id: mainRow
+
+                Layout.preferredWidth: editColumn.width
                 Layout.fillWidth: true
+
+
+                onWidthChanged: {
+                    console.warn("Main raw width:"+width)
+                }
+
                 spacing: 0
 
+                // left subcolomn
+                // size of this column is implictly hardcoded (340)
                 ColumnLayout {
-                    Layout.preferredWidth: scrollView.width / 2 - 30
-                    Layout.minimumWidth: scrollView.width / 2 - 30
-                    Layout.maximumWidth: scrollView.width / 2 - 30
+                    id: previewColumn
 
                     Text {
                         text: qsTr("Mark name")
@@ -302,17 +322,18 @@ Dialog {
                             stamp_json = {}
                             stamp_json["id"] = stamp_id
                             stamp_json["title"] = stampName.text
-                            stamp_json["stamp_link"] = prependInternetProtocol(linkName.text)
+                            stamp_json["stamp_link"] = prependInternetProtocol(
+                                        linkName.text)
                             stamp_json["tag_width"] = tagWidth.value
                             stamp_json["create_from_image"] = typeSwitch.checked ? 0 : 1
                             stamp_json["img_path"] = logoPath.text
                             stamp_json["stamp_text"] = rubberStampText.text
-                            stamp_json["border_width"] = borderWidth.value
-                            stamp_json["border_radius"] = borderRadius.value
+                            stamp_json["border_width"] = borderSettings.border_width
+                            stamp_json["border_radius"] = borderSettings.radius
                             stamp_json["font_family"] = fontName.currentText
-                            stamp_json["R"] = redColor.value
-                            stamp_json["G"] = greenColor.value
-                            stamp_json["B"] = blueColor.value
+                            stamp_json["R"] = rgbColorPicker.r
+                            stamp_json["G"] = rgbColorPicker.g
+                            stamp_json["B"] = rgbColorPicker.b
                             stamp_json["bg_transparent"] = transparencySwitch.checked ? 1 : 0
                             const new_stamp_data = JSON.stringify(stamp_json)
                             console.warn(rubber_model.saveRubberStamps(
@@ -348,13 +369,25 @@ Dialog {
                 }
 
                 Item {
+                    id: middleSpacer
                     width: 30
                 }
 
+                // right subcolomn
                 ColumnLayout {
+                    id: rightSubColumn
 
-                    Layout.preferredWidth: root.width / 2 - 20
-                    Layout.minimumWidth: root.width / 2 - 20
+                    clip: true
+                    width: editColumn.width - previewColumn.width - middleSpacer.width
+
+                    onWidthChanged: {
+                        console.warn("=============")
+                        console.warn("editColumn.width:"+editColumn.width)
+                        console.warn("previewColumn.width:"+ previewColumn.width)
+                        console.warn("Right column width:"+width)
+                    }
+
+                    // switch "generate from text"
                     RowLayout {
                         Layout.fillWidth: true
 
@@ -382,6 +415,7 @@ Dialog {
                         }
                     }
 
+                    // generate from file
                     Text {
                         topPadding: 10
                         text: qsTr("Generate from file (*.png *.jpg *.jpeg *.bmp)")
@@ -391,6 +425,7 @@ Dialog {
                         visible: !typeSwitch.checked
                     }
 
+                    // logo path
                     TextArea {
                         id: logoPath
                         placeholderText: qsTr("Select a file")
@@ -417,6 +452,7 @@ Dialog {
                         }
                     }
 
+                    // simple text "Text"
                     Text {
                         text: qsTr("Text")
                         bottomPadding: 5
@@ -425,6 +461,7 @@ Dialog {
                         color: StyleSheet.font_color_extra
                     }
 
+                    // text multistring
                     ScrollView {
                         Layout.fillWidth: true
                         Layout.maximumHeight: Math.min(
@@ -455,6 +492,7 @@ Dialog {
                         }
                     }
 
+                    // simple text "Font
                     Text {
                         text: qsTr("Font")
                         visible: typeSwitch.checked
@@ -463,6 +501,7 @@ Dialog {
                         color: StyleSheet.font_color_extra
                     }
 
+                    // font combo
                     ComboBox {
                         id: fontName
                         Layout.fillWidth: true
@@ -496,6 +535,7 @@ Dialog {
                         }
                     }
 
+                    // transparency switch with label
                     RowLayout {
                         Layout.fillWidth: true
 
@@ -529,6 +569,7 @@ Dialog {
                         }
                     }
 
+                    // simple text "Color"
                     Text {
                         text: qsTr("Color")
                         visible: typeSwitch.checked
@@ -536,174 +577,27 @@ Dialog {
                         color: StyleSheet.font_color_extra
                     }
 
-                    RowLayout {
-                        Layout.fillWidth: true
+                    // color sliders
+                    RGBColorPicker{
+                        id: rgbColorPicker
+
+                        sliderWidth:rightSubColumn.width*0.6
+
                         visible: typeSwitch.checked
-
-                        SettingSlider {
-                            id: redColor
-
-                            Layout.maximumWidth: 320
-                            Layout.minimumWidth: 320
-                            snapMode: Slider.SnapOnRelease
-                            from: 0
-                            to: 255
-                            stepSize: 1
-                            back_color: "#ff0000"
-                            gradient_start: "#000000"
-
-                            onValueChanged: {
-                                updatePreview()
-                            }
-                        }
-
-                        Rectangle {
-                            Layout.fillWidth: true
-                        }
-
-                        Text {
-                            text: "R " + redColor.value
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-                            Layout.leftMargin: 5
-                        }
-                    }
-
-                    RowLayout {
-                        Layout.fillWidth: true
-                        visible: typeSwitch.checked
-
-                        SettingSlider {
-                            id: greenColor
-
-                            Layout.maximumWidth: 320
-                            Layout.minimumWidth: 320
-                            snapMode: Slider.SnapOnRelease
-                            from: 0
-                            to: 255
-                            stepSize: 1
-                            back_color: "#00ff00"
-                            gradient_start: "#000000"
-
-                            onValueChanged: {
-                                updatePreview()
-                            }
-                        }
-
-                        Rectangle {
-                            Layout.fillWidth: true
-                        }
-
-                        Text {
-                            text: "G " + greenColor.value
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-                            Layout.leftMargin: 5
-                        }
-                    }
-
-                    RowLayout {
-                        Layout.fillWidth: true
-                        visible: typeSwitch.checked
-
-                        SettingSlider {
-                            id: blueColor
-
-                            Layout.maximumWidth: 320
-                            Layout.minimumWidth: 320
-                            snapMode: Slider.SnapOnRelease
-                            from: 0
-                            to: 255
-                            stepSize: 1
-                            back_color: "#0000ff"
-                            gradient_start: "#000000"
-
-                            onValueChanged: {
-                                updatePreview()
-                            }
-                        }
-
-                        Rectangle {
-                            Layout.fillWidth: true
-                        }
-
-                        Text {
-                            text: "B " + blueColor.value
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-                            Layout.leftMargin: 5
-                        }
-                    }
-
-                    RowLayout {
-                        Layout.fillWidth: true
-                        visible: typeSwitch.checked
-
-                        Text {
-                            text: qsTr("Stamp border width: ")
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-                        }
-
-                        Rectangle {
-                            Layout.fillWidth: true
-                        }
-
-                        Text {
-                            id: borderWidthText
-                            text: borderWidth.value
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-                        }
-                    }
-
-                    SettingSlider {
-                        id: borderWidth
-                        Layout.fillWidth: true
-                        visible: typeSwitch.checked
-                        snapMode: Slider.SnapOnRelease
-                        from: 0
-                        to: 20
-                        stepSize: 1
 
                         onValueChanged: {
-                            updatePreview()
+                            updatePreview();
                         }
                     }
 
-                    RowLayout {
-                        Layout.fillWidth: true
+                    // border settings
+                    BorderSettings{
+                        id: borderSettings
+
                         visible: typeSwitch.checked
-
-                        Text {
-                            text: qsTr("Stamp border radius: ")
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-                        }
-
-                        Rectangle {
-                            Layout.fillWidth: true
-                        }
-
-                        Text {
-                            id: borderRadiusText
-                            text: borderRadius.value
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-                        }
-                    }
-
-                    SettingSlider {
-                        id: borderRadius
-                        Layout.fillWidth: true
-                        visible: typeSwitch.checked
-                        snapMode: Slider.SnapOnRelease
-                        from: 1
-                        to: 70
-                        stepSize: 1
 
                         onValueChanged: {
-                            updatePreview()
+                             updatePreview();
                         }
                     }
 

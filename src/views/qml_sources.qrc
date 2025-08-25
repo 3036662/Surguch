@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <RCC>
     <qresource prefix="/gui_pdf_csp">
         <file>CertInfo.qml</file>
@@ -35,5 +34,8 @@
         <file>RubberPreview.qml</file>
         <file>InfoDialog.qml</file>
         <file>SettingSwitch.qml</file>
+        <file>ColorSlider.qml</file>
+        <file>RGBColorPicker.qml</file>
+        <file>BorderSettings.qml</file>
     </qresource>
 </RCC>

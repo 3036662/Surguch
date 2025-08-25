@@ -18,13 +18,31 @@ Dialog {
     modal: true
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2
+    topPadding :StyleSheet.defaultPaddingV
+    bottomPadding :StyleSheet.defaultPaddingV
+    leftPadding: StyleSheet.defaultPaddingH
+    rightPadding: StyleSheet.defaultPaddingH
 
-    Column {
+    Component.onCompleted:  {
+        console.warn("SAVE Margins: L="+leftMargin+" R="+rightMargin+" T="+topMargin+" B="+bottomMargin);
+        console.warn("SAVE Paddings: L="+leftPadding+" R="+rightPadding+" T="+topPadding+" B="+bottomPadding);
+    }
+
+    Column {    
+        Component.onCompleted:  {
+            console.warn("SAVE Column Margins: L="+leftMargin+" R="+rightMargin+" T="+topMargin+" B="+bottomMargin);
+            console.warn("SAVE Column Paddings: L="+leftPadding+" R="+rightPadding+" T="+topPadding+" B="+bottomPadding);
+        }
+
         id: unsavedFileDialogContent
 
         width: parent.width
         spacing: 10
         anchors.verticalCenter: parent.verticalCenter
+        topPadding :StyleSheet.defaultPaddingV
+        bottomPadding :StyleSheet.defaultPaddingV
+        leftPadding: StyleSheet.defaultPaddingH
+        rightPadding: StyleSheet.defaultPaddingH
 
         Text {
             text: qsTr("Do you want to save your changes?")

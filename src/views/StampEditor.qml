@@ -7,6 +7,12 @@ import StyleSheet
 Dialog {
     id: root
 
+    Component.onCompleted:  {
+        console.warn("Dialog Margins: L="+leftMargin+" R="+rightMargin+" T="+topMargin+" B="+bottomMargin);
+        console.warn("Dialog Paddings: L="+leftPadding+" R="+rightPadding+" T="+topPadding+" B="+bottomPadding);
+    }
+
+
     property var profiles_model
     property var profile_data
     property var stamp_json
@@ -76,12 +82,22 @@ Dialog {
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2
     closePolicy: Popup.NoAutoClose
+    topPadding :StyleSheet.defaultPaddingV
+    bottomPadding :StyleSheet.defaultPaddingV
+    leftPadding: StyleSheet.defaultPaddingH
+    rightPadding: StyleSheet.defaultPaddingH
 
     contentItem: ScrollView {
         id: scrollView
 
+        Component.onCompleted:  {
+            console.warn("ScrollView Margins: L="+leftMargin+" R="+rightMargin+" T="+topMargin+" B="+bottomMargin);
+            console.warn("ScrollView Paddings: L="+leftPadding+" R="+rightPadding+" T="+topPadding+" B="+bottomPadding);
+        }
+
         clip: true
         ScrollBar.vertical.policy: ScrollBar.AsNeeded
+        padding:0
 
         ColumnLayout {
             id: editColumn
