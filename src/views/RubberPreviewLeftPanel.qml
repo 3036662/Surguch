@@ -24,10 +24,6 @@ ColumnLayout {
 
     spacing:7
 
-    onWidthChanged: {
-        console.warn("previewColumn.width:"+ previewColumn.width)
-    }
-
     // stamp name label
     Text {
         text: qsTr("Mark name")
@@ -81,10 +77,6 @@ ColumnLayout {
             imageWidth: 340
             imageHeight: 280
 
-
-            onWidthChanged: {
-                console.warn("RubberPreview width:"+rubberStampPreview.width);
-            }
     }
 
     // link edit label

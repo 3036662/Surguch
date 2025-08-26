@@ -9,14 +9,13 @@ Item {
     property bool new_requested: false
     property bool window_completed: false
 
-    property real imageWidth:340
-    property real imageHeight:280
+    property real imageWidth: 340
+    property real imageHeight: 280
 
     function setStampData() {
         if (!stamp_data) {
             return {}
         }
-        //let curr_stamp = JSON.parse(stamp_data)
         let params = {
             "stamp_width": 900,
             "stamp_height": 300,
@@ -51,29 +50,65 @@ Item {
         id: bgImage
         width: root.imageWidth
         height: root.imageHeight
-        anchors.centerIn: parent
+        anchors.horizontalCenter: parent.horizontalCenter
         source: "qrc:/chess_bg.jpg"
-    }
 
-    RubberPreviewRender {
-        id: rubberPreview
-        width:  root.width
-        anchors.centerIn: bgImage
-        visible: false
+        property bool completed: false
 
-        Connections {
+        RubberPreviewRender {
+            id: rubberPreview
 
-            function onImageReady() {
-                if (rubberPreview.visible === true) {                    
-                    rubberPreview.update()
-                } else {
-                    rubberPreview.visible = true
-                }
+            // true until the first successful render
+            property bool first_launch: true
+            // There is no sense in showing the item if the render failed.
+            property bool bad_result_recieved: false
+
+            // initial width
+            width: root.imageWidth
+            height: root.imageHeight
+
+            // initial position
+            x: bgImage.width / 2 - width / 2
+            y: bgImage.height / 2 - height / 2
+
+            // size hint for the renderer
+            requestedWidth: root.imageWidth
+            requestedHeight: root.imageHeight
+
+            // visible only if we have an image to show, and no render is processing now
+            visible: !(processing || first_launch || bad_result_recieved)
+
+            onWidthChanged: {
+                x = bgImage.width / 2 - width / 2
+            }
+
+            onHeightChanged: {
+                y = bgImage.height / 2 - height / 2
+            }
+
+            // render succeeded
+            onRubberImageReady: {
                 processing = false
+                bad_result_recieved = false
+
+                if (first_launch) {
+                    first_launch = false
+                }
+
+                rubberPreview.update()
+                rubberPreview.y = bgImage.height / 2 - rubberPreview.height / 2
+                rubberPreview.x = bgImage.width / 2 - rubberPreview.width / 2
+
                 if (new_requested) {
                     new_requested = false
                     createPreview()
                 }
+            }
+
+            // render failed
+            onRubberBadResult: {
+                processing = false
+                bad_result_recieved = true
             }
         }
     }

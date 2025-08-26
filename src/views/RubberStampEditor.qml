@@ -112,11 +112,6 @@ Dialog {
     padding: 0
     margins: 0
 
-    Component.onCompleted:  {
-        console.warn("Rubber Dialog Margins: L="+leftMargin+" R="+rightMargin+" T="+topMargin+" B="+bottomMargin);
-        console.warn("Rubber Dialog Paddings: L="+leftPadding+" R="+rightPadding+" T="+topPadding+" B="+bottomPadding);
-    }
-
     // main item
     contentItem: ScrollView {
         id: scrollView
@@ -128,6 +123,7 @@ Dialog {
         clip: true
         ScrollBar.horizontal.policy: ScrollBar.AsNeeded
         ScrollBar.vertical.policy: ScrollBar.AsNeeded
+
         topPadding: StyleSheet.defaultPaddingV
         bottomPadding: StyleSheet.defaultPaddingV
         leftPadding: StyleSheet.defaultPaddingH
@@ -136,10 +132,6 @@ Dialog {
 
         width: root.width
 
-        Component.onCompleted:  {
-            console.warn("Rubber Scroll Margins: L="+leftMargin+" R="+rightMargin+" T="+topMargin+" B="+bottomMargin);
-            console.warn("Rubber Scroll Paddings: L="+leftPadding+" R="+rightPadding+" T="+topPadding+" B="+bottomPadding);
-        }
 
         ColumnLayout {
             id: editColumn
@@ -187,11 +179,6 @@ Dialog {
 
                 Layout.preferredWidth: editColumn.width
                 Layout.fillWidth: true
-
-
-                onWidthChanged: {
-                    console.warn("Main raw width:"+width)
-                }
 
                 spacing: 0
 
@@ -258,13 +245,6 @@ Dialog {
 
                     Layout.fillWidth: false
                     Layout.preferredWidth: 355
-
-
-                    onWidthChanged: {
-                        console.warn("=============")
-                        console.warn("editColumn.width:"+editColumn.width)                        
-                        console.warn("Right column width:"+width)
-                    }
 
                     // switch "generate from text"
                     RowLayout {
@@ -371,7 +351,7 @@ Dialog {
                         }
                     }
 
-                    // simple text "Font
+                    // simple text "Font"
                     Text {
                         text: qsTr("Font")
                         visible: typeSwitch.checked

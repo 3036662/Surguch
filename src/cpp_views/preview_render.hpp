@@ -10,6 +10,7 @@
 
 #include "gui_core/gui_utils.hpp"
 #include "gui_core/rubber_structs.hpp"
+#include "pdf_csp_c.hpp"
 
 /**
  * @brief QML Item for rendering preview images

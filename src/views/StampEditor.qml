@@ -82,10 +82,9 @@ Dialog {
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2
     closePolicy: Popup.NoAutoClose
-    topPadding :StyleSheet.defaultPaddingV
-    bottomPadding :StyleSheet.defaultPaddingV
-    leftPadding: StyleSheet.defaultPaddingH
-    rightPadding: StyleSheet.defaultPaddingH
+
+    padding: 0
+    margins: 0
 
     contentItem: ScrollView {
         id: scrollView
@@ -97,7 +96,10 @@ Dialog {
 
         clip: true
         ScrollBar.vertical.policy: ScrollBar.AsNeeded
-        padding:0
+        topPadding :StyleSheet.defaultPaddingV
+        bottomPadding :StyleSheet.defaultPaddingV
+        leftPadding: StyleSheet.defaultPaddingH
+        rightPadding: StyleSheet.defaultPaddingH
 
         ColumnLayout {
             id: editColumn

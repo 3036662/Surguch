@@ -27,7 +27,6 @@ QSGNode *PreviewRender::updatePaintNode(
     if (node != nullptr) {
         rectNode = dynamic_cast<QSGSimpleTextureNode *>(node);
         if (!isVisible()) {
-            // qWarning()<<"return same node, not visible";
             return node;
         }
     }

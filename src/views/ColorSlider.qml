@@ -10,10 +10,6 @@ RowLayout {
     property alias gradStart: color.gradient_start
     property alias value: color.value
 
-     onWidthChanged: {
-         console.warn("RGB sliders column width:"+width)
-     }
-
     Layout.fillWidth: true
 
     SettingSlider {
