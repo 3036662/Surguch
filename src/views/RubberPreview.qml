@@ -9,6 +9,9 @@ Item {
     property bool new_requested: false
     property bool window_completed: false
 
+    property real imageWidth:340
+    property real imageHeight:280
+
     function setStampData() {
         if (!stamp_data) {
             return {}
@@ -45,19 +48,23 @@ Item {
     }
 
     Image {
-        anchors.fill: parent
+        id: bgImage
+        width: root.imageWidth
+        height: root.imageHeight
+        anchors.centerIn: parent
         source: "qrc:/chess_bg.jpg"
     }
 
     RubberPreviewRender {
         id: rubberPreview
-        width: parent.width
+        width:  root.width
+        anchors.centerIn: bgImage
         visible: false
 
         Connections {
 
             function onImageReady() {
-                if (rubberPreview.visible === true) {
+                if (rubberPreview.visible === true) {                    
                     rubberPreview.update()
                 } else {
                     rubberPreview.visible = true

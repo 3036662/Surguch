@@ -7,19 +7,14 @@ ColumnLayout{
 
     signal valueChanged();
 
-    property real sliderWidth: 320
-
     property alias r: redColor.value
     property alias g: greenColor.value
     property alias b: blueColor.value
-
-    width:parent.width
 
     ColorSlider{
         id: redColor
 
         labelText: "R";
-        sliderWidth:root.sliderWidth
         bgColor:  "#ff0000"
 
         onValueChanged: {
@@ -32,7 +27,6 @@ ColumnLayout{
         id: greenColor
 
         labelText: "G";
-        sliderWidth:root.sliderWidth
         bgColor:  "#00ff00"
 
         onValueChanged: {
@@ -44,7 +38,6 @@ ColumnLayout{
         id: blueColor
 
         labelText: "B";
-        sliderWidth:root.sliderWidth
         bgColor:  "#0000ff"
 
         onValueChanged: {

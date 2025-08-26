@@ -5,8 +5,7 @@ import QtQuick.Controls
 
 RowLayout {
     id: root
-    property string labelText
-    property real sliderWidth: 320
+    property string labelText    
     property alias bgColor: color.back_color
     property alias gradStart: color.gradient_start
     property alias value: color.value
@@ -20,7 +19,6 @@ RowLayout {
     SettingSlider {
         id: color
 
-        //Layout.maximumWidth:  root.sliderWidth
         Layout.fillWidth: true
         snapMode: Slider.SnapOnRelease
         from: 0
@@ -32,7 +30,7 @@ RowLayout {
 
     Text {
         text: root.labelText + " " + color.value
-        width: 50
+        Layout.preferredWidth:  40
         font.family: "Noto Sans"
         color: StyleSheet.font_color_extra
         Layout.leftMargin: 5

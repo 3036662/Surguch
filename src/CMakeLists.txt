@@ -121,6 +121,7 @@ ELSE ()
             QML_FILES views/ColorSlider.qml
             QML_FILES views/RGBColorPicker.qml
             QML_FILES views/BorderSettings.qml
+            QML_FILES views/RubberPreviewLeftPanel.qml
     )
 
     qt6_import_qml_plugins(surguch)

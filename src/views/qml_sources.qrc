@@ -37,5 +37,6 @@
         <file>ColorSlider.qml</file>
         <file>RGBColorPicker.qml</file>
         <file>BorderSettings.qml</file>
+        <file>RubberPreviewLeftPanel.qml</file>
     </qresource>
 </RCC>

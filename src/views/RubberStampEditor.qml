@@ -17,16 +17,18 @@ Dialog {
     property int stamp_id: -1
     property bool edit_state: true
 
+
+
     // fill form with data from JSON
     function updateRubberStampForm() {
-        if (stamp_data) {
+        if (stamp_data) {        
             try {
                 edit_state = true
                 stamp_json = JSON.parse(stamp_data)
                 stamp_id = stamp_json.id
-                stampName.text = stamp_json.title
-                linkName.text = stamp_json.stamp_link
-                tagWidth.value = stamp_json.tag_width
+                previewColumn.stampNameText = stamp_json.title
+                previewColumn.linkNameText = stamp_json.stamp_link
+                previewColumn.tagWidthValue = stamp_json.tag_width
                 typeSwitch.checked = !stamp_json.create_from_image
                 logoPath.text = stamp_json.img_path
                 rubberStampText.text = stamp_json.stamp_text
@@ -43,15 +45,15 @@ Dialog {
         } else {
             resetData()
         }
-        rubberStampPreview.createPreview()
+        previewColumn.createPreview()
     }
 
     function resetData() {
         edit_state = false
         stamp_id = -1
-        stampName.text = ""
-        linkName.text = ""
-        tagWidth.value = 30
+        previewColumn.stampNameText = ""
+        previewColumn.linkNameText = ""
+        previewColumn.tagWidthValue = 30
         typeSwitch.checked = true
         logoPath.text = ""
         rubberStampText.text = qsTr("Surguch")
@@ -83,9 +85,9 @@ Dialog {
             "font_family": fontName.currentText,
             "annotation_text": rubberStampText.text,
             "bg_transparent": transparencySwitch.checked ? 1 : 0,
-            "annotation_width": rubberStampPreview.width
+            "annotation_width": previewColumn.rubberStampPreviewWidth
         }
-        rubberStampPreview.stamp_data = rubber_stamp_params
+        previewColumn.rubberStampPreviewStampData = rubber_stamp_params
     }
 
     function prependInternetProtocol(link) {
@@ -103,16 +105,22 @@ Dialog {
 
     implicitWidth: 780
     implicitHeight: Math.min(670, parent.height * 0.85)
-    leftMargin: 10
-    rightMargin: 10
     modal: true
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2
     closePolicy: Popup.NoAutoClose
+    padding: 0
+    margins: 0
+
+    Component.onCompleted:  {
+        console.warn("Rubber Dialog Margins: L="+leftMargin+" R="+rightMargin+" T="+topMargin+" B="+bottomMargin);
+        console.warn("Rubber Dialog Paddings: L="+leftPadding+" R="+rightPadding+" T="+topPadding+" B="+bottomPadding);
+    }
 
     // main item
     contentItem: ScrollView {
         id: scrollView
+
 
         property bool scrollBarVisible: ScrollBar.vertical.visible
         property int scrollBarWidth: scrollBarVisible ? ScrollBar.vertical.width : 0
@@ -124,7 +132,14 @@ Dialog {
         bottomPadding: StyleSheet.defaultPaddingV
         leftPadding: StyleSheet.defaultPaddingH
         rightPadding: StyleSheet.defaultPaddingH
+        anchors.fill: parent
+
         width: root.width
+
+        Component.onCompleted:  {
+            console.warn("Rubber Scroll Margins: L="+leftMargin+" R="+rightMargin+" T="+topMargin+" B="+bottomMargin);
+            console.warn("Rubber Scroll Paddings: L="+leftPadding+" R="+rightPadding+" T="+topPadding+" B="+bottomPadding);
+        }
 
         ColumnLayout {
             id: editColumn
@@ -180,192 +195,54 @@ Dialog {
 
                 spacing: 0
 
-                // left subcolomn
-                // size of this column is implictly hardcoded (340)
-                ColumnLayout {
-                    id: previewColumn
+                // rubber stamp preview left panel
+                RubberPreviewLeftPanel{
+                     id: previewColumn
+                     Layout.fillWidth: true
 
-                    Text {
-                        text: qsTr("Mark name")
-                        topPadding: 5
-                        bottomPadding: 5
-                        font.family: "Noto Sans"
-                        color: StyleSheet.font_color_extra
-                    }
+                     onSaveClicked:{
+                         if (previewColumn.stampNameText === "") {
+                             stampName.forceActiveFocus()
+                             return
+                         }
+                         if (stamp_id < 0 && !rubber_model.uniqueStampName(
+                                     previewColumn.stampNameText)) {
+                             stampName.forceActiveFocus()
+                             errorMessageDialog.text = qsTr(
+                                         "Stamp with this name already exists")
+                             errorMessageDialog.open()
+                             return
+                         }
+                         stamp_json = {}
+                         stamp_json["id"] = stamp_id
+                         stamp_json["title"] = previewColumn.stampNameText
+                         stamp_json["stamp_link"] = prependInternetProtocol(
+                                     previewColumn.linkNameText)
+                         stamp_json["tag_width"] = previewColumn.tagWidthValue
+                         stamp_json["create_from_image"] = typeSwitch.checked ? 0 : 1
+                         stamp_json["img_path"] = logoPath.text
+                         stamp_json["stamp_text"] = rubberStampText.text
+                         stamp_json["border_width"] = borderSettings.border_width
+                         stamp_json["border_radius"] = borderSettings.radius
+                         stamp_json["font_family"] = fontName.currentText
+                         stamp_json["R"] = rgbColorPicker.r
+                         stamp_json["G"] = rgbColorPicker.g
+                         stamp_json["B"] = rgbColorPicker.b
+                         stamp_json["bg_transparent"] = transparencySwitch.checked ? 1 : 0
+                         const new_stamp_data = JSON.stringify(stamp_json)
+                         console.warn(rubber_model.saveRubberStamps(
+                                          new_stamp_data))
+                         rubberStampEditor.visible = false
+                         stamp_data = null
+                     }
 
-                    RSBTextArea {
-                        id: stampName
-                        Layout.fillWidth: true
-                        placeholderText: qsTr("Enter mark name")
-                        selectByMouse: true
-                        wrapMode: Text.WordWrap
-                        placeholderTextColor: "grey"
-                        font.family: "Noto Sans"
-                        color: StyleSheet.font_color_extra
-                        topPadding: 5
-                        bottomPadding: 5
-
-                        onTextChanged: {
-                            let validInput = stampName.text.match(/^S+$/)
-                            if (!validInput) {
-                                stampName.text = stampName.text.replace(/\s/g,
-                                                                        '')
-                                stampName.cursorPosition = stampName.text.length
-                            }
-                            if (stampName.text.length > 50) {
-                                stampName.text = stampName.text.slice(0, 50)
-                            }
-                        }
-                    }
-
-                    Text {
-                        text: qsTr("Preview")
-                        bottomPadding: 5
-                        font.family: "Noto Sans"
-                        color: StyleSheet.font_color_extra
-                    }
-
-                    RubberPreview {
-                        id: rubberStampPreview
-
-                        width: 340
-                        height: 280
-                    }
-
-                    Text {
-                        text: qsTr("Link")
-                        bottomPadding: 5
-                        font.family: "Noto Sans"
-                        color: StyleSheet.font_color_extra
-                    }
-
-                    ScrollView {
-                        Layout.fillWidth: true
-                        Layout.maximumHeight: Math.min(linkName.implicitHeight,
-                                                       font.pixelSize * 2 + 20)
-
-                        RSBTextArea {
-                            id: linkName
-                            Layout.fillWidth: true
-                            placeholderText: qsTr("Enter link here")
-                            selectByMouse: true
-                            wrapMode: Text.WordWrap
-                            placeholderTextColor: "grey"
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-
-                            onTextChanged: {
-                                updatePreview()
-                            }
-                        }
-                        ScrollBar.vertical: ScrollBar {
-                            Layout.fillWidth: true
-                            anchors.right: parent.right
-                            policy: (linkName.lineCount
-                                     > 2) ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff
-                        }
-                    }
-
-                    RowLayout {
-                        Layout.fillWidth: true
-
-                        Text {
-                            text: qsTr("Default mark width, % from A4 ")
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-                        }
-
-                        Rectangle {
-                            Layout.fillWidth: true
-                        }
-
-                        Text {
-                            id: tagWidthText
-                            text: tagWidth.value
-                            font.family: "Noto Sans"
-                            color: StyleSheet.font_color_extra
-                        }
-                    }
-
-                    SettingSlider {
-                        id: tagWidth
-                        Layout.fillWidth: true
-                        snapMode: Slider.SnapOnRelease
-                        from: 1
-                        to: 99
-                        stepSize: 1
-                    }
-
-                    Button {
-                        id: saveButton
-
-                        Layout.fillWidth: true
-                        text: qsTr("Save")
-                        font.family: "Noto Sans"
-                        display: AbstractButton.TextBesideIcon
-                        icon.source: StyleSheet.save_icon
-                        icon.width: 20
-                        icon.height: 20
-                        onClicked: {
-                            if (stampName.text === "") {
-                                stampName.forceActiveFocus()
-                                return
-                            }
-                            if (stamp_id < 0 && !rubber_model.uniqueStampName(
-                                        stampName.text)) {
-                                stampName.forceActiveFocus()
-                                errorMessageDialog.text = qsTr(
-                                            "Stamp with this name already exists")
-                                errorMessageDialog.open()
-                                return
-                            }
-                            stamp_json = {}
-                            stamp_json["id"] = stamp_id
-                            stamp_json["title"] = stampName.text
-                            stamp_json["stamp_link"] = prependInternetProtocol(
-                                        linkName.text)
-                            stamp_json["tag_width"] = tagWidth.value
-                            stamp_json["create_from_image"] = typeSwitch.checked ? 0 : 1
-                            stamp_json["img_path"] = logoPath.text
-                            stamp_json["stamp_text"] = rubberStampText.text
-                            stamp_json["border_width"] = borderSettings.border_width
-                            stamp_json["border_radius"] = borderSettings.radius
-                            stamp_json["font_family"] = fontName.currentText
-                            stamp_json["R"] = rgbColorPicker.r
-                            stamp_json["G"] = rgbColorPicker.g
-                            stamp_json["B"] = rgbColorPicker.b
-                            stamp_json["bg_transparent"] = transparencySwitch.checked ? 1 : 0
-                            const new_stamp_data = JSON.stringify(stamp_json)
-                            console.warn(rubber_model.saveRubberStamps(
-                                             new_stamp_data))
-                            rubberStampEditor.visible = false
-                            stamp_data = null
-                        }
-                    }
-
-                    Button {
-                        id: deleteButton
-
-                        Layout.fillWidth: true
-                        text: qsTr("Delete")
-                        font.family: "Noto Sans"
-                        display: AbstractButton.TextBesideIcon
-                        icon.source: StyleSheet.trash_icon
-                        icon.width: 20
-                        icon.height: 20
-                        enabled: edit_state
-
-                        onClicked: {
-                            if (rubber_model.deleteRubberStamps(
-                                        root.stamp_id)) {
-                                rubberStampEditor.visible = false
-                                stamp_data = null
-                            }
-                        }
-                    }
-                    Item {
-                        Layout.fillHeight: true
-                    }
+                     onDeleteClicked: {
+                         if (rubber_model.deleteRubberStamps(
+                                     root.stamp_id)) {
+                             rubberStampEditor.visible = false
+                             stamp_data = null
+                         }
+                     }
                 }
 
                 Item {
@@ -378,12 +255,14 @@ Dialog {
                     id: rightSubColumn
 
                     clip: true
-                    width: editColumn.width - previewColumn.width - middleSpacer.width
+
+                    Layout.fillWidth: false
+                    Layout.preferredWidth: 355
+
 
                     onWidthChanged: {
                         console.warn("=============")
-                        console.warn("editColumn.width:"+editColumn.width)
-                        console.warn("previewColumn.width:"+ previewColumn.width)
+                        console.warn("editColumn.width:"+editColumn.width)                        
                         console.warn("Right column width:"+width)
                     }
 
@@ -581,8 +460,7 @@ Dialog {
                     RGBColorPicker{
                         id: rgbColorPicker
 
-                        sliderWidth:rightSubColumn.width*0.6
-
+                        Layout.fillHeight: true
                         visible: typeSwitch.checked
 
                         onValueChanged: {
