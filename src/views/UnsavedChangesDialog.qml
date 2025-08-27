@@ -27,16 +27,7 @@ Dialog {
     leftMargin: StyleSheet.defaultMarginH
     rightMargin: StyleSheet.defaultMarginH
 
-    Component.onCompleted:  {
-        console.warn("SAVE Margins: L="+leftMargin+" R="+rightMargin+" T="+topMargin+" B="+bottomMargin);
-        console.warn("SAVE Paddings: L="+leftPadding+" R="+rightPadding+" T="+topPadding+" B="+bottomPadding);
-    }
-
     Column {    
-        Component.onCompleted:  {
-            console.warn("SAVE Column Margins: L="+leftMargin+" R="+rightMargin+" T="+topMargin+" B="+bottomMargin);
-            console.warn("SAVE Column Paddings: L="+leftPadding+" R="+rightPadding+" T="+topPadding+" B="+bottomPadding);
-        }
 
         id: unsavedFileDialogContent
 
@@ -66,8 +57,7 @@ Dialog {
                 width: 100
                 onClicked: {
                     undsavedFileDialog.close()
-                    saveWithQuit(true)
-                    //header.launchSaveFileWithQuit(true);
+                    saveWithQuit(true)                    
                 }
             }
 

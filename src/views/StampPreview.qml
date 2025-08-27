@@ -14,13 +14,12 @@ Item {
     function setStampData() {
         //console.warn("preview " + profile_data)
         // let curr_profile
-        if (!profile_data) {
+        if (!profile_data || !stamp_data) {
             return {}
         }
 
         let curr_profile = JSON.parse(profile_data)
         let cert_array = JSON.parse(profilesModel.getUserCertsJSON())
-        // console.warn(JSON.stringify(rightSideBar.edit_profile.cert_array));
         let cert_index = cert_array.findIndex(cert => {
                                                   return curr_profile.cert_serial === cert.serial
                                               })

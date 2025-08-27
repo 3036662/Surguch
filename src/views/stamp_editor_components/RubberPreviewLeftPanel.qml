@@ -25,40 +25,15 @@ ColumnLayout {
 
     spacing:7
 
-    // stamp name label
-    Text {
-        text: qsTr("Mark name")
-        topPadding: 5
-        bottomPadding: 5
-        font.family: "Noto Sans"
-        color: StyleSheet.font_color_extra
-    }
-
-    // stamp name text field
-    Surguch.RSBTextArea {
+    // stamp name
+    StampNameInput{
         id: stampName
-        Layout.fillWidth: true
-        placeholderText: qsTr("Enter mark name")
-        selectByMouse: true
-        wrapMode: Text.WordWrap
-        placeholderTextColor: "grey"
-        font.family: "Noto Sans"
-        color: StyleSheet.font_color_extra
-        topPadding: 5
-        bottomPadding: 5
 
-        onTextChanged: {
-            let validInput = stampName.text.match(/^S+$/)
-            if (!validInput) {
-                stampName.text = stampName.text.replace(/\s/g,
-                                                        '')
-                stampName.cursorPosition = stampName.text.length
-            }
-            if (stampName.text.length > 50) {
-                stampName.text = stampName.text.slice(0, 50)
-            }
-        }
+        labelText: qsTr("Mark name")
+        placeholderText: qsTr("Enter mark name")
+
     }
+
 
     // preview label
     Text {

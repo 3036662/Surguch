@@ -8,11 +8,6 @@ import "stamp_editor_components" as StampComponents
 Dialog {
     id: root
 
-    Component.onCompleted:  {
-        console.warn("Dialog Margins: L="+leftMargin+" R="+rightMargin+" T="+topMargin+" B="+bottomMargin);
-        console.warn("Dialog Paddings: L="+leftPadding+" R="+rightPadding+" T="+topPadding+" B="+bottomPadding);
-    }
-
 
     property var profiles_model
     property var profile_data
@@ -30,11 +25,11 @@ Dialog {
                 stamp_id = stamp_json.id
                 stampName.text = stamp_json.title
                 transparencySwitch.checked = stamp_json.transparent
-                borderWidth.value = stamp_json.border_width
-                borderRadius.value = stamp_json.border_radius
-                redColor.value = stamp_json.R
-                greenColor.value = stamp_json.G
-                blueColor.value = stamp_json.B
+                borderSettings.border_width = stamp_json.border_width
+                borderSettings.radius = stamp_json.border_radius
+                rgbColorPicker.r = stamp_json.R
+                rgbColorPicker.g = stamp_json.G
+                rgbColorPicker.b = stamp_json.B
             } catch (e) {
                 console.error("Error parsing JSON " + e.message)
             }
@@ -51,24 +46,24 @@ Dialog {
         stamp_id = -1
         stampName.text = ""
         transparencySwitch.state = false
-        borderWidth.value = 7
-        borderRadius.value = 50
-        redColor.value = 50
-        greenColor.value = 62
-        blueColor.value = 168
+        borderSettings.border_width = 7
+        borderSettings.radius = 50
+        rgbColorPicker.r = 50
+        rgbColorPicker.g = 62
+        rgbColorPicker.b = 168
     }
 
     function updatePreview() {
         let stamp_params = {
             "stamp_name": stampName.text,
-            "text_color_red": redColor.value,
-            "text_color_green": greenColor.value,
-            "text_color_blue": blueColor.value,
-            "border_color_red": redColor.value,
-            "border_color_green": greenColor.value,
-            "border_color_blue": blueColor.value,
-            "border_width": borderWidth.value,
-            "border_radius": borderRadius.value,
+            "text_color_red": rgbColorPicker.r,
+            "text_color_green": rgbColorPicker.g,
+            "text_color_blue": rgbColorPicker.b,
+            "border_color_red": rgbColorPicker.r,
+            "border_color_green": rgbColorPicker.g,
+            "border_color_blue": rgbColorPicker.b,
+            "border_width": borderSettings.border_width,
+            "border_radius": borderSettings.radius,
             "bg_transparent": transparencySwitch.checked ? 1 : 0
         }
         stampPreview.stamp_data = stamp_params
@@ -87,15 +82,14 @@ Dialog {
     contentItem: ScrollView {
         id: scrollView
 
-        Component.onCompleted:  {
-            console.warn("ScrollView Margins: L="+leftMargin+" R="+rightMargin+" T="+topMargin+" B="+bottomMargin);
-            console.warn("ScrollView Paddings: L="+leftPadding+" R="+rightPadding+" T="+topPadding+" B="+bottomPadding);
-        }
+        property bool scrollBarVisible: ScrollBar.vertical.visible
+        property int scrollBarWidth: scrollBarVisible ? ScrollBar.vertical.width : 0
+
 
         clip: true
         ScrollBar.vertical.policy: ScrollBar.AsNeeded
-        topPadding :StyleSheet.defaultPaddingV
-        bottomPadding :StyleSheet.defaultPaddingV
+        topPadding: StyleSheet.defaultPaddingV
+        bottomPadding: StyleSheet.defaultPaddingV
         leftPadding: StyleSheet.defaultPaddingH
         rightPadding: StyleSheet.defaultPaddingH
         anchors.topMargin: 0
@@ -106,75 +100,30 @@ Dialog {
 
         ColumnLayout {
             id: editColumn
-            width: scrollView.availableWidth
+            width: scrollView.width - scrollView.scrollBarWidth - 2 * StyleSheet.defaultPaddingH
             height: scrollView.availableHeight
 
             // top raw (label and close button)
-            RowLayout {
-                width: root.width
-                Layout.fillWidth: true
+            StampComponents.TopLabelWithCloseButton {
+                Layout.preferredWidth: editColumn.width
 
-                Label {
-                    text: qsTr("Stamp editor")
-                    font.family: "Noto Sans"
-                    font.weight: Font.DemiBold
-                    topPadding: 10
-                    bottomPadding: 10
-                }
+                labelText: qsTr("Stamp editor")
 
-                Rectangle {
-                    Layout.fillWidth: true
-                }
-
-                ToolButton {
-                    flat: true
-                    display: AbstractButton.TextBesideIcon
-                    icon.width: 20
-                    icon.height: 20
-                    leftPadding: 10
-                    rightPadding: 10
-                    topPadding: 10
-                    bottomPadding: 10
-                    font.family: "Noto Sans"
-                    icon.source: StyleSheet.close_icon
-
-                    onClicked: {
-                        stampEditor.visible = false
-                        resetData()
-                    }
+                onCloseClicked: {
+                    stampEditor.visible = false
+                    resetData()
                 }
             }
 
-            Text {
-                text: qsTr("Stamp name")
-                bottomPadding: 5
-                font.family: "Noto Sans"
-                color: StyleSheet.font_color_extra
-            }
-
-            RSBTextArea {
+            // stamp name
+            StampComponents.StampNameInput{
                 id: stampName
-                Layout.fillWidth: true
-                placeholderText: qsTr("Enter stamp name")
-                selectByMouse: true
-                width: parent.width
-                wrapMode: Text.WordWrap
-                placeholderTextColor: "grey"
-                font.family: "Noto Sans"
-                color: StyleSheet.font_color_extra
 
-                onTextChanged: {
-                    let validInput = stampName.text.match(/^S+$/)
-                    if (!validInput) {
-                        stampName.text = stampName.text.replace(/\s/g, '')
-                        stampName.cursorPosition = stampName.text.length
-                    }
-                    if (stampName.text.length > 50) {
-                        stampName.text = stampName.text.slice(0, 50)
-                    }
-                }
+                labelText:  qsTr("Stamp name")
+                placeholderText: qsTr("Enter stamp name")
             }
 
+            // preview label
             Text {
                 text: qsTr("Preview")
                 bottomPadding: 5
@@ -189,71 +138,15 @@ Dialog {
                 height: 175
             }
 
-            RowLayout {
-
-                Text {
-                    text: qsTr("Stamp border width: ")
-                    font.family: "Noto Sans"
-                    color: StyleSheet.font_color_extra
-                }
-
-                Rectangle {
-                    Layout.fillWidth: true
-                }
-
-                Text {
-                    id: borderWidthText
-                    text: borderWidth.value
-                    font.family: "Noto Sans"
-                    color: StyleSheet.font_color_extra
-                }
-            }
-
-            StampComponents.SettingSlider {
-                id: borderWidth
-                Layout.fillWidth: true
-                snapMode: Slider.SnapOnRelease
-                from: 0
-                to: 20
-                stepSize: 1
+            // border settings
+            StampComponents.BorderSettings {
+                id: borderSettings
 
                 onValueChanged: {
                     updatePreview()
                 }
             }
 
-            RowLayout {
-
-                Text {
-                    text: qsTr("Stamp border radius: ")
-                    font.family: "Noto Sans"
-                    color: StyleSheet.font_color_extra
-                }
-
-                Rectangle {
-                    Layout.fillWidth: true
-                }
-
-                Text {
-                    id: borderRadiusText
-                    text: borderRadius.value
-                    font.family: "Noto Sans"
-                    color: StyleSheet.font_color_extra
-                }
-            }
-
-            StampComponents.SettingSlider {
-                id: borderRadius
-                Layout.fillWidth: true
-                snapMode: Slider.SnapOnRelease
-                from: 1
-                to: 70
-                stepSize: 1
-
-                onValueChanged: {
-                    updatePreview()
-                }
-            }
 
             Text {
                 text: qsTr("Stamp's color")
@@ -261,118 +154,27 @@ Dialog {
                 color: StyleSheet.font_color_extra
             }
 
-            RowLayout {
-                width: root.width
 
-                StampComponents.SettingSlider {
-                    id: redColor
+            // color settings
+            StampComponents.RGBColorPicker {
+                id: rgbColorPicker
 
-                    Layout.fillWidth: true
-                    Layout.maximumWidth: 380
-                    snapMode: Slider.SnapOnRelease
-                    from: 0
-                    to: 255
-                    stepSize: 1
-                    back_color: "#ff0000"
-                    gradient_start: "#000000"
+                Layout.fillHeight: true
 
-                    onValueChanged: {
-                        updatePreview()
-                    }
-                }
-
-                Rectangle {
-                    Layout.fillWidth: true
-                }
-
-                Text {
-                    text: "R " + redColor.value
-                    font.family: "Noto Sans"
-                    color: StyleSheet.font_color_extra
+                onValueChanged: {
+                    updatePreview()
                 }
             }
 
-            RowLayout {
-                width: root.width
-                StampComponents.SettingSlider {
-                    id: greenColor
+            // transparency switch with label
+            StampComponents.TransparencySwitch{
+                id: transparencySwitch
 
-                    Layout.fillWidth: true
-                    Layout.maximumWidth: 380
-                    snapMode: Slider.SnapOnRelease
-                    from: 0
-                    to: 255
-                    stepSize: 1
-                    back_color: "#00ff00"
-                    gradient_start: "#000000"
+                Layout.fillWidth: true
+                labelText: qsTr("Transparency")
 
-                    onValueChanged: {
-                        updatePreview()
-                    }
-                }
-
-                Rectangle {
-                    Layout.fillWidth: true
-                }
-
-                Text {
-                    text: "G " + greenColor.value
-                    font.family: "Noto Sans"
-                    color: StyleSheet.font_color_extra
-                }
-            }
-
-            RowLayout {
-                width: root.width
-
-                StampComponents.SettingSlider {
-                    id: blueColor
-
-                    Layout.fillWidth: true
-                    Layout.maximumWidth: 380
-                    snapMode: Slider.SnapOnRelease
-                    from: 0
-                    to: 255
-                    stepSize: 1
-                    back_color: "#0000ff"
-                    gradient_start: "#000000"
-
-                    onValueChanged: {
-                        updatePreview()
-                    }
-                }
-
-                Rectangle {
-                    Layout.fillWidth: true
-                }
-
-                Text {
-                    text: "B " + blueColor.value
-                    font.family: "Noto Sans"
-                    color: StyleSheet.font_color_extra
-                }
-            }
-
-            RowLayout {
-                width: root.width
-
-                Text {
-                    text: qsTr("Transparency")
-                    Layout.fillWidth: true
-                    color: StyleSheet.font_color_extra
-                    font.family: "Noto Sans"
-                }
-
-                Rectangle {
-                    Layout.fillWidth: true
-                }
-
-                StampComponents.SettingSwitch {
-                    id: transparencySwitch
-
-                    onToggled: {
-                        updatePreview()
-                    }
+                onToggled: {
+                    updatePreview()
                 }
             }
 
@@ -405,11 +207,11 @@ Dialog {
                     stamp_json = {}
                     stamp_json["id"] = stamp_id
                     stamp_json["title"] = stampName.text
-                    stamp_json["border_width"] = borderWidth.value
-                    stamp_json["border_radius"] = borderRadius.value
-                    stamp_json["R"] = redColor.value
-                    stamp_json["G"] = greenColor.value
-                    stamp_json["B"] = blueColor.value
+                    stamp_json["border_width"] = borderSettings.border_width
+                    stamp_json["border_radius"] = borderSettings.radius
+                    stamp_json["R"] = rgbColorPicker.r
+                    stamp_json["G"] = rgbColorPicker.g
+                    stamp_json["B"] = rgbColorPicker.b
                     stamp_json["transparent"] = transparencySwitch.checked ? 1 : 0
                     const new_stamp_data = JSON.stringify(stamp_json)
                     console.warn(profiles_model.saveStamp(new_stamp_data))

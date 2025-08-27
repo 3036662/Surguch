@@ -38,5 +38,9 @@
         <file>stamp_editor_components/ColorSlider.qml</file>
         <file>stamp_editor_components/RGBColorPicker.qml</file>
         <file>stamp_editor_components/BorderSettings.qml</file>
+        <file>stamp_editor_components/TopLabelWithCloseButton.qml</file>
+        <file>stamp_editor_components/StampNameInput.qml</file>
+        <file>stamp_editor_components/TransparencySwitch.qml</file>
+        <file>stamp_editor_components/RubberPreviewRightPanel.qml</file>
     </qresource>
 </RCC>
