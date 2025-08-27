@@ -107,7 +107,6 @@ ELSE ()
             QML_FILES views/RSBTextArea.qml
             QML_FILES views/UnsavedChangesDialog.qml
             QML_FILES views/StampEditor.qml
-            QML_FILES views/SettingSlider.qml
             QML_FILES views/StampPreview.qml
             SOURCES cpp_views/preview_render.hpp cpp_views/preview_render.cpp
             QML_FILES views/SearchDialog.qml
@@ -115,13 +114,14 @@ ELSE ()
             QML_FILES views/RubberStampEditor.qml
             QML_FILES views/RubberStampDialog.qml
             QML_FILES views/RubberStampItem.qml
-            QML_FILES views/RubberPreview.qml
             QML_FILES views/InfoDialog.qml
-            QML_FILES views/SettingSwitch.qml
-            QML_FILES views/ColorSlider.qml
-            QML_FILES views/RGBColorPicker.qml
-            QML_FILES views/BorderSettings.qml
-            QML_FILES views/RubberPreviewLeftPanel.qml
+            QML_FILES views/stamp_editor_components/SettingSwitch.qml
+            QML_FILES views/stamp_editor_components/ColorSlider.qml
+            QML_FILES views/stamp_editor_components/RGBColorPicker.qml
+            QML_FILES views/stamp_editor_components/BorderSettings.qml
+            QML_FILES views/stamp_editor_components/RubberPreview.qml
+            QML_FILES views/stamp_editor_components/SettingSlider.qml
+            QML_FILES views/stamp_editor_components/RubberPreviewLeftPanel.qml
     )
 
     qt6_import_qml_plugins(surguch)

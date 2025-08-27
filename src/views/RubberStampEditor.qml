@@ -7,6 +7,7 @@ import StyleSheet
 import alt.pdfcsp.fontHelper
 import alt.pdfcsp.eventFilterInstaller
 import alt.pdfcsp.wheelFilter
+import "stamp_editor_components" as StampComponents
 
 Dialog {
     id: root
@@ -187,7 +188,7 @@ Dialog {
                 spacing: 0
 
                 // rubber stamp preview left panel
-                RubberPreviewLeftPanel{
+                StampComponents.RubberPreviewLeftPanel{
                      id: previewColumn
                      Layout.fillWidth: true
 
@@ -265,7 +266,7 @@ Dialog {
                             Layout.fillWidth: true
                         }
 
-                        SettingSwitch {
+                        StampComponents.SettingSwitch {
                             id: typeSwitch
 
                             topPadding: 5
@@ -417,7 +418,7 @@ Dialog {
                             visible: typeSwitch.checked
                         }
 
-                        SettingSwitch {
+                        StampComponents.SettingSwitch {
                             id: transparencySwitch
                             visible: typeSwitch.checked
 
@@ -441,7 +442,7 @@ Dialog {
                     }
 
                     // color sliders
-                    RGBColorPicker{
+                    StampComponents.RGBColorPicker{
                         id: rgbColorPicker
 
                         Layout.fillHeight: true
@@ -453,7 +454,7 @@ Dialog {
                     }
 
                     // border settings
-                    BorderSettings{
+                    StampComponents.BorderSettings{
                         id: borderSettings
 
                         visible: typeSwitch.checked

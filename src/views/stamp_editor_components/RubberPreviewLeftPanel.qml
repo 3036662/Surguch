@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import StyleSheet
+import "../" as Surguch
 
 // left subcolomn
 // size of this column is implictly hardcoded (340)
@@ -34,7 +35,7 @@ ColumnLayout {
     }
 
     // stamp name text field
-    RSBTextArea {
+    Surguch.RSBTextArea {
         id: stampName
         Layout.fillWidth: true
         placeholderText: qsTr("Enter mark name")

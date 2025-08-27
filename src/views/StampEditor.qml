@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 import StyleSheet
+import "stamp_editor_components" as StampComponents
 
 Dialog {
     id: root
@@ -108,6 +109,7 @@ Dialog {
             width: scrollView.availableWidth
             height: scrollView.availableHeight
 
+            // top raw (label and close button)
             RowLayout {
                 width: root.width
                 Layout.fillWidth: true
@@ -207,7 +209,7 @@ Dialog {
                 }
             }
 
-            SettingSlider {
+            StampComponents.SettingSlider {
                 id: borderWidth
                 Layout.fillWidth: true
                 snapMode: Slider.SnapOnRelease
@@ -240,7 +242,7 @@ Dialog {
                 }
             }
 
-            SettingSlider {
+            StampComponents.SettingSlider {
                 id: borderRadius
                 Layout.fillWidth: true
                 snapMode: Slider.SnapOnRelease
@@ -262,7 +264,7 @@ Dialog {
             RowLayout {
                 width: root.width
 
-                SettingSlider {
+                StampComponents.SettingSlider {
                     id: redColor
 
                     Layout.fillWidth: true
@@ -292,7 +294,7 @@ Dialog {
 
             RowLayout {
                 width: root.width
-                SettingSlider {
+                StampComponents.SettingSlider {
                     id: greenColor
 
                     Layout.fillWidth: true
@@ -323,7 +325,7 @@ Dialog {
             RowLayout {
                 width: root.width
 
-                SettingSlider {
+                StampComponents.SettingSlider {
                     id: blueColor
 
                     Layout.fillWidth: true
@@ -365,7 +367,7 @@ Dialog {
                     Layout.fillWidth: true
                 }
 
-                SettingSwitch {
+                StampComponents.SettingSwitch {
                     id: transparencySwitch
 
                     onToggled: {

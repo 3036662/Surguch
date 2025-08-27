@@ -26,17 +26,17 @@
         <file>UnsavedChangesDialog.qml</file>
         <file>StampPreview.qml</file>
         <file>StampEditor.qml</file>
-        <file>SettingSlider.qml</file>
         <file>SearchDialog.qml</file>
         <file>RubberStampDialog.qml</file>
         <file>RubberStampItem.qml</file>
         <file>RubberStampEditor.qml</file>
-        <file>RubberPreview.qml</file>
         <file>InfoDialog.qml</file>
-        <file>SettingSwitch.qml</file>
-        <file>ColorSlider.qml</file>
-        <file>RGBColorPicker.qml</file>
-        <file>BorderSettings.qml</file>
-        <file>RubberPreviewLeftPanel.qml</file>
+        <file>stamp_editor_components/RubberPreviewLeftPanel.qml</file>
+        <file>stamp_editor_components/RubberPreview.qml</file>
+        <file>stamp_editor_components/SettingSlider.qml</file>
+        <file>stamp_editor_components/SettingSwitch.qml</file>
+        <file>stamp_editor_components/ColorSlider.qml</file>
+        <file>stamp_editor_components/RGBColorPicker.qml</file>
+        <file>stamp_editor_components/BorderSettings.qml</file>
     </qresource>
 </RCC>
