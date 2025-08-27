@@ -35,6 +35,14 @@ Dialog {
     y: parent.y
     modal: false
     closePolicy: Popup.CloseOnEscape
+    topPadding: StyleSheet.defaultPaddingV
+    bottomPadding: StyleSheet.defaultPaddingV
+    leftPadding: StyleSheet.defaultPaddingH
+    rightPadding: StyleSheet.defaultPaddingH
+    topMargin: StyleSheet.defaultMarginV
+    bottomMargin: StyleSheet.defaultMarginV
+    leftMargin: StyleSheet.defaultMarginH
+    rightMargin: StyleSheet.defaultMarginH
 
     background: Rectangle {
         color: StyleSheet.text_area_background

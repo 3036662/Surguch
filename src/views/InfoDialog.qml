@@ -10,8 +10,15 @@ Dialog {
 
     width: 380
     height: 130
-    leftMargin: 10
-    rightMargin: 10
+    topPadding: StyleSheet.defaultPaddingV
+    bottomPadding: StyleSheet.defaultPaddingV
+    leftPadding: StyleSheet.defaultPaddingH
+    rightPadding: StyleSheet.defaultPaddingH
+    topMargin: StyleSheet.defaultMarginV
+    bottomMargin: StyleSheet.defaultMarginV
+    leftMargin: StyleSheet.defaultMarginH
+    rightMargin: StyleSheet.defaultMarginH
+
     modal: true
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2

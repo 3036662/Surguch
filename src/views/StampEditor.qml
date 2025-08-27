@@ -75,16 +75,13 @@ Dialog {
 
     implicitWidth: 460
     implicitHeight: Math.min(715, parent.height * 0.9)
-    leftMargin: 10
-    rightMargin: 10
+    padding: 0
+    margins: 0
     visible: false
     modal: true
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2
     closePolicy: Popup.NoAutoClose
-
-    padding: 0
-    margins: 0
 
     contentItem: ScrollView {
         id: scrollView
@@ -100,6 +97,11 @@ Dialog {
         bottomPadding :StyleSheet.defaultPaddingV
         leftPadding: StyleSheet.defaultPaddingH
         rightPadding: StyleSheet.defaultPaddingH
+        anchors.topMargin: 0
+        anchors.bottomMargin: 0
+        anchors.leftMargin: 0
+        anchors.rightMargin: 0
+        anchors.fill: parent
 
         ColumnLayout {
             id: editColumn

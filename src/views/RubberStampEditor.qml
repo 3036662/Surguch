@@ -128,6 +128,10 @@ Dialog {
         bottomPadding: StyleSheet.defaultPaddingV
         leftPadding: StyleSheet.defaultPaddingH
         rightPadding: StyleSheet.defaultPaddingH
+        anchors.topMargin: 0
+        anchors.bottomMargin: 0
+        anchors.leftMargin: 0
+        anchors.rightMargin: 0
         anchors.fill: parent
 
         width: root.width

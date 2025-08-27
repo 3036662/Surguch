@@ -22,6 +22,10 @@ Dialog {
     bottomPadding :StyleSheet.defaultPaddingV
     leftPadding: StyleSheet.defaultPaddingH
     rightPadding: StyleSheet.defaultPaddingH
+    topMargin: StyleSheet.defaultMarginV
+    bottomMargin: StyleSheet.defaultMarginV
+    leftMargin: StyleSheet.defaultMarginH
+    rightMargin: StyleSheet.defaultMarginH
 
     Component.onCompleted:  {
         console.warn("SAVE Margins: L="+leftMargin+" R="+rightMargin+" T="+topMargin+" B="+bottomMargin);
@@ -43,6 +47,10 @@ Dialog {
         bottomPadding :StyleSheet.defaultPaddingV
         leftPadding: StyleSheet.defaultPaddingH
         rightPadding: StyleSheet.defaultPaddingH
+        anchors.topMargin: StyleSheet.defaultMarginV
+        anchors.bottomMargin: StyleSheet.defaultMarginV
+        anchors.leftMargin: StyleSheet.defaultMarginH
+        anchors.rightMargin: StyleSheet.defaultMarginH
 
         Text {
             text: qsTr("Do you want to save your changes?")

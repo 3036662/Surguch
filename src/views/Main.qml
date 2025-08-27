@@ -443,6 +443,15 @@ ApplicationWindow {
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
         x: (parent.width - width) / 2
         y: (parent.height - height) / 2
+        topPadding: StyleSheet.defaultPaddingV
+        bottomPadding: StyleSheet.defaultPaddingV
+        leftPadding: StyleSheet.defaultPaddingH
+        rightPadding: StyleSheet.defaultPaddingH
+        topMargin: StyleSheet.defaultMarginV
+        bottomMargin: StyleSheet.defaultMarginV
+        leftMargin: StyleSheet.defaultMarginH
+        rightMargin: StyleSheet.defaultMarginH
+
 
         Loader {
             id: infoDialogContentContainer
@@ -460,7 +469,8 @@ ApplicationWindow {
     MessageDialog {
         id: errorMessageDialog
         buttons: MessageDialog.Ok
-        title: qsTr("Error")
+        title: qsTr("Error")      
+
         onAccepted: {
 
             //console.log("Error message dialog closed.")
