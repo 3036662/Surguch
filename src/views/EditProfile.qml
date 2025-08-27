@@ -19,6 +19,8 @@ Flickable {
     property var profiles_model
     property int profile_id: -1
 
+    signal profileSaved();
+
     // fill the form from profile_data JSON string
     function updateProfileForm() {
         if (profile_data) {
@@ -468,7 +470,10 @@ Flickable {
                     profile_json["logo_path"] = logoPath.text
                     profile_json["tsp_url"] = tspUrlEdit.text
                     const new_profile_data = JSON.stringify(profile_json)
-                    console.warn(profiles_model.saveProfile(new_profile_data))
+                    if(profiles_model.saveProfile(new_profile_data)){
+                        root.profileSaved();
+                    }
+
                 }
             }
         } // save profile end

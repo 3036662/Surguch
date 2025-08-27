@@ -424,9 +424,11 @@ ApplicationWindow {
             // disable signing for damaged document
             header.disableSignMode()
         })
+        // update AimSize when profile was edited
+        rightSideBar.profileSaved.connect(pdfListView.forceAimResize);
+
         // set themes
         StyleSheet.state = themeStyle
-
         EventFilterInstaller.installEventFilter(this, main_window_wheel_filter)
     }
 

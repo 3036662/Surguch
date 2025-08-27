@@ -76,6 +76,8 @@ ListView {
 
     signal updateHistory(int undo, int redo)
 
+
+
     function proceedSigning(location_data) {
         //console.warn(pdfModel.getSource())
         let tmpFile = pdfModel.getSource()
@@ -508,6 +510,13 @@ ListView {
         }
 
         return result
+    }
+
+
+    // this function will trigger a call to PDFPage.onAimResizeStatusChanged,
+    // which will cause updateCrossSize to be called.
+    function forceAimResize(){
+        aimIsAlreadyResized=false;
     }
 
     Layout.fillHeight: true
@@ -1048,7 +1057,7 @@ ListView {
                     let undoCount = pdfModel.getUndoCount()
                     let redoCount = pdfModel.getRedoCount()
                     updateHistory(undoCount, redoCount)
-                }
+                }            
             }
         }
     }

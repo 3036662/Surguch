@@ -6,6 +6,8 @@ import StyleSheet
 Item {
     id: root
 
+    signal profileSaved;
+
     enum ShowState {
         Invisible,
         SigInfo,
@@ -53,5 +55,9 @@ Item {
     EditProfile {
         id: edit_profile_panel
         visible: showState == RightSideBar.ShowState.ProfileInfo
+
+        onProfileSaved: {
+            root.profileSaved();
+        }
     }
 }
