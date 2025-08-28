@@ -6,7 +6,7 @@ Item {
 
     property var profile_data
     property var image_data
-    property var stamp_data
+    property var stamp_json
     property bool processing: false
     property bool new_requested: false
     property bool window_completed: false
@@ -14,7 +14,7 @@ Item {
     function setStampData() {
         //console.warn("preview " + profile_data)
         // let curr_profile
-        if (!profile_data || !stamp_data) {
+        if (!profile_data || !stamp_json) {
             return {}
         }
 
@@ -55,16 +55,16 @@ Item {
                                   + cert_array[cert_index].not_before_readable + qsTr(
                 " till ") + cert_array[cert_index].not_after_readable,
             "stamp_title": qsTr("THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE"),
-            "stamp_type": stamp_data.stamp_name,
-            "text_color_red": stamp_data.text_color_red,
-            "text_color_green": stamp_data.text_color_green,
-            "text_color_blue": stamp_data.text_color_blue,
-            "border_color_red": stamp_data.border_color_red,
-            "border_color_green": stamp_data.border_color_green,
-            "border_color_blue": stamp_data.border_color_blue,
-            "border_width": stamp_data.border_width,
-            "border_radius": stamp_data.border_radius,
-            "bg_transparent": stamp_data.bg_transparent,
+            "stamp_type": stamp_json.stamp_name,
+            "text_color_red": stamp_json.text_color_red,
+            "text_color_green": stamp_json.text_color_green,
+            "text_color_blue": stamp_json.text_color_blue,
+            "border_color_red": stamp_json.border_color_red,
+            "border_color_green": stamp_json.border_color_green,
+            "border_color_blue": stamp_json.border_color_blue,
+            "border_width": stamp_json.border_width,
+            "border_radius": stamp_json.border_radius,
+            "bg_transparent": stamp_json.bg_transparent,
             "bg_opacity": 1,
             "cades_type": curr_profile.CADES_format,
             "tsp_url": curr_profile.tsp_url,
@@ -107,7 +107,7 @@ Item {
         }
     }
 
-    onStamp_dataChanged: {
+    onStamp_jsonChanged: {
         if (processing) {
             new_requested = true
         } else {

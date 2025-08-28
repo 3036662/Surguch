@@ -30,7 +30,7 @@ ColumnLayout {
 
     // update stamp settings  for render
     function setRenderData(params){
-         rubberStampPreview.stamp_data=params;
+         rubberStampPreview.stamp_json=params;
     }
 
 

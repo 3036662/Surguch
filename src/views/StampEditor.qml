@@ -9,10 +9,10 @@ Dialog {
     id: root
 
 
-    property var profiles_model
-    property var profile_data
-    property var stamp_json
-    property var stamp_data
+    property var profiles_model // reference to a cpp model
+    property var profile_data // string(JSON) profile data
+    property var stamp_json // stamp data JSON
+    property var stamp_data // stamp data string
     property int stamp_id: -1
     property bool editState: false
 
@@ -66,7 +66,7 @@ Dialog {
             "border_radius": borderSettings.radius,
             "bg_transparent": transparencySwitch.checked ? 1 : 0
         }
-        stampPreview.stamp_data = stamp_params
+        stampPreview.stamp_json = stamp_params
     }
 
     implicitWidth: 460

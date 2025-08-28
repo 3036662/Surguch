@@ -12,8 +12,8 @@ import "stamp_editor_components" as StampComponents
 Dialog {
     id: root
 
-    property var stamp_json
-    property var stamp_data
+    property var stamp_json  // stamp data JSON
+    property var stamp_data // stamp data string
     property var rubber_model
     property int stamp_id: -1
     property bool edit_state: true
