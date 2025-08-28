@@ -17,10 +17,9 @@ Item {
 
      property bool processing: false
      property bool new_requested: false
-     property bool window_completed: false
     }
 
-    function setStampData() {
+    function getStampParams() {
         if (!stamp_json) {
             return {}
         }
@@ -50,7 +49,7 @@ Item {
 
     function createPreview() {
         private_data.processing = true
-        let params = setStampData()
+        let params = getStampParams()
         rubberPreview.createImage(params)
     }
 
@@ -129,7 +128,5 @@ Item {
         }
     }
 
-    Component.onCompleted: {
-        private_data.window_completed = true
-    }
+
 }

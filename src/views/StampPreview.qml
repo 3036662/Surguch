@@ -5,10 +5,9 @@ Item {
     id: root
 
     // these fields are set from StampEditor.qml
-    property var profile_data
-    // string(JSON) profile data
-    property var stamp_json
-    // JSON object stamp data
+    property var profile_data   // string(JSON) profile data
+    property var stamp_json  // JSON object stamp data
+
 
     //property var image_data // TODO(Oleg) is it unused ?
 
@@ -19,10 +18,9 @@ Item {
 
         property bool processing: false
         property bool new_requested: false
-        property bool window_completed: false
     }
 
-    function setStampData() {
+    function getStampParams() {
         //console.warn("preview " + profile_data)
         // let curr_profile
         if (!profile_data || !stamp_json) {
@@ -87,7 +85,7 @@ Item {
 
     function createPreview() {
         private_data.processing = true
-        let params = setStampData()
+        let params = getStampParams()
         stampPreview.createImage(params)
     }
 
@@ -110,8 +108,8 @@ Item {
                     stampPreview.visible = true
                 }
                 private_data.processing = false
-                if (private_data.stamp_json) {
-                    private_data.stamp_json = false
+                if (private_data.new_requested) {
+                    private_data.new_requested = false
                     createPreview()
                 }
             }
@@ -120,13 +118,9 @@ Item {
 
     onStamp_jsonChanged: {
         if (private_data.processing) {
-            private_data.processing = true
+            private_data.new_requested = true
         } else {
             createPreview()
         }
-    }
-
-    Component.onCompleted: {
-        private_data.window_completed = true
     }
 }
