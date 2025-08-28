@@ -20,74 +20,43 @@ Dialog {
 
     // fill form with data from JSON
     function updateRubberStampForm() {
+        //console.warn("updateRubberStampForm: "+ stamp_data)
         if (stamp_data) {
             try {
                 edit_state = true
                 stamp_json = JSON.parse(stamp_data)
                 stamp_id = stamp_json.id
-                previewColumn.stampNameText = stamp_json.title
-                previewColumn.linkNameText = stamp_json.stamp_link
-                previewColumn.tagWidthValue = stamp_json.tag_width
-                rightSubColumn.typeSwitchChecked = !stamp_json.create_from_image
-                rightSubColumn.logoPathText = stamp_json.img_path
-                rightSubColumn.rubberStampText = stamp_json.stamp_text
-                rightSubColumn.fontNameIndex = rightSubColumn.findFontIndexByName(
-                            stamp_json.font_family)
-                rightSubColumn.transparencySwitchChecked = stamp_json.bg_transparent
-                rightSubColumn.borderWidth = stamp_json.border_width
-                rightSubColumn.borderRadius = stamp_json.border_radius
-                rightSubColumn.r = stamp_json.R
-                rightSubColumn.g = stamp_json.G
-                rightSubColumn.b = stamp_json.B
+                // update left column
+                previewColumn.setStampName(stamp_json.title)
+                previewColumn.setLink(stamp_json.stamp_link)
+                previewColumn.setTagWidth(stamp_json.tag_width)
+                // update right column
+                rightSubColumn.update(stamp_json)
             } catch (e) {
-                console.warn("Error parsing JSON " + e.message)
+
+                console.warn("[updateRubberStampForm] Error parsing JSON " + e.message)
             }
         } else {
             resetData()
         }
-        previewColumn.createPreview()
+        updatePreview()
     }
 
+    // reset all stamp settings
     function resetData() {
         edit_state = false
         stamp_id = -1
-        previewColumn.stampNameText = ""
-        previewColumn.linkNameText = ""
-        previewColumn.tagWidthValue = 30
-        rightSubColumn.typeSwitchChecked = true
-        rightSubColumn.logoPathText = ""
-        rightSubColumn.rubberStampText = qsTr("Surguch")
-        rightSubColumn.borderRadius = 50
-        rightSubColumn.borderWidth = 7
-        rightSubColumn.transparencySwitchChecked = false
-        rightSubColumn.r = 50
-        rightSubColumn.g = 62
-        rightSubColumn.b = 168
+        previewColumn.reset()
+        rightSubColumn.reset()
     }
 
     function updatePreview() {
-        let rubber_stamp_params = {
-            "stamp_width": 400,
-            "stamp_height": 400,
-            "create_from_image": rightSubColumn.typeSwitchChecked ? 0 : 1,
-            "img_path": rightSubColumn.logoPathText,
-            "border_width": rightSubColumn.borderWidth,
-            "border_radius": rightSubColumn.borderRadius,
-            "text_color_red": rightSubColumn.r,
-            "text_color_green": rightSubColumn.g,
-            "text_color_blue": rightSubColumn.b,
-            "border_color_red": rightSubColumn.r,
-            "border_color_green": rightSubColumn.g,
-            "border_color_blue": rightSubColumn.b,
-            "bg_color_red": rightSubColumn.r,
-            "bg_color_green": rightSubColumn.g,
-            "bg_color_blue": rightSubColumn.b,
-            "font_family": rightSubColumn.fontNameVal,
-            "annotation_text": rightSubColumn.rubberStampText,
-            "bg_transparent": rightSubColumn.transparencySwitchChecked ? 1 : 0,
-            "annotation_width": previewColumn.rubberStampPreviewWidth
-        }
-        previewColumn.rubberStampPreviewStampData = rubber_stamp_params
+        let params = rightSubColumn.getParams()
+        // TODO(Oleg) Harcoded?
+        params["stamp_width"] = 400
+        params["stamp_height"] = 400
+        params["annotation_width"] = previewColumn.tagWidth
+        previewColumn.setRenderData(params)
     }
 
     function prependInternetProtocol(link) {
@@ -95,11 +64,9 @@ Dialog {
         if (!trimmedLink) {
             return trimmedLink
         }
-
         const acceptableProtocols = ["http", "https"]
         const isValidForm = acceptableProtocols.some(
                               prot => trimmedLink.startsWith(`${prot}://`))
-
         return isValidForm ? trimmedLink : "http://" + trimmedLink
     }
 
@@ -168,34 +135,23 @@ Dialog {
 
                     onSaveClicked: {
                         if (previewColumn.stampNameText === "") {
-                            stampName.forceActiveFocus()
+                            previewColumn.focusOnName()
                             return
                         }
                         if (stamp_id < 0 && !rubber_model.uniqueStampName(
                                     previewColumn.stampNameText)) {
-                            stampName.forceActiveFocus()
+                            previewColumn.focusOnName()
                             errorMessageDialog.text = qsTr(
                                         "Stamp with this name already exists")
                             errorMessageDialog.open()
                             return
                         }
-                        stamp_json = {}
+                        stamp_json = rightSubColumn.getParams()
                         stamp_json["id"] = stamp_id
                         stamp_json["title"] = previewColumn.stampNameText
                         stamp_json["stamp_link"] = prependInternetProtocol(
                                     previewColumn.linkNameText)
-                        stamp_json["tag_width"] = previewColumn.tagWidthValue
-                        stamp_json["create_from_image"] = rightSubColumn.typeSwitchChecked ? 0 : 1
-                        stamp_json["img_path"] = rightSubColumn.logoPathText
-                        stamp_json["stamp_text"] = rightSubColumn.rubberStampText
-                        stamp_json["border_width"] = rightSubColumn.borderWidth
-                        stamp_json["border_radius"] = rightSubColumn.borderRadius
-                        stamp_json["font_family"] = rightSubColumn.fontNameVal
-                        stamp_json["R"] = rightSubColumn.r
-                        stamp_json["G"] = rightSubColumn.g
-                        stamp_json["B"] = rightSubColumn.b
-                        stamp_json["bg_transparent"]
-                                = rightSubColumn.transparencySwitchChecked ? 1 : 0
+                        stamp_json["tag_width"] = previewColumn.tagWidth
                         const new_stamp_data = JSON.stringify(stamp_json)
                         console.warn(rubber_model.saveRubberStamps(
                                          new_stamp_data))
@@ -221,12 +177,12 @@ Dialog {
                 StampComponents.RubberPreviewRightPanel {
                     id: rightSubColumn
 
-                    onSettingChanged:{
-                         updatePreview()
+                    onSettingChanged: {
+                        updatePreview()
                     }
 
-                    onOpenFileSelectClicked:{
-                         imgFileDialog.open()
+                    onOpenFileSelectClicked: {
+                        imgFileDialog.open()
                     }
                 }
             }
@@ -240,7 +196,7 @@ Dialog {
             folder: StandardPaths.writableLocation(
                         StandardPaths.DocumentsLocation)
             onAccepted: {
-                rightSubColumn.logoPathText = currentFile
+                rightSubColumn.setLogo(currentFile)
             }
         }
     }

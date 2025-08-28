@@ -135,7 +135,7 @@ Dialog {
                 id: stampPreview
 
                 Layout.fillWidth: true
-                height: 175
+                Layout.preferredHeight:  175
             }
 
             // border settings

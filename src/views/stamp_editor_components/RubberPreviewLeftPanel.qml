@@ -9,18 +9,65 @@ import "../" as Surguch
 ColumnLayout {
     id: previewColumn
 
-    property alias rubberStampPreviewWidth: rubberStampPreview.width
-    property alias rubberStampPreviewStampData: rubberStampPreview.stamp_data
-    property alias stampNameText: stampName.text;
-    property alias linkNameText:linkName.text
-    property alias tagWidthValue: tagWidth.value
+    readonly property alias stampNameText: stampName.text;
+    readonly property alias linkNameText:linkName.text
+    readonly property alias tagWidth: tagWidth.value;
+
+    //property alias rubberStampPreviewWidth: rubberStampPreview.width
+    //property alias rubberStampPreviewStampData: rubberStampPreview.stamp_data
+
+
+    // if true createPreview() call will not be triggered
+    // prevents multiple triggers when many settings are changed simultaneously in one step.
+    property bool ignore_changes: false
+
+    signal saveClicked();
+    signal deleteClicked();
 
     function createPreview(){
          rubberStampPreview.createPreview();
     }
 
-    signal saveClicked();
-    signal deleteClicked();
+    // update stamp settings  for render
+    function setRenderData(params){
+         rubberStampPreview.stamp_data=params;
+    }
+
+
+    function focusOnName(){
+         stampName.forceActiveFocus()
+    }
+
+    // ---------------------
+    // setter functions prevent from triggerring the createPreview() function
+    // on each change, allow making many changes in one stap
+    function setStampName(val){
+        ignore_changes=true;
+        stampName.text=val;
+        ignore_changes=false;
+    }
+
+    function setLink(val){
+        ignore_changes=true;
+        linkName.text=val;
+        ignore_changes=false;
+    }
+
+    function setTagWidth(val){
+        ignore_changes=true;
+        tagWidth.value=val;
+        ignore_changes=false;
+    }
+
+    function reset(){
+        ignore_changes=true;
+        stampName.text="";
+        linkName.text="";
+        tagWidth.value=30;
+        ignore_changes=false;
+    }
+
+
 
 
     spacing:7
@@ -73,7 +120,9 @@ ColumnLayout {
         color: StyleSheet.font_color_extra
 
         onTextChanged: {
-            updatePreview()
+            if(!ignore_changes){
+                updatePreview()
+            }
         }
 
     }
@@ -120,7 +169,7 @@ ColumnLayout {
         icon.source: StyleSheet.save_icon
         icon.width: 20
         icon.height: 20
-        onClicked: {
+        onClicked: {            
           saveClicked();
         }
     }

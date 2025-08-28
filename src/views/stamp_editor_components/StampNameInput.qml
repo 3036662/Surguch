@@ -9,6 +9,10 @@ ColumnLayout {
     property alias text: stampNameTextArea.text
     property alias placeholderText : stampNameTextArea.placeholderText
 
+    function forceActiveFocus(){
+        stampNameTextArea.forceActiveFocus()
+    }
+
     // stamp name label
     Text {
         text: labelText
