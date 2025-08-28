@@ -281,7 +281,7 @@ Flickable {
                 enabled: selectStampTypeCombo.currentText !== "ГОСТ"
 
                 onClicked: {
-                    stampEditor.stamp_data = selectStampTypeCombo.currentValue
+                    stampEditor.stamp_json = selectStampTypeCombo.currentValue
                     stampEditor.profiles_model = profiles_model
                     let data = {
                         "CADES_format": selectCadesFormatCombo.currentValue,
@@ -324,7 +324,7 @@ Flickable {
                         }
                         //console.warn(JSON.stringify(data))
                         stampEditor.profile_data = JSON.stringify(data)
-                        stampEditor.stamp_data = null
+                        stampEditor.stamp_json = null
                         stampEditor.updateStampForm()
                         stampEditor.visible = true
                     }
