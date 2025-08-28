@@ -48,7 +48,6 @@ QSGNode *RubberPreviewRender::updatePaintNode(
     if (result_ == nullptr || result_->image_ == nullptr) {
         qWarning()
             << "RubberPreviewRender: updateNode() call with an empty result";
-
         // Create an empty image if it does not exist.
         if (!blank_image_ || blank_image_->width() != requested_width_ ||
             blank_image_->height() != requested_height_) {
@@ -56,7 +55,10 @@ QSGNode *RubberPreviewRender::updatePaintNode(
                 requested_width_, requested_height_, QImage::Format_RGB888);
             blank_image_->fill(Qt::white);
         }
-        QSGTexture *texture = window()->createTextureFromImage(*blank_image_);
+        QSGTexture *texture = nullptr;
+        if (blank_image_) {
+            texture = window()->createTextureFromImage(*blank_image_);
+        }
         setWidth(requested_width_);
         setHeight(requested_height_);
         if (texture != nullptr) {

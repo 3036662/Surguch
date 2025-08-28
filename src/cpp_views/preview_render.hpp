@@ -61,6 +61,7 @@ class PreviewRender : public QQuickItem {
     std::unique_ptr<core::gui::BakeResult> result_;
     std::unique_ptr<ImageFuture> image_future_;
     std::unique_ptr<ImageFutureWatcher> image_watcher_;
+    std::unique_ptr<QImage> blank_image_;
 };
 
 #endif  // PREVIEWRENDERER_HPP
