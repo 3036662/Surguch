@@ -4,13 +4,21 @@ import alt.pdfcsp.rubberPreviewRender
 Item {
     id: root
 
+    // these fields are set from RubberPreviewLeftPanel.qml
     property var stamp_json // JSON
-    property bool processing: false
-    property bool new_requested: false
-    property bool window_completed: false
-
     property real imageWidth: 340
     property real imageHeight: 280
+
+
+    // private properties
+    Item{
+     id: private_data
+     visible:false
+
+     property bool processing: false
+     property bool new_requested: false
+     property bool window_completed: false
+    }
 
     function setStampData() {
         if (!stamp_json) {
@@ -41,7 +49,7 @@ Item {
     }
 
     function createPreview() {
-        processing = true
+        private_data.processing = true
         let params = setStampData()
         rubberPreview.createImage(params)
     }
@@ -76,7 +84,7 @@ Item {
             requestedHeight: root.imageHeight
 
             // visible only if we have an image to show, and no render is processing now
-            visible: !(processing || first_launch || bad_result_recieved)
+            visible: !(private_data.processing || first_launch || bad_result_recieved)
 
             onWidthChanged: {
                 x = bgImage.width / 2 - width / 2
@@ -88,7 +96,7 @@ Item {
 
             // render succeeded
             onRubberImageReady: {
-                processing = false
+                private_data.processing = false
                 bad_result_recieved = false
 
                 if (first_launch) {
@@ -99,29 +107,29 @@ Item {
                 rubberPreview.y = bgImage.height / 2 - rubberPreview.height / 2
                 rubberPreview.x = bgImage.width / 2 - rubberPreview.width / 2
 
-                if (new_requested) {
-                    new_requested = false
+                if (private_data.new_requested) {
+                    private_data.new_requested = false
                     createPreview()
                 }
             }
 
             // render failed
             onRubberBadResult: {
-                processing = false
+                private_data.processing = false
                 bad_result_recieved = true
             }
         }
     }
 
     onStamp_jsonChanged: {
-        if (processing) {
-            new_requested = true
+        if (private_data.processing) {
+            private_data.new_requested = true
         } else {
             createPreview()
         }
     }
 
     Component.onCompleted: {
-        window_completed = true
+        private_data.window_completed = true
     }
 }

@@ -13,10 +13,6 @@ ColumnLayout {
     readonly property alias linkNameText:linkName.text
     readonly property alias tagWidth: tagWidth.value;
 
-    //property alias rubberStampPreviewWidth: rubberStampPreview.width
-    //property alias rubberStampPreviewStampData: rubberStampPreview.stamp_data
-
-
     // if true createPreview() call will not be triggered
     // prevents multiple triggers when many settings are changed simultaneously in one step.
     property bool ignore_changes: false

@@ -4,12 +4,23 @@ import alt.pdfcsp.previewRender
 Item {
     id: root
 
+    // these fields are set from StampEditor.qml
     property var profile_data
-    property var image_data
+    // string(JSON) profile data
     property var stamp_json
-    property bool processing: false
-    property bool new_requested: false
-    property bool window_completed: false
+    // JSON object stamp data
+
+    //property var image_data // TODO(Oleg) is it unused ?
+
+    // private properties
+    Item {
+        id: private_data
+        visible: false
+
+        property bool processing: false
+        property bool new_requested: false
+        property bool window_completed: false
+    }
 
     function setStampData() {
         //console.warn("preview " + profile_data)
@@ -75,7 +86,7 @@ Item {
     }
 
     function createPreview() {
-        processing = true
+        private_data.processing = true
         let params = setStampData()
         stampPreview.createImage(params)
     }
@@ -98,9 +109,9 @@ Item {
                 } else {
                     stampPreview.visible = true
                 }
-                processing = false
-                if (new_requested) {
-                    new_requested = false
+                private_data.processing = false
+                if (private_data.stamp_json) {
+                    private_data.stamp_json = false
                     createPreview()
                 }
             }
@@ -108,14 +119,14 @@ Item {
     }
 
     onStamp_jsonChanged: {
-        if (processing) {
-            new_requested = true
+        if (private_data.processing) {
+            private_data.processing = true
         } else {
             createPreview()
         }
     }
 
     Component.onCompleted: {
-        window_completed = true
+        private_data.window_completed = true
     }
 }

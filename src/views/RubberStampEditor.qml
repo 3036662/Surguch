@@ -12,11 +12,18 @@ import "stamp_editor_components" as StampComponents
 Dialog {
     id: root
 
-    property var stamp_json  // stamp data JSON
-    property var stamp_data // stamp data string
-    property var rubber_model
+    // these fields are set from RubberStampItem.qml
+    property var stamp_data // stamp data string;
+    property var rubber_model // reference to cpp model;
     property int stamp_id: -1
     property bool edit_state: true
+
+    // private properties
+    Item{
+     id: private_data
+     visible:false
+     property var stamp_json  // stamp data JSON
+    }
 
     // fill form with data from JSON
     function updateRubberStampForm() {
@@ -24,14 +31,14 @@ Dialog {
         if (stamp_data) {
             try {
                 edit_state = true
-                stamp_json = JSON.parse(stamp_data)
-                stamp_id = stamp_json.id
+                private_data.stamp_json = JSON.parse(stamp_data)
+                stamp_id = private_data.stamp_json.id
                 // update left column
-                previewColumn.setStampName(stamp_json.title)
-                previewColumn.setLink(stamp_json.stamp_link)
-                previewColumn.setTagWidth(stamp_json.tag_width)
+                previewColumn.setStampName(private_data.stamp_json.title)
+                previewColumn.setLink(private_data.stamp_json.stamp_link)
+                previewColumn.setTagWidth(private_data.stamp_json.tag_width)
                 // update right column
-                rightSubColumn.update(stamp_json)
+                rightSubColumn.update(private_data.stamp_json)
             } catch (e) {
 
                 console.warn("[updateRubberStampForm] Error parsing JSON " + e.message)
@@ -146,13 +153,13 @@ Dialog {
                             errorMessageDialog.open()
                             return
                         }
-                        stamp_json = rightSubColumn.getParams()
-                        stamp_json["id"] = stamp_id
-                        stamp_json["title"] = previewColumn.stampNameText
-                        stamp_json["stamp_link"] = prependInternetProtocol(
+                        private_data.stamp_json = rightSubColumn.getParams()
+                        private_data.stamp_json["id"] = stamp_id
+                        private_data.stamp_json["title"] = previewColumn.stampNameText
+                        private_data.stamp_json["stamp_link"] = prependInternetProtocol(
                                     previewColumn.linkNameText)
-                        stamp_json["tag_width"] = previewColumn.tagWidth
-                        const new_stamp_data = JSON.stringify(stamp_json)
+                        private_data.stamp_json["tag_width"] = previewColumn.tagWidth
+                        const new_stamp_data = JSON.stringify(private_data.stamp_json)
                         console.warn(rubber_model.saveRubberStamps(
                                          new_stamp_data))
                         rubberStampEditor.visible = false

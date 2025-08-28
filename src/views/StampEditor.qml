@@ -9,27 +9,36 @@ Dialog {
     id: root
 
 
+    // these fields are set from EditProfile.qml
     property var profiles_model // reference to a cpp model
     property var profile_data // string(JSON) profile data
-    property var stamp_json // stamp data JSON
-    property var stamp_data // stamp data string
+    property var stamp_data // stamp data string;
     property int stamp_id: -1
     property bool editState: false
+
+
+    // private properties
+    Item{
+     id: private_data
+     visible:false
+     property var stamp_json  // stamp data JSON
+    }
+
 
     // fill the form from stamp_data JSON string
     function updateStampForm() {
         if (stamp_data) {
             try {
                 editState = true
-                stamp_json = stamp_data
-                stamp_id = stamp_json.id
-                stampName.text = stamp_json.title
-                transparencySwitch.checked = stamp_json.transparent
-                borderSettings.border_width = stamp_json.border_width
-                borderSettings.radius = stamp_json.border_radius
-                rgbColorPicker.r = stamp_json.R
-                rgbColorPicker.g = stamp_json.G
-                rgbColorPicker.b = stamp_json.B
+                private_data.stamp_json = stamp_data
+                stamp_id = private_data.stamp_json.id
+                stampName.text = private_data.stamp_json.title
+                transparencySwitch.checked = private_data.stamp_json.transparent
+                borderSettings.border_width = private_data.stamp_json.border_width
+                borderSettings.radius = private_data.stamp_json.border_radius
+                rgbColorPicker.r = private_data.stamp_json.R
+                rgbColorPicker.g = private_data.stamp_json.G
+                rgbColorPicker.b = private_data.stamp_json.B
             } catch (e) {
                 console.error("Error parsing JSON " + e.message)
             }
@@ -204,16 +213,16 @@ Dialog {
                         errorMessageDialog.open()
                         return
                     }
-                    stamp_json = {}
-                    stamp_json["id"] = stamp_id
-                    stamp_json["title"] = stampName.text
-                    stamp_json["border_width"] = borderSettings.border_width
-                    stamp_json["border_radius"] = borderSettings.radius
-                    stamp_json["R"] = rgbColorPicker.r
-                    stamp_json["G"] = rgbColorPicker.g
-                    stamp_json["B"] = rgbColorPicker.b
-                    stamp_json["transparent"] = transparencySwitch.checked ? 1 : 0
-                    const new_stamp_data = JSON.stringify(stamp_json)
+                    private_data.stamp_json = {}
+                    private_data.stamp_json["id"] = stamp_id
+                    private_data.stamp_json["title"] = stampName.text
+                    private_data.stamp_json["border_width"] = borderSettings.border_width
+                    private_data.stamp_json["border_radius"] = borderSettings.radius
+                    private_data.stamp_json["R"] = rgbColorPicker.r
+                    private_data.stamp_json["G"] = rgbColorPicker.g
+                    private_data.stamp_json["B"] = rgbColorPicker.b
+                    private_data.stamp_json["transparent"] = transparencySwitch.checked ? 1 : 0
+                    const new_stamp_data = JSON.stringify(private_data.stamp_json)
                     console.warn(profiles_model.saveStamp(new_stamp_data))
                     stampEditor.visible = false
                     stamp_data = null
@@ -234,7 +243,7 @@ Dialog {
 
                 onClicked: {
                     if (profiles_model.deleteStamp(root.stamp_id)) {
-                        profiles_model.updateProfiles(root.stamp_json.title)
+                        profiles_model.updateProfiles(private_data.stamp_json.title)
                         stampEditor.visible = false
                         stamp_data = null
                     }
