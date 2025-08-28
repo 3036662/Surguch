@@ -5,9 +5,10 @@ Item {
     id: root
 
     // these fields are set from StampEditor.qml
-    property var profile_data   // string(JSON) profile data
-    property var stamp_json  // JSON object stamp data
-
+    property var profile_data
+    // string(JSON) profile data
+    property var stamp_json
+    // JSON object stamp data
 
     //property var image_data // TODO(Oleg) is it unused ?
 
@@ -90,23 +91,26 @@ Item {
     }
 
     Image {
+        id: bgImage
+
         anchors.fill: parent
         source: "qrc:/chess_bg.jpg"
-    }
 
-    PreviewRender {
-        id: stampPreview
-        width: parent.width
-        visible: false
+        PreviewRender {
+            id: stampPreview
+            width: parent.width
+            visible: false
 
-        Connections {
-
-            function onImageReady() {
+            onImageReady: {
                 if (stampPreview.visible === true) {
                     stampPreview.update()
                 } else {
                     stampPreview.visible = true
                 }
+
+                stampPreview.y = bgImage.height / 2 - stampPreview.height / 2
+                stampPreview.x = bgImage.width / 2 - stampPreview.width / 2
+
                 private_data.processing = false
                 if (private_data.new_requested) {
                     private_data.new_requested = false

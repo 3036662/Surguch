@@ -89,13 +89,9 @@ void PreviewRender::saveImage() {
         result_ = image_future_->takeResult();
     }
     if (result_ && result_->image_ && result_->image_->width() != 0) {
-        // qWarning() << "width " << width();
-        // qWarning() << "result->resolution_y " << result_->image_->height();
-        // qWarning() << "result->resolution_x " << result_->image_->width();
-        setHeight(static_cast<double>(result_->image_->height()) /
-                  result_->image_->width() * width());
-        // qWarning() << static_cast<double>(result_->image_->height()) /
-        //                   result_->image_->width() * width();
+        const auto yx_ratio = static_cast<double>(result_->image_->height()) /
+                              result_->image_->width();
+        setHeight(yx_ratio * width());
     }
     emit imageReady();
 }
