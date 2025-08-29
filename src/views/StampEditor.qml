@@ -147,7 +147,7 @@ Dialog {
                 color: StyleSheet.font_color_extra
             }
 
-            StampPreview {
+            StampComponents.StampPreview {
                 id: stampPreview
 
                 Layout.fillWidth: true

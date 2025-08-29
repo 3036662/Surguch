@@ -90,24 +90,23 @@ ELSE ()
             SOURCES cpp_views/pdf_page_render.hpp cpp_views/pdf_page_render.cpp
             QML_FILES views/LeftSideBar.qml
             QML_FILES views/PreviewListView.qml
-            QML_FILES views/SignaturesList.qml
+            QML_FILES views/info_panel_components/SignaturesList.qml
             QML_FILES views/RightSideBar.qml
-            QML_FILES views/TextPairBool.qml
-            QML_FILES views/RightSBHorizontalDelimiter.qml
-            QML_FILES views/TextPair.qml
-            QML_FILES views/RSideBarStatusMedal.qml
-            QML_FILES views/RightSideBarCertChain.qml
-            QML_FILES views/TextPairStatus.qml
+            QML_FILES views/info_panel_components/TextPairBool.qml
+            QML_FILES views/info_panel_components/RightSBHorizontalDelimiter.qml
+            QML_FILES views/info_panel_components/TextPair.qml
+            QML_FILES views/info_panel_components/RSideBarStatusMedal.qml
+            QML_FILES views/info_panel_components/RightSideBarCertChain.qml
+            QML_FILES views/info_panel_components/TextPairStatus.qml
             QML_FILES views/CertInfo.qml
             QML_FILES views/EditProfile.qml
-            QML_FILES views/RSBSigInfo.qml
-            QML_FILES views/RSBCloseButton.qml
-            QML_FILES views/RSBSwitch.qml
-            QML_FILES views/RSBComboSelect.qml
-            QML_FILES views/RSBTextArea.qml
+            QML_FILES views/info_panel_components/RSBSigInfo.qml
+            QML_FILES views/info_panel_components/RSBCloseButton.qml
+            QML_FILES views/info_panel_components/RSBSwitch.qml
+            QML_FILES views/info_panel_components/RSBComboSelect.qml
+            QML_FILES views/info_panel_components/RSBTextArea.qml
             QML_FILES views/UnsavedChangesDialog.qml
             QML_FILES views/StampEditor.qml
-            QML_FILES views/StampPreview.qml
             SOURCES cpp_views/preview_render.hpp cpp_views/preview_render.cpp
             QML_FILES views/SearchDialog.qml
             SOURCES cpp_views/rubber_preview_render.hpp cpp_views/rubber_preview_render.cpp
@@ -126,6 +125,7 @@ ELSE ()
             QML_FILES views/stamp_editor_components/StampNameInput.qml
             QML_FILES views/stamp_editor_components/TransparencySwitch.qml
             QML_FILES views/stamp_editor_components/RubberPreviewRightPanel.qml
+            QML_FILES views/stamp_editor_components/StampPreview.qml
     )
 
     qt6_import_qml_plugins(surguch)

@@ -5,6 +5,8 @@ import alt.pdfcsp.pdfModel
 import alt.pdfcsp.pdfRender
 import StyleSheet
 
+import "info_panel_components" as InfoPanelComponents
+
 Item {
     id: root
 
@@ -48,7 +50,6 @@ Item {
     Layout.fillHeight: true
     Layout.fillWidth: true
 
-    // Layout.horizontalStretchFactor: 1
     Item {
         anchors.fill: parent
 
@@ -58,7 +59,7 @@ Item {
             visible: showState == LeftSideBar.ShowState.Preview
         }
 
-        SignaturesList {
+        InfoPanelComponents.SignaturesList {
             id: sigListView
             visible: showState == LeftSideBar.ShowState.Certs && sigCount > 0
         }

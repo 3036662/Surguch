@@ -5,6 +5,8 @@ import Qt.labs.platform
 import QtCore
 import StyleSheet
 
+import "info_panel_components" as InfoPanelComponents
+
 Flickable {
     id: root
 
@@ -86,7 +88,7 @@ Flickable {
     rightMargin: 10
     topMargin: 10
 
-    RSBCloseButton {}
+    InfoPanelComponents.RSBCloseButton {}
 
     Column {
         id: profileColumn
@@ -101,7 +103,7 @@ Flickable {
             color: StyleSheet.font_color_extra
         }
 
-        TextPair {
+        InfoPanelComponents.TextPair {
             visible: false
             id: profileIdTextPair
             keyText: qsTr("Profile id")
@@ -115,7 +117,7 @@ Flickable {
             color: StyleSheet.font_color_extra
         }
 
-        RSBTextArea {
+        InfoPanelComponents.RSBTextArea {
             id: profileName
             placeholderText: qsTr("Enter profile name")
             color: StyleSheet.font_color_extra
@@ -141,7 +143,7 @@ Flickable {
             color: StyleSheet.font_color_extra
         }
 
-        RSBComboSelect {
+        InfoPanelComponents.RSBComboSelect {
             id: selectCertificateCombo
 
             property string displayTextDefault: qsTr("Select the certificate")
@@ -152,21 +154,21 @@ Flickable {
             displayText: displayTextDefault
         }
 
-        RightSBHorizontalDelimiter {
+        InfoPanelComponents.RightSBHorizontalDelimiter {
             width: parent.width
             topPadding: 7
             bottomPadding: 7
         }
 
         // use by default switch
-        RSBSwitch {
+        InfoPanelComponents.RSBSwitch {
             id: useAsDefaultProfileSwitch
             topPadding: 5
             bottomPadding: 5
             text: qsTr("Use this profile by default")
         }
 
-        RightSBHorizontalDelimiter {
+        InfoPanelComponents.RightSBHorizontalDelimiter {
             width: parent.width
             topPadding: 10
             bottomPadding: 10
@@ -190,7 +192,7 @@ Flickable {
             color: StyleSheet.font_color_extra
         }
 
-        RSBComboSelect {
+        InfoPanelComponents.RSBComboSelect {
             id: selectCadesFormatCombo
             model: [{
                     "title": "CADES_BES"
@@ -221,7 +223,7 @@ Flickable {
                 color: StyleSheet.font_color_extra
             }
 
-            RSBTextArea {
+            InfoPanelComponents.RSBTextArea {
                 id: tspUrlEdit
                 placeholderText: qsTr("Enter TSP service url")
                 color: StyleSheet.font_color_extra
@@ -301,7 +303,7 @@ Flickable {
         RowLayout {
             width: parent.width
 
-            RSBComboSelect {
+            InfoPanelComponents.RSBComboSelect {
                 id: selectStampTypeCombo
                 Layout.fillWidth: true
                 model: root.stamps_combo_model
@@ -389,7 +391,7 @@ Flickable {
             }
         }
 
-        RSBTextArea {
+        InfoPanelComponents.RSBTextArea {
             id: logoPath
             placeholderText: qsTr("Select a logo")
             color: StyleSheet.font_color_extra

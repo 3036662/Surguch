@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import StyleSheet
 
+
 RowLayout {
     width: parent.width
     height: 50

@@ -3,6 +3,9 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import StyleSheet
 
+import "info_panel_components" as InfoPanelComponents
+
+
 Item {
     id: root
 
@@ -47,7 +50,7 @@ Item {
         color: StyleSheet.edit_background
     }
 
-    RSBSigInfo {
+    InfoPanelComponents.RSBSigInfo {
         id: sigInfoPanel
         visible: showState == RightSideBar.ShowState.SigInfo
     }
