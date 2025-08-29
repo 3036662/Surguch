@@ -383,9 +383,9 @@
 <context>
     <name>HeaderSubBar</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+220"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+221"/>
         <location filename="../../build/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+217"/>
-        <location filename="../../src/views/HeaderSubBar.qml" line="+220"/>
+        <location filename="../../src/views/HeaderSubBar.qml" line="+221"/>
         <source> of </source>
         <translation> из </translation>
     </message>
@@ -461,86 +461,64 @@
         <translation>Сургуч</translation>
     </message>
     <message>
-        <location line="+142"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+142"/>
-        <location filename="../../src/views/Main.qml" line="+142"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
     <message>
         <location line="+21"/>
-        <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+21"/>
-        <location filename="../../src/views/Main.qml" line="+21"/>
         <source>Certificate: </source>
         <translation>Сертификат: </translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+2"/>
-        <location filename="../../src/views/Main.qml" line="+2"/>
         <source>Subject: </source>
         <translation>Субъект: </translation>
     </message>
     <message>
         <location line="+1"/>
-        <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+1"/>
-        <location filename="../../src/views/Main.qml" line="+1"/>
         <source>Vaildity: </source>
         <translation>Действителен: </translation>
     </message>
     <message>
         <location line="+1"/>
-        <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+1"/>
-        <location filename="../../src/views/Main.qml" line="+1"/>
         <source> till </source>
         <translation> по </translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+2"/>
-        <location filename="../../src/views/Main.qml" line="+2"/>
         <source>THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE</source>
         <translation>ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ</translation>
     </message>
     <message>
         <location line="+51"/>
-        <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+51"/>
-        <location filename="../../src/views/Main.qml" line="+51"/>
         <source>Your certificate is expired.</source>
         <translation>Истек срок действия сертификата.</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+3"/>
-        <location filename="../../src/views/Main.qml" line="+3"/>
         <source>Common error. It looks like the TSP URL is not valid.</source>
         <translation>Ошибка. Возможно указан неверный адрес службы TSP.</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+3"/>
-        <location filename="../../src/views/Main.qml" line="+3"/>
         <source>Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.</source>
         <translation>Произошла ошибка проверки цепочки сертификатов, похоже, что один из корневых сертификатов отсутствует или его нет в списке доверенных.</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+3"/>
-        <location filename="../../src/views/Main.qml" line="+3"/>
         <source>Error.Timeout exceeded.</source>
         <translation>Ошибка: превышен максимальный интервал ожидания.</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+2"/>
-        <location filename="../../src/views/Main.qml" line="+2"/>
         <source>Common error</source>
         <translation>Общая ошибка</translation>
     </message>
     <message>
-        <location line="+100"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="+319"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+101"/>
-        <location filename="../../src/views/Main.qml" line="+100"/>
+        <location filename="../../src/views/Main.qml" line="+319"/>
         <source>The document was changed after signing, but can be restored</source>
         <translation>Документ был изменен после подписи! Присутствует возможность восстановить подписанную версию</translation>
     </message>
@@ -1247,6 +1225,75 @@
     <message>
         <source>Search</source>
         <translation type="obsolete">Поиск</translation>
+    </message>
+</context>
+<context>
+    <name>SigCreatorWrapper</name>
+    <message>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+45"/>
+        <location filename="../../src/views/SigCreatorWrapper.qml" line="+45"/>
+        <source>Certificate not found, looks like it was deleted.﻿</source>
+        <translation type="unfinished">Сертификат не найден, возможно он был удален</translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <location filename="../../src/views/SigCreatorWrapper.qml" line="+21"/>
+        <source>Certificate: </source>
+        <translation type="unfinished">Сертификат: </translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../../src/views/SigCreatorWrapper.qml" line="+2"/>
+        <source>Subject: </source>
+        <translation type="unfinished">Субъект: </translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location filename="../../src/views/SigCreatorWrapper.qml" line="+1"/>
+        <source>Vaildity: </source>
+        <translation type="unfinished">Действителен: </translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location filename="../../src/views/SigCreatorWrapper.qml" line="+1"/>
+        <source> till </source>
+        <translation type="unfinished"> по </translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../../src/views/SigCreatorWrapper.qml" line="+2"/>
+        <source>THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE</source>
+        <translation type="unfinished">ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ</translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <location filename="../../src/views/SigCreatorWrapper.qml" line="+38"/>
+        <source>Your certificate is expired.</source>
+        <translation type="unfinished">Истек срок действия сертификата.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../../src/views/SigCreatorWrapper.qml" line="+3"/>
+        <source>Common error. It looks like the TSP URL is not valid.</source>
+        <translation type="unfinished">Ошибка. Возможно указан неверный адрес службы TSP.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../../src/views/SigCreatorWrapper.qml" line="+3"/>
+        <source>Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.</source>
+        <translation type="unfinished">Произошла ошибка проверки цепочки сертификатов, похоже, что один из корневых сертификатов отсутствует или его нет в списке доверенных.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../../src/views/SigCreatorWrapper.qml" line="+3"/>
+        <source>Error.Timeout exceeded.</source>
+        <translation type="unfinished">Ошибка: превышен максимальный интервал ожидания.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../../src/views/SigCreatorWrapper.qml" line="+2"/>
+        <source>Common error</source>
+        <translation type="unfinished">Общая ошибка</translation>
     </message>
 </context>
 <context>

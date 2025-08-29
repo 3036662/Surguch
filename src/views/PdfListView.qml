@@ -665,7 +665,7 @@ ListView {
                             "stamp_height": cross.height
                         }
                         aimResizeInProgress = true
-                        sigCreator.resizeAim(location_data)
+                        sigCreatorWrapper.resizeAim(location_data)
                     }
                 } else {
                     // if the aim is already resized - update with resize factor

@@ -126,6 +126,7 @@ ELSE ()
             QML_FILES views/stamp_editor_components/TransparencySwitch.qml
             QML_FILES views/stamp_editor_components/RubberPreviewRightPanel.qml
             QML_FILES views/stamp_editor_components/StampPreview.qml
+            QML_FILES views/SigCreatorWrapper.qml
     )
 
     qt6_import_qml_plugins(surguch)
