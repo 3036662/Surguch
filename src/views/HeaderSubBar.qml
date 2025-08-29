@@ -466,4 +466,9 @@ ColumnLayout {
             redoAction()
         }
     }
+
+    RubberStampEditor {
+        id: rubberStampEditor
+    }
+
 }

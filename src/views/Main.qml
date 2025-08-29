@@ -109,20 +109,6 @@ ApplicationWindow {
     }
 
     // --------------------------------------
-    // modal
-    StampEditor {
-        id: stampEditor
-    }
-
-    RubberStampEditor {
-        id: rubberStampEditor
-    }
-
-    InfoDialog {
-        id: appInfoDialog
-    }
-
-    // --------------------------------------
     // instantinate cpp models
     MuPdfModel {
         id: pdfModel

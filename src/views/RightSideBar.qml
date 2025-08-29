@@ -63,4 +63,9 @@ Item {
             root.profileSaved();
         }
     }
+
+    // modal
+    StampEditor {
+        id: stampEditor
+    }
 }
