@@ -123,13 +123,11 @@ Flickable {
             color: StyleSheet.font_color_extra
 
             onTextChanged: {
-                let validInput = profileName.text.match(/^S+$/)
-                if (!validInput) {
-                    profileName.text = profileName.text.replace(/\s/g, '')
-                    profileName.cursorPosition = profileName.text.length
-                }
-                if (profileName.text.length > 50) {
-                    profileName.text = profileName.text.slice(0, 50)
+                var cursorPos = cursorPosition;
+                var cleanedText =  profileName.text.replace(/\s/g, '')
+                if (cleanedText !== text) {
+                    text=cleanedText
+                    cursorPosition = Math.min(cursorPos-1, text.length);
                 }
             }
         }
