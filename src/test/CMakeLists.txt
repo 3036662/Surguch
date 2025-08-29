@@ -63,6 +63,12 @@ qt_add_executable(test_gui_utils test_guiutils.cpp
 )
 
 #-------------------------------
+# golink
+qt_add_executable(test_golink test_golink.cpp
+    tgolink.hpp tgolink.cpp
+)
+
+#-------------------------------
 #link test1
 
 target_link_libraries(test1 PRIVATE Qt::Test Qt6::Quick)
@@ -120,5 +126,16 @@ target_link_libraries(test_search2
         PUBLIC ${MUPDF_LINK_PATH} PRIVATE ${PDFCSP_LINK_PATH}
 )
 
+
+#-------------------------------
+
+#-------------------------------
+# link test_golink
+target_link_libraries(test_golink PUBLIC Qt::Test)
+target_link_libraries(test_golink PUBLIC appcore csp_c_bridge_qt)
+target_link_libraries(test_golink
+    PUBLIC ${MUPDF_LINK_PATH}
+    PRIVATE ${PDFCSP_LINK_PATH}
+)
 
 #-------------------------------

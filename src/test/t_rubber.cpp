@@ -34,7 +34,7 @@ void TRubber::createRubber1() {
     QJsonObject json_obj = json_doc.object();
     QVariantMap varmap = json_obj.toVariantMap();
     RubberPreviewRender renderer;
-    QSignalSpy spy(&renderer, &RubberPreviewRender::imageReady);
+    QSignalSpy spy(&renderer, &RubberPreviewRender::rubberImageReady);
 
     renderer.createImage(varmap);
     QTest::qWait(500);
@@ -57,7 +57,7 @@ void TRubber::createRubber2() {
     QJsonObject json_obj = json_doc.object();
     QVariantMap varmap = json_obj.toVariantMap();
     RubberPreviewRender renderer;
-    QSignalSpy spy(&renderer, &RubberPreviewRender::imageReady);
+    QSignalSpy spy(&renderer, &RubberPreviewRender::rubberImageReady);
 
     renderer.createImage(varmap);
     QTest::qWait(500);
@@ -80,7 +80,7 @@ void TRubber::createRubber3() {
     QJsonObject json_obj = json_doc.object();
     QVariantMap varmap = json_obj.toVariantMap();
     RubberPreviewRender renderer;
-    QSignalSpy spy(&renderer, &RubberPreviewRender::imageReady);
+    QSignalSpy spy(&renderer, &RubberPreviewRender::rubberImageReady);
 
     renderer.createImage(varmap);
     QTest::qWait(500);

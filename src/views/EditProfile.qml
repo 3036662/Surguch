@@ -5,6 +5,8 @@ import Qt.labs.platform
 import QtCore
 import StyleSheet
 
+import "info_panel_components" as InfoPanelComponents
+
 Flickable {
     id: root
 
@@ -18,6 +20,8 @@ Flickable {
     property var stamps_combo_model
     property var profiles_model
     property int profile_id: -1
+
+    signal profileSaved();
 
     // fill the form from profile_data JSON string
     function updateProfileForm() {
@@ -84,7 +88,7 @@ Flickable {
     rightMargin: 10
     topMargin: 10
 
-    RSBCloseButton {}
+    InfoPanelComponents.RSBCloseButton {}
 
     Column {
         id: profileColumn
@@ -99,7 +103,7 @@ Flickable {
             color: StyleSheet.font_color_extra
         }
 
-        TextPair {
+        InfoPanelComponents.TextPair {
             visible: false
             id: profileIdTextPair
             keyText: qsTr("Profile id")
@@ -113,19 +117,17 @@ Flickable {
             color: StyleSheet.font_color_extra
         }
 
-        RSBTextArea {
+        InfoPanelComponents.RSBTextArea {
             id: profileName
             placeholderText: qsTr("Enter profile name")
             color: StyleSheet.font_color_extra
 
             onTextChanged: {
-                let validInput = profileName.text.match(/^S+$/)
-                if (!validInput) {
-                    profileName.text = profileName.text.replace(/\s/g, '')
-                    profileName.cursorPosition = profileName.text.length
-                }
-                if (profileName.text.length > 50) {
-                    profileName.text = profileName.text.slice(0, 50)
+                var cursorPos = cursorPosition;
+                var cleanedText =  profileName.text.replace(/\s/g, '')
+                if (cleanedText !== text) {
+                    text=cleanedText
+                    cursorPosition = Math.min(cursorPos-1, text.length);
                 }
             }
         }
@@ -139,7 +141,7 @@ Flickable {
             color: StyleSheet.font_color_extra
         }
 
-        RSBComboSelect {
+        InfoPanelComponents.RSBComboSelect {
             id: selectCertificateCombo
 
             property string displayTextDefault: qsTr("Select the certificate")
@@ -150,21 +152,21 @@ Flickable {
             displayText: displayTextDefault
         }
 
-        RightSBHorizontalDelimiter {
+        InfoPanelComponents.RightSBHorizontalDelimiter {
             width: parent.width
             topPadding: 7
             bottomPadding: 7
         }
 
         // use by default switch
-        RSBSwitch {
+        InfoPanelComponents.RSBSwitch {
             id: useAsDefaultProfileSwitch
             topPadding: 5
             bottomPadding: 5
             text: qsTr("Use this profile by default")
         }
 
-        RightSBHorizontalDelimiter {
+        InfoPanelComponents.RightSBHorizontalDelimiter {
             width: parent.width
             topPadding: 10
             bottomPadding: 10
@@ -188,7 +190,7 @@ Flickable {
             color: StyleSheet.font_color_extra
         }
 
-        RSBComboSelect {
+        InfoPanelComponents.RSBComboSelect {
             id: selectCadesFormatCombo
             model: [{
                     "title": "CADES_BES"
@@ -219,7 +221,7 @@ Flickable {
                 color: StyleSheet.font_color_extra
             }
 
-            RSBTextArea {
+            InfoPanelComponents.RSBTextArea {
                 id: tspUrlEdit
                 placeholderText: qsTr("Enter TSP service url")
                 color: StyleSheet.font_color_extra
@@ -279,7 +281,7 @@ Flickable {
                 enabled: selectStampTypeCombo.currentText !== "ГОСТ"
 
                 onClicked: {
-                    stampEditor.stamp_data = selectStampTypeCombo.currentValue
+                    stampEditor.stamp_json = selectStampTypeCombo.currentValue
                     stampEditor.profiles_model = profiles_model
                     let data = {
                         "CADES_format": selectCadesFormatCombo.currentValue,
@@ -299,7 +301,7 @@ Flickable {
         RowLayout {
             width: parent.width
 
-            RSBComboSelect {
+            InfoPanelComponents.RSBComboSelect {
                 id: selectStampTypeCombo
                 Layout.fillWidth: true
                 model: root.stamps_combo_model
@@ -322,7 +324,7 @@ Flickable {
                         }
                         //console.warn(JSON.stringify(data))
                         stampEditor.profile_data = JSON.stringify(data)
-                        stampEditor.stamp_data = null
+                        stampEditor.stamp_json = null
                         stampEditor.updateStampForm()
                         stampEditor.visible = true
                     }
@@ -387,7 +389,7 @@ Flickable {
             }
         }
 
-        RSBTextArea {
+        InfoPanelComponents.RSBTextArea {
             id: logoPath
             placeholderText: qsTr("Select a logo")
             color: StyleSheet.font_color_extra
@@ -468,7 +470,10 @@ Flickable {
                     profile_json["logo_path"] = logoPath.text
                     profile_json["tsp_url"] = tspUrlEdit.text
                     const new_profile_data = JSON.stringify(profile_json)
-                    console.warn(profiles_model.saveProfile(new_profile_data))
+                    if(profiles_model.saveProfile(new_profile_data)){
+                        root.profileSaved();
+                    }
+
                 }
             }
         } // save profile end

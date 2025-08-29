@@ -15,5 +15,4 @@ TextArea {
     placeholderTextColor: StyleSheet.font_color
     color: StyleSheet.font_color
     font.family: "Noto Sans"
-    //font.color: font_color_extra
 }

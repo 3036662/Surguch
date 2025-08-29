@@ -7,6 +7,8 @@ import QtQuick.Dialogs as CommonDialods
 import QtCore
 import StyleSheet
 
+import "header_bar_components" as HeaderBarComponents
+
 RowLayout {
     id: toolbar_layout
 
@@ -52,21 +54,21 @@ RowLayout {
         Layout.minimumWidth: 600
         Layout.fillWidth: true
 
-        TopBarButton {
+        HeaderBarComponents.TopBarButton {
             icon.source: StyleSheet.file_plus_icon
             text: qsTr("Open")
             onClicked: kdeVersion === "5" ? labsFileDialog.open(
                                                 ) : fileDialog.open()
         }
 
-        TopBarButton {
+        HeaderBarComponents.TopBarButton {
             icon.source: StyleSheet.file_simple_icon
             text: qsTr("Show in folder")
             enabled: pdfListView.source.length > 0 && !pdfListView.sourceIsTmp
             onClicked: pdfListView.showInFolder()
         }
 
-        TopBarButton {
+        HeaderBarComponents.TopBarButton {
             icon.source: StyleSheet.folder_plus_icon
             text: qsTr("Save as ...")
             enabled: pdfListView.source.length > 0
@@ -84,7 +86,7 @@ RowLayout {
                 height: parent.height
                 color: "transparent"
             }
-            TopBarButton {
+            HeaderBarComponents.TopBarButton {
                 icon.source: StyleSheet.wrench_icon
                 enabled: profileComboBox.currentValue !== "new"
                 text: ""
@@ -201,7 +203,7 @@ RowLayout {
                 color: "transparent"
             }
         }
-        TopBarButton {
+        HeaderBarComponents.TopBarButton {
             id: signModeButton
 
             //enabled: false
@@ -370,5 +372,9 @@ RowLayout {
                 Qt.quit()
             }
         }
+    }
+
+    InfoDialog {
+        id: appInfoDialog
     }
 }

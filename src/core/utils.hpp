@@ -44,7 +44,40 @@ std::vector<unsigned char> hexStringToByteArray(const char* str,
  */
 QString pageToQString(fz_context* fzctx, fz_document* fzdoc, int page_index);
 
-using PagesTextCacheSinglePage = std::pair<size_t, QString>;
+struct PageUriData {
+    fz_rect uri_rect{0, 0, 0, 0};
+    int dest_page = -1;
+    QString uri;
+};
+
+using PageUriList = std::vector<PageUriData>;
+using filterUri = std::function<PageUriList(PageUriList&)>;
+
+/**
+ * @brief Clear the list of URIs in the document from overlapping ones.
+ * @param uri_list list of @see PageUriData, URIs extracted from the document
+ * @return @see PageUriList, list of PageUriData sorted by bounding box area
+ */
+PageUriList removeAllCoveredUri(PageUriList const& uri_list);
+
+/**
+ * @brief Extract URIs and their bounding box coordinates from the given page.
+ * @param fzctx the MuPDF context
+ * @param fzdoc the MuPdf document context
+ * @param page_index
+ * @param filter applied to the @see PageUriList
+ * @return @see PageUriList, list of PageUriData
+ */
+PageUriList extractAllUriPage(fz_context* fzctx, fz_document* fzdoc,
+                              int page_index,
+                              std::optional<filterUri> filter = std::nullopt);
+
+struct PagesTextCacheSinglePage {
+    size_t page_index = 0;
+    QString page_text;
+    PageUriList page_uri_list;
+};
+
 using PagesTextCache = std::unique_ptr<std::vector<PagesTextCacheSinglePage>>;
 
 /**
@@ -90,6 +123,18 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString& needle,
                                         size_t page_index, bool case_sensitive,
                                         fz_context* fzctx,
                                         fz_document* fzdoc) noexcept;
+
+using MousePos = std::pair<float, float>;
+
+/**
+ * @brief Find all URIs at given position on a given page.
+ * @param page_index
+ * @param mouse_pos mouse cursor position in the document in points
+ * @param haystack
+ * @return list of URIs @see PageUriData or nullptr
+ */
+PageUriList findAllUriPage(size_t page_index, MousePos mouse_pos,
+                           PagesTextCache const& haystack);
 
 }  // namespace core::utils
 

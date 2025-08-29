@@ -3,7 +3,10 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import StyleSheet
 
+import "header_bar_components" as HeaderBarComponents
+
 ColumnLayout {
+    id: root
 
     property int redoCount: 0
     property int undoCount: 0
@@ -121,7 +124,7 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {}
 
         ToolButton {
             flat: true
@@ -137,7 +140,7 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {}
 
         ToolButton {
             flat: true
@@ -154,7 +157,7 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {}
 
         ToolButton {
             flat: true
@@ -221,7 +224,7 @@ ColumnLayout {
             color: StyleSheet.font_color_extra
         }
 
-        HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {}
 
         ToolButton {
             flat: true
@@ -251,7 +254,7 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {}
 
         ToolButton {
             id: zoomOutButton
@@ -329,7 +332,7 @@ ColumnLayout {
         }
 
         // rubberStamps
-        HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {}
 
         ToolButton {
             id: rubberStampPutButton
@@ -388,7 +391,7 @@ ColumnLayout {
         }
 
         // search
-        HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {}
         ToolButton {
             id: searchButton
             enabled: !pdfListView.signMode && !pdfListView.tagMode
@@ -398,7 +401,9 @@ ColumnLayout {
             icon.height: 20
             leftPadding: 5
             rightPadding: 5
-            onClicked: searchDialog.open()
+            onClicked: {
+                searchDialog.open()
+            }
         }
 
         Rectangle {
@@ -422,10 +427,15 @@ ColumnLayout {
 
     SearchDialog {
         id: searchDialog
+
+        x: searchButton.x + searchButton.width - searchDialog.width
+        y: root.height + StyleSheet.defaultPaddingV
     }
 
     RubberStampDialog {
         id: rubberStampDialog
+        x: rubberStampDialogButton.x - width
+        y: root.height + StyleSheet.defaultPaddingV
     }
 
     Shortcut {
@@ -458,4 +468,9 @@ ColumnLayout {
             redoAction()
         }
     }
+
+    RubberStampEditor {
+        id: rubberStampEditor
+    }
+
 }

@@ -269,7 +269,8 @@ void PdfDocModel::processFileDelete() {
     }
 
     std::vector<QString> resulting_queue;
-    auto it_last =std::unique(tmp_files_to_delete_.begin(),tmp_files_to_delete_.end());
+    auto it_last =
+        std::unique(tmp_files_to_delete_.begin(), tmp_files_to_delete_.end());
     tmp_files_to_delete_.erase(it_last, tmp_files_to_delete_.end());
 
     for (const auto &path : tmp_files_to_delete_) {
@@ -396,6 +397,34 @@ PdfDocModel::getCurrentNeedleRect(size_t page_index) {
     return text_extractor_->getCurrentNeedleRect(page_index);
 }
 
+PdfDocModel::PageUriInfoList PdfDocModel::getUriByPos(size_t page_index,
+                                                      float mouseX,
+                                                      float mouseY) const {
+    if (!text_extractor_) {
+        return {};
+    }
+
+    mouseX *= 72 / static_cast<float>(physical_screen_dpi_);
+    mouseY *= 72 / static_cast<float>(physical_screen_dpi_);
+
+    auto result =
+        text_extractor_->getTargetAllUriPage(page_index, {mouseX, mouseY});
+    if (!result) {
+        return {};
+    }
+
+    PageUriInfoList uri_info_list;
+    std::for_each(result->cbegin(), result->cend(),
+                  [&uri_info_list](const auto &uri_info) {
+                      QVariantMap uri_info_map;
+                      uri_info_map["uri"] = QString(uri_info.uri);
+                      uri_info_map["dest_page"] = uri_info.dest_page;
+                      uri_info_list.emplace_back(std::move(uri_info_map));
+                  });
+
+    return uri_info_list;
+}
+
 void PdfDocModel::placeRubberStamp(const QVariantMap &qvparams) {
     params = core::gui::prepareParams(qvparams);
     auto params_wrapper = core::gui::createParams(params);
@@ -509,6 +538,15 @@ void PdfDocModel::saveImage() {
     }
     history_manager_->clearRedo();
     emit updateDoc();
+}
+
+bool PdfDocModel::mouseOverUri(size_t page_index, float mouseX,
+                               float mouseY) const {
+    mouseX *= 72 / static_cast<float>(physical_screen_dpi_);
+    mouseY *= 72 / static_cast<float>(physical_screen_dpi_);
+
+    return text_extractor_ &&
+           text_extractor_->checkMouseOverUri(page_index, {mouseX, mouseY});
 }
 
 // NOLINTEND(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)

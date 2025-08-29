@@ -18,13 +18,30 @@ Dialog {
     modal: true
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2
+    topPadding :StyleSheet.defaultPaddingV
+    bottomPadding :StyleSheet.defaultPaddingV
+    leftPadding: StyleSheet.defaultPaddingH
+    rightPadding: StyleSheet.defaultPaddingH
+    topMargin: StyleSheet.defaultMarginV
+    bottomMargin: StyleSheet.defaultMarginV
+    leftMargin: StyleSheet.defaultMarginH
+    rightMargin: StyleSheet.defaultMarginH
 
-    Column {
+    Column {    
+
         id: unsavedFileDialogContent
 
         width: parent.width
         spacing: 10
         anchors.verticalCenter: parent.verticalCenter
+        topPadding :StyleSheet.defaultPaddingV
+        bottomPadding :StyleSheet.defaultPaddingV
+        leftPadding: StyleSheet.defaultPaddingH
+        rightPadding: StyleSheet.defaultPaddingH
+        anchors.topMargin: StyleSheet.defaultMarginV
+        anchors.bottomMargin: StyleSheet.defaultMarginV
+        anchors.leftMargin: StyleSheet.defaultMarginH
+        anchors.rightMargin: StyleSheet.defaultMarginH
 
         Text {
             text: qsTr("Do you want to save your changes?")
@@ -40,8 +57,7 @@ Dialog {
                 width: 100
                 onClicked: {
                     undsavedFileDialog.close()
-                    saveWithQuit(true)
-                    //header.launchSaveFileWithQuit(true);
+                    saveWithQuit(true)                    
                 }
             }
 

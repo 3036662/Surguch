@@ -27,9 +27,11 @@ QSGNode *PreviewRender::updatePaintNode(
     if (node != nullptr) {
         rectNode = dynamic_cast<QSGSimpleTextureNode *>(node);
         if (!isVisible()) {
-            // qWarning()<<"return same node, not visible";
             return node;
         }
+    }
+    if (width() == 0 || height() == 0) {
+        return node;
     }
     if (rectNode == nullptr) {
         if (!size().isValid()) {
@@ -42,10 +44,17 @@ QSGNode *PreviewRender::updatePaintNode(
     }
 
     if (result_ == nullptr || result_->image_ == nullptr) {
-        auto img =
-            std::make_unique<QImage>(size().toSize(), QImage::Format_RGB888);
-        img->fill(Qt::white);  // Fill the image with white color
-        QSGTexture *texture = window()->createTextureFromImage(*img);
+        // Create an empty image if it does not exist.
+        if (!blank_image_ || blank_image_->width() != width() ||
+            blank_image_->height() != height()) {
+            blank_image_ = std::make_unique<QImage>(width(), height(),
+                                                    QImage::Format_RGB888);
+            blank_image_->fill(Qt::white);
+        }
+        QSGTexture *texture = nullptr;
+        if (blank_image_) {
+            texture = window()->createTextureFromImage(*blank_image_);
+        }
         if (texture != nullptr) {
             rectNode->setTexture(texture);
             rectNode->setRect(QRectF(0, 0, width(), height()));
@@ -61,6 +70,7 @@ QSGNode *PreviewRender::updatePaintNode(
 }
 
 void PreviewRender::createImage(const QVariantMap &qvparams) {
+    qWarning() << "Create STAMP IMG";
     params_ = core::gui::preparePreviewParams(qvparams);
     auto params_wrapper = core::gui::createParams(params_);
     image_watcher_ = std::make_unique<ImageFutureWatcher>();
@@ -79,13 +89,9 @@ void PreviewRender::saveImage() {
         result_ = image_future_->takeResult();
     }
     if (result_ && result_->image_ && result_->image_->width() != 0) {
-        // qWarning() << "width " << width();
-        // qWarning() << "result->resolution_y " << result_->image_->height();
-        // qWarning() << "result->resolution_x " << result_->image_->width();
-        setHeight(static_cast<double>(result_->image_->height()) /
-                  result_->image_->width() * width());
-        // qWarning() << static_cast<double>(result_->image_->height()) /
-        //                   result_->image_->width() * width();
+        const auto yx_ratio = static_cast<double>(result_->image_->height()) /
+                              result_->image_->width();
+        setHeight(yx_ratio * width());
     }
     emit imageReady();
 }

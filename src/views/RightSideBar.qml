@@ -3,8 +3,13 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import StyleSheet
 
+import "info_panel_components" as InfoPanelComponents
+
+
 Item {
     id: root
+
+    signal profileSaved;
 
     enum ShowState {
         Invisible,
@@ -45,7 +50,7 @@ Item {
         color: StyleSheet.edit_background
     }
 
-    RSBSigInfo {
+    InfoPanelComponents.RSBSigInfo {
         id: sigInfoPanel
         visible: showState == RightSideBar.ShowState.SigInfo
     }
@@ -53,5 +58,14 @@ Item {
     EditProfile {
         id: edit_profile_panel
         visible: showState == RightSideBar.ShowState.ProfileInfo
+
+        onProfileSaved: {
+            root.profileSaved();
+        }
+    }
+
+    // modal
+    StampEditor {
+        id: stampEditor
     }
 }

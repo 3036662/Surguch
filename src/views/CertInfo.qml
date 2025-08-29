@@ -1,6 +1,9 @@
 import QtQuick
 import StyleSheet
 
+
+import "info_panel_components" as InfoPanelComponents
+
 Item {
     id: root
     anchors.fill: parent
@@ -28,49 +31,49 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: 5
 
-            TextPairBool {
+            InfoPanelComponents.TextPairBool {
                 width: parent.width
                 keyText: qsTr("Status")
                 value: root.cert !== undefined ? root.cert.trust_status : ""
             }
 
-            TextPair {
+            InfoPanelComponents.TextPair {
                 width: parent.width
                 keyText: qsTr("Date of issue")
                 value: root.cert !== undefined ? root.cert.not_before_readable : ""
             }
 
-            TextPair {
+            InfoPanelComponents.TextPair {
                 width: parent.width
                 keyText: qsTr("Expiration date")
                 value: root.cert !== undefined ? root.cert.not_after_readable : ""
             }
 
-            TextPair {
+            InfoPanelComponents.TextPair {
                 width: parent.width
                 keyText: qsTr("Serial number")
                 value: root.cert !== undefined ? root.cert.serial : ""
             }
 
-            TextPair {
+            InfoPanelComponents.TextPair {
                 width: parent.width
                 keyText: qsTr("Issuer")
                 value: root.cert !== undefined ? root.cert.issuer : ""
             }
 
-            TextPair {
+            InfoPanelComponents.TextPair {
                 width: parent.width
                 keyText: qsTr("Subject")
                 value: root.cert !== undefined ? root.cert.subject : ""
             }
 
-            TextPair {
+            InfoPanelComponents.TextPair {
                 width: parent.width
                 keyText: qsTr("Version")
                 value: root.cert !== undefined ? root.cert.version : ""
             }
 
-            TextPair {
+            InfoPanelComponents.TextPair {
                 width: parent.width
                 keyText: qsTr("Usage")
                 value: {

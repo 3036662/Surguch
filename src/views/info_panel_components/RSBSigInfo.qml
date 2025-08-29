@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import StyleSheet
 
+
 Flickable {
     width: parent.width
     height: parent.height

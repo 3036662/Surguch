@@ -82,42 +82,52 @@ ELSE ()
             URI gui_pdf_csp
             VERSION 1.0
             QML_FILES views/Main.qml
-            QML_FILES views/TopBarButton.qml
+            QML_FILES views/header_bar_components/TopBarButton.qml
             QML_FILES views/Header.qml
-            QML_FILES views/HeaderToolSeparator.qml
+            QML_FILES views/header_bar_components/HeaderToolSeparator.qml
             QML_FILES views/HeaderSubBar.qml
             QML_FILES views/PdfListView.qml
             SOURCES cpp_views/pdf_page_render.hpp cpp_views/pdf_page_render.cpp
             QML_FILES views/LeftSideBar.qml
             QML_FILES views/PreviewListView.qml
-            QML_FILES views/SignaturesList.qml
+            QML_FILES views/info_panel_components/SignaturesList.qml
             QML_FILES views/RightSideBar.qml
-            QML_FILES views/TextPairBool.qml
-            QML_FILES views/RightSBHorizontalDelimiter.qml
-            QML_FILES views/TextPair.qml
-            QML_FILES views/RSideBarStatusMedal.qml
-            QML_FILES views/RightSideBarCertChain.qml
-            QML_FILES views/TextPairStatus.qml
+            QML_FILES views/info_panel_components/TextPairBool.qml
+            QML_FILES views/info_panel_components/RightSBHorizontalDelimiter.qml
+            QML_FILES views/info_panel_components/TextPair.qml
+            QML_FILES views/info_panel_components/RSideBarStatusMedal.qml
+            QML_FILES views/info_panel_components/RightSideBarCertChain.qml
+            QML_FILES views/info_panel_components/TextPairStatus.qml
             QML_FILES views/CertInfo.qml
             QML_FILES views/EditProfile.qml
-            QML_FILES views/RSBSigInfo.qml
-            QML_FILES views/RSBCloseButton.qml
-            QML_FILES views/RSBSwitch.qml
-            QML_FILES views/RSBComboSelect.qml
-            QML_FILES views/RSBTextArea.qml
+            QML_FILES views/info_panel_components/RSBSigInfo.qml
+            QML_FILES views/info_panel_components/RSBCloseButton.qml
+            QML_FILES views/info_panel_components/RSBSwitch.qml
+            QML_FILES views/info_panel_components/RSBComboSelect.qml
+            QML_FILES views/info_panel_components/RSBTextArea.qml
             QML_FILES views/UnsavedChangesDialog.qml
             QML_FILES views/StampEditor.qml
-            QML_FILES views/SettingSlider.qml
-            QML_FILES views/StampPreview.qml
             SOURCES cpp_views/preview_render.hpp cpp_views/preview_render.cpp
             QML_FILES views/SearchDialog.qml
             SOURCES cpp_views/rubber_preview_render.hpp cpp_views/rubber_preview_render.cpp
             QML_FILES views/RubberStampEditor.qml
             QML_FILES views/RubberStampDialog.qml
-            QML_FILES views/RubberStampItem.qml
-            QML_FILES views/RubberPreview.qml
+            QML_FILES views/RubberStampListEntry.qml
             QML_FILES views/InfoDialog.qml
-            QML_FILES views/SettingSwitch.qml
+            QML_FILES views/stamp_editor_components/SettingSwitch.qml
+            QML_FILES views/stamp_editor_components/ColorSlider.qml
+            QML_FILES views/stamp_editor_components/RGBColorPicker.qml
+            QML_FILES views/stamp_editor_components/BorderSettings.qml
+            QML_FILES views/stamp_editor_components/RubberPreview.qml
+            QML_FILES views/stamp_editor_components/SettingSlider.qml
+            QML_FILES views/stamp_editor_components/RubberPreviewLeftPanel.qml
+            QML_FILES views/stamp_editor_components/TopLabelWithCloseButton.qml
+            QML_FILES views/stamp_editor_components/StampNameInput.qml
+            QML_FILES views/stamp_editor_components/TransparencySwitch.qml
+            QML_FILES views/stamp_editor_components/RubberPreviewRightPanel.qml
+            QML_FILES views/stamp_editor_components/StampPreview.qml
+            QML_FILES views/SigCreatorWrapper.qml
+            QML_FILES views/DisappearingHint.qml
     )
 
     qt6_import_qml_plugins(surguch)

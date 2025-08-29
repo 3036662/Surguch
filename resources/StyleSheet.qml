@@ -6,6 +6,11 @@ Item {
     id: style_sheet
     state: "light"
 
+    property real defaultPaddingH: 20
+    property real defaultPaddingV: 10
+    property real defaultMarginH: 10
+    property real defaultMarginV: 10
+
     property color font_color
     property color font_color_extra
     property string arrow_back_icon

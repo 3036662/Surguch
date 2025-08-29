@@ -239,4 +239,40 @@ TextExtractor::getCurrentNeedleRect(size_t page_index) {
     return std::make_shared<RectToHiglightCurrent>(*current_rect_to_gighlight_);
 }
 
+// @brief retrieve all URIs on the given page using provided mouse cursor
+// positions
+std::shared_ptr<utils::PageUriList> TextExtractor::getTargetAllUriPage(
+    size_t page_index, core::utils::MousePos const &mouse_pos) {
+    std::shared_lock lock{cach_mtx_, std::defer_lock};
+
+    if (!lock.try_lock()) {
+        return {};
+    }
+
+    if (!cache_ || cache_->empty()) {
+        return {};
+    }
+
+    auto found_uri_data = utils::findAllUriPage(page_index, mouse_pos, cache_);
+
+    return std::make_shared<utils::PageUriList>(std::move(found_uri_data));
+}
+
+bool TextExtractor::checkMouseOverUri(size_t page_index,
+                                      utils::MousePos const &mouse_pos) {
+    std::shared_lock lock{cach_mtx_, std::defer_lock};
+    if (!lock.try_lock()) {
+        return {};
+    }
+
+    if (!cache_ || cache_->empty()) {
+        return {};
+    }
+
+    auto result = std::make_unique<utils::PageUriList>(
+        findAllUriPage(page_index, mouse_pos, cache_));
+
+    return !result->empty();
+}
+
 }  // namespace core
