@@ -305,6 +305,17 @@ ApplicationWindow {
     // ---------------------------------------------
     // helper dialogs
 
+    StampEditor {
+        id: stampEditor
+    }
+    RubberStampEditor {
+        id: rubberStampEditor
+    }
+    InfoDialog {
+        id: appInfoDialog
+    }
+
+
     // Info dialog in center of window
     Dialog {
         id: infoDialog
