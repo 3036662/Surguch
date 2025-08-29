@@ -199,9 +199,6 @@ ApplicationWindow {
         pdfModel.jumpToNeedleCompleted.connect(pdfListView.jumpToNeedle)
         // sign the document
         pdfListView.stampLocationSelected.connect(header.disableSignMode)
-
-
-
         //  save signatures count in left sidebar
         pdfModel.signaturesCounted.connect(leftSideBar.setSigCount)
         // call SignaturesListModel to update the signatures list and validate all signatures

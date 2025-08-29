@@ -434,6 +434,8 @@ ColumnLayout {
 
     RubberStampDialog {
         id: rubberStampDialog
+        x: rubberStampDialogButton.x - width
+        y: root.height + StyleSheet.defaultPaddingV
     }
 
     Shortcut {
