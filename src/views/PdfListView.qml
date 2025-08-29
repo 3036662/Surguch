@@ -531,6 +531,8 @@ ListView {
     clip: true
     focus: true
     keyNavigationEnabled: false
+    boundsBehavior: Flickable.DragAndOvershootBounds
+
 
     onPageWidthChanged: {
         pageWidthUpdate(pageWidth)
@@ -601,10 +603,13 @@ ListView {
     model: pdfModel
 
     delegate: Column {
-        width: root.width - verticalScroll.width
+        id:delegateColumn
+        width:  Math.max(root.width,pdfPage.width)
         property alias zoomLast: pdfPage.zoomLast
         property alias pWidth: pdfPage.width
         property alias pHeight: pdfPage.height
+
+        property int rootWidthBind:root.width
 
         function updateCurrRect() {
             pdfPage.setCurrentNeedleRect(pdfModel.getCurrentNeedleRect(
@@ -612,6 +617,11 @@ ListView {
             pdfPage.update()
             //console.warn("QML delegate updateCurrRect")
         }
+
+        onRootWidthBindChanged: {
+                           delegateColumn.width=Math.max(root.width,pdfPage.width);
+                }
+
 
         onWidthChanged: {
             if (root.zoomAuto) {
@@ -630,7 +640,7 @@ ListView {
                                         && !sizeKnown ? root.pageHeight : defaultWidth * 1.42
 
             customRotation: root.delegateRotation
-            anchors.horizontalCenter: width < parent.width ? parent.horizontalCenter : undefined
+            anchors.horizontalCenter: parent.horizontalCenter
             anchors.rightMargin: verticalScroll.width
             width: defaultWidth
             height: defaultHeight
@@ -697,6 +707,7 @@ ListView {
                 if (width > 0) {
                     lastPageWidth = width
                 }
+                delegateColumn.width=Math.max(root.width,pdfPage.width);
             }
 
             onZoomLastChanged: {
