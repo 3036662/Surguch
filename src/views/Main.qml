@@ -137,7 +137,7 @@ ApplicationWindow {
         id: tagCreator
     }
 
-    SigCreatorWrapper{
+    SigCreatorWrapper {
         id: sigCreatorWrapper
     }
 
@@ -263,8 +263,11 @@ ApplicationWindow {
         // no cryptoPro error
         if (profilesModel.errStatus) {
             if (profilesModel.errString === "ERR_NO_CSP_LIB") {
-                errorMessageDialog.text = qsTr(
-                            "CryptoPro CSP 5.0 R3 not found, please check if installed")
+                // errorMessageDialog.text = qsTr(
+                //             "CryptoPro CSP 5.0 R3 not found, please check if installed")
+                disappearingHint.showHint(
+                            qsTr("CryptoPro CSP 5.0 R3 not found, please check if installed"),
+                            1500)
             } else if (profilesModel.errString === "ERR_GET_CERTS") {
                 errorMessageDialog.text = qsTr(
                             "Failed getting the user's certificates list")
@@ -291,7 +294,7 @@ ApplicationWindow {
             header.disableSignMode()
         })
         // update AimSize when profile was edited
-        rightSideBar.profileSaved.connect(pdfListView.forceAimResize);
+        rightSideBar.profileSaved.connect(pdfListView.forceAimResize)
 
         // set themes
         StyleSheet.state = themeStyle
@@ -320,7 +323,6 @@ ApplicationWindow {
         leftMargin: StyleSheet.defaultMarginH
         rightMargin: StyleSheet.defaultMarginH
 
-
         Loader {
             id: infoDialogContentContainer
             width: parent.width
@@ -337,7 +339,7 @@ ApplicationWindow {
     MessageDialog {
         id: errorMessageDialog
         buttons: MessageDialog.Ok
-        title: qsTr("Error")      
+        title: qsTr("Error")
 
         onAccepted: {
 
@@ -347,6 +349,13 @@ ApplicationWindow {
 
     UnsavedChangesDialog {
         id: undsavedFileDialog
+    }
+
+    DisappearingHint {
+        id: disappearingHint
+
+        anchors.horizontalCenter: parent.horizontalCenter
+        y: 20
     }
 
     onWidthChanged: {

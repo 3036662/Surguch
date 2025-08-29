@@ -43,5 +43,6 @@
         <file>header_bar_components/TopBarButton.qml</file>
         <file>RubberStampListEntry.qml</file>
         <file>SigCreatorWrapper.qml</file>
+        <file>DisappearingHint.qml</file>
     </qresource>
 </RCC>

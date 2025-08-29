@@ -551,9 +551,9 @@
         <translation>Проверка одной из подписей не удалась, номер сигнатуры</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+17"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+15"/>
-        <location filename="../../src/views/Main.qml" line="+15"/>
+        <location filename="../../src/views/Main.qml" line="+17"/>
         <source>CryptoPro CSP 5.0 R3 not found, please check if installed</source>
         <translation>CryptoPro CSP 5.0 не найден, убедитесь, что в системе установлен КриптоПро 5.0 версии не ниже R3</translation>
     </message>
