@@ -112,7 +112,7 @@ ELSE ()
             SOURCES cpp_views/rubber_preview_render.hpp cpp_views/rubber_preview_render.cpp
             QML_FILES views/RubberStampEditor.qml
             QML_FILES views/RubberStampDialog.qml
-            QML_FILES views/RubberStampItem.qml
+            QML_FILES views/RubberStampListEntry.qml
             QML_FILES views/InfoDialog.qml
             QML_FILES views/stamp_editor_components/SettingSwitch.qml
             QML_FILES views/stamp_editor_components/ColorSlider.qml

@@ -735,10 +735,10 @@
 <context>
     <name>RSBSigInfo</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+24"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+25"/>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+26"/>
         <location filename="../../build/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+24"/>
-        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+24"/>
+        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+25"/>
         <source>Signature</source>
         <translation>Электронная подпись</translation>
     </message>

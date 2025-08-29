@@ -12,7 +12,6 @@
         <file>StampEditor.qml</file>
         <file>SearchDialog.qml</file>
         <file>RubberStampDialog.qml</file>
-        <file>RubberStampItem.qml</file>
         <file>RubberStampEditor.qml</file>
         <file>InfoDialog.qml</file>
         <file>stamp_editor_components/RubberPreviewLeftPanel.qml</file>
@@ -42,5 +41,6 @@
         <file>info_panel_components/RSBSigInfo.qml</file>
         <file>header_bar_components/HeaderToolSeparator.qml</file>
         <file>header_bar_components/TopBarButton.qml</file>
+        <file>RubberStampListEntry.qml</file>
     </qresource>
 </RCC>

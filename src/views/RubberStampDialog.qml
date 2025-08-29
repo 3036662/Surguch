@@ -35,7 +35,7 @@ Dialog {
         delegate: ItemDelegate {
             height: 35
             width: itemView.width - itemView.rightMargin
-            RubberStampItem {
+            RubberStampListEntry {
                 anchors.fill: parent
                 anchors.margins: 1
                 rubber_model: itemView.model

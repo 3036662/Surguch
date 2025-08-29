@@ -12,7 +12,7 @@ import "stamp_editor_components" as StampComponents
 Dialog {
     id: root
 
-    // these fields are set from RubberStampItem.qml
+    // these fields are set from RubberStampListEntry.qml
     property var stamp_data // stamp data string;
     property var rubber_model // reference to cpp model;
     property int stamp_id: -1
