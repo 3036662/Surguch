@@ -374,7 +374,5 @@ RowLayout {
         }
     }
 
-    InfoDialog {
-        id: appInfoDialog
-    }
+
 }

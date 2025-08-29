@@ -10,6 +10,9 @@ Popup {
     height: Math.min(300, itemView.contentHeight + 20)
     clip: true
 
+    x: headerSubBar.rubberStampDialogButtonX - width
+    y: StyleSheet.defaultPaddingV
+
     ButtonGroup {
         id: rubberStampGroup
     }
