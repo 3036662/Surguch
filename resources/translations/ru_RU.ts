@@ -551,9 +551,9 @@
         <translation>Проверка одной из подписей не удалась, номер сигнатуры</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+18"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+15"/>
-        <location filename="../../src/views/Main.qml" line="+17"/>
+        <location filename="../../src/views/Main.qml" line="+18"/>
         <source>CryptoPro CSP 5.0 R3 not found, please check if installed</source>
         <translation>CryptoPro CSP 5.0 не найден, убедитесь, что в системе установлен КриптоПро 5.0 версии не ниже R3</translation>
     </message>
@@ -572,9 +572,9 @@
         <translation>При открытии в документе были обнаружены ошибки. Возможно, документ будет отображён неверно.</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+52"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+42"/>
-        <location filename="../../src/views/Main.qml" line="+53"/>
+        <location filename="../../src/views/Main.qml" line="+52"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -621,9 +621,9 @@
 <context>
     <name>PdfListView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+858"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+869"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+776"/>
-        <location filename="../../src/views/PdfListView.qml" line="+858"/>
+        <location filename="../../src/views/PdfListView.qml" line="+869"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>

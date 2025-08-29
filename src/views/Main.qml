@@ -271,10 +271,11 @@ ApplicationWindow {
             } else if (profilesModel.errString === "ERR_GET_CERTS") {
                 errorMessageDialog.text = qsTr(
                             "Failed getting the user's certificates list")
+                errorMessageDialog.open()
             } else {
                 errorMessageDialog.text = "err: " + profilesModel.errString
+                errorMessageDialog.open()
             }
-            errorMessageDialog.open()
         }
         ;
         // close window
