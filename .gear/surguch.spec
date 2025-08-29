@@ -1,5 +1,5 @@
 Name: surguch
-Version: 0.3.1
+Version: 0.3.2
 Release: alt1
 License: GPL-3.0-or-later
 
@@ -37,6 +37,18 @@ A gui application for verification and creation of digitally signed pdf document
 
 
 %changelog
+* Fri Aug 29 2025 Oleg Proskurin <proskur@altlinux.org> 0.3.2-alt1
+- New features:
+  + Open URLs by ctrl+click.
+Fixes (Closes: #54387, #54370, #55451):
+  + SearchDialog and RubberStamp list positioning.
+  + Aim-rectangle size for custom stamps.
+  + The scroll bar that overlaps the buttons.
+  + The flattening distortion of the rubber stamp preview.
+  + The position of the rubber stamp preview image.
+  + The position of the signature stamp preview image.
+  + Tranlations update.
+
 * Thu Jul 24 2025 Oleg Proskurin <proskur@altlinux.org> 0.3.1-alt1
 - Fix saving file to itself.
 
