@@ -17,8 +17,4 @@ ToolButton {
     anchors.right: parent.right
     width: 20
     height: 20
-
-    onClicked: {
-        rightSideBar.showState = RightSideBar.ShowState.Invisible
-    }
 }

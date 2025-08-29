@@ -11,10 +11,16 @@ Flickable {
     rightMargin: 10
     topMargin: 10
 
+    signal closeClicked()
+
     Item {
         width: parent.width
         height: 40
-        RSBCloseButton {}
+        RSBCloseButton {
+            onClicked: {
+                closeClicked()
+            }
+        }
     }
 
     Column {

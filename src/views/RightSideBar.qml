@@ -53,6 +53,10 @@ Item {
     InfoPanelComponents.RSBSigInfo {
         id: sigInfoPanel
         visible: showState == RightSideBar.ShowState.SigInfo
+
+        onCloseClicked: {
+            showState = RightSideBar.ShowState.Invisible
+        }
     }
 
     EditProfile {
@@ -62,5 +66,9 @@ Item {
         onProfileSaved: {
             root.profileSaved();
         }
+        onCloseClicked: {
+            showState = RightSideBar.ShowState.Invisible
+        }
+
     }
 }

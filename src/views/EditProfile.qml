@@ -22,6 +22,7 @@ Flickable {
     property int profile_id: -1
 
     signal profileSaved();
+    signal closeClicked();
 
     // fill the form from profile_data JSON string
     function updateProfileForm() {
@@ -88,7 +89,12 @@ Flickable {
     rightMargin: 10
     topMargin: 10
 
-    InfoPanelComponents.RSBCloseButton {}
+    InfoPanelComponents.RSBCloseButton {
+        onClicked: {
+            closeClicked()
+        }
+
+    }
 
     Column {
         id: profileColumn
