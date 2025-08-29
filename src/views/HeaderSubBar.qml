@@ -6,6 +6,7 @@ import StyleSheet
 import "header_bar_components" as HeaderBarComponents
 
 ColumnLayout {
+    id: root
 
     property int redoCount: 0
     property int undoCount: 0
@@ -400,7 +401,9 @@ ColumnLayout {
             icon.height: 20
             leftPadding: 5
             rightPadding: 5
-            onClicked: searchDialog.open()
+            onClicked: {
+                searchDialog.open()
+            }
         }
 
         Rectangle {
@@ -424,6 +427,9 @@ ColumnLayout {
 
     SearchDialog {
         id: searchDialog
+
+        x: searchButton.x + searchButton.width - searchDialog.width
+        y: root.height + StyleSheet.defaultPaddingV
     }
 
     RubberStampDialog {
