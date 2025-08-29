@@ -82,9 +82,9 @@ ELSE ()
             URI gui_pdf_csp
             VERSION 1.0
             QML_FILES views/Main.qml
-            QML_FILES views/TopBarButton.qml
+            QML_FILES views/header_bar_components/TopBarButton.qml
             QML_FILES views/Header.qml
-            QML_FILES views/HeaderToolSeparator.qml
+            QML_FILES views/header_bar_components/HeaderToolSeparator.qml
             QML_FILES views/HeaderSubBar.qml
             QML_FILES views/PdfListView.qml
             SOURCES cpp_views/pdf_page_render.hpp cpp_views/pdf_page_render.cpp

@@ -3,13 +3,11 @@
         <file>EditProfile.qml</file>
         <file>Header.qml</file>
         <file>HeaderSubBar.qml</file>
-        <file>HeaderToolSeparator.qml</file>
         <file>LeftSideBar.qml</file>
         <file>Main.qml</file>
         <file>PdfListView.qml</file>
         <file>PreviewListView.qml</file>
         <file>RightSideBar.qml</file>
-        <file>TopBarButton.qml</file>
         <file>UnsavedChangesDialog.qml</file>
         <file>StampEditor.qml</file>
         <file>SearchDialog.qml</file>
@@ -42,5 +40,7 @@
         <file>CertInfo.qml</file>
         <file>info_panel_components/SignaturesList.qml</file>
         <file>info_panel_components/RSBSigInfo.qml</file>
+        <file>header_bar_components/HeaderToolSeparator.qml</file>
+        <file>header_bar_components/TopBarButton.qml</file>
     </qresource>
 </RCC>

@@ -314,9 +314,9 @@
 <context>
     <name>Header</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+57"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+59"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+57"/>
-        <location filename="../../src/views/Header.qml" line="+57"/>
+        <location filename="../../src/views/Header.qml" line="+59"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
@@ -383,9 +383,9 @@
 <context>
     <name>HeaderSubBar</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+218"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+220"/>
         <location filename="../../build/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+217"/>
-        <location filename="../../src/views/HeaderSubBar.qml" line="+218"/>
+        <location filename="../../src/views/HeaderSubBar.qml" line="+220"/>
         <source> of </source>
         <translation> из </translation>
     </message>
@@ -735,10 +735,10 @@
 <context>
     <name>RSBSigInfo</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+25"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+24"/>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+26"/>
         <location filename="../../build/src/gui_pdf_csp/views/RSBSigInfo.qml" line="+24"/>
-        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+25"/>
+        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+24"/>
         <source>Signature</source>
         <translation>Электронная подпись</translation>
     </message>

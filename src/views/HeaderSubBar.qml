@@ -3,6 +3,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import StyleSheet
 
+import "header_bar_components" as HeaderBarComponents
+
 ColumnLayout {
 
     property int redoCount: 0
@@ -121,7 +123,7 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {}
 
         ToolButton {
             flat: true
@@ -137,7 +139,7 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {}
 
         ToolButton {
             flat: true
@@ -154,7 +156,7 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {}
 
         ToolButton {
             flat: true
@@ -221,7 +223,7 @@ ColumnLayout {
             color: StyleSheet.font_color_extra
         }
 
-        HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {}
 
         ToolButton {
             flat: true
@@ -251,7 +253,7 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {}
 
         ToolButton {
             id: zoomOutButton
@@ -329,7 +331,7 @@ ColumnLayout {
         }
 
         // rubberStamps
-        HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {}
 
         ToolButton {
             id: rubberStampPutButton
@@ -388,7 +390,7 @@ ColumnLayout {
         }
 
         // search
-        HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {}
         ToolButton {
             id: searchButton
             enabled: !pdfListView.signMode && !pdfListView.tagMode
