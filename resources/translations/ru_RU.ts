@@ -8,14 +8,14 @@
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/stamp_editor_components/BorderSettings.qml" line="+18"/>
         <location filename="../../src/views/stamp_editor_components/BorderSettings.qml" line="+18"/>
         <source>Stamp border width: </source>
-        <translation type="unfinished">Толщина рамки: </translation>
+        <translation>Толщина рамки: </translation>
     </message>
     <message>
         <location line="+35"/>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/stamp_editor_components/BorderSettings.qml" line="+35"/>
         <location filename="../../src/views/stamp_editor_components/BorderSettings.qml" line="+35"/>
         <source>Stamp border radius: </source>
-        <translation type="unfinished">Скругление рамки: </translation>
+        <translation>Скругление рамки: </translation>
     </message>
 </context>
 <context>
@@ -90,7 +90,7 @@
         <location filename="../../build/src/gui_pdf_csp/views/CertInfo.qml" line="+8"/>
         <location filename="../../src/views/CertInfo.qml" line="+8"/>
         <source>Digital signature; </source>
-        <translation type="unfinished"></translation>
+        <translation>Электронная подпись;</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -188,9 +188,9 @@
         <translation>Введите название профиля</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+44"/>
         <location filename="../../build/src/gui_pdf_csp/views/EditProfile.qml" line="+46"/>
-        <location filename="../../src/views/EditProfile.qml" line="+46"/>
+        <location filename="../../src/views/EditProfile.qml" line="+44"/>
         <source>Use this profile by default</source>
         <translation>Использовать по умолчанию</translation>
     </message>
@@ -394,7 +394,7 @@
         <location filename="../../build/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+99"/>
         <location filename="../../src/views/HeaderSubBar.qml" line="+99"/>
         <source>Auto</source>
-        <translation type="unfinished"></translation>
+        <translation>Авто</translation>
     </message>
     <message>
         <source>Automatic</source>
@@ -516,11 +516,11 @@
         <translation>Общая ошибка</translation>
     </message>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="+319"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="+197"/>
         <location filename="../../build/src/gui_pdf_csp/views/Main.qml" line="+101"/>
-        <location filename="../../src/views/Main.qml" line="+319"/>
+        <location filename="../../src/views/Main.qml" line="+197"/>
         <source>The document was changed after signing, but can be restored</source>
-        <translation>Документ был изменен после подписи! Присутствует возможность восстановить подписанную версию</translation>
+        <translation>Документ был изменен после подписания! Присутствует возможность восстановить подписанную версию</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -642,7 +642,7 @@
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="-1"/>
         <location filename="../../src/views/PdfListView.qml" line="-1"/>
         <source>Mark position</source>
-        <translation type="unfinished"></translation>
+        <translation>Позиция метки</translation>
     </message>
 </context>
 <context>
@@ -914,56 +914,56 @@
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+75"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+75"/>
         <source>Mark name</source>
-        <translation type="unfinished">Название</translation>
+        <translation>Название</translation>
     </message>
     <message>
         <location line="+11"/>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+1"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+1"/>
         <source>Enter mark name</source>
-        <translation type="unfinished">Моя метка</translation>
+        <translation>Моя метка</translation>
     </message>
     <message>
         <location line="+24"/>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+7"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+7"/>
         <source>Preview</source>
-        <translation type="unfinished">Предпросмотр</translation>
+        <translation>Предпросмотр</translation>
     </message>
     <message>
         <location line="+20"/>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+20"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+20"/>
         <source>Link</source>
-        <translation type="unfinished">Ссылка</translation>
+        <translation>Ссылка</translation>
     </message>
     <message>
         <location line="+10"/>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+10"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+10"/>
         <source>Enter link here</source>
-        <translation type="unfinished">Моя ссылка</translation>
+        <translation>Моя ссылка</translation>
     </message>
     <message>
         <location line="+16"/>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+18"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+18"/>
         <source>Default mark width, % from A4 </source>
-        <translation type="unfinished">Ширина метки по умолчанию, % от А4</translation>
+        <translation>Ширина метки по умолчанию, % от А4 </translation>
     </message>
     <message>
         <location line="+31"/>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+31"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+31"/>
         <source>Save</source>
-        <translation type="unfinished">Сохранить</translation>
+        <translation>Сохранить</translation>
     </message>
     <message>
         <location line="+15"/>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+15"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+15"/>
         <source>Delete</source>
-        <translation type="unfinished">Удалить</translation>
+        <translation>Удалить</translation>
     </message>
 </context>
 <context>
@@ -972,55 +972,55 @@
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+44"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+44"/>
         <source>Surguch</source>
-        <translation type="unfinished">Сургуч</translation>
+        <translation>Сургуч</translation>
     </message>
     <message>
         <location line="+57"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+57"/>
         <source>Create from text</source>
-        <translation type="unfinished">Сгенерировать из текста</translation>
+        <translation>Сгенерировать из текста</translation>
     </message>
     <message>
         <location line="+28"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+28"/>
         <source>Generate from file (*.png *.jpg *.jpeg *.bmp)</source>
-        <translation type="unfinished">Сгенерировать из файла (*.png *.jpg *.jpeg *.bmp)</translation>
+        <translation>Сгенерировать из файла (*.png *.jpg *.jpeg *.bmp)</translation>
     </message>
     <message>
         <location line="+10"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+10"/>
         <source>Select a file</source>
-        <translation type="unfinished">Выбрать файл</translation>
+        <translation>Выбрать файл</translation>
     </message>
     <message>
         <location line="+28"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+28"/>
         <source>Text</source>
-        <translation type="unfinished">Текст</translation>
+        <translation>Текст</translation>
     </message>
     <message>
         <location line="+18"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+18"/>
         <source>Enter text here</source>
-        <translation type="unfinished">Введите текст</translation>
+        <translation>Введите текст</translation>
     </message>
     <message>
         <location line="+27"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+27"/>
         <source>Font</source>
-        <translation type="unfinished">Шрифт</translation>
+        <translation>Шрифт</translation>
     </message>
     <message>
         <location line="+48"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+48"/>
         <source>Transparency</source>
-        <translation type="unfinished">Прозрачность фона</translation>
+        <translation>Прозрачность фона</translation>
     </message>
     <message>
         <location line="+12"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+12"/>
         <source>Color</source>
-        <translation type="unfinished">Цвет</translation>
+        <translation>Цвет</translation>
     </message>
 </context>
 <context>
@@ -1187,32 +1187,32 @@
     <message>
         <location line="+64"/>
         <source>Standard config location cannot be determined, using home</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось определить расположение конфигурационных файлов пользователя, будет использована домашняя директория</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Cannot determine the user&apos;s home folder</source>
-        <translation type="unfinished">Не удалось определить домашнюю директорию пользователя</translation>
+        <translation>Не удалось определить домашнюю директорию пользователя</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>using the path </source>
-        <translation type="unfinished">использован путь </translation>
+        <translation>использован путь </translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Can not create folder </source>
-        <translation type="unfinished">Не удалось создать директорию </translation>
+        <translation>Не удалось создать директорию </translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Can not create file </source>
-        <translation type="unfinished">Не удалось создать файл </translation>
+        <translation>Не удалось создать файл </translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Can not open file </source>
-        <translation type="unfinished">Не удалось открыть файл </translation>
+        <translation>Не удалось открыть файл </translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1233,67 +1233,67 @@
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+45"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+45"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
-        <translation type="unfinished">Сертификат не найден, возможно он был удален</translation>
+        <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
     <message>
         <location line="+21"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+21"/>
         <source>Certificate: </source>
-        <translation type="unfinished">Сертификат: </translation>
+        <translation>Сертификат: </translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+2"/>
         <source>Subject: </source>
-        <translation type="unfinished">Субъект: </translation>
+        <translation>Субъект: </translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+1"/>
         <source>Vaildity: </source>
-        <translation type="unfinished">Действителен: </translation>
+        <translation>Действителен: </translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+1"/>
         <source> till </source>
-        <translation type="unfinished"> по </translation>
+        <translation> по </translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+2"/>
         <source>THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE</source>
-        <translation type="unfinished">ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ</translation>
+        <translation>ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ</translation>
     </message>
     <message>
         <location line="+38"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+38"/>
         <source>Your certificate is expired.</source>
-        <translation type="unfinished">Истек срок действия сертификата.</translation>
+        <translation>Истек срок действия сертификата.</translation>
     </message>
     <message>
         <location line="+3"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+3"/>
         <source>Common error. It looks like the TSP URL is not valid.</source>
-        <translation type="unfinished">Ошибка. Возможно указан неверный адрес службы TSP.</translation>
+        <translation>Ошибка. Возможно указан неверный адрес службы TSP.</translation>
     </message>
     <message>
         <location line="+3"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+3"/>
         <source>Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.</source>
-        <translation type="unfinished">Произошла ошибка проверки цепочки сертификатов, похоже, что один из корневых сертификатов отсутствует или его нет в списке доверенных.</translation>
+        <translation>Произошла ошибка проверки цепочки сертификатов, похоже, что один из корневых сертификатов отсутствует или его нет в списке доверенных.</translation>
     </message>
     <message>
         <location line="+3"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+3"/>
         <source>Error.Timeout exceeded.</source>
-        <translation type="unfinished">Ошибка: превышен максимальный интервал ожидания.</translation>
+        <translation>Ошибка: превышен максимальный интервал ожидания.</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+2"/>
         <source>Common error</source>
-        <translation type="unfinished">Общая ошибка</translation>
+        <translation>Общая ошибка</translation>
     </message>
 </context>
 <context>
@@ -1395,7 +1395,7 @@
         <location filename="../../build/src/gui_pdf_csp/views/StampPreview.qml" line="+28"/>
         <location filename="../../src/views/stamp_editor_components/StampPreview.qml" line="+37"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
-        <translation type="unfinished">Сертификат не найден, возможно он был удален</translation>
+        <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -1403,7 +1403,7 @@
         <location filename="../../build/src/gui_pdf_csp/views/StampPreview.qml" line="+24"/>
         <location filename="../../src/views/stamp_editor_components/StampPreview.qml" line="+24"/>
         <source>Certificate: </source>
-        <translation type="unfinished">Сертификат: </translation>
+        <translation>Сертификат: </translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1411,7 +1411,7 @@
         <location filename="../../build/src/gui_pdf_csp/views/StampPreview.qml" line="+2"/>
         <location filename="../../src/views/stamp_editor_components/StampPreview.qml" line="+2"/>
         <source>Subject: </source>
-        <translation type="unfinished">Субъект: </translation>
+        <translation>Субъект: </translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1419,7 +1419,7 @@
         <location filename="../../build/src/gui_pdf_csp/views/StampPreview.qml" line="+1"/>
         <location filename="../../src/views/stamp_editor_components/StampPreview.qml" line="+1"/>
         <source>Vaildity: </source>
-        <translation type="unfinished">Действителен: </translation>
+        <translation>Действителен: </translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1427,7 +1427,7 @@
         <location filename="../../build/src/gui_pdf_csp/views/StampPreview.qml" line="+1"/>
         <location filename="../../src/views/stamp_editor_components/StampPreview.qml" line="+1"/>
         <source> till </source>
-        <translation type="unfinished"> по </translation>
+        <translation> по </translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1435,7 +1435,7 @@
         <location filename="../../build/src/gui_pdf_csp/views/StampPreview.qml" line="+2"/>
         <location filename="../../src/views/stamp_editor_components/StampPreview.qml" line="+2"/>
         <source>THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE</source>
-        <translation type="unfinished">ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ</translation>
+        <translation>ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ</translation>
     </message>
 </context>
 <context>
