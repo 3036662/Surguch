@@ -2,24 +2,10 @@ variables:
   GIT_CLEAN_FLAGS: none
 stages:          # List of stages for jobs, and their order of execution
   - build
-  - build-p10
   - test
 
-
-build-job:       # This job runs in the build stage, which runs first.
+build:c10f2:
   stage: build
-  script:
-    - export QT_PLUGIN_PATH=/usr/lib/qt6/plugins/platforms/
-    - echo "Compiling the code..."
-    - git clean -ffdx
-    - mkdir -p build
-    - git status
-    - parent_dir="$(dirname "$PWD")"
-    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DCMAKE_BUILD_TYPE=Debug
-    - cmake --build build
-    - echo "Compile complete."
-build_p10-job:       # This job runs in the build stage, which runs first.
-  stage: build-p10
   script:
     - export QT_PLUGIN_PATH=/usr/lib/qt6/plugins/platforms/
     - echo "Compiling the code..."
@@ -32,7 +18,24 @@ build_p10-job:       # This job runs in the build stage, which runs first.
     - echo "Compile complete."
   needs: []
   tags:
-    - p10runner
+    - C10f2
+  parallel: 1
+build:edu11:
+  stage: build
+  script:
+    - export QT_PLUGIN_PATH=/usr/lib/qt6/plugins/platforms/
+    - echo "Compiling the code..."
+    - git clean -ffdx
+    - mkdir -p build
+    - git status
+    - parent_dir="$(dirname "$PWD")"
+    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DCMAKE_BUILD_TYPE=Debug
+    - cmake --build build
+    - echo "Compile complete."
+  needs: []
+  tags:
+    - edu11runner
+
 unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
   script:    
@@ -44,4 +47,7 @@ unit-test-job:   # This job runs in the test stage.
     - $(pwd)/build/src/test/test_preview -platform offscreen     
     - $(pwd)/build/src/test/test_search
     - $(pwd)/build/src/test/test_search2
-
+  needs: []
+  tags:
+    - C10f2
+  parallel: 1
