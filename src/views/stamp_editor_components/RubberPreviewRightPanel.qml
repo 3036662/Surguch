@@ -81,7 +81,7 @@ ColumnLayout {
             "annotation_text": rubberStampTextArea.text,
             "stamp_text": rubberStampTextArea.text,
             "bg_transparent": transparencySwitch.checked ? 1 : 0,
-            "R": rgbColorPicker.b,
+            "R": rgbColorPicker.r,
             "G": rgbColorPicker.g,
             "B": rgbColorPicker.b
         }
