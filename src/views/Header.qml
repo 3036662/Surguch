@@ -89,7 +89,14 @@ RowLayout {
             HeaderBarComponents.TopBarButton {
                 icon.source: StyleSheet.wrench_icon
                 enabled: profileComboBox.currentValue !== "new"
-                text: ""
+                display: AbstractButton.IconOnly
+                text: qsTr("Profile settings")
+
+                ToolTip {
+                    text: parent.text
+                    visible: parent.hovered
+                    delay: 500
+                }
 
                 onClicked: {
                     //open profile info panel
@@ -234,15 +241,23 @@ RowLayout {
         Layout.fillWidth: true
     }
 
-    ToolButton {
+    HeaderBarComponents.TopBarButton {
         id: info_button
 
-        flat: true
+        display: AbstractButton.IconOnly
+        text: qsTr("About programm")
         icon.source: StyleSheet.info_icon
         icon.width: 20
         icon.height: 20
         leftPadding: 5
         rightPadding: 5
+
+        ToolTip {
+            text: parent.text
+            visible: parent.hovered
+            delay: 500
+        }
+
         onClicked: appInfoDialog.open()
     }
 
@@ -373,6 +388,4 @@ RowLayout {
             }
         }
     }
-
-
 }
