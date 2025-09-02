@@ -76,8 +76,6 @@ ListView {
 
     signal updateHistory(int undo, int redo)
 
-
-
     function proceedSigning(location_data) {
         //console.warn(pdfModel.getSource())
         let tmpFile = pdfModel.getSource()
@@ -431,7 +429,7 @@ ListView {
         let pos = preservePosition()
 
         model.redrawAll()
-        console.warn("QML Total needles:" + total_needles)
+        //console.warn("QML Total needles:" + total_needles)
         if (total_needles > 0) {
             pos.index = first_needle_page_index
             pos = updateRatioWithRoration(pos, x_rel, y_rel)
@@ -491,18 +489,21 @@ ListView {
     function redrawAndPreservePosion() {
         let pos = preservePosition()
         model.redrawAll()
-        jumpToPosition(pos) }
+        jumpToPosition(pos)
+    }
 
     // calculate the mouse positions in the document, ignoring its rotation
     function getInvertedMousePos(mouse, pageSize) {
         const angleRadians = -delegateRotation * Math.PI / 180
         const angle_sin = Math.sin(angleRadians)
         const angle_cos = Math.cos(angleRadians)
-        const pageMidX = Math.abs(pageSize.width*angle_cos-pageSize.height*angle_sin) / 2
-        const pageMidY = Math.abs(pageSize.height*angle_cos+pageSize.width*angle_sin) / 2
+        const pageMidX = Math.abs(
+                           pageSize.width * angle_cos - pageSize.height * angle_sin) / 2
+        const pageMidY = Math.abs(
+                           pageSize.height * angle_cos + pageSize.width * angle_sin) / 2
 
-        const rotatedX = (mouse.x - pageMidX)*angle_cos-(mouse.y - pageMidX)*angle_sin
-        const rotatedY = (mouse.x - pageMidY)*angle_sin+(mouse.y - pageMidY)*angle_cos
+        const rotatedX = (mouse.x - pageMidX) * angle_cos - (mouse.y - pageMidX) * angle_sin
+        const rotatedY = (mouse.x - pageMidY) * angle_sin + (mouse.y - pageMidY) * angle_cos
 
         const result = {
             "x": Math.abs(rotatedX + pageMidX),
@@ -512,11 +513,10 @@ ListView {
         return result
     }
 
-
     // this function will trigger a call to PDFPage.onAimResizeStatusChanged,
     // which will cause updateCrossSize to be called.
-    function forceAimResize(){
-        aimIsAlreadyResized=false;
+    function forceAimResize() {
+        aimIsAlreadyResized = false
     }
 
     Layout.fillHeight: true
@@ -532,7 +532,6 @@ ListView {
     focus: true
     keyNavigationEnabled: false
     boundsBehavior: Flickable.DragAndOvershootBounds
-
 
     onPageWidthChanged: {
         pageWidthUpdate(pageWidth)
@@ -603,13 +602,13 @@ ListView {
     model: pdfModel
 
     delegate: Column {
-        id:delegateColumn
-        width:  Math.max(root.width,pdfPage.width)
+        id: delegateColumn
+        width: Math.max(root.width, pdfPage.width)
         property alias zoomLast: pdfPage.zoomLast
         property alias pWidth: pdfPage.width
         property alias pHeight: pdfPage.height
 
-        property int rootWidthBind:root.width
+        property int rootWidthBind: root.width
 
         function updateCurrRect() {
             pdfPage.setCurrentNeedleRect(pdfModel.getCurrentNeedleRect(
@@ -619,9 +618,8 @@ ListView {
         }
 
         onRootWidthBindChanged: {
-                           delegateColumn.width=Math.max(root.width,pdfPage.width);
-                }
-
+            delegateColumn.width = Math.max(root.width, pdfPage.width)
+        }
 
         onWidthChanged: {
             if (root.zoomAuto) {
@@ -650,43 +648,47 @@ ListView {
             widthGoal: zoomAuto ? root.width : 0
             currScreenDpi: pdfModel.screenDpi
 
+            function getLocation() {
+                let location_data = {
+                    "page_index": index,
+                    "page_width": width,
+                    "page_height": height,
+                    "stamp_x": cross.x,
+                    "stamp_y": cross.y,
+                    "stamp_width": cross.width,
+                    "stamp_height": cross.height
+                }
+                return location_data
+            }
+
             function updateCrossSize() {
-                if (!root.aimIsAlreadyResized && pdfPage.width > 0
-                        && pdfPage.height > 0) {
-                    cross.width = pdfPage.width
-                            < pdfPage.height ? Math.round(
-                                                   pdfPage.width * 0.41) : Math.round(
+                if (!(pdfPage.width > 0 && pdfPage.height > 0)) {
+                    return
+                }
+                const portrait = pdfPage.width < pdfPage.height
+                // hardcoded signature stamp ratio
+                const stamp_ratio_wh = 2.61
+                const basic_width = portrait ? Math.ceil(
+                                                   pdfPage.width * 0.41) : Math.ceil(
                                                    pdfPage.width * 0.3)
-                    if (pdfPage.height != 0) {
-                        cross.height = pdfPage.width
-                                < pdfPage.height ? Math.round(
-                                                       pdfPage.height / 9) : Math.round(
-                                                       pdfPage.height / 7)
-                    }
+                const basic_height = Math.ceil(basic_width / stamp_ratio_wh)
+
+                // if not resized yet
+                if (!root.aimIsAlreadyResized) {
+                    cross.width = basic_width
+                    cross.height = basic_height
                     // run background estimate of stamp size
                     if (!aimResizeInProgress) {
-                        let location_data = {
-                            "page_index": index,
-                            "page_width": width,
-                            "page_height": height,
-                            "stamp_x": cross.x,
-                            "stamp_y": cross.y,
-                            "stamp_width": cross.width,
-                            "stamp_height": cross.height
-                        }
+                        let location_data = getLocation()
                         aimResizeInProgress = true
                         sigCreatorWrapper.resizeAim(location_data)
                     }
                 } else {
                     // if the aim is already resized - update with resize factor
-                    cross.width = pdfPage.width
-                            < pdfPage.height ? Math.round(
-                                                   pdfPage.width * 0.41 * aimResizeX) : Math.round(
-                                                   pdfPage.width / 3 * aimResizeX)
-                    cross.height = pdfPage.width
-                            < pdfPage.height ? Math.round(
-                                                   pdfPage.height / 9 * aimResizeY) : Math.round(
-                                                   pdfPage.height / 7 * aimResizeY)
+                    cross.width = basic_width * aimResizeX
+                    cross.height = basic_height * aimResizeY
+                    let location = getLocation()
+                    sigCreatorWrapper.saveLastAimSize(location)
                 }
             }
 
@@ -695,8 +697,8 @@ ListView {
                     let t_data = JSON.parse(tagData)
                     tagCross.width = t_data.tag_width * pdfPage.width / 100
                     tagCross.height = tagCross.width / root.ratio
-                    console.warn("tag width = " + tagCross.width)
-                    console.warn("tag height = " + tagCross.height)
+                    //console.warn("tag width = " + tagCross.width)
+                    //console.warn("tag height = " + tagCross.height)
                 }
             }
 
@@ -707,7 +709,7 @@ ListView {
                 if (width > 0) {
                     lastPageWidth = width
                 }
-                delegateColumn.width=Math.max(root.width,pdfPage.width);
+                delegateColumn.width = Math.max(root.width, pdfPage.width)
             }
 
             onZoomLastChanged: {
@@ -749,66 +751,76 @@ ListView {
                 anchors.fill: parent
                 hoverEnabled: true
                 onPressed: mouse => {
-                    if (!source) {
-                        mouse.accepted = false
-                        return
-                    }
+                               if (!source) {
+                                   mouse.accepted = false
+                                   return
+                               }
 
-                    if (mouse.modifiers === Qt.ControlModifier) {
-                        const pageSize = {
-                            "width": width,
-                            "height": height
-                        }
-                        const mousePos = getInvertedMousePos(mouse, pageSize)
-                        const mousePosX = mousePos.x / zoomPageFact
-                        const mousePosY = mousePos.y / zoomPageFact
+                               if (mouse.modifiers === Qt.ControlModifier) {
+                                   const pageSize = {
+                                       "width": width,
+                                       "height": height
+                                   }
+                                   const mousePos = getInvertedMousePos(
+                                       mouse, pageSize)
+                                   const mousePosX = mousePos.x / zoomPageFact
+                                   const mousePosY = mousePos.y / zoomPageFact
 
-                        const uriInfoList = pdfModel.getUriByPos(currentPageIndex(), mousePosX, mousePosY)
-                        uriInfoList.forEach(uri_info => {
-                            const dest_page_idx = uri_info.dest_page
-                            if (dest_page_idx >= 0) {
-                                positionViewAtIndex(dest_page_idx, ListView.Beginning)
-                            } else {
-                                const resolvedUri = Qt.resolvedUrl(uri_info.uri)
-                                if (!Qt.openUrlExternally(resolvedUri)) {
-                                    console.warn(`Couldn't open the ${resolvedUri}`)
-                                }
-                            }
-                        })
+                                   const uriInfoList = pdfModel.getUriByPos(
+                                       currentPageIndex(), mousePosX, mousePosY)
+                                   uriInfoList.forEach(uri_info => {
+                                                           const dest_page_idx = uri_info.dest_page
+                                                           if (dest_page_idx >= 0) {
+                                                               positionViewAtIndex(
+                                                                   dest_page_idx,
+                                                                   ListView.Beginning)
+                                                           } else {
+                                                               const resolvedUri = Qt.resolvedUrl(
+                                                                   uri_info.uri)
+                                                               if (!Qt.openUrlExternally(
+                                                                       resolvedUri)) {
+                                                                   console.warn(
+                                                                       `Couldn't open the ${resolvedUri}`)
+                                                               }
+                                                           }
+                                                       })
 
-                        mouse.accepted = true
-                        return
-                    }
+                                   mouse.accepted = true
+                                   return
+                               }
 
-                    mouse.accepted = false
-                }
+                               mouse.accepted = false
+                           }
 
                 onClicked: {
                     root.forceActiveFocus()
                 }
 
                 onPositionChanged: mouse => {
-                    if (source) {
-                        const pageSize = {
-                            "width": width,
-                            "height": height
-                        }
-                        const mousePos = getInvertedMousePos(mouse, pageSize)
-                        const mousePosX = mousePos.x / zoomPageFact
-                        const mousePosY = mousePos.y / zoomPageFact
+                                       if (source) {
+                                           const pageSize = {
+                                               "width": width,
+                                               "height": height
+                                           }
+                                           const mousePos = getInvertedMousePos(
+                                               mouse, pageSize)
+                                           const mousePosX = mousePos.x / zoomPageFact
+                                           const mousePosY = mousePos.y / zoomPageFact
 
-                        if (pdfModel.mouseOverUri(currentPageIndex(), mousePosX, mousePosY)) {
-                            docArea.cursorShape = Qt.OpenHandCursor
-                        } else {
-                            docArea.cursorShape = Qt.ArrowCursor
-                        }
+                                           if (pdfModel.mouseOverUri(
+                                                   currentPageIndex(),
+                                                   mousePosX, mousePosY)) {
+                                               docArea.cursorShape = Qt.OpenHandCursor
+                                           } else {
+                                               docArea.cursorShape = Qt.ArrowCursor
+                                           }
 
-                        mouse.accepted = true
-                        return
-                    }
+                                           mouse.accepted = true
+                                           return
+                                       }
 
-                    mouse.accepted = false
-                }
+                                       mouse.accepted = false
+                                   }
             }
 
             MouseArea {
@@ -836,15 +848,7 @@ ListView {
 
                                if (root.signMode && !root.signInProgress
                                    && cross.valid_position) {
-                                   let location_data = {
-                                       "page_index": index,
-                                       "page_width": width,
-                                       "page_height": height,
-                                       "stamp_x": cross.x,
-                                       "stamp_y": cross.y,
-                                       "stamp_width": cross.width,
-                                       "stamp_height": cross.height
-                                   }
+                                   let location_data = pdfPage.getLocation()
                                    cross.visible = false
                                    cursorShape = Qt.BusyCursor
                                    root.proceedSigning(location_data)
@@ -1068,7 +1072,7 @@ ListView {
                     let undoCount = pdfModel.getUndoCount()
                     let redoCount = pdfModel.getRedoCount()
                     updateHistory(undoCount, redoCount)
-                }            
+                }
             }
         }
     }

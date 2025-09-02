@@ -16,6 +16,7 @@ Dialog {
     property int stamp_id: -1
     property bool editState: false
 
+    signal stampSaved();
 
     // private properties
     Item{
@@ -54,7 +55,7 @@ Dialog {
         updatePreview();
     }
 
-    function resetData() {        
+    function resetData(skip_update) {
         private_data.ignore_changes=true;
         editState = false
         stamp_id = -1
@@ -66,10 +67,12 @@ Dialog {
         rgbColorPicker.g = 62
         rgbColorPicker.b = 168
         private_data.ignore_changes=false;
-        updatePreview();
+        if(!skip_update){
+            updatePreview();
+        }
     }
 
-    function updatePreview() {
+    function updatePreview() {        
         let stamp_params = {
             "stamp_name": stampName.text,
             "text_color_red": rgbColorPicker.r,
@@ -127,7 +130,7 @@ Dialog {
 
                 onCloseClicked: {
                     stampEditor.visible = false
-                    resetData()
+                    resetData(true)
                 }
             }
 
@@ -236,7 +239,9 @@ Dialog {
                    stamp_json["B"] = rgbColorPicker.b
                    stamp_json["transparent"] = transparencySwitch.checked ? 1 : 0
                     const new_stamp_data = JSON.stringify(stamp_json)
-                    console.warn(profiles_model.saveStamp(new_stamp_data))
+                    if(profiles_model.saveStamp(new_stamp_data)){
+                        stampSaved();
+                    }
                     stampEditor.visible = false
                     stamp_json = null
                 }

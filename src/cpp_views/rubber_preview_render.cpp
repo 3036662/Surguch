@@ -82,10 +82,10 @@ QSGNode *RubberPreviewRender::updatePaintNode(
         if (target_height > requested_height_) {
             scale_fact = requested_height_ / target_height;
         }
-        QSGTexture *texture = window()->createTextureFromImage(
-            (*result_->image_)
-                .scaled(requested_width_ * scale_fact,
-                        target_height * scale_fact, Qt::KeepAspectRatio));
+        const auto img_tmp = result_->image_->scaled(
+            result_->image_->width() * scale_fact,
+            result_->image_->height() * scale_fact, Qt::KeepAspectRatio);
+        QSGTexture *texture = window()->createTextureFromImage(img_tmp);
         setWidth(requested_width_ * scale_fact);
         setHeight(target_height * scale_fact);
         if (texture != nullptr) {

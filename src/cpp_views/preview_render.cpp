@@ -61,16 +61,32 @@ QSGNode *PreviewRender::updatePaintNode(
         }
         return rectNode;
     }
-    QSGTexture *texture = window()->createTextureFromImage(*result_->image_);
+    double scale_fact = 1.0;
+
+    const auto yx_ratio_result =
+        static_cast<double>(result_->data_->resolution_y) /
+        result_->data_->resolution_x;
+    const auto target_height_qml = yx_ratio_result * max_width_;
+
+    if (target_height_qml > max_height_) {
+        scale_fact = max_height_ / target_height_qml;
+    }
+    const auto target_width_qml = max_width_ * scale_fact;
+    const auto img_tmp = result_->image_->scaled(
+        result_->image_->width() * scale_fact,
+        result_->image_->height() * scale_fact, Qt::KeepAspectRatio);
+    QSGTexture *texture = window()->createTextureFromImage(img_tmp);
+    setWidth(target_width_qml);
+    setHeight(target_height_qml);
     if (texture != nullptr) {
         rectNode->setTexture(texture);
         rectNode->setRect(QRectF(0, 0, width(), height()));
     }
+
     return rectNode;
 }
 
 void PreviewRender::createImage(const QVariantMap &qvparams) {
-    qWarning() << "Create STAMP IMG";
     params_ = core::gui::preparePreviewParams(qvparams);
     auto params_wrapper = core::gui::createParams(params_);
     image_watcher_ = std::make_unique<ImageFutureWatcher>();
@@ -92,6 +108,8 @@ void PreviewRender::saveImage() {
         const auto yx_ratio = static_cast<double>(result_->image_->height()) /
                               result_->image_->width();
         setHeight(yx_ratio * width());
+        emit imageReady();
+        return;
     }
-    emit imageReady();
+    stampPreviewBadResult();
 }

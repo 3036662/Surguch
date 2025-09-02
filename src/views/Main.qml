@@ -296,6 +296,8 @@ ApplicationWindow {
         })
         // update AimSize when profile was edited
         rightSideBar.profileSaved.connect(pdfListView.forceAimResize)
+        // update AimSize when stamp was edited
+        stampEditor.stampSaved.connect(pdfListView.forceAimResize)
 
         // set themes
         StyleSheet.state = themeStyle
