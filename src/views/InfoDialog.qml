@@ -8,7 +8,7 @@ Dialog {
 
     property string version: "0.3.2-alt1"
 
-    width: 380
+    width: 410
     height: 130
     topPadding: StyleSheet.defaultPaddingV
     bottomPadding: StyleSheet.defaultPaddingV

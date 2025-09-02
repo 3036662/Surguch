@@ -304,7 +304,6 @@ ApplicationWindow {
 
     // ---------------------------------------------
     // helper dialogs
-
     StampEditor {
         id: stampEditor
     }
@@ -314,7 +313,6 @@ ApplicationWindow {
     InfoDialog {
         id: appInfoDialog
     }
-
 
     // Info dialog in center of window
     Dialog {
@@ -379,7 +377,7 @@ ApplicationWindow {
     }
 
     onHeightChanged: {
-        if (height <= 600) {
+        if (height <= 770) {
             StyleSheet.window_size_y = "small_height"
         } else {
             StyleSheet.window_size_y = "normal"
