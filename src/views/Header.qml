@@ -109,7 +109,8 @@ RowLayout {
                             = profileComboBox.model.getUserStampsJSON()
                     // set a reference to this model
                     rightSideBar.edit_profile.profiles_model = profileComboBox.model
-                    rightSideBar.edit_profile.profile_data = profileComboBox.currentValue
+                    rightSideBar.edit_profile.profile_data
+                            = profileComboBox.currentValue ? profileComboBox.currentValue : null
                     rightSideBar.edit_profile.updateProfileForm()
                 }
             }
