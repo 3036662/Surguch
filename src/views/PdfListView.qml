@@ -648,6 +648,8 @@ ListView {
             widthGoal: zoomAuto ? root.width : 0
             currScreenDpi: pdfModel.screenDpi
 
+            property bool first_run: true
+
             function getLocation() {
                 let location_data = {
                     "page_index": index,
@@ -682,6 +684,11 @@ ListView {
                         let location_data = getLocation()
                         aimResizeInProgress = true
                         sigCreatorWrapper.resizeAim(location_data)
+                        // initialize the last aim size
+                        if (first_run) {
+                            sigCreatorWrapper.saveLastAimSize(getLocation())
+                            first_run = false
+                        }
                     }
                 } else {
                     // if the aim is already resized - update with resize factor

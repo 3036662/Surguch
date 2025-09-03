@@ -17,8 +17,7 @@ Item {
         }
     }
 
-    function saveLastAimSize(location) {
-        console.warn("[saveLastAimSize]:" + JSON.stringify(location))
+    function saveLastAimSize(location) {        
         private_data.lastLocation = location
     }
 
