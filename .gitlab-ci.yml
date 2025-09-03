@@ -1,6 +1,6 @@
 variables:
   GIT_CLEAN_FLAGS: none
-stages:          # List of stages for jobs, and their order of execution
+stages: # List of stages for jobs, and their order of execution
   - build
   - test
 
@@ -13,10 +13,10 @@ build:c10f2:
     - mkdir -p build
     - git status
     - parent_dir="$(dirname "$PWD")"
-    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DCMAKE_BUILD_TYPE=Debug -G Ninja
+    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DPDFCSP_MRPA_INCLUDE_DIR=$parent_dir/csp_pdf/mrpa -DPDFCSP_MRPA_LINK_PATH=$parent_dir/csp_pdf/build/mrpa/libmrpa.so -DCMAKE_BUILD_TYPE=Debug -G Ninja
     - cmake --build build
     - echo "Compile complete."
-  needs: []
+  needs: [ ]
   tags:
     - C10f2
 build:edu11:
@@ -28,10 +28,10 @@ build:edu11:
     - mkdir -p build
     - git status
     - parent_dir="$(dirname "$PWD")"
-    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DCMAKE_BUILD_TYPE=Debug -G Ninja
+    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DPDFCSP_MRPA_INCLUDE_DIR=$parent_dir/csp_pdf/mrpa -DPDFCSP_MRPA_LINK_PATH=$parent_dir/csp_pdf/build/mrpa/libmrpa.so -DCMAKE_BUILD_TYPE=Debug -G Ninja
     - cmake --build build
     - echo "Compile complete."
-  needs: []
+  needs: [ ]
   tags:
     - edu11runner
   parallel: 1
@@ -44,10 +44,10 @@ build:gnome11:
     - mkdir -p build
     - git status
     - parent_dir="$(dirname "$PWD")"
-    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DCMAKE_BUILD_TYPE=Debug -G Ninja
+    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DPDFCSP_MRPA_INCLUDE_DIR=$parent_dir/csp_pdf/mrpa -DPDFCSP_MRPA_LINK_PATH=$parent_dir/csp_pdf/build/mrpa/libmrpa.so -DCMAKE_BUILD_TYPE=Debug -G Ninja
     - cmake --build build
     - echo "Compile complete."
-  needs: []
+  needs: [ ]
   tags:
     - gnome11
   parallel: 1
@@ -60,24 +60,24 @@ build:kde11:
     - mkdir -p build
     - git status
     - parent_dir="$(dirname "$PWD")"
-    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DCMAKE_BUILD_TYPE=Debug -G Ninja
+    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DPDFCSP_MRPA_INCLUDE_DIR=$parent_dir/csp_pdf/mrpa -DPDFCSP_MRPA_LINK_PATH=$parent_dir/csp_pdf/build/mrpa/libmrpa.so -DCMAKE_BUILD_TYPE=Debug -G Ninja
     - cmake --build build
     - echo "Compile complete."
-  needs: []
+  needs: [ ]
   tags:
     - kde_p11
   parallel: 1
-unit-test-job:   # This job runs in the test stage.
+unit-test-job: # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
-  script:    
+  script:
     - echo "Running unit tests... This will take about 60 seconds."
     - export QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt6/plugins/platforms/
     - export QT_PLUGIN_PATH=/usr/lib/qt6/plugins/platforms/
 
     - $(pwd)/build/src/test/test1 -platform offscreen
-    - $(pwd)/build/src/test/test_preview -platform offscreen     
+    - $(pwd)/build/src/test/test_preview -platform offscreen
     - $(pwd)/build/src/test/test_search
     - $(pwd)/build/src/test/test_search2
-  needs: ["build:c10f2"]
+  needs: [ "build:c10f2" ]
   tags:
     - C10f2
