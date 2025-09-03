@@ -41,6 +41,7 @@
         <file>info_panel_components/RSBSigInfo.qml</file>
         <file>header_bar_components/HeaderToolSeparator.qml</file>
         <file>header_bar_components/TopBarButton.qml</file>
+        <file>header_bar_components/SubBarButton.qml</file>
         <file>RubberStampListEntry.qml</file>
         <file>SigCreatorWrapper.qml</file>
         <file>DisappearingHint.qml</file>

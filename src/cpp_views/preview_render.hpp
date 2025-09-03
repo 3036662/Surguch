@@ -44,10 +44,18 @@ class PreviewRender : public QQuickItem {
         QSGNode *oldNode,
         QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;
 
+    /// @brief size hint to be set from QML
+    Q_PROPERTY(float maxWidth MEMBER max_width_);
+    /// @brief size hint to be set from QML
+    Q_PROPERTY(float maxHeight MEMBER max_height_);
+
    signals:
 
     /// @brief the image is prepared and ready for render
     void imageReady();
+
+    /// @brief render failed
+    void stampPreviewBadResult();
 
     /// @brief signal when received nullptr for preview image
     void errorOnImageGenerate(const QString &err_string);
@@ -62,6 +70,9 @@ class PreviewRender : public QQuickItem {
     std::unique_ptr<ImageFuture> image_future_;
     std::unique_ptr<ImageFutureWatcher> image_watcher_;
     std::unique_ptr<QImage> blank_image_;
+
+    float max_width_ = 460;   // set from QML
+    float max_height_ = 175;  // set from QML
 };
 
 #endif  // PREVIEWRENDERER_HPP

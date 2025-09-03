@@ -59,6 +59,11 @@ SignWorker::SignParams SignatureCreator::createWorkerParams(
     if (qvparams.contains("stamp_y")) {
         params.stamp_y = qvparams.value("stamp_y").toReal();
     }
+    /* Width and height will be used for embedding to PDF but not for image
+     * generation. The image generation library will be called with a hardcoded
+     * default resolution to achieve a predictable image size. Though the result
+     * size may differ, we expect it to be the same for each call with the same
+     * parameters.*/
     if (qvparams.contains("stamp_width")) {
         params.stamp_width = qvparams.value("stamp_width").toReal();
     }
