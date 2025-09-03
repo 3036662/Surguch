@@ -52,6 +52,22 @@ build:gnome11:
   tags:
     - gnome11
   parallel: 1
+build:kde11:
+  stage: build
+  script:
+    - export QT_PLUGIN_PATH=/usr/lib/qt6/plugins/platforms/
+    - echo "Compiling the code..."
+    - git clean -ffdx
+    - mkdir -p build
+    - git status
+    - parent_dir="$(dirname "$PWD")"
+    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DCMAKE_BUILD_TYPE=Debug
+    - cmake --build build
+    - echo "Compile complete."
+  needs: []
+  tags:
+    - kde_p11
+  parallel: 1
 unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
   script:    
