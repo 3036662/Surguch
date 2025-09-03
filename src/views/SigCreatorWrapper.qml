@@ -17,7 +17,8 @@ Item {
         }
     }
 
-    function saveLastAimSize(location) {        
+    function saveLastAimSize(location) {
+        //console.warn(JSON.stringify(location))
         private_data.lastLocation = location
     }
 
@@ -120,6 +121,20 @@ Item {
     Item {
         id: private_data
         property var lastLocation
+
+        Component.onCompleted: {
+            // initial default location if no PDF file is open
+            let location_data = {
+                "page_index": 0,
+                "page_width": 1005,
+                "page_height": 1300,
+                "stamp_x": 0,
+                "stamp_y": 0,
+                "stamp_width": 413,
+                "stamp_height": 164
+            }
+            private_data.lastLocation=location_data;
+        }
     }
 
     SignatureCreator {
@@ -132,7 +147,7 @@ Item {
                     return
                 }
                 let params = root.gatherParams(location_data, path)
-                console.warn("[debug resize]" + JSON.stringify(params))
+                //console.warn("[debug resize]" + JSON.stringify(params))
                 sigCreator.createSignature(params)
             } catch (e) {
                 console.warn("signDoc" + e)

@@ -30,7 +30,7 @@ Item {
                                                         profile_data,
                                                         stamp_json)
             private_data.processing = true
-            console.warn(JSON.stringify(params))
+            //console.warn(JSON.stringify(params))
             stampPreview.createImage(params)
         } catch (e) {
             console.warn("[createPreview] error:" + e)
