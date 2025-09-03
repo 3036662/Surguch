@@ -73,8 +73,9 @@ QSGNode *PreviewRender::updatePaintNode(
     }
     const auto target_width_qml = max_width_ * scale_fact;
     const auto img_tmp = result_->image_->scaled(
-        result_->image_->width() * scale_fact,
-        result_->image_->height() * scale_fact, Qt::KeepAspectRatio);
+        static_cast<int>(result_->image_->width() * scale_fact),
+        static_cast<int>(result_->image_->height() * scale_fact),
+        Qt::KeepAspectRatio);
     QSGTexture *texture = window()->createTextureFromImage(img_tmp);
     setWidth(target_width_qml);
     setHeight(target_height_qml);
