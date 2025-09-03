@@ -10,7 +10,7 @@ Source:  %name-%version.tar
 Group: Office
 
 BuildRequires: gcc-c++ cmake ninja-build
-BuildRequires: libaltcsp-devel libcsppdf-devel >= 0.3-alt1
+BuildRequires: libaltcsp-devel libcsppdf-devel >= 0.3.2-alt2
 BuildRequires: libmupdf-devel
 BuildRequires:  qt6-base-devel qt6-declarative-devel rpm-macros-qt6 qt6-declarative qt6-svg-devel qt6-svg qt6-tools
 
@@ -45,9 +45,11 @@ Fixes (Closes: #54387, #54370, #55451):
   + Aim-rectangle size for custom stamps.
   + The scroll bar that overlaps the buttons.
   + The flattening distortion of the rubber stamp preview.
+  * The flattening distortion of the signature stamp.
   + The position of the rubber stamp preview image.
   + The position of the signature stamp preview image.
   + Tranlations update.
+  + Multiple UI fixes for different desktop environments.
 
 * Thu Jul 24 2025 Oleg Proskurin <proskur@altlinux.org> 0.3.1-alt1
 - Fix saving file to itself.
