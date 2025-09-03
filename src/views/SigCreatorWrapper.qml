@@ -2,7 +2,7 @@ import QtQuick
 import alt.pdfcsp.signatureCreator
 
 Item {
-    id:root
+    id: root
 
     // estimate the resulting stamp size
     function resizeAim(location_data) {
@@ -10,14 +10,103 @@ Item {
             if (typeof (location_data) == "undefined") {
                 return
             }
-            let params = sigCreator.gatherParams(location_data)
+            let params = gatherParams(location_data)
             sigCreator.estimateStampResizeFactor(params)
         } catch (e) {
             console.warn("resizeAim" + e)
         }
     }
 
+    function saveLastAimSize(location) {
+        //console.warn(JSON.stringify(location))
+        private_data.lastLocation = location
+    }
 
+
+    // common function to gather parameters used in resizeAim,signDoc and StampPreview::createPreview
+
+    /* When called from the resizeAim function, it receives only location_data.
+     *
+     * When called from the signDoc function, it receives only location_data and a path to the file to sign.
+     *
+     * When called from the createPreview function of the StampPreview object,
+     * it receives no location data and no path, only the custom_profile_data and custom_stamp_json.
+     * In this case the location data will be copied from private_data.lastLocation.
+     */
+    function gatherParams(location_data, path, custom_profile_data, custom_stamp_json) {
+        let curr_profile = {}
+        let cert_array = {}
+        if (!custom_profile_data) {
+            curr_profile = JSON.parse(header.getCurrentProfileValue())
+        } else {
+            curr_profile = JSON.parse(custom_profile_data)
+        }
+        cert_array = JSON.parse(profilesModel.getUserCertsJSON())
+        if (!location_data) {
+            location_data = private_data.lastLocation
+        }
+        let cert_index = cert_array.findIndex(cert => {
+                                                  return curr_profile.cert_serial === cert.serial
+                                              })
+        if (cert_index === -1) {
+            errorMessageDialog.text = qsTr(
+                        "Certificate not found, looks like it was deleted.﻿")
+            errorMessageDialog.open()
+            throw new Error('Certificate data not found')
+        }
+        let stamps_json
+        let user_stamp
+        if (!custom_stamp_json) {
+            stamps_json = JSON.parse(profilesModel.getUserStampsJSON())
+            user_stamp = stamps_json.find(stamp => {
+                                              return curr_profile.stamp_type === stamp.title
+                                          })
+        } else {
+            // TODO(Oleg) why R G B?
+            user_stamp = custom_stamp_json
+            user_stamp.R = custom_stamp_json.border_color_red
+            user_stamp.G = custom_stamp_json.border_color_green
+            user_stamp.B = custom_stamp_json.border_color_blue
+            user_stamp.transparent=custom_stamp_json.bg_transparent
+        }
+
+        // gather all information needed to create a signature visual representation
+        let params = {
+            "page_index": location_data.page_index,
+            "page_width": location_data.page_width,
+            "page_height": location_data.page_height,
+            "stamp_x": location_data.stamp_x,
+            "stamp_y": location_data.stamp_y,
+            "stamp_width": location_data.stamp_width,
+            "stamp_height": location_data.stamp_height,
+            "logo_path": curr_profile.logo_path,
+            "config_path": profilesModel.getConfigPath(),
+            "cert_serial": curr_profile.cert_serial,
+            "cert_serial_prefix": qsTr("Certificate: "),
+            "cert_subject": cert_array[cert_index].subject_common_name,
+            "cert_subject_prefix": qsTr("Subject: "),
+            "cert_time_validity": qsTr("Vaildity: ")
+                                  + cert_array[cert_index].not_before_readable + qsTr(
+                " till ") + cert_array[cert_index].not_after_readable,
+            "stamp_title": qsTr("THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE"),
+            "stamp_type": curr_profile.stamp_type,
+            "text_color_red": user_stamp.R,
+            "text_color_green": user_stamp.G,
+            "text_color_blue": user_stamp.B,
+            "border_color_red": user_stamp.R,
+            "border_color_green": user_stamp.G,
+            "border_color_blue": user_stamp.B,
+            "border_width": user_stamp.border_width,
+            "border_radius": user_stamp.border_radius,
+            "bg_transparent": user_stamp.transparent,
+            "bg_opacity": 1,
+            "cades_type": curr_profile.CADES_format,
+            "tsp_url": curr_profile.tsp_url,
+            "file_to_sign_path": path
+        }
+        //console.warn(JSON.stringify(params))
+        return params
+    }
 
     Component.onCompleted: {
         // sign creation finished
@@ -29,65 +118,27 @@ Item {
                     pdfListView.updateStampResizeFactor)
     }
 
+    Item {
+        id: private_data
+        property var lastLocation
+
+        Component.onCompleted: {
+            // initial default location if no PDF file is open
+            let location_data = {
+                "page_index": 0,
+                "page_width": 1005,
+                "page_height": 1300,
+                "stamp_x": 0,
+                "stamp_y": 0,
+                "stamp_width": 413,
+                "stamp_height": 164
+            }
+            private_data.lastLocation=location_data;
+        }
+    }
+
     SignatureCreator {
         id: sigCreator
-
-        // common function to gather parameters used in resizeAim and signDoc
-        function gatherParams(location_data, path) {
-            let curr_profile = JSON.parse(header.getCurrentProfileValue())
-            let cert_array = JSON.parse(profilesModel.getUserCertsJSON())
-            // console.warn(JSON.stringify(rightSideBar.edit_profile.cert_array));
-            let cert_index = cert_array.findIndex(cert => {
-                                                      return curr_profile.cert_serial
-                                                      === cert.serial
-                                                  })
-            if (cert_index === -1) {
-                errorMessageDialog.text = qsTr(
-                            "Certificate not found, looks like it was deleted.﻿")
-                errorMessageDialog.open()
-                throw new Error('Certificate data not found')
-            }
-            let stamps_json = JSON.parse(profilesModel.getUserStampsJSON())
-            let user_stamp = stamps_json.find(stamp => {
-                                                  return curr_profile.stamp_type === stamp.title
-                                              })
-            // gather all information needed to create a signature visual representation
-            let params = {
-                "page_index": location_data.page_index,
-                "page_width": location_data.page_width,
-                "page_height": location_data.page_height,
-                "stamp_x": location_data.stamp_x,
-                "stamp_y": location_data.stamp_y,
-                "stamp_width": location_data.stamp_width,
-                "stamp_height": location_data.stamp_height,
-                "logo_path": curr_profile.logo_path,
-                "config_path": profilesModel.getConfigPath(),
-                "cert_serial": curr_profile.cert_serial,
-                "cert_serial_prefix": qsTr("Certificate: "),
-                "cert_subject": cert_array[cert_index].subject_common_name,
-                "cert_subject_prefix": qsTr("Subject: "),
-                "cert_time_validity": qsTr("Vaildity: ")
-                                      + cert_array[cert_index].not_before_readable + qsTr(
-                    " till ") + cert_array[cert_index].not_after_readable,
-                "stamp_title": qsTr("THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE"),
-                "stamp_type": curr_profile.stamp_type,
-                "text_color_red": user_stamp.R,
-                "text_color_green": user_stamp.G,
-                "text_color_blue": user_stamp.B,
-                "border_color_red": user_stamp.R,
-                "border_color_green": user_stamp.G,
-                "border_color_blue": user_stamp.B,
-                "border_width": user_stamp.border_width,
-                "border_radius": user_stamp.border_radius,
-                "bg_transparent": user_stamp.transparent,
-                "bg_opacity": 1,
-                "cades_type": curr_profile.CADES_format,
-                "tsp_url": curr_profile.tsp_url,
-                "file_to_sign_path": path
-            }
-            //console.warn(JSON.stringify(params))
-            return params
-        }
 
         // sign the document
         function signDoc(location_data, path) {
@@ -95,7 +146,8 @@ Item {
                 if (typeof (location_data) == "undefined") {
                     return
                 }
-                let params = sigCreator.gatherParams(location_data, path)
+                let params = root.gatherParams(location_data, path)
+                //console.warn("[debug resize]" + JSON.stringify(params))
                 sigCreator.createSignature(params)
             } catch (e) {
                 console.warn("signDoc" + e)

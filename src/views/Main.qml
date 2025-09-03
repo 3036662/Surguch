@@ -296,6 +296,8 @@ ApplicationWindow {
         })
         // update AimSize when profile was edited
         rightSideBar.profileSaved.connect(pdfListView.forceAimResize)
+        // update AimSize when stamp was edited
+        stampEditor.stampSaved.connect(pdfListView.forceAimResize)
 
         // set themes
         StyleSheet.state = themeStyle
@@ -304,7 +306,6 @@ ApplicationWindow {
 
     // ---------------------------------------------
     // helper dialogs
-
     StampEditor {
         id: stampEditor
     }
@@ -314,7 +315,6 @@ ApplicationWindow {
     InfoDialog {
         id: appInfoDialog
     }
-
 
     // Info dialog in center of window
     Dialog {
@@ -379,7 +379,7 @@ ApplicationWindow {
     }
 
     onHeightChanged: {
-        if (height <= 600) {
+        if (height <= 770) {
             StyleSheet.window_size_y = "small_height"
         } else {
             StyleSheet.window_size_y = "normal"

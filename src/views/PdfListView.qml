@@ -429,7 +429,7 @@ ListView {
         let pos = preservePosition()
 
         model.redrawAll()
-        console.warn("QML Total needles:" + total_needles)
+        //console.warn("QML Total needles:" + total_needles)
         if (total_needles > 0) {
             pos.index = first_needle_page_index
             pos = updateRatioWithRoration(pos, x_rel, y_rel)
@@ -648,43 +648,54 @@ ListView {
             widthGoal: zoomAuto ? root.width : 0
             currScreenDpi: pdfModel.screenDpi
 
+            property bool first_run: true
+
+            function getLocation() {
+                let location_data = {
+                    "page_index": index,
+                    "page_width": width,
+                    "page_height": height,
+                    "stamp_x": cross.x,
+                    "stamp_y": cross.y,
+                    "stamp_width": cross.width,
+                    "stamp_height": cross.height
+                }
+                return location_data
+            }
+
             function updateCrossSize() {
-                if (!root.aimIsAlreadyResized && pdfPage.width > 0
-                        && pdfPage.height > 0) {
-                    cross.width = pdfPage.width
-                            < pdfPage.height ? Math.round(
-                                                   pdfPage.width * 0.41) : Math.round(
+                if (!(pdfPage.width > 0 && pdfPage.height > 0)) {
+                    return
+                }
+                const portrait = pdfPage.width < pdfPage.height
+                // hardcoded signature stamp ratio
+                const stamp_ratio_wh = 2.61
+                const basic_width = portrait ? Math.ceil(
+                                                   pdfPage.width * 0.41) : Math.ceil(
                                                    pdfPage.width * 0.3)
-                    if (pdfPage.height != 0) {
-                        cross.height = pdfPage.width
-                                < pdfPage.height ? Math.round(
-                                                       pdfPage.height / 9) : Math.round(
-                                                       pdfPage.height / 7)
-                    }
+                const basic_height = Math.ceil(basic_width / stamp_ratio_wh)
+
+                // if not resized yet
+                if (!root.aimIsAlreadyResized) {
+                    cross.width = basic_width
+                    cross.height = basic_height
                     // run background estimate of stamp size
                     if (!aimResizeInProgress) {
-                        let location_data = {
-                            "page_index": index,
-                            "page_width": width,
-                            "page_height": height,
-                            "stamp_x": cross.x,
-                            "stamp_y": cross.y,
-                            "stamp_width": cross.width,
-                            "stamp_height": cross.height
-                        }
+                        let location_data = getLocation()
                         aimResizeInProgress = true
                         sigCreatorWrapper.resizeAim(location_data)
+                        // initialize the last aim size
+                        if (first_run) {
+                            sigCreatorWrapper.saveLastAimSize(getLocation())
+                            first_run = false
+                        }
                     }
                 } else {
                     // if the aim is already resized - update with resize factor
-                    cross.width = pdfPage.width
-                            < pdfPage.height ? Math.round(
-                                                   pdfPage.width * 0.41 * aimResizeX) : Math.round(
-                                                   pdfPage.width / 3 * aimResizeX)
-                    cross.height = pdfPage.width
-                            < pdfPage.height ? Math.round(
-                                                   pdfPage.height / 9 * aimResizeY) : Math.round(
-                                                   pdfPage.height / 7 * aimResizeY)
+                    cross.width = basic_width * aimResizeX
+                    cross.height = basic_height * aimResizeY
+                    let location = getLocation()
+                    sigCreatorWrapper.saveLastAimSize(location)
                 }
             }
 
@@ -693,8 +704,8 @@ ListView {
                     let t_data = JSON.parse(tagData)
                     tagCross.width = t_data.tag_width * pdfPage.width / 100
                     tagCross.height = tagCross.width / root.ratio
-                    console.warn("tag width = " + tagCross.width)
-                    console.warn("tag height = " + tagCross.height)
+                    //console.warn("tag width = " + tagCross.width)
+                    //console.warn("tag height = " + tagCross.height)
                 }
             }
 
@@ -844,15 +855,7 @@ ListView {
 
                                if (root.signMode && !root.signInProgress
                                    && cross.valid_position) {
-                                   let location_data = {
-                                       "page_index": index,
-                                       "page_width": width,
-                                       "page_height": height,
-                                       "stamp_x": cross.x,
-                                       "stamp_y": cross.y,
-                                       "stamp_width": cross.width,
-                                       "stamp_height": cross.height
-                                   }
+                                   let location_data = pdfPage.getLocation()
                                    cross.visible = false
                                    cursorShape = Qt.BusyCursor
                                    root.proceedSigning(location_data)

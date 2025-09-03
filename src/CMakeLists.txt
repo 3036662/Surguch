@@ -83,6 +83,7 @@ ELSE ()
             VERSION 1.0
             QML_FILES views/Main.qml
             QML_FILES views/header_bar_components/TopBarButton.qml
+            QML_FILES views/header_bar_components/SubBarButton.qml
             QML_FILES views/Header.qml
             QML_FILES views/header_bar_components/HeaderToolSeparator.qml
             QML_FILES views/HeaderSubBar.qml

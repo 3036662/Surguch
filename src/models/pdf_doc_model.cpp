@@ -45,7 +45,7 @@ PdfDocModel::PdfDocModel(QObject *parent)
         return;
     }
     fz_try(fzctx_) {
-        fz_set_aa_level(fzctx_, 0);
+        fz_set_aa_level(fzctx_, 8);
         fz_register_document_handlers(fzctx_);
     }
     fz_catch(fzctx_) { fz_report_error(fzctx_); }
@@ -130,7 +130,7 @@ void PdfDocModel::setSource(const QString &path) {
     processFileDelete();
     fzctx_ = fz_new_context(nullptr, nullptr, 500000000);
     fz_try(fzctx_) {
-        fz_set_aa_level(fzctx_, 0);
+        fz_set_aa_level(fzctx_, 8);
         fz_register_document_handlers(fzctx_);
     }
     fz_catch(fzctx_) { fz_report_error(fzctx_); }

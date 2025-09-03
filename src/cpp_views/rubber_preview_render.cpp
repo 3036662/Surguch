@@ -49,8 +49,9 @@ QSGNode *RubberPreviewRender::updatePaintNode(
         qWarning()
             << "RubberPreviewRender: updateNode() call with an empty result";
         // Create an empty image if it does not exist.
-        if (!blank_image_ || blank_image_->width() != requested_width_ ||
-            blank_image_->height() != requested_height_) {
+        if (!blank_image_ ||
+            blank_image_->width() != static_cast<int>(requested_width_) ||
+            blank_image_->height() != static_cast<int>(requested_height_)) {
             blank_image_ = std::make_unique<QImage>(
                 requested_width_, requested_height_, QImage::Format_RGB888);
             blank_image_->fill(Qt::white);
@@ -82,10 +83,11 @@ QSGNode *RubberPreviewRender::updatePaintNode(
         if (target_height > requested_height_) {
             scale_fact = requested_height_ / target_height;
         }
-        QSGTexture *texture = window()->createTextureFromImage(
-            (*result_->image_)
-                .scaled(requested_width_ * scale_fact,
-                        target_height * scale_fact, Qt::KeepAspectRatio));
+        const auto img_tmp = result_->image_->scaled(
+            static_cast<int>(result_->image_->width() * scale_fact),
+            static_cast<int>(result_->image_->height() * scale_fact),
+            Qt::KeepAspectRatio);
+        QSGTexture *texture = window()->createTextureFromImage(img_tmp);
         setWidth(requested_width_ * scale_fact);
         setHeight(target_height * scale_fact);
         if (texture != nullptr) {
@@ -106,7 +108,8 @@ QSGNode *RubberPreviewRender::updatePaintNode(
     }
     texture = window()->createTextureFromImage(
         (*result_->image_)
-            .scaled(target_width * scale_fact, requested_height_ * scale_fact,
+            .scaled(static_cast<int>(result_->image_->width() * scale_fact),
+                    static_cast<int>(result_->image_->height() * scale_fact),
                     Qt::KeepAspectRatio));
 
     setHeight(requested_height_ * scale_fact);
@@ -187,7 +190,7 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
     }
     if (qvparams.contains("font_family")) {
         params_.font_family = qvparams.value("font_family").toString();
-        int default_weight = requested_width_;
+        int default_weight = static_cast<int>(requested_width_);
         int tmp_weight = 0;
         const QStringList styles = QFontDatabase::styles(params_.font_family);
         qsizetype index_regular =
@@ -267,6 +270,6 @@ core::gui::SharedRubberParamWrapper RubberPreviewRender::createParams() const {
     pod_params.font_weight = params_.font_weight;
     pod_params.bg_transparent = params_.bg_transparent;
     pod_params.bg_opacity = params_.bg_opacity;
-    pod_params.annotation_width = requested_width_;
+    pod_params.annotation_width = static_cast<uint64_t>(requested_width_);
     return params_wrapper;
 }

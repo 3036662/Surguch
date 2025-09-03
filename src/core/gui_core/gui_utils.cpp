@@ -91,15 +91,17 @@ SignParams preparePreviewParams(const QVariantMap &qvparams) {
     if (qvparams.contains("stamp_y")) {
         params_.stamp_y = qvparams.value("stamp_y").toReal();
     }
-    if (qvparams.contains("stamp_width")) {
-        // params_.stamp_width = qvparams.value("stamp_width").toReal();
-        // we only need height/width ration so hardcode params
-        params_.stamp_width = 900;
+
+    /*
+     These parameters can be ignored by the CSP library. They are used only for
+     stamp embedding. Image generation will be performed with the default
+     resolution of 900x344.Though the resulting height may or will differ.
+    */
+    if (qvparams.contains("stamp_height") && qvparams.contains("stamp_width")) {
+        params_.stamp_width = qvparams.value("stamp_width").toReal();
+        params_.stamp_height = qvparams.value("stamp_height").toReal();
     }
-    if (qvparams.contains("stamp_height")) {
-        // params_.stamp_height = qvparams.value("stamp_height").toReal();
-        params_.stamp_height = 300;
-    }
+
     if (qvparams.contains("logo_path")) {
         params_.logo_path = qvparams.value("logo_path").toUrl().toLocalFile();
         if (params_.logo_path.isEmpty()) {
@@ -438,10 +440,10 @@ std::vector<pdfcsp::pdf::CAnnotParams> createAnnotParams(
         [&cparams](const std::shared_ptr<RubberStamp> &param) {
             cparams.emplace_back(pdfcsp::pdf::CAnnotParams{
                 param->page_index, param->qml_width, param->qml_height,
-                param->position_x, param->position_y, param->real_stamp_qml_width,
-                param->stamp_height, param->res->data_->img,
-                param->res->data_->img_size, param->res->data_->img_mask,
-                param->res->data_->img_mask_size,
+                param->position_x, param->position_y,
+                param->real_stamp_qml_width, param->stamp_height,
+                param->res->data_->img, param->res->data_->img_size,
+                param->res->data_->img_mask, param->res->data_->img_mask_size,
                 param->res->data_->resolution_x,
                 param->res->data_->resolution_y,
                 param->link.empty() ? nullptr : param->link.data()});

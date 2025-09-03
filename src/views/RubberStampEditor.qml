@@ -13,16 +13,19 @@ Dialog {
     id: root
 
     // these fields are set from RubberStampListEntry.qml
-    property var stamp_data // stamp data string;
-    property var rubber_model // reference to cpp model;
+    property var stamp_data
+    // stamp data string;
+    property var rubber_model
+    // reference to cpp model;
     property int stamp_id: -1
     property bool edit_state: true
 
     // private properties
-    Item{
-     id: private_data
-     visible:false
-     property var stamp_json  // stamp data JSON
+    Item {
+        id: private_data
+        visible: false
+        property var stamp_json
+        // stamp data JSON
     }
 
     // fill form with data from JSON
@@ -95,7 +98,8 @@ Dialog {
 
         clip: true
         ScrollBar.horizontal.policy: ScrollBar.AsNeeded
-        ScrollBar.vertical.policy: ScrollBar.AsNeeded
+        ScrollBar.vertical.policy: StyleSheet.window_size_y
+                                   === "small_height" ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
 
         topPadding: StyleSheet.defaultPaddingV
         bottomPadding: StyleSheet.defaultPaddingV
@@ -159,7 +163,8 @@ Dialog {
                         private_data.stamp_json["stamp_link"] = prependInternetProtocol(
                                     previewColumn.linkNameText)
                         private_data.stamp_json["tag_width"] = previewColumn.tagWidth
-                        const new_stamp_data = JSON.stringify(private_data.stamp_json)
+                        const new_stamp_data = JSON.stringify(
+                                                 private_data.stamp_json)
                         console.warn(rubber_model.saveRubberStamps(
                                          new_stamp_data))
                         rubberStampEditor.visible = false

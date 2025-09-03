@@ -17,42 +17,42 @@ ColumnLayout {
     signal settingChanged
     signal openFileSelectClicked
 
-
     // if true settingChanged signal will not be triggered
     // prevents multiple event triggers when many settings are changed simultaneously in one step.
     property bool ignore_changes: true
 
-    function update(stamp_json){
-        ignore_changes=true;
+    function update(stamp_json) {
+        ignore_changes = true
         typeSwitch.checked = !stamp_json.create_from_image
         logoPath.text = stamp_json.img_path
         rubberStampTextArea.text = stamp_json.stamp_text
         fontName.currentIndex = fontName.find(stamp_json.font_family)
         transparencySwitch.checked = stamp_json.bg_transparent
         borderSettings.border_width = stamp_json.border_width
-        borderSettings.radius= stamp_json.border_radius
+        borderSettings.radius = stamp_json.border_radius
         rgbColorPicker.r = stamp_json.R
         rgbColorPicker.g = stamp_json.G
         rgbColorPicker.b = stamp_json.B
-        ignore_changes=false;
+        ignore_changes = false
     }
 
-    function reset(){
-        ignore_changes=true;
+    function reset() {
+        ignore_changes = true
         typeSwitch.checked = true
         logoPath.text = ""
         rubberStampTextArea.text = qsTr("Surguch")
-        borderSettings.radius= 50
+        borderSettings.radius = 50
         borderSettings.border_width = 7
         transparencySwitch.checked = false
         rgbColorPicker.r = 50
         rgbColorPicker.g = 62
         rgbColorPicker.b = 168
-        ignore_changes=false;
+        ignore_changes = false
     }
 
-
     // TODO(Oleg) Any ideas why:
+
+
     /*
       a) in some cases, you need
          annotation_text,in other cases stamp_text
@@ -61,8 +61,7 @@ ColumnLayout {
           "R","G","B"
           in other casees "border_color_red","border_color_green","bg_color_blue"
     */
-
-    function getParams(){
+    function getParams() {
         let rubber_stamp_params = {
             "create_from_image": typeSwitch.checked ? 0 : 1,
             "img_path": logoPath.text,
@@ -81,16 +80,16 @@ ColumnLayout {
             "annotation_text": rubberStampTextArea.text,
             "stamp_text": rubberStampTextArea.text,
             "bg_transparent": transparencySwitch.checked ? 1 : 0,
-            "R": rgbColorPicker.b,
+            "R": rgbColorPicker.r,
             "G": rgbColorPicker.g,
             "B": rgbColorPicker.b
         }
-        return rubber_stamp_params;
+        return rubber_stamp_params
     }
 
-    function setLogo(path){
-        ignore_changes=false;
-        logoPath.text=path;
+    function setLogo(path) {
+        ignore_changes = false
+        logoPath.text = path
     }
 
     // switch "generate from text"
@@ -201,9 +200,24 @@ ColumnLayout {
             }
         }
         ScrollBar.vertical: ScrollBar {
-            Layout.fillWidth: true
             anchors.right: parent.right
-            policy: (rubberStampTextArea.lineCount > 5) ? ScrollBar.AsNeeded : ScrollBar.AlwaysOff
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.rightMargin: 10
+            width: 8
+            policy: (rubberStampTextArea.lineCount > 5) ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
+
+            contentItem: Rectangle {
+                implicitWidth: 6
+                radius: width / 2
+                color: StyleSheet.slider_fill_color
+                border.width: 2
+                border.color: StyleSheet.slider_border_color
+            }
+
+            background: Rectangle {
+                color: "transparent"
+            }
         }
     }
 

@@ -109,15 +109,12 @@ ColumnLayout {
     RowLayout {
         id: toolbar_subpanel
         spacing: 5
-        ToolButton {
-            flat: true
-            display: AbstractButton.IconOnly
+        HeaderBarComponents.SubBarButton {
             icon.source: StyleSheet.book_icon
-            icon.width: 20
-            icon.height: 20
             leftInset: StyleSheet.window_size_x === "normal" ? 0 : 7
             leftPadding: StyleSheet.window_size_x === "normal" ? 40 : 12
             rightPadding: StyleSheet.window_size_x === "normal" ? 40 : 5
+            text: qsTr("Miniatures")
 
             onClicked: {
                 showPreviews()
@@ -126,14 +123,11 @@ ColumnLayout {
 
         HeaderBarComponents.HeaderToolSeparator {}
 
-        ToolButton {
-            flat: true
-            display: AbstractButton.IconOnly
+        HeaderBarComponents.SubBarButton {
             icon.source: StyleSheet.pen_tool_icon
-            icon.width: 20
-            icon.height: 20
             leftPadding: StyleSheet.window_size_x === "normal" ? 40 : 5
             rightPadding: StyleSheet.window_size_x === "normal" ? 40 : 5
+            text: qsTr("Signatures")
 
             onClicked: {
                 showCerts()
@@ -142,14 +136,9 @@ ColumnLayout {
 
         HeaderBarComponents.HeaderToolSeparator {}
 
-        ToolButton {
-            flat: true
-            display: AbstractButton.IconOnly
+        HeaderBarComponents.SubBarButton {
             icon.source: StyleSheet.printer_icon
-            icon.width: 20
-            icon.height: 20
-            leftPadding: 5
-            rightPadding: 5
+            text: qsTr("Print")
 
             onClicked: {
                 printer.print(pdfListView.source, pdfListView.count,
@@ -159,14 +148,9 @@ ColumnLayout {
 
         HeaderBarComponents.HeaderToolSeparator {}
 
-        ToolButton {
-            flat: true
-            display: AbstractButton.IconOnly
+        HeaderBarComponents.SubBarButton {
             icon.source: StyleSheet.arrow_down_icon
-            icon.width: 20
-            icon.height: 20
-            leftPadding: 5
-            rightPadding: 5
+            text: qsTr("Scroll down")
 
             onClicked: {
                 if (page_number.currPage < pageNumberInputValidator.top) {
@@ -175,15 +159,9 @@ ColumnLayout {
             }
         }
 
-        ToolButton {
-
-            flat: true
-            display: AbstractButton.IconOnly
+        HeaderBarComponents.SubBarButton {
             icon.source: StyleSheet.arrow_up_icon
-            icon.width: 20
-            icon.height: 20
-            leftPadding: 5
-            rightPadding: 5
+            text: qsTr("Scroll up")
 
             onClicked: {
                 if (page_number.currPage > pageNumberInputValidator.bottom) {
@@ -226,28 +204,18 @@ ColumnLayout {
 
         HeaderBarComponents.HeaderToolSeparator {}
 
-        ToolButton {
-            flat: true
-            display: AbstractButton.IconOnly
+        HeaderBarComponents.SubBarButton {
             icon.source: StyleSheet.arrow_back_icon
-            icon.width: 20
-            icon.height: 20
-            leftPadding: 5
-            rightPadding: 5
+            text: qsTr("Rotate left")
 
             onClicked: {
                 rotateCounterClockWise()
             }
         }
 
-        ToolButton {
-            flat: true
-            display: AbstractButton.IconOnly
+        HeaderBarComponents.SubBarButton {
             icon.source: StyleSheet.arrow_forward_icon
-            icon.width: 20
-            icon.height: 20
-            leftPadding: 5
-            rightPadding: 5
+            text: qsTr("Rotate right")
 
             onClicked: {
                 rotateClockwise()
@@ -256,32 +224,22 @@ ColumnLayout {
 
         HeaderBarComponents.HeaderToolSeparator {}
 
-        ToolButton {
+        HeaderBarComponents.SubBarButton {
             id: zoomOutButton
             onClicked: {
                 zoomOutClicked()
             }
-            flat: true
-            display: AbstractButton.IconOnly
             icon.source: StyleSheet.minus_circle_icon
-            icon.width: 20
-            icon.height: 20
-            leftPadding: 5
-            rightPadding: 5
+            text: qsTr("Zoom out")
         }
 
-        ToolButton {
+        HeaderBarComponents.SubBarButton {
             id: zoomButton
             onClicked: {
                 zoomInClicked()
             }
-            flat: true
-            display: AbstractButton.IconOnly
             icon.source: StyleSheet.plus_circle_icon
-            icon.width: 20
-            icon.height: 20
-            leftPadding: 5
-            rightPadding: 5
+            text: qsTr("Zoom in")
         }
         Row {
             Rectangle {
@@ -334,17 +292,16 @@ ColumnLayout {
         // rubberStamps
         HeaderBarComponents.HeaderToolSeparator {}
 
-        ToolButton {
+        HeaderBarComponents.SubBarButton {
             id: rubberStampPutButton
 
             property var tag_data
 
             enabled: !!tag_data
-            flat: true
-            icon.width: 20
-            icon.height: 20
-            leftPadding: 5
+            rightPadding: 0
             icon.source: StyleSheet.tag_icon
+            text: qsTr("Mark")
+
             onClicked: {
                 //console.debug("create tag")
                 header.quitSignMode()
@@ -370,16 +327,17 @@ ColumnLayout {
                             event.accepted = false
                         }
 
-        ToolButton {
+        HeaderBarComponents.SubBarButton {
             id: rubberStampDialogButton
 
-            flat: true
-            icon.width: 20
+            implicitWidth: 30
             icon.height: 10
-            rightPadding: 5
+            leftPadding: 0
             topPadding: 5
             bottomPadding: 5
             icon.source: StyleSheet.chevron_down
+            text: qsTr("Choose mark")
+
             onClicked: {
                 header.quitSignMode()
                 if (rubberStampDialog.visible) {
@@ -392,15 +350,11 @@ ColumnLayout {
 
         // search
         HeaderBarComponents.HeaderToolSeparator {}
-        ToolButton {
+        HeaderBarComponents.SubBarButton {
             id: searchButton
             enabled: !pdfListView.signMode && !pdfListView.tagMode
-            flat: true
             icon.source: StyleSheet.search_icon
-            icon.width: 20
-            icon.height: 20
-            leftPadding: 5
-            rightPadding: 5
+            text: qsTr("Search")
             onClicked: {
                 searchDialog.open()
             }
