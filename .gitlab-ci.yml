@@ -13,13 +13,12 @@ build:c10f2:
     - mkdir -p build
     - git status
     - parent_dir="$(dirname "$PWD")"
-    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DCMAKE_BUILD_TYPE=Debug
+    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DCMAKE_BUILD_TYPE=Debug -G Ninja
     - cmake --build build
     - echo "Compile complete."
   needs: []
   tags:
     - C10f2
-  parallel: 1
 build:edu11:
   stage: build
   script:
@@ -29,7 +28,7 @@ build:edu11:
     - mkdir -p build
     - git status
     - parent_dir="$(dirname "$PWD")"
-    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DCMAKE_BUILD_TYPE=Debug
+    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DCMAKE_BUILD_TYPE=Debug -G Ninja
     - cmake --build build
     - echo "Compile complete."
   needs: []
@@ -45,7 +44,7 @@ build:gnome11:
     - mkdir -p build
     - git status
     - parent_dir="$(dirname "$PWD")"
-    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DCMAKE_BUILD_TYPE=Debug
+    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DCMAKE_BUILD_TYPE=Debug -G Ninja
     - cmake --build build
     - echo "Compile complete."
   needs: []
@@ -61,7 +60,7 @@ build:kde11:
     - mkdir -p build
     - git status
     - parent_dir="$(dirname "$PWD")"
-    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DCMAKE_BUILD_TYPE=Debug
+    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DCMAKE_BUILD_TYPE=Debug -G Ninja
     - cmake --build build
     - echo "Compile complete."
   needs: []
@@ -82,4 +81,3 @@ unit-test-job:   # This job runs in the test stage.
   needs: ["build:c10f2"]
   tags:
     - C10f2
-  parallel: 1
