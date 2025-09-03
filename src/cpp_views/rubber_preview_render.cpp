@@ -108,8 +108,8 @@ QSGNode *RubberPreviewRender::updatePaintNode(
     }
     texture = window()->createTextureFromImage(
         (*result_->image_)
-            .scaled(static_cast<int>(target_width * scale_fact),
-                    static_cast<int>(requested_height_ * scale_fact),
+            .scaled(static_cast<int>(result_->image_->width() * scale_fact),
+                    static_cast<int>(result_->image_->height() * scale_fact),
                     Qt::KeepAspectRatio));
 
     setHeight(requested_height_ * scale_fact);
