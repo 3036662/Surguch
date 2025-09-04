@@ -14,6 +14,7 @@ Item {
             sigCreator.estimateStampResizeFactor(params)
         } catch (e) {
             console.warn("resizeAim" + e)
+            throw e
         }
     }
 

@@ -48,6 +48,7 @@ ListView {
     property double aimResizeY: 1
     property bool aimIsAlreadyResized: false
     property bool aimResizeInProgress: false
+    property bool profileIsActivated: false
 
     signal pagesCountChanged(int count)
 
@@ -75,6 +76,8 @@ ListView {
     signal updateLSB(var source)
 
     signal updateHistory(int undo, int redo)
+
+    signal needCrossUpdate
 
     function proceedSigning(location_data) {
         //console.warn(pdfModel.getSource())
@@ -260,6 +263,7 @@ ListView {
         aimIsAlreadyResized = true
         aimResizeInProgress = false
         console.warn("Finished stamp size calculation")
+        needCrossUpdate()
     }
 
     function openTmpFile(file) {
@@ -366,7 +370,8 @@ ListView {
             }
         } else {
             lastSizeUsed = true
-            usedPageSize = rotated90 ? pdfListViewRoot.lastPageWidth : pdfListViewRoot.lastPageHeight
+            usedPageSize
+                    = rotated90 ? pdfListViewRoot.lastPageWidth : pdfListViewRoot.lastPageHeight
         }
 
         let zoomRatio = currZoom / pos.zoom_last
@@ -515,8 +520,9 @@ ListView {
 
     // this function will trigger a call to PDFPage.onAimResizeStatusChanged,
     // which will cause updateCrossSize to be called.
-    function forceAimResize() {    
+    function forceAimResize() {
         aimIsAlreadyResized = false
+        needCrossUpdate()
     }
 
     Layout.fillHeight: true
@@ -618,7 +624,8 @@ ListView {
         }
 
         onRootWidthBindChanged: {
-            delegateColumn.width = Math.max(pdfListViewRoot.width, pdfPage.width)
+            delegateColumn.width = Math.max(pdfListViewRoot.width,
+                                            pdfPage.width)
         }
 
         onWidthChanged: {
@@ -635,7 +642,8 @@ ListView {
             property int defaultWidth: pdfListViewRoot.pageWidth > 0
                                        && !sizeKnown ? pdfListViewRoot.pageWidth : pdfListViewRoot.width
             property int defaultHeight: pdfListViewRoot.pageHeight
-                                        && !sizeKnown ? pdfListViewRoot.pageHeight : defaultWidth * 1.42
+                                        && !sizeKnown ? pdfListViewRoot.pageHeight : defaultWidth
+                                                        * 1.42
 
             customRotation: pdfListViewRoot.delegateRotation
             anchors.horizontalCenter: parent.horizontalCenter
@@ -676,15 +684,22 @@ ListView {
                 const basic_height = Math.ceil(basic_width / stamp_ratio_wh)
 
                 // if not resized yet
-                if (!pdfListViewRoot.aimIsAlreadyResized) {
-                    console.warn()
+                if (!pdfListViewRoot.aimIsAlreadyResized) {                
                     cross.width = basic_width
-                    cross.height = basic_height            
+                    cross.height = basic_height
                     // run background estimate of stamp size
                     if (!aimResizeInProgress) {
                         let location_data = getLocation()
-                        aimResizeInProgress = true
-                        sigCreatorWrapper.resizeAim(location_data)
+                        if (pdfListViewRoot.profileIsActivated) {
+                            aimResizeInProgress = true
+                            try {
+                                sigCreatorWrapper.resizeAim(location_data)
+                            } catch (e) {
+                                aimResizeInProgress = false
+                                pdfListViewRoot.aimIsAlreadyResized = false
+                                console.warn("updateCrossSize:"+e)
+                            }
+                        }
                         // initialize the last aim size
                         if (first_run) {
                             sigCreatorWrapper.saveLastAimSize(getLocation())
@@ -717,7 +732,8 @@ ListView {
                 if (width > 0) {
                     lastPageWidth = width
                 }
-                delegateColumn.width = Math.max(pdfListViewRoot.width, pdfPage.width)
+                delegateColumn.width = Math.max(pdfListViewRoot.width,
+                                                pdfPage.width)
             }
 
             onZoomLastChanged: {
@@ -735,11 +751,6 @@ ListView {
                 }
             }
 
-            onAimResizeStatusChanged: {
-                updateCrossSize()
-                updateTagCrossSize()
-            }
-
             Component.onCompleted: {
                 setCtx(pdfModel.getCtx())
                 setDoc(pdfModel.getDoc())
@@ -749,9 +760,14 @@ ListView {
                                             model.display))
                 pdfPage.setRubberStamps(pdfModel.getRubberStampForPage(
                                             model.display))
-                if (width > 0 && pdfListViewRoot.hScrollPos > 0 && pdfListViewRoot.hScrollPos < 1) {
+                if (width > 0 && pdfListViewRoot.hScrollPos > 0
+                        && pdfListViewRoot.hScrollPos < 1) {
                     pdfListViewRoot.contentX = width * pdfListViewRoot.hScrollPos
                 }
+                pdfListViewRoot.needCrossUpdate.connect(function () {
+                    pdfPage.updateCrossSize()
+                    pdfPage.updateTagCrossSize()
+                })
             }
 
             MouseArea {
@@ -834,7 +850,8 @@ ListView {
             MouseArea {
                 id: aimMouseArea
 
-                enabled: pdfListViewRoot.signMode || pdfListViewRoot.signInProgress
+                enabled: pdfListViewRoot.signMode
+                         || pdfListViewRoot.signInProgress
                 anchors.fill: parent
                 hoverEnabled: true
                 acceptedButtons: Qt.RightButton | Qt.LeftButton
@@ -854,7 +871,8 @@ ListView {
                                    mouse.accepted = true
                                }
 
-                               if (pdfListViewRoot.signMode && !pdfListViewRoot.signInProgress
+                               if (pdfListViewRoot.signMode
+                                   && !pdfListViewRoot.signInProgress
                                    && cross.valid_position) {
                                    let location_data = pdfPage.getLocation()
                                    cross.visible = false
@@ -955,10 +973,12 @@ ListView {
 
                                            if (mouseY > startY) {
                                                tagCross.y = startY
-                                               tagCross.height = tagCross.width / pdfListViewRoot.ratio
+                                               tagCross.height = tagCross.width
+                                               / pdfListViewRoot.ratio
                                            } else {
                                                //tagCross.y = mouseY
-                                               tagCross.height = tagCross.width / pdfListViewRoot.ratio
+                                               tagCross.height = tagCross.width
+                                               / pdfListViewRoot.ratio
                                            }
                                            if (tagCross.x < 0
                                                || tagCross.x + tagCross.width > pdfPage.width
@@ -1064,7 +1084,7 @@ ListView {
                     let t_data = JSON.parse(tagData)
                     tagCross.width = t_data.tag_width * pdfPage.width / 100
                     tagCross.height = tagCross.width / calc_ratio
-                    pdfpdfListViewRoot.size_estimated = true
+                    pdfListViewRoot.size_estimated = true
                     console.debug("size ready height = " + tagCross.height)
                     console.debug("size ready width = " + tagCross.width)
                     console.debug("size ready = " + ratio)
