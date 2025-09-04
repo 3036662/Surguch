@@ -72,7 +72,7 @@ RowLayout {
             ) : fileDialog.open()
         }
 
-        TopBarButton {
+        HeaderBarComponents.TopBarButton {
             icon.source: StyleSheet.file_simple_icon
             text: qsTr("Show in folder")
             enabled: pdfListView.source.length > 0 && !pdfListView.sourceIsTmp

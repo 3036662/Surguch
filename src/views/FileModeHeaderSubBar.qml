@@ -3,6 +3,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import StyleSheet
 
+import "header_bar_components" as HeaderBarComponents
+
 ColumnLayout {
 
     property int sizeColumn: parent.width * 0.1 - 1
@@ -29,7 +31,7 @@ ColumnLayout {
             color: StyleSheet.font_color_extra
         }
 
-        HeaderToolSeparator {
+        HeaderBarComponents.HeaderToolSeparator {
         }
 
         Text {
@@ -40,7 +42,7 @@ ColumnLayout {
             color: StyleSheet.font_color_extra
         }
 
-        HeaderToolSeparator {
+        HeaderBarComponents.HeaderToolSeparator {
         }
 
         Text {
@@ -51,7 +53,7 @@ ColumnLayout {
             color: StyleSheet.font_color_extra
         }
 
-        HeaderToolSeparator {
+        HeaderBarComponents.HeaderToolSeparator {
         }
 
         Text {
@@ -62,7 +64,7 @@ ColumnLayout {
             color: StyleSheet.font_color_extra
         }
 
-        HeaderToolSeparator {
+        HeaderBarComponents.HeaderToolSeparator {
         }
 
         Text {
@@ -73,7 +75,7 @@ ColumnLayout {
             color: StyleSheet.font_color_extra
         }
 
-        HeaderToolSeparator {
+        HeaderBarComponents.HeaderToolSeparator {
         }
 
         ToolButton {
@@ -90,7 +92,7 @@ ColumnLayout {
             }
         }
 
-        HeaderToolSeparator {
+        HeaderBarComponents.HeaderToolSeparator {
         }
 
         Text {

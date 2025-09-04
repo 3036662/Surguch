@@ -5,11 +5,10 @@ import StyleSheet
 
 import "info_panel_components" as InfoPanelComponents
 
-
 Item {
     id: root
 
-    signal profileSaved;
+    signal profileSaved
 
     enum ShowState {
         Invisible,
@@ -67,15 +66,14 @@ Item {
         visible: showState == RightSideBar.ShowState.ProfileInfo
 
         onProfileSaved: {
-            root.profileSaved();
+            root.profileSaved()
         }
         onCloseClicked: {
             showState = RightSideBar.ShowState.Invisible
         }
-
     }
 
-    SignaturesList {
+    InfoPanelComponents.SignaturesList {
         id: rSigListView
         visible: showState == LeftSideBar.ShowState.Certs && sigCount > 0
     }
