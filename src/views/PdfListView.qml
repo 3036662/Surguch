@@ -5,7 +5,7 @@ import alt.pdfcsp.pdfModel
 import alt.pdfcsp.pdfRender
 
 ListView {
-    id: root
+    id: pdfListViewRoot
 
     property double hScrollPos: 0
     // --------
@@ -137,7 +137,7 @@ ListView {
         tryToGetFocus()
         if (zoomAuto) {
             let zoom_fact_goal = currentPage().zoomLast + step
-            if (zoom_fact_goal < root.maxZoom) {
+            if (zoom_fact_goal < pdfListViewRoot.maxZoom) {
                 zoomPageFact = zoom_fact_goal
                 zoomAuto = false
             }
@@ -304,7 +304,7 @@ ListView {
         let viewMidY = contentY + height / 2
         let viewMidX = width / 2
         let currPage = itemAtIndex(pageIndToPreserveWhenZoom)
-        let pageHeight = currPage ? currPage.height : root.lastPageHeight
+        let pageHeight = currPage ? currPage.height : pdfListViewRoot.lastPageHeight
         let pageLastZoom = currPage ? currPage.zoomLast : 1
         let pageYRatio = 1
         if (pageHeight > 0) {
@@ -366,7 +366,7 @@ ListView {
             }
         } else {
             lastSizeUsed = true
-            usedPageSize = rotated90 ? root.lastPageWidth : root.lastPageHeight
+            usedPageSize = rotated90 ? pdfListViewRoot.lastPageWidth : pdfListViewRoot.lastPageHeight
         }
 
         let zoomRatio = currZoom / pos.zoom_last
@@ -386,7 +386,7 @@ ListView {
                 targetYScroll *= zoomRatio
                 targetYScroll = 0
             } else {
-                targetYScroll -= root.height / 2
+                targetYScroll -= pdfListViewRoot.height / 2
             }
         }
         //console.warn("scrollY " + targetYScroll)
@@ -399,7 +399,7 @@ ListView {
             // if failed to calculate the exact scroll, use jump mode ( beginning | middle | end )
             positionViewAtIndex(pos.index, pos_mode)
         }
-        root.lastPageUsedSize = usedPageSize
+        pdfListViewRoot.lastPageUsedSize = usedPageSize
     }
 
     function currentPage() {
@@ -479,7 +479,7 @@ ListView {
         }
         pos = updateRatioWithRoration(pos, rel_x, rel_y)
         jumpToPosition(pos)
-        currPage = root.itemAtIndex(page_index)
+        currPage = pdfListViewRoot.itemAtIndex(page_index)
         //console.warn("QML update page at index " + page_index)
         // update current rect
         currPage.updateCurrRect()
@@ -515,7 +515,7 @@ ListView {
 
     // this function will trigger a call to PDFPage.onAimResizeStatusChanged,
     // which will cause updateCrossSize to be called.
-    function forceAimResize() {
+    function forceAimResize() {    
         aimIsAlreadyResized = false
     }
 
@@ -603,12 +603,12 @@ ListView {
 
     delegate: Column {
         id: delegateColumn
-        width: Math.max(root.width, pdfPage.width)
+        width: Math.max(pdfListViewRoot.width, pdfPage.width)
         property alias zoomLast: pdfPage.zoomLast
         property alias pWidth: pdfPage.width
         property alias pHeight: pdfPage.height
 
-        property int rootWidthBind: root.width
+        property int rootWidthBind: pdfListViewRoot.width
 
         function updateCurrRect() {
             pdfPage.setCurrentNeedleRect(pdfModel.getCurrentNeedleRect(
@@ -618,11 +618,11 @@ ListView {
         }
 
         onRootWidthBindChanged: {
-            delegateColumn.width = Math.max(root.width, pdfPage.width)
+            delegateColumn.width = Math.max(pdfListViewRoot.width, pdfPage.width)
         }
 
         onWidthChanged: {
-            if (root.zoomAuto) {
+            if (pdfListViewRoot.zoomAuto) {
                 pdfPage.width = width
             }
         }
@@ -630,14 +630,14 @@ ListView {
         PdfPageRender {
             id: pdfPage
 
-            property int aimResizeStatus: root.aimIsAlreadyResized
+            property int aimResizeStatus: pdfListViewRoot.aimIsAlreadyResized
             property bool sizeKnown: false
-            property int defaultWidth: root.pageWidth > 0
-                                       && !sizeKnown ? root.pageWidth : root.width
-            property int defaultHeight: root.pageHeight
-                                        && !sizeKnown ? root.pageHeight : defaultWidth * 1.42
+            property int defaultWidth: pdfListViewRoot.pageWidth > 0
+                                       && !sizeKnown ? pdfListViewRoot.pageWidth : pdfListViewRoot.width
+            property int defaultHeight: pdfListViewRoot.pageHeight
+                                        && !sizeKnown ? pdfListViewRoot.pageHeight : defaultWidth * 1.42
 
-            customRotation: root.delegateRotation
+            customRotation: pdfListViewRoot.delegateRotation
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.rightMargin: verticalScroll.width
             width: defaultWidth
@@ -645,7 +645,7 @@ ListView {
             // utilized,if zoomAuto == false
             zoomGoal: zoomPageFact
             // set goal width only if autoZoom; if autoZoom==true,zoomGoal will be ignored
-            widthGoal: zoomAuto ? root.width : 0
+            widthGoal: zoomAuto ? pdfListViewRoot.width : 0
             currScreenDpi: pdfModel.screenDpi
 
             property bool first_run: true
@@ -676,9 +676,10 @@ ListView {
                 const basic_height = Math.ceil(basic_width / stamp_ratio_wh)
 
                 // if not resized yet
-                if (!root.aimIsAlreadyResized) {
+                if (!pdfListViewRoot.aimIsAlreadyResized) {
+                    console.warn()
                     cross.width = basic_width
-                    cross.height = basic_height
+                    cross.height = basic_height            
                     // run background estimate of stamp size
                     if (!aimResizeInProgress) {
                         let location_data = getLocation()
@@ -700,23 +701,23 @@ ListView {
             }
 
             function updateTagCrossSize() {
-                if (root.tagMode) {
+                if (pdfListViewRoot.tagMode) {
                     let t_data = JSON.parse(tagData)
                     tagCross.width = t_data.tag_width * pdfPage.width / 100
-                    tagCross.height = tagCross.width / root.ratio
+                    tagCross.height = tagCross.width / pdfListViewRoot.ratio
                     //console.warn("tag width = " + tagCross.width)
                     //console.warn("tag height = " + tagCross.height)
                 }
             }
 
             onWidthChanged: {
-                root.pageWidth = width
+                pdfListViewRoot.pageWidth = width
                 updateCrossSize()
                 updateTagCrossSize()
                 if (width > 0) {
                     lastPageWidth = width
                 }
-                delegateColumn.width = Math.max(root.width, pdfPage.width)
+                delegateColumn.width = Math.max(pdfListViewRoot.width, pdfPage.width)
             }
 
             onZoomLastChanged: {
@@ -725,12 +726,12 @@ ListView {
             }
 
             onHeightChanged: {
-                root.pageHeight = height
+                pdfListViewRoot.pageHeight = height
                 updateCrossSize()
                 updateTagCrossSize()
                 landscape = pdfPage.width > pdfPage.height
                 if (height > 0) {
-                    root.lastPageHeight = height
+                    pdfListViewRoot.lastPageHeight = height
                 }
             }
 
@@ -748,8 +749,8 @@ ListView {
                                             model.display))
                 pdfPage.setRubberStamps(pdfModel.getRubberStampForPage(
                                             model.display))
-                if (width > 0 && root.hScrollPos > 0 && root.hScrollPos < 1) {
-                    root.contentX = width * root.hScrollPos
+                if (width > 0 && pdfListViewRoot.hScrollPos > 0 && pdfListViewRoot.hScrollPos < 1) {
+                    pdfListViewRoot.contentX = width * pdfListViewRoot.hScrollPos
                 }
             }
 
@@ -800,7 +801,7 @@ ListView {
                            }
 
                 onClicked: {
-                    root.forceActiveFocus()
+                    pdfListViewRoot.forceActiveFocus()
                 }
 
                 onPositionChanged: mouse => {
@@ -833,14 +834,14 @@ ListView {
             MouseArea {
                 id: aimMouseArea
 
-                enabled: root.signMode || root.signInProgress
+                enabled: pdfListViewRoot.signMode || pdfListViewRoot.signInProgress
                 anchors.fill: parent
                 hoverEnabled: true
                 acceptedButtons: Qt.RightButton | Qt.LeftButton
 
                 onEntered: {
-                    cross.visible = root.signInProgress ? false : true
-                    cursorShape = root.signInProgress ? Qt.BusyCursor : Qt.CrossCursor
+                    cross.visible = pdfListViewRoot.signInProgress ? false : true
+                    cursorShape = pdfListViewRoot.signInProgress ? Qt.BusyCursor : Qt.CrossCursor
                 }
                 onExited: {
                     cross.visible = false
@@ -848,17 +849,17 @@ ListView {
                 }
                 onClicked: mouse => {
                                if ((mouse.button === Qt.RightButton)
-                                   && root.signMode) {
+                                   && pdfListViewRoot.signMode) {
                                    quitSignMode()
                                    mouse.accepted = true
                                }
 
-                               if (root.signMode && !root.signInProgress
+                               if (pdfListViewRoot.signMode && !pdfListViewRoot.signInProgress
                                    && cross.valid_position) {
                                    let location_data = pdfPage.getLocation()
                                    cross.visible = false
                                    cursorShape = Qt.BusyCursor
-                                   root.proceedSigning(location_data)
+                                   pdfListViewRoot.proceedSigning(location_data)
                                }
                            }
 
@@ -902,7 +903,7 @@ ListView {
             MouseArea {
                 id: rubberMouseArea
 
-                enabled: root.tagMode
+                enabled: pdfListViewRoot.tagMode
                 anchors.fill: parent
                 hoverEnabled: true
                 cursorShape: Qt.CrossCursor
@@ -913,8 +914,8 @@ ListView {
                     let t_data = JSON.parse(tagData)
                     tagCross.width = t_data.tag_width * width / 100
                     console.debug("enter width" + tagCross.width)
-                    if (root.ratio > 0) {
-                        tagCross.height = tagCross.width / root.ratio
+                    if (pdfListViewRoot.ratio > 0) {
+                        tagCross.height = tagCross.width / pdfListViewRoot.ratio
                     }
                     tagCross.visible = true
                     cursorShape = Qt.CrossCursor
@@ -927,23 +928,23 @@ ListView {
 
                 onClicked: mouse => {
                                if ((mouse.button === Qt.RightButton)
-                                   && root.tagMode) {
+                                   && pdfListViewRoot.tagMode) {
                                    disableTagMode()
                                    mouse.accepted = true
                                }
                            }
 
                 onPressed: {
-                    root.interactive = false
-                    root.startX = mouseX
-                    root.startY = mouseY
+                    pdfListViewRoot.interactive = false
+                    pdfListViewRoot.startX = mouseX
+                    pdfListViewRoot.startY = mouseY
                 }
 
                 onPositionChanged: mouse => {
                                        if ((pressed && Math.abs(
                                                 startX - mouseX) > 10)
-                                           || root.tag_placing) {
-                                           root.tag_placing = true
+                                           || pdfListViewRoot.tag_placing) {
+                                           pdfListViewRoot.tag_placing = true
                                            if (mouseX > startX) {
                                                tagCross.x = startX
                                                tagCross.width = mouseX - startX
@@ -954,10 +955,10 @@ ListView {
 
                                            if (mouseY > startY) {
                                                tagCross.y = startY
-                                               tagCross.height = tagCross.width / root.ratio
+                                               tagCross.height = tagCross.width / pdfListViewRoot.ratio
                                            } else {
                                                //tagCross.y = mouseY
-                                               tagCross.height = tagCross.width / root.ratio
+                                               tagCross.height = tagCross.width / pdfListViewRoot.ratio
                                            }
                                            if (tagCross.x < 0
                                                || tagCross.x + tagCross.width > pdfPage.width
@@ -983,10 +984,10 @@ ListView {
 
                 onReleased: mouse => {
                                 if ((mouse.button === Qt.RightButton)
-                                    && root.tagMode) {
+                                    && pdfListViewRoot.tagMode) {
                                     disableTagMode()
                                     mouse.accepted = true
-                                } else if (root.tagMode
+                                } else if (pdfListViewRoot.tagMode
                                            && tagCross.valid_position) {
                                     //console.warn("pdflistview tagdata = " + tagData)
                                     let t_data = JSON.parse(tagData)
@@ -1015,20 +1016,19 @@ ListView {
                                         "stamp_text": t_data.stamp_text,
                                         "bg_transparent": t_data.bg_transparent,
                                         "annotation_width": tagCross.width,
-                                        "zoom_on_rubber_render": root.zoomPageFact,
+                                        "zoom_on_rubber_render": pdfListViewRoot.zoomPageFact,
                                         "link": t_data.stamp_link
                                     }
 
-                                    root.size_estimated = false
+                                    pdfListViewRoot.size_estimated = false
                                     tagCross.visible = false
                                     cursorShape = Qt.BusyCursor
-                                    root.tagMode = false
-                                    console.debug("exit tag mode")
-                                    root.interactive = true
+                                    pdfListViewRoot.tagMode = false
+                                    pdfListViewRoot.interactive = true
                                     pdfModel.placeRubberStamp(rubber_stamp_data)
-                                    root.tagInProgress = true
-                                    root.forceActiveFocus()
-                                    root.tag_placing = false
+                                    pdfListViewRoot.tagInProgress = true
+                                    pdfListViewRoot.forceActiveFocus()
+                                    pdfListViewRoot.tag_placing = false
                                 }
                             }
 
@@ -1060,11 +1060,11 @@ ListView {
 
                 function onSizeReady(calc_ratio) {
                     // add rubber stamps on render
-                    root.ratio = calc_ratio
+                    pdfListViewRoot.ratio = calc_ratio
                     let t_data = JSON.parse(tagData)
                     tagCross.width = t_data.tag_width * pdfPage.width / 100
                     tagCross.height = tagCross.width / calc_ratio
-                    root.size_estimated = true
+                    pdfpdfListViewRoot.size_estimated = true
                     console.debug("size ready height = " + tagCross.height)
                     console.debug("size ready width = " + tagCross.width)
                     console.debug("size ready = " + ratio)
