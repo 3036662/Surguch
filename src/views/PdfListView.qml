@@ -684,7 +684,7 @@ ListView {
                 const basic_height = Math.ceil(basic_width / stamp_ratio_wh)
 
                 // if not resized yet
-                if (!pdfListViewRoot.aimIsAlreadyResized) {                
+                if (!pdfListViewRoot.aimIsAlreadyResized) {
                     cross.width = basic_width
                     cross.height = basic_height
                     // run background estimate of stamp size
@@ -697,7 +697,7 @@ ListView {
                             } catch (e) {
                                 aimResizeInProgress = false
                                 pdfListViewRoot.aimIsAlreadyResized = false
-                                console.warn("updateCrossSize:"+e)
+                                console.warn("updateCrossSize:" + e)
                             }
                         }
                         // initialize the last aim size
@@ -764,9 +764,12 @@ ListView {
                         && pdfListViewRoot.hScrollPos < 1) {
                     pdfListViewRoot.contentX = width * pdfListViewRoot.hScrollPos
                 }
+
                 pdfListViewRoot.needCrossUpdate.connect(function () {
-                    pdfPage.updateCrossSize()
-                    pdfPage.updateTagCrossSize()
+                    if (pdfPage) {
+                        pdfPage.updateCrossSize()
+                        pdfPage.updateTagCrossSize()
+                    }
                 })
             }
 
