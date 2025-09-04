@@ -160,6 +160,8 @@ RowLayout {
                     } else {
                         rightSideBar.edit_profile.profile_data = currentValue
                     }
+                    // update stamp aim rectangles
+                    pdfListView.forceAimResize();
                 }
 
                 Component.onCompleted: {
