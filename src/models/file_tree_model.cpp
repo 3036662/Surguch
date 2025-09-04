@@ -129,7 +129,7 @@ bool FileTreeModel::addNode(QStringList file_list) {
         file_list.erase(
             std::remove_if(file_list.begin(), file_list.end(),
                            [this](const QString &file_name) {
-                               return root_item->contains(file_name);
+                               return root_item->contains(QUrl(file_name).toLocalFile());
                            }),
             file_list.end());
         QJsonArray file_array;
@@ -144,15 +144,16 @@ bool FileTreeModel::addNode(QStringList file_list) {
             std::for_each(
                 file_list.begin(), file_list.end(),
                 [this](const QString &file_name) {
-                    if (operation_data_.count(file_name) > 0 &&
-                        operation_data_[file_name].operation == Delete) {
-                        operation_data_.erase(file_name);
+                    const QString full_path = QUrl(file_name).toLocalFile();
+                    if (operation_data_.count(full_path) > 0 &&
+                        operation_data_[full_path].operation == Delete) {
+                        operation_data_.erase(full_path);
                         return;
                     }
-                    operation_data_[file_name].operation = Add;
-                    operation_data_[file_name].row = std::nullopt;
-                    operation_data_[file_name].file_uid = std::nullopt;
-                    operation_data_[file_name].file_id = std::nullopt;
+                    operation_data_[full_path].operation = Add;
+                    operation_data_[full_path].row = std::nullopt;
+                    operation_data_[full_path].file_uid = std::nullopt;
+                    operation_data_[full_path].file_id = std::nullopt;
                 });
         }
         processAdd(file_array);
@@ -164,16 +165,17 @@ bool FileTreeModel::addNode(QStringList file_list) {
 
 bool FileTreeModel::deleteNode(const QString &full_path, int row, QUuid uid,
                                int id) {
-    if (row >= 0 && id > 0) {
+    if (row >= 0) {
         if (!ctx_available_) {
             if (operation_data_.count(full_path) > 0 &&
                 operation_data_[full_path].operation == Add) {
                 operation_data_.erase(full_path);
+            } else {
+                operation_data_[full_path].operation = Delete;
+                operation_data_[full_path].row = row;
+                operation_data_[full_path].file_uid = uid;
+                operation_data_[full_path].file_id = id;
             }
-            operation_data_[full_path].operation = Delete;
-            operation_data_[full_path].row = row;
-            operation_data_[full_path].file_uid = uid;
-            operation_data_[full_path].file_id = id;
         }
         QJsonObject obj;
         obj["row"] = row;
@@ -182,6 +184,7 @@ bool FileTreeModel::deleteNode(const QString &full_path, int row, QUuid uid,
         QJsonArray delete_array;
         delete_array.append(obj);
         processDelete(delete_array);
+        return true;
     }
     qWarning() << "[DEBUG] "
                << "FileTreeModel::deleteNode(): " << "Incorrect row or id";
@@ -312,12 +315,14 @@ void FileTreeModel::processDelete(const QJsonArray &arr) {
         case Done: {
             state_ = RunningDraft;
             QJsonArray file_array;
-            for (const auto &item : arr) { //todo error here!!!
+            for (const auto &item : arr) {
                 if (item.isObject()) {
                     QJsonObject obj = item.toObject();
                     int id = obj["id"].toInt();
                     file_array.append(id);
-
+                }
+                if (item.isDouble()) {
+                    file_array.append(item.toInt());
                 }
             }
             ctx_available_ = false;
@@ -463,7 +468,7 @@ void FileTreeModel::processSignedTree() {
         operation_data_.begin(), operation_data_.end(),
         [this, &add_array](const auto &pair) {
                 if (pair.second.operation == Add) {
-                    add_array.append(pair.first);
+                    add_array.append(QUrl(pair.first).toLocalFile());
                 }
             }
         );
@@ -503,7 +508,7 @@ void FileTreeModel::addFilesUI(const QStringList &file_list) {
                   [&data_](const QJsonValue &file) {
                       QJsonObject obj;
                       obj["name"] = QUrl(file.toString()).fileName();
-                      obj["full_path"] = QUrl(file.toString()).toLocalFile();
+                      obj["full_path"] = file;
                       // obj["id"] = QUuid::createUuid().toString();
                       obj["type"] = "temp";
                       obj["size"] = 0;
