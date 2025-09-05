@@ -139,6 +139,12 @@ RowLayout {
                 anchors.verticalCenter: parent.verticalCenter
                 Layout.alignment: Qt.AlignVCenter
 
+                function isActiveProfile() {
+                    return profileComboBox.currentValue
+                            && profileComboBox.currentValue !== "new"
+                            && profileComboBox.currentIndex !== -1
+                }
+
                 onActivated: {
                     profileComboBox.displayText = profileComboBox.textAt(
                                 currentIndex)
@@ -161,7 +167,12 @@ RowLayout {
                         rightSideBar.edit_profile.profile_data = currentValue
                     }
                     // update stamp aim rectangles
-                    pdfListView.forceAimResize();
+                    if (profileComboBox.isActiveProfile()) {
+                        pdfListView.profileIsActivated = true
+                        pdfListView.forceAimResize()
+                    } else {
+                        pdfListView.profileIsActivated = false
+                    }
                 }
 
                 Component.onCompleted: {
@@ -174,6 +185,10 @@ RowLayout {
                         profileComboBox.currentIndex = indx
                     } else {
                         profileComboBox.currentIndex = -1
+                    }
+                    if (profileComboBox.isActiveProfile()) {
+                        pdfListView.profileIsActivated = true
+                        pdfListView.forceAimResize()
                     }
                 }
             }

@@ -339,9 +339,9 @@
         <translation type="vanished">Печать</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+54"/>
         <location filename="../../build/src/gui_pdf_csp/views/Header.qml" line="+45"/>
-        <location filename="../../src/views/Header.qml" line="+53"/>
+        <location filename="../../src/views/Header.qml" line="+54"/>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>
@@ -380,14 +380,14 @@
         <translation>PDF файлы (*.pdf)</translation>
     </message>
     <message>
-        <location line="-253"/>
-        <location filename="../../src/views/Header.qml" line="-253"/>
+        <location line="-254"/>
+        <location filename="../../src/views/Header.qml" line="-254"/>
         <source>Profile settings</source>
         <translation>Настройка профиля</translation>
     </message>
     <message>
-        <location line="+155"/>
-        <location filename="../../src/views/Header.qml" line="+155"/>
+        <location line="+156"/>
+        <location filename="../../src/views/Header.qml" line="+156"/>
         <source>About programm</source>
         <translation>О программе</translation>
     </message>
@@ -495,16 +495,16 @@
         <translation>Сургуч - Программа для работы с электронной подписью</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <location filename="../../build/src/gui_pdf_csp/views/InfoDialog.qml" line="+6"/>
-        <location filename="../../src/views/InfoDialog.qml" line="+6"/>
+        <location filename="../../src/views/InfoDialog.qml" line="+7"/>
         <source>Version </source>
         <translation>Версия </translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <location filename="../../build/src/gui_pdf_csp/views/InfoDialog.qml" line="+6"/>
-        <location filename="../../src/views/InfoDialog.qml" line="+6"/>
+        <location filename="../../src/views/InfoDialog.qml" line="+7"/>
         <source>Help </source>
         <translation>Справка </translation>
     </message>
@@ -701,9 +701,9 @@
 <context>
     <name>PdfListView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+874"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+880"/>
         <location filename="../../build/src/gui_pdf_csp/views/PdfListView.qml" line="+776"/>
-        <location filename="../../src/views/PdfListView.qml" line="+874"/>
+        <location filename="../../src/views/PdfListView.qml" line="+880"/>
         <source>Stamp position</source>
         <translation>Позиция штампа</translation>
     </message>
@@ -1346,8 +1346,8 @@
         <translation>ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ</translation>
     </message>
     <message>
-        <location line="+57"/>
-        <location filename="../../src/views/SigCreatorWrapper.qml" line="+57"/>
+        <location line="+71"/>
+        <location filename="../../src/views/SigCreatorWrapper.qml" line="+71"/>
         <source>Your certificate is expired.</source>
         <translation>Истек срок действия сертификата.</translation>
     </message>
@@ -1590,23 +1590,23 @@
 <context>
     <name>UnsavedChangesDialog</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+17"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+46"/>
         <location filename="../../build/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+17"/>
-        <location filename="../../src/views/UnsavedChangesDialog.qml" line="+17"/>
+        <location filename="../../src/views/UnsavedChangesDialog.qml" line="+46"/>
         <source>Unsaved Changes</source>
         <translation>Файл не сохранен</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+9"/>
         <location filename="../../build/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+13"/>
-        <location filename="../../src/views/UnsavedChangesDialog.qml" line="+30"/>
+        <location filename="../../src/views/UnsavedChangesDialog.qml" line="+9"/>
         <source>Do you want to save your changes?</source>
         <translation>Сохранить текущий файл?</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+11"/>
         <location filename="../../build/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+9"/>
-        <location filename="../../src/views/UnsavedChangesDialog.qml" line="+9"/>
+        <location filename="../../src/views/UnsavedChangesDialog.qml" line="+11"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
