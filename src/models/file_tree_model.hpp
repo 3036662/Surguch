@@ -59,7 +59,7 @@ class FileTreeModel : public QAbstractItemModel {
         const QModelIndex &parent = {}) const override;
 
     Q_INVOKABLE std::vector<int> getCertList(int fie_id);
-    Q_INVOKABLE bool addNode(QStringList fie_list);
+    Q_INVOKABLE bool addNode(const QVariantList& list);
     Q_INVOKABLE bool deleteNode(const QString &full_path, int row, QUuid uid,
                                 int id);
     Q_INVOKABLE void deleteTree();

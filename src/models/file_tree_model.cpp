@@ -124,8 +124,15 @@ std::vector<int> FileTreeModel::getCertList(int file_id) {
     return {};
 }
 
-bool FileTreeModel::addNode(QStringList file_list) {
-    if (!file_list.isEmpty()) {
+bool FileTreeModel::addNode(const QVariantList& list) {
+    qWarning() << "FileTreeModel::addNode()" << list.size();
+    if (!list.empty()) {
+        QStringList file_list;
+        std::for_each(list.cbegin(), list.cend(),[&file_list](const QVariant &item) {
+            qWarning() << "FileTreeModel::addNode()" << item.metaType().name();
+            file_list.append(qvariant_cast<QUrl>(item.value<QVariant>()).toString());
+        });
+
         file_list.erase(
             std::remove_if(file_list.begin(), file_list.end(),
                            [this](const QString &file_name) {
@@ -138,6 +145,7 @@ bool FileTreeModel::addNode(QStringList file_list) {
             [this, &file_array](const QString &file_name) {
                 if (!root_item->contains(QUrl(file_name).toLocalFile())) {
                     file_array.append(QUrl(file_name).toLocalFile());
+                    qWarning() << "FileTreeModel::addNode()" << QUrl(file_name).toLocalFile();
                 }
             });
         if (!ctx_available_) {
