@@ -37,7 +37,9 @@ QVariant FileTreeModel::data(const QModelIndex &index, int role) const {
         case TypeRole:
             return item->data().type;
         case SigStatusRole:
-            return item->data().has_check_result;
+            if (item->data().has_check_result.has_value() && item->data().has_check_result.value()) {
+                return QVariant::fromValue(item->data().check_results.value());
+            } return false;
         case UidRole:
             return item->uid();
         case IdRole:
@@ -46,12 +48,16 @@ QVariant FileTreeModel::data(const QModelIndex &index, int role) const {
             return item->data().ref_id_size;
         case FullPathRole:
             return item->data().full_path;
-        // case RefsListRole:
-        //     return item->data().ref_ids;
-        // case MrpaNumberRole:
-        //     return item->data(8);
-        // case MrpaListRole:
-        //     return item->data(8);
+        case RefsListRole:
+            return QVariant::fromValue(item->data().ref_ids);
+        case MrpaNumberRole:
+            return item->data().mrpa_id_size;
+        case MrpaListRole:
+            return QVariant::fromValue(item->data().mrpa_ids);
+        case EncryptedRole:
+            return item->data().encrypted;
+        // case SigCheckResultRole:
+        //     return item->data().check_results.value();
         case HasKidsRole:
             return item->childCount() > 0;
         default:
@@ -114,7 +120,13 @@ QHash<int, QByteArray> FileTreeModel::roleNames() const {
     roles[RefsListRole] = "refs_list";
     roles[MrpaNumberRole] = "mrpa_num";
     roles[MrpaListRole] = "mrpa_list";
+    roles[SigCheckResultRole] = "sig_check_result";
+    roles[EncryptedRole] = "encrypted";
     return roles;
+}
+
+bool FileTreeModel::isDraft() const {
+    return is_draft_;
 }
 
 std::vector<int> FileTreeModel::getCertList(int file_id) {
@@ -233,10 +245,8 @@ void FileTreeModel::setupModelData(const QJsonArray &doc, TreeItem *parent) {
         if (obj.contains("type")) {
             fileData.type = obj["type"].toString();
         }
-        if (obj.contains("has_check_result")) {
-            fileData.has_check_result = obj["has_check_result"].toBool();
-        } else {
-            fileData.has_check_result = false;
+        if (statArray.contains("encrypted")) {
+            fileData.encrypted = statArray["encrypted"].toBool();
         }
         if (obj.contains("id")) {
             fileData.id = obj["id"].toInt();
@@ -248,24 +258,55 @@ void FileTreeModel::setupModelData(const QJsonArray &doc, TreeItem *parent) {
         if (obj.contains("assoc_refs_number")) {
             fileData.ref_id_size = obj["assoc_refs_number"].toInt();
         }
-        if (obj.contains("refs_ids")) {
-            // fileData.ref_ids = obj["ref_ids"].toArray().toVariantList();
-            //  qWarning() << "[DEBUG]" << " ref_ids for "
-            //             << statArray["name"].toString() << " : "
-            //             << obj["ref_ids"].toArray().toVariantList();
+        if (obj.contains("ref_ids")) {
+            QJsonArray refArray = obj["ref_ids"].toArray();
+            if (refArray.size() > 0) {
+                std::for_each(refArray.begin(), refArray.end(),[&fileData](const auto &ref_id) {
+                       fileData.ref_ids.emplace_back(ref_id.toInt());
+                });
+            }
         }
         if (obj.contains("mrpa_ids")) {
-            // fileData.mrpa_ids = obj["mrpa_ids"].toArray().toVariantList();
+            QJsonArray mrpaRefArray = obj["ref_ids"].toArray();
+            if (mrpaRefArray.size() > 0) {
+                std::for_each(mrpaRefArray.begin(), mrpaRefArray.end(),[&fileData](const auto &mrpa_id) {
+                       fileData.mrpa_ids.emplace_back(mrpa_id.toInt());
+                });
+            fileData.mrpa_id_size = mrpaRefArray.size();
+            }
+        }
+        if (obj.contains("has_check_result")) {
+            fileData.has_check_result = obj["has_check_result"].toBool();
+            if (fileData.has_check_result && obj.contains("check_results")) {
+                QJsonArray checkArray;
+                checkArray = obj["check_results"].toArray();
+                std::for_each(checkArray.begin(), checkArray.end(), [&fileData](const auto &item) {
+                    if (item.isObject()) {
+                        QJsonObject item_obj = item.toObject();
+                        if (item_obj.contains("file_id") && item_obj.contains("check_summary")) {
+                            CheckResult check_result;
+                            check_result.file_id = item_obj["file_id"].toInt();
+                            check_result.check_summary = item_obj["check_summary"].toBool();
+                            if (fileData.check_results.has_value()) {
+                                fileData.check_results.value().emplace_back(check_result);
+                            } else {
+                                fileData.check_results = std::vector{check_result};
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        if (obj.contains("mrpa_json_repr")) {
+            fileData.mrpa_data = obj["mrpa_json_repr"].toObject();
         }
 
         QUuid const uid(QUuid::createUuid());
-        // qWarning() << "[DEBUG]"<< "file = " << itemData[0] << " uid = " <<
-        // uid.toString();
-
         auto newItem = std::make_shared<TreeItem>(fileData, uid, parent);
         parent->appendChild(std::shared_ptr<TreeItem>(newItem));
 
-        if (ctx_available_) {
+        if (obj.contains("id") && ctx_available_) {
             item_map[obj["id"].toInt()] = newItem;
         }
 
@@ -389,6 +430,8 @@ void FileTreeModel::processDraftTree() {
                     beginResetModel();
                     root_item->deleteChildren();
                     setupModelData(data_, root_item.get());
+                    is_draft_ = true;
+                    emit isDraftChanged();
                     qWarning() << "[DEBUG]"
                                << " FileTreeModel::processDraftTree(): "
                                << "completed and ready";
@@ -464,6 +507,9 @@ void FileTreeModel::processSignedTree() {
                                << " FileTreeModel::processSignedTree(): "
                                << "completed and ready";
                     qWarning() << "[DEBUG]" << "root child count: " << root_item->childCount();
+
+                    is_draft_ = false;
+                    emit isDraftChanged();
                     endResetModel();
                 }
             }

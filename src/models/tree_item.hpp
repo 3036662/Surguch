@@ -3,10 +3,16 @@
 
 #include <QUuid>
 #include <QVariantList>
+#include <QJsonObject>
 #include <memory>
 
+struct CheckResult {
+    uint32_t file_id = 0;
+    bool check_summary = false;
+};
+
 struct FileData {
-    bool has_check_result = false;
+    bool encrypted = false;
     int id = 0;
     int size = 0;
     int last_modified = 0;
@@ -17,6 +23,9 @@ struct FileData {
     QString name;
     QString type;
     QString full_path;
+    std::optional<bool> has_check_result = false;
+    std::optional<std::vector<CheckResult>> check_results;
+    std::optional<QJsonObject> mrpa_data;
 };
 
 class TreeItem {

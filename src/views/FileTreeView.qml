@@ -46,6 +46,27 @@ TreeView {
             }
         }
 
+        function getCheckResultsColor(results) {
+            if (!results || results.length === 0) {
+                return "gray";
+            }
+
+            var allPassed = true;
+            var allFailed = true;
+
+            for (var i = 0; i < results.length; i++) {
+                if (results[i].check_summary) {
+                    allFailed = false;
+                } else {
+                    allPassed = false;
+                }
+            }
+
+            if (allPassed) return "green";
+            if (allFailed) return "red";
+            return "yellow";
+        }
+
         implicitHeight: nameField.implicitHeight * 1.6
         implicitWidth: treeView.width - padding * 2
 
@@ -170,16 +191,40 @@ TreeView {
                 color: StyleSheet.font_color_extra
                 font.pixelSize: column === 0 ? 14 : 10
                 horizontalAlignment: Text.AlignHCenter
-                text: model.type
-                visible: model.sig_status
+                text: {
+                    if (model.type === "File") {
+                        if (model.encrypted) {
+                            return qsTr("Bad")
+                        }
+                        if (model.refs_num > 0) {
+                            return model.refs_num
+                        }
+                    }
+                    if (model.type === "Asig") {
+                        
+                    }
+                    return qsTr("Ok")
+                }
+                visible: signStatusField.text !== "" && !fileTreeModel.isDraft
 
                 background: Rectangle {
-                    color: "green"
+                    color: {
+                        if (model.type === "File") {
+                            if (model.encrypted) {
+                                return "red"
+                            }
+                            if (model.refs_num > 0) {
+                                let list = model.refs_list
+                                getCheckResultsColor(model.refs_list)
+                            }
+                        }
+                        return "green"
+                    }
                     width: signStatusField.contentWidth + 12
                     height: signStatusField.contentHeight + 6
                     radius: height / 4
                     anchors.centerIn: parent
-                    visible: signStatusField.text !== ""
+                    visible: signStatusField.text !== "" && !fileTreeModel.isDraft
 
                     MouseArea {
                         id: sigStatusArea
@@ -202,9 +247,16 @@ TreeView {
                 }
             }
 
+            Rectangle {
+                id: sign_status_dummy
+                Layout.alignment: Qt.AlignLeft
+                Layout.preferredWidth: signColumn
+                visible: !signStatusField.visible && !sign_busy_indicator.visible
+            }
+
             BusyIndicator {
                 id: sign_busy_indicator
-                visible: !model.sig_status
+                visible: fileTreeModel.isDraft
                 Layout.preferredWidth: signColumn
             }
 
@@ -217,8 +269,8 @@ TreeView {
                 color: StyleSheet.font_color_extra
                 font.pixelSize: column === 0 ? 14 : 10
                 horizontalAlignment: Text.AlignHCenter
-                text: model.sig_status
-                visible: model.sig_status
+                text: "mrpa"
+                visible: model.sig_status && !fileTreeModel.isDraft
 
                 background: Rectangle {
                     color: "green"
@@ -226,7 +278,7 @@ TreeView {
                     height: mrpaStatusField.contentHeight + 6
                     radius: height / 4
                     anchors.centerIn: parent
-                    visible: mrpaStatusField.text !== ""
+                    visible: mrpaStatusField.text !== "" && !fileTreeModel.isDraft
 
                     MouseArea {
                         id: mrpaStatusArea
@@ -247,10 +299,17 @@ TreeView {
                 }
             }
 
+            Rectangle {
+                id: mrpa_status_dummy
+                Layout.alignment: Qt.AlignLeft
+                Layout.preferredWidth: signColumn
+                visible: !mrpaStatusField.visible && !mrpa_busy_indicator.visible
+            }
+
             BusyIndicator {
                 id: mrpa_busy_indicator
 
-                visible: !model.sig_status
+                visible: fileTreeModel.isDraft
                 Layout.preferredWidth: mrpaColumn
             }
 

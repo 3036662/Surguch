@@ -12,6 +12,7 @@
 
 class FileTreeModel : public QAbstractItemModel {
     Q_OBJECT
+    Q_PROPERTY(bool isDraft READ isDraft NOTIFY isDraftChanged)
 
     enum Operation { Add, Delete, Wasted };
 
@@ -31,7 +32,9 @@ class FileTreeModel : public QAbstractItemModel {
         RefsNumberRole,
         RefsListRole,
         MrpaNumberRole,
-        MrpaListRole
+        MrpaListRole,
+        SigCheckResultRole,
+        EncryptedRole,
     };
 
     struct OperationData {
@@ -58,11 +61,16 @@ class FileTreeModel : public QAbstractItemModel {
     [[nodiscard]] int columnCount(
         const QModelIndex &parent = {}) const override;
 
+    [[nodiscard]] bool isDraft() const;
+
     Q_INVOKABLE std::vector<int> getCertList(int fie_id);
     Q_INVOKABLE bool addNode(const QVariantList& list);
     Q_INVOKABLE bool deleteNode(const QString &full_path, int row, QUuid uid,
                                 int id);
     Q_INVOKABLE void deleteTree();
+
+    signals:
+    void isDraftChanged();
 
    private:
     void setupModelData(const QJsonArray &doc, TreeItem *parent);
@@ -85,6 +93,7 @@ class FileTreeModel : public QAbstractItemModel {
 
     State state_ = Done;
     bool ctx_available_ = true;
+    bool is_draft_ = true;
 };
 
 #endif  // FILE_TREE_MODEL_HPP
