@@ -179,7 +179,7 @@ QJsonObject ValidationResult::toJson() const {
     // result struct
     QJsonObject res;
     res["signature"] = signature;
-    // signers sertificate chain
+    // signers certificate chain
     const QJsonDocument json_chain =
         QJsonDocument::fromJson(cert_chain_json.toUtf8());
     if (json_chain.isNull()) {
@@ -211,7 +211,7 @@ QJsonObject ValidationResult::toJson() const {
         res["current_index"] = static_cast<qint64>(sig_curr_index.value());
     }
 
-    // byterange analasys results
+    // byterange analyses results
     res["full_coverage"] = full_coverage;
     res["can_be_casted_to_full_coverage"] = can_be_casted_to_full_coverage;
     return res;

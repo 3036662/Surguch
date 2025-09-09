@@ -69,7 +69,7 @@ class SignaturesListModel : public QAbstractListModel {
 
     /// @brief file was recovered
     void fileRecovered(QString path);
-    /// @brief Validation error happend
+    /// @brief Validation error happened
     void validationFailedForSignature(size_t index);
 
    public slots:

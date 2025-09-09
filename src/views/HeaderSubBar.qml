@@ -79,7 +79,7 @@ ColumnLayout {
         pdfListView.tagData = rubberStampPutButton.tag_data
         pdfModel.prepareImage(JSON.parse(rubberStampPutButton.tag_data))
         if (!rubberStampPutButton.down) {
-            pdfListView.reserRotation()
+            pdfListView.resetRotation()
         }
         rubberStampPutButton.down = !rubberStampPutButton.down
     }
@@ -309,7 +309,7 @@ ColumnLayout {
                 pdfListView.tagData = tag_data
                 pdfModel.prepareImage(JSON.parse(tag_data))
                 if (!down) {
-                    pdfListView.reserRotation()
+                    pdfListView.resetRotation()
                 }
                 down = !down
             }

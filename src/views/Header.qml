@@ -3,7 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Qt.labs.platform as LabsDialogs
 
-import QtQuick.Dialogs as CommonDialods
+import QtQuick.Dialogs as CommonDialogs
 import QtCore
 import StyleSheet
 
@@ -258,7 +258,7 @@ RowLayout {
                     headerSubBar.disableTagMode()
                     pdfListView.signMode = !pdfListView.signMode
                     if (!down) {
-                        pdfListView.reserRotation()
+                        pdfListView.resetRotation()
                     }
                     down = !down
                 }
@@ -274,7 +274,7 @@ RowLayout {
         id: info_button
 
         display: AbstractButton.IconOnly
-        text: qsTr("About programm")
+        text: qsTr("About program")
         icon.source: StyleSheet.info_icon
         icon.width: 20
         icon.height: 20
@@ -315,9 +315,9 @@ RowLayout {
                         event.accepted = false
                     }
 
-    CommonDialods.FileDialog {
+    CommonDialogs.FileDialog {
         id: fileDialog
-        fileMode: CommonDialods.FileDialog.OpenFile
+        fileMode: CommonDialogs.FileDialog.OpenFile
         //nameFilters: ["PDF files (*.pdf)","Any file (* *.*)"];
         nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
         currentFolder: StandardPaths.writableLocation(
@@ -332,12 +332,12 @@ RowLayout {
         }
     }
 
-    CommonDialods.FileDialog {
+    CommonDialogs.FileDialog {
         id: saveFileDialog
 
         property bool quitAfterSave: false
 
-        fileMode: CommonDialods.FileDialog.SaveFile
+        fileMode: CommonDialogs.FileDialog.SaveFile
         defaultSuffix: "pdf"
         nameFilters: [qsTr("PDF files (*.pdf)")]
         currentFolder: StandardPaths.writableLocation(

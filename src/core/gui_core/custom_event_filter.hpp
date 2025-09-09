@@ -22,7 +22,7 @@ class EventFilterInstaller : public QObject {
 };
 
 /**
- * @brief The WheelEventFilter class rethrows the will event to the given turget
+ * @brief The WheelEventFilter class rethrows the will event to the given target
  * @details utilized to fix Qt6.4 bug, when the wheel event is not propagate to
  * the nested popup
  */
@@ -32,9 +32,9 @@ class WheelEventFilter : public QObject {
     explicit WheelEventFilter(QObject *parent = nullptr) : QObject(parent) {}
 
     /// @brief the event will be dispatched to target if set to true
-    Q_PROPERTY(bool dispactch_to_target MEMBER dispatch_to_target_);
+    Q_PROPERTY(bool dispatch_to_target MEMBER dispatch_to_target_);
 
-    /// @brief set the tatget
+    /// @brief set the target
     Q_INVOKABLE void setTargetForDispatch(QObject *target) {
         if (target == nullptr) {
             dispatch_to_target_ = false;

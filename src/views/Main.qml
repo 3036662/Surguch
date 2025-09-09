@@ -57,11 +57,6 @@ ApplicationWindow {
             HeaderSubBar {
                 id: headerSubBar
                 visible: pdfListView.source != "" && showType === Main.ShowType.Pdf
-
-                function placeTagStamp(rubber_stamp_data) {//let tag_data = rubber_stamp_data
-                    //console.warn("mainqml" + JSON.stringify(tag_data))
-                    //pdfModel.placeRubberStamp(tag_data)
-                }
             }
 
             FileModeHeaderSubBar {
@@ -202,7 +197,7 @@ ApplicationWindow {
     }
 
     // --------------------------------------
-    // instantinate cpp models
+    // instantiate cpp models
     MuPdfModel {
         id: pdfModel
         mustProcessSignatures: true
@@ -283,11 +278,11 @@ ApplicationWindow {
         headerSubBar.undoAction.connect(pdfListView.undo)
         headerSubBar.redoAction.connect(pdfListView.redo)
         pdfListView.updateHistory.connect(headerSubBar.updateHistory)
-        // toggle from preview to certs in left sidebat
+        // toggle from preview to certs in left sidebar
         headerSubBar.showPreviews.connect(leftSideBar.showPreviews)
         headerSubBar.showCerts.connect(leftSideBar.showCerts)
         // screen DPI changed
-        pdfModel.screenDpiChanged.connect(pdfListView.redrawAndPreservePosion)
+        pdfModel.screenDpiChanged.connect(pdfListView.redrawAndPreservePosition)
         //enable buttons for stamps
         pdfListView.quitSignMode.connect(header.quitSignMode)
         pdfListView.disableTagMode.connect(headerSubBar.disableTagMode)
@@ -353,7 +348,7 @@ ApplicationWindow {
                 "Validation failed for signature number") + " " + index
             errorMessageDialog.open()
         })
-        // open document on strart
+        // open document on start
         if (openOnStart !== "") {
             pdfListView.openFile(openOnStart)
             header.enableSignMode()
@@ -384,10 +379,10 @@ ApplicationWindow {
         root_window.closing.connect(function (close_event) {
             if (pdfListView.sourceIsTmp) {
                 close_event.accepted = false
-                undsavedFileDialog.open()
+                unsavedFileDialog.open()
             }
         })
-        undsavedFileDialog.saveWithQuit.connect(header.launchSaveFileWithQuit)
+        unsavedFileDialog.saveWithQuit.connect(header.launchSaveFileWithQuit)
         // invalid pdf
         pdfModel.docWasRepaired.connect(function () {
             errorMessageDialog.text = qsTr(
@@ -462,7 +457,7 @@ ApplicationWindow {
     }
 
     UnsavedChangesDialog {
-        id: undsavedFileDialog
+        id: unsavedFileDialog
     }
 
     DisappearingHint {

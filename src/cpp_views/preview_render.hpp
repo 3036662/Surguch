@@ -39,7 +39,7 @@ class PreviewRender : public QQuickItem {
     /// @brief Create an image with user settings.
     Q_INVOKABLE void createImage(const QVariantMap &qvparams);
 
-    /// @brief perfom the render
+    /// @brief perform the render
     QSGNode *updatePaintNode(
         QSGNode *oldNode,
         QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;

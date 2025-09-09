@@ -76,7 +76,7 @@ class ProfilesModel : public QAbstractListModel {
     /// @brief path to config directory (/home/$user/.config)
     [[nodiscard]] Q_INVOKABLE QString getConfigPath() const;
 
-    /// @brief TRUE if some global error ocurred
+    /// @brief TRUE if some global error occurred
     /// @details for now, TRUE if no CSP library was found
     Q_PROPERTY(bool errStatus MEMBER error_status_)
 
@@ -107,7 +107,7 @@ class ProfilesModel : public QAbstractListModel {
      * @brief Save logo image
      *
      * @param path source image path
-     * @param dest_name destanation file name
+     * @param dest_name destination file name
      * @param old_logo_path old logo to delete
      * @return QString full path to saved logo on success
      */

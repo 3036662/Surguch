@@ -117,7 +117,7 @@ class SignWorker : public QObject {
 
    signals:
 
-    /// @brief signinig process(launchSign) is completed
+    /// @brief signing process(launchSign) is completed
     void signCompleted(SignResult res);
     /// @brief estimateStampSize is completed
     void resizeStampCompleted(AimResizeFactor res);

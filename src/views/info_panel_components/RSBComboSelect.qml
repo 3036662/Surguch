@@ -71,7 +71,7 @@ ComboBox {
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
 
-        // suppress a warning "positionToRectanglem is not a function"
+        // suppress a warning "positionToRectangle is not a function"
         function positionToRectangle(pos) {
             return Qt.rect(0, 0, 0, 0)
         }

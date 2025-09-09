@@ -88,7 +88,7 @@ void PdfPageRender::geometryChange(const QRectF &newGeometry,
     QQuickItem::geometryChange(newGeometry, oldGeometry);
 }
 
-/// @brief perfom the render
+/// @brief perform the render
 // NOLINTBEGIN(cppcoreguidelines-owning-memory)
 QSGNode *PdfPageRender::updatePaintNode(
     QSGNode *node,

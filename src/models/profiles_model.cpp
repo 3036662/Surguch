@@ -91,7 +91,7 @@ void ProfilesModel::readProfiles() {
         QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
     if (config_path_.isEmpty()) {
         qWarning() << tr(
-            "Standart config location cannot be determined, using home");
+            "Standard config location cannot be determined, using home");
         config_path_ = QDir::homePath();
     }
     if (config_path_.isEmpty()) {
@@ -181,7 +181,7 @@ void ProfilesModel::readUserStamps() {
         QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
     if (config_path_.isEmpty()) {
         qWarning() << tr(
-            "Standart config location cannot be determined, using home");
+            "Standard config location cannot be determined, using home");
         config_path_ = QDir::homePath();
     }
     if (config_path_.isEmpty()) {
@@ -470,7 +470,7 @@ Q_INVOKABLE void ProfilesModel::updateProfiles(const QString &stamp_name) {
  * @brief Save logo image
  *
  * @param path source image path
- * @param dest_name destanation file name
+ * @param dest_name destination file name
  * @param old_logo_path old logo to delete
  * @return QString full path to saved logo on success
  */

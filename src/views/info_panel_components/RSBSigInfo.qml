@@ -77,7 +77,7 @@ Flickable {
             width: parent.width
         }
         TextPair {
-            keyText: qsTr("CADES standart")
+            keyText: qsTr("CADES standard")
             value: jsonData !== undefined ? jsonData.signature.cades_type : ""
         }
 
@@ -205,7 +205,7 @@ Flickable {
             }
         }
 
-        // ByteRange analasys
+        // ByteRange analysis
         TextPairBool {
             id: fullCoverageStatus
             keyText: qsTr("The signature covers the entire document")

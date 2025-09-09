@@ -232,7 +232,7 @@ ListView {
         positionViewAtIndex(newIndex - 1, ListView.Beginning)
     }
 
-    function reserRotation() {
+    function resetRotation() {
         tryToGetFocus()
         if (delegateRotation !== 0) {
             delegateRotation = 0
@@ -338,7 +338,7 @@ ListView {
             "ratio": pageYRatio,
             "zoom_last": pageLastZoom
         }
-        //console.warn("QML PreservsPos:" + JSON.stringify(pos))
+        //console.warn("QML PreservePos:" + JSON.stringify(pos))
         return pos
     }
 
@@ -437,13 +437,13 @@ ListView {
         //console.warn("QML Total needles:" + total_needles)
         if (total_needles > 0) {
             pos.index = first_needle_page_index
-            pos = updateRatioWithRoration(pos, x_rel, y_rel)
+            pos = updateRatioWithRotation(pos, x_rel, y_rel)
         }
 
         jumpToPosition(pos)
     }
 
-    function updateRatioWithRoration(pos, x_rel, y_rel) {
+    function updateRatioWithRotation(pos, x_rel, y_rel) {
         switch (delegateRotation) {
         case 90:
             pos.ratio = x_rel
@@ -482,7 +482,7 @@ ListView {
             "ratio": rel_y,
             "zoom_last": pageLastZoom
         }
-        pos = updateRatioWithRoration(pos, rel_x, rel_y)
+        pos = updateRatioWithRotation(pos, rel_x, rel_y)
         jumpToPosition(pos)
         currPage = pdfListViewRoot.itemAtIndex(page_index)
         //console.warn("QML update page at index " + page_index)
@@ -490,8 +490,8 @@ ListView {
         currPage.updateCurrRect()
     }
 
-    // redraw but preserve the postiton
-    function redrawAndPreservePosion() {
+    // redraw but preserve the position
+    function redrawAndPreservePosition() {
         let pos = preservePosition()
         model.redrawAll()
         jumpToPosition(pos)
@@ -1011,7 +1011,7 @@ ListView {
                                     mouse.accepted = true
                                 } else if (pdfListViewRoot.tagMode
                                            && tagCross.valid_position) {
-                                    //console.warn("pdflistview tagdata = " + tagData)
+                                    
                                     let t_data = JSON.parse(tagData)
                                     let rubber_stamp_data = {
                                         "page_index": index,

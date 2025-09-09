@@ -86,7 +86,7 @@ Item {
             "cert_serial_prefix": qsTr("Certificate: "),
             "cert_subject": cert_array[cert_index].subject_common_name,
             "cert_subject_prefix": qsTr("Subject: "),
-            "cert_time_validity": qsTr("Vaildity: ")
+            "cert_time_validity": qsTr("Validity: ")
                                   + cert_array[cert_index].not_before_readable + qsTr(
                 " till ") + cert_array[cert_index].not_after_readable,
             "stamp_title": qsTr("THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE"),

@@ -43,7 +43,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "surguch_launcher.hpp"
 
 int main(int argc, char* argv[]) {
-    // tranlsation
+    // translation
     QTranslator translator;
     const QString locale = QLocale::system().name();
     QApplication app(argc, argv);

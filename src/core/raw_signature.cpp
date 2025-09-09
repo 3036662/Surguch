@@ -32,10 +32,10 @@ namespace core {
 RawSignature::RawSignature(fz_context *fzctx, const PdfObjKeeper &sig_obj) {
     if (fzctx == nullptr) {
         throw std::runtime_error(
-            "[RawSignature] nullptr recieved instead of context");
+            "[RawSignature] nullptr received instead of context");
     }
     if (sig_obj.get() == nullptr) {
-        throw std::runtime_error("[RawSignature] empty object recieved");
+        throw std::runtime_error("[RawSignature] empty object received");
     }
     std::string exception_caught;
     fz_try(fzctx) {
@@ -43,7 +43,7 @@ RawSignature::RawSignature(fz_context *fzctx, const PdfObjKeeper &sig_obj) {
         pdf_obj *sig_val = pdf_dict_getp(fzctx, sig_obj.get(), "V");
         if (sig_val != nullptr && pdf_is_dict(fzctx, sig_val) != 0) {
             // pdf_debug_obj(fzctx,sig_val);
-            //  read hex string with contets
+            //  read hex string with contents
             if (!readContent(fzctx, sig_val)) {
                 exception_caught = "error reading content";
             }

@@ -233,8 +233,8 @@ SharedSignParamWrapper createParams(const SignParams &params_) {
 std::unique_ptr<BakeRubberResult> prepareImage(
     const SharedRubberParamWrapper &params) {
     auto result = std::make_unique<BakeRubberResult>(BakeRubberResult{
-        std::unique_ptr<pdfcsp::pdf::BakeRubberStamResult,
-                        void (*)(pdfcsp::pdf::BakeRubberStamResult *)>(
+        std::unique_ptr<pdfcsp::pdf::BakeRubberStampResult,
+                        void (*)(pdfcsp::pdf::BakeRubberStampResult *)>(
             pdfcsp::pdf::BakeRubberStamp(params->pod_params),
             pdfcsp::pdf::FreeRubberStampResult),
         std::unique_ptr<QImage>()});
@@ -390,19 +390,19 @@ RubberParams prepareParams(const QVariantMap &qvparams) {
 
 /// @brief Gather all rubber stamp parameters (pdfcsp::pdf::CAnnotParam)
 SharedRubberParamWrapper createParams(const RubberParams &params) {
-    auto paramswrapper = std::make_shared<CRubberParamsWrapper>();
-    pdfcsp::pdf::RubberStampParams &pod_params = paramswrapper->pod_params;
-    paramswrapper->qb_img_path = params.img_path.toUtf8();
-    if (!paramswrapper->qb_img_path.isEmpty()) {
-        pod_params.src_img_path = paramswrapper->qb_img_path.data();
+    auto params_wrapper = std::make_shared<CRubberParamsWrapper>();
+    pdfcsp::pdf::RubberStampParams &pod_params = params_wrapper->pod_params;
+    params_wrapper->qb_img_path = params.img_path.toUtf8();
+    if (!params_wrapper->qb_img_path.isEmpty()) {
+        pod_params.src_img_path = params_wrapper->qb_img_path.data();
     }
     pod_params.target_x = static_cast<uint64_t>(params.stamp_width);
     pod_params.target_y = static_cast<uint64_t>(params.stamp_height);
     pod_params.stamp_preserve_ratio = params.stamp_preserve_ratio;
     pod_params.create_from_image = params.create_from_image;
-    paramswrapper->qb_annotation_text = params.annotation_text.toUtf8();
-    if (!paramswrapper->qb_annotation_text.isEmpty()) {
-        pod_params.annotation_text = paramswrapper->qb_annotation_text.data();
+    params_wrapper->qb_annotation_text = params.annotation_text.toUtf8();
+    if (!params_wrapper->qb_annotation_text.isEmpty()) {
+        pod_params.annotation_text = params_wrapper->qb_annotation_text.data();
     }
     pod_params.bg_color.red = params.bg_color.R;
     pod_params.bg_color.green = params.bg_color.G;
@@ -413,9 +413,9 @@ SharedRubberParamWrapper createParams(const RubberParams &params) {
     pod_params.border_color.red = params.border_color.R;
     pod_params.border_color.green = params.border_color.G;
     pod_params.border_color.blue = params.border_color.B;
-    paramswrapper->qb_font_family = params.font_family.toUtf8();
-    if (!paramswrapper->qb_font_family.isEmpty()) {
-        pod_params.font_family = paramswrapper->qb_font_family.data();
+    params_wrapper->qb_font_family = params.font_family.toUtf8();
+    if (!params_wrapper->qb_font_family.isEmpty()) {
+        pod_params.font_family = params_wrapper->qb_font_family.data();
     }
     pod_params.border_radius =
         std::ceil(static_cast<double>(params.border_radius) / 900.0 *
@@ -428,7 +428,7 @@ SharedRubberParamWrapper createParams(const RubberParams &params) {
     pod_params.bg_transparent = params.bg_transparent;
     pod_params.bg_opacity = params.bg_opacity;
     pod_params.annotation_width = params.annotation_width;
-    return paramswrapper;
+    return params_wrapper;
 }
 
 /// @brief create rubber stamps params for embedding into pdf

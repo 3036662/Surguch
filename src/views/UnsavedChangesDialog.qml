@@ -8,7 +8,7 @@ import StyleSheet
 // MessageDialog with standard buttons is not utilized because
 // button size is invalid for Russian button text.
 Dialog {
-    id: undsavedFileDialog
+    id: unsavedFileDialog
 
     signal saveWithQuit(bool need_quit)
 
@@ -66,7 +66,7 @@ Dialog {
                 text: qsTr("Save")
                 width: 100
                 onClicked: {
-                    undsavedFileDialog.close()
+                    unsavedFileDialog.close()
                     saveWithQuit(true)
                 }
             }
@@ -75,7 +75,7 @@ Dialog {
                 text: qsTr("Discard")
                 width: 100
                 onClicked: {
-                    undsavedFileDialog.close()
+                    unsavedFileDialog.close()
                     Qt.quit()
                 }
             }
@@ -84,7 +84,7 @@ Dialog {
                 text: qsTr("Cancel")
                 width: 100
                 onClicked: {
-                    undsavedFileDialog.close() // Just close the dialog
+                    unsavedFileDialog.close() // Just close the dialog
                 }
             }
         }

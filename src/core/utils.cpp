@@ -79,7 +79,7 @@ QString pageToQString(fz_context *fzctx, fz_document *fzdoc, int page_index) {
     }
     QString extracted_string;
     extracted_string.reserve(256);
-    bool mu_exception_catched = false;
+    bool mu_exception_caught = false;
 
     fz_stext_page *stpage = nullptr;
     fz_device *stext_dev = nullptr;
@@ -128,11 +128,11 @@ QString pageToQString(fz_context *fzctx, fz_document *fzdoc, int page_index) {
         fz_drop_device(fzctx, stext_dev);
     }
     fz_catch(fzctx) {
-        mu_exception_catched = true;
+        mu_exception_caught = true;
         qWarning() << fz_caught_message(fzctx);
     }
 
-    if (mu_exception_catched) {
+    if (mu_exception_caught) {
         throw std::runtime_error("[core::utils::pageToQString] MuPdf error");
     }
 
@@ -195,7 +195,7 @@ PageUriList removeAllCoveredUri(PageUriList const &uri_list) {
  */
 PageUriList extractAllUriPage(fz_context *fzctx, fz_document *fzdoc,
                               int page_index, std::optional<filterUri> filter) {
-    bool mu_exception_catched = false;
+    bool mu_exception_caught = false;
 
     fz_page *page = nullptr;
     fz_link *link = nullptr;
@@ -225,11 +225,11 @@ PageUriList extractAllUriPage(fz_context *fzctx, fz_document *fzdoc,
         fz_drop_link(fzctx, link);
     }
     fz_catch(fzctx) {
-        mu_exception_catched = true;
+        mu_exception_caught = true;
         qWarning() << fz_caught_message(fzctx);
     }
 
-    if (mu_exception_catched) {
+    if (mu_exception_caught) {
         throw std::runtime_error(
             "[core::utils::extractAllUriPage] MuPdf error");
     }
@@ -255,14 +255,14 @@ PagesTextCache extractTextAllPages(fz_context *fzctx,
         qWarning() << "[extractTextAllPages] nullptr recieved\n";
         return nullptr;
     }
-    bool exception_catched = false;
+    bool exception_caught = false;
     PagesTextCache result =
         std::make_unique<std::vector<PagesTextCacheSinglePage>>();
     int page_count = 0;
     fz_var(page_count);
     fz_try(fzctx) { page_count = fz_count_pages(fzctx, fzdoc); }
     fz_catch(fzctx) {
-        exception_catched = true;
+        exception_caught = true;
         fz_report_error(fzctx);
     }
     for (int i = 0; i < page_count; ++i) {
@@ -273,11 +273,11 @@ PagesTextCache extractTextAllPages(fz_context *fzctx,
             result->emplace_back(page_cache);
         } catch (const std::exception &ex) {
             qWarning() << ex.what();
-            exception_catched = true;
+            exception_caught = true;
         }
     }
-    if (exception_catched) {
-        qWarning() << "[extractTextAllPages] error occured";
+    if (exception_caught) {
+        qWarning() << "[extractTextAllPages] error occurred";
         return nullptr;
     }
     return result;
@@ -321,7 +321,7 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
                                         size_t page_index, bool case_sensitive,
                                         fz_context *fzctx,
                                         fz_document *fzdoc) noexcept {
-    bool mu_exception_catched = false;
+    bool mu_exception_caught = false;
     if (needle.isEmpty() || fzctx == nullptr || fzdoc == nullptr) {
         qWarning() << "[findNeedleRectsOnPage] invalid args";
         return nullptr;
@@ -330,7 +330,7 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
     fz_var(page_count);
     fz_try(fzctx) { page_count = fz_count_pages(fzctx, fzdoc); }
     fz_catch(fzctx) {
-        mu_exception_catched = true;
+        mu_exception_caught = true;
         fz_report_error(fzctx);
     }
     if (page_index >= page_count ||
@@ -391,7 +391,7 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
                 qsizetype pos = 0;
                 while ((pos = extracted_string.indexOf(needle, pos,
                                                        case_sens)) != -1) {
-                    // rects for the signle needle
+                    // rects for the single needle
                     std::vector<fz_rect> tmp_res;
                     std::transform(
                         extracted_quads.cbegin() + pos,
@@ -424,11 +424,11 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
         fz_drop_device(fzctx, stext_dev);
     }
     fz_catch(fzctx) {
-        mu_exception_catched = true;
+        mu_exception_caught = true;
         fz_report_error(fzctx);
     }
-    if (mu_exception_catched) {
-        qWarning() << "[findNeedleRectsOnPage] error occured";
+    if (mu_exception_caught) {
+        qWarning() << "[findNeedleRectsOnPage] error occurred";
         return nullptr;
     }
     return res;

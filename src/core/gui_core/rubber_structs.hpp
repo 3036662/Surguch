@@ -111,8 +111,8 @@ struct RubberParams {
 
 /// @brief structure for holding image data and constructed image for rendering
 struct BakeRubberResult {
-    std::unique_ptr<pdfcsp::pdf::BakeRubberStamResult,
-                    void (*)(pdfcsp::pdf::BakeRubberStamResult *)>
+    std::unique_ptr<pdfcsp::pdf::BakeRubberStampResult,
+                    void (*)(pdfcsp::pdf::BakeRubberStampResult *)>
         data_;
     std::unique_ptr<QImage> image_;
 };

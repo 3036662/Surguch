@@ -49,7 +49,7 @@ class PdfPageRender : public QQuickItem {
     void geometryChange(const QRectF &newGeometry,
                         const QRectF &oldGeometry) override;
 
-    /// @brief perfom the render
+    /// @brief perform the render
     QSGNode *updatePaintNode(
         QSGNode *oldNode,
         QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;

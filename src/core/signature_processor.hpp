@@ -40,7 +40,7 @@ class SignatureProcessor {
     SignatureProcessor &operator=(SignatureProcessor &&) = delete;
     ~SignatureProcessor() = default;
 
-    ///@brief find signature objects, place them in signarures_ptrs_
+    ///@brief find signature objects, place them in signatures_ptrs_
     [[nodiscard]] bool findSignatures() noexcept;
 
     ///@brief parses signature object
@@ -53,7 +53,7 @@ class SignatureProcessor {
 
     /// @brief The number of signatures in the file
     [[nodiscard]] size_t getSignaturesCount() const noexcept {
-        return signarures_ptrs_.size();
+        return signatures_ptrs_.size();
     }
 
     /// @brief ind AcroForm object
@@ -67,7 +67,7 @@ class SignatureProcessor {
     pdf_obj *pdf_root_ = nullptr;
     pdf_obj *pdf_acro_ = nullptr;
     std::bitset<32> sig_flags_;
-    std::vector<PdfObjKeeper> signarures_ptrs_;
+    std::vector<PdfObjKeeper> signatures_ptrs_;
 };
 
 }  // namespace core

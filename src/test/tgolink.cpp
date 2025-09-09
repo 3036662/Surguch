@@ -607,15 +607,15 @@ void TGolink::RemoveAllCoveredUriTest_data() {
 
     std::for_each(test_bb_page1.cbegin(), test_bb_page1.cend(),
                   [&](auto const& bounding_box) {
-                      input_data1.emplace_back(core::utils::PageUriData{
-                          bounding_box, -1, test_uri});
+                      input_data1.emplace_back(
+                          core::utils::PageUriData{bounding_box, -1, test_uri});
                   });
 
     core::utils::PageUriList expected_data1;
     std::for_each(expected_bb_page1.cbegin(), expected_bb_page1.cend(),
                   [&](auto const& bounding_box) {
-                      expected_data1.emplace_back(core::utils::PageUriData{
-                          bounding_box, -1, test_uri});
+                      expected_data1.emplace_back(
+                          core::utils::PageUriData{bounding_box, -1, test_uri});
                   });
 
     QTest::newRow("test_data_1") << input_data1 << expected_data1;
@@ -623,15 +623,15 @@ void TGolink::RemoveAllCoveredUriTest_data() {
     core::utils::PageUriList input_data2;
     std::for_each(test_bb_page2.cbegin(), test_bb_page2.cend(),
                   [&](auto const& bounding_box) {
-                      input_data2.emplace_back(core::utils::PageUriData{
-                          bounding_box, -1, test_uri});
+                      input_data2.emplace_back(
+                          core::utils::PageUriData{bounding_box, -1, test_uri});
                   });
 
     core::utils::PageUriList expected_data2;
     std::for_each(expected_bb_page2.cbegin(), expected_bb_page2.cend(),
                   [&](auto const& bounding_box) {
-                      expected_data2.emplace_back(core::utils::PageUriData{
-                          bounding_box, -1, test_uri});
+                      expected_data2.emplace_back(
+                          core::utils::PageUriData{bounding_box, -1, test_uri});
                   });
 
     QTest::newRow("test_data_2") << input_data2 << expected_data2;

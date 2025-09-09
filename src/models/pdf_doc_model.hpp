@@ -61,7 +61,7 @@ class PdfDocModel : public QAbstractListModel {
     /// @brief get current source path
     [[nodiscard]] Q_INVOKABLE QString getSource() const;
 
-    /// @brief resert the whole model
+    /// @brief reset the whole model
     Q_INVOKABLE void redrawAll();
 
     /// @brief the 'save file as' implementation
@@ -126,7 +126,7 @@ class PdfDocModel : public QAbstractListModel {
     [[nodiscard]] Q_INVOKABLE std::vector<pdfcsp::pdf::CAnnotParams>
     getAnnotParams() const;
 
-    /// @brief returns a vector of rectangles to highligt
+    /// @brief returns a vector of rectangles to highlight
     [[nodiscard]] Q_INVOKABLE NeedleRectsOnPage
     getNeedlesForPage(size_t page_index);
 
@@ -135,7 +135,7 @@ class PdfDocModel : public QAbstractListModel {
 
     Q_INVOKABLE void jumpToNeedle(int needle_index);
 
-    Q_INVOKABLE std::shared_ptr<core::TextExtractor::RectToHiglightCurrent>
+    Q_INVOKABLE std::shared_ptr<core::TextExtractor::RectToHighlightCurrent>
     getCurrentNeedleRect(size_t page_index);
 
     /// @brief returns the uri under the cursor

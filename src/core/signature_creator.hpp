@@ -36,7 +36,7 @@ class SignatureCreator : public QObject {
     /// @brief Handle the result of the signature worker thread.
     void handleResult(const SignWorker::SignResult &res);
 
-    /// @brief Recieve the estimated stamp size and send it to the frontend
+    /// @brief Receive the estimated stamp size and send it to the frontend
     void handleStampResize(SignWorker::AimResizeFactor res);
 
     /**

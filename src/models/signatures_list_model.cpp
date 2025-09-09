@@ -101,8 +101,8 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
         worker_thread->requestInterruption();
     }
     // qThreads and validator objects are stored in array, so it possible not to
-    // wait for results if the document changed, just create a new thred and run
-    // the verification
+    // wait for results if the document changed, just create a new thread and
+    // run the verification
     worker_threads_.emplace_back(std::make_unique<QThread>());
     ++curr_worker_index_ = worker_threads_.size() - 1;
     worker_thread = worker_threads_[curr_worker_index_].get();
@@ -146,7 +146,7 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
 
     // one signature validation finished
     QObject::connect(
-        validator, &core::SignaturesValidator::validatationResult,
+        validator, &core::SignaturesValidator::validationResult,
         [this, worker_thread](
             std::shared_ptr<core::ValidationResult> validation_result,
             size_t ind) {
@@ -217,7 +217,7 @@ void SignaturesListModel::recoverDoc(qint64 sig_index) {
         return;
     }
     if (recover_worker_ != nullptr || recover_thread_ != nullptr) {
-        qWarning() << "recoverDoc is alreary running";
+        qWarning() << "recoverDoc is already running";
         return;
     }
     // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)

@@ -37,9 +37,11 @@ QVariant FileTreeModel::data(const QModelIndex &index, int role) const {
         case TypeRole:
             return item->data().type;
         case SigStatusRole:
-            if (item->data().has_check_result.has_value() && item->data().has_check_result.value()) {
+            if (item->data().has_check_result.has_value() &&
+                item->data().has_check_result.value()) {
                 return QVariant::fromValue(item->data().check_results.value());
-            } return false;
+            }
+            return false;
         case UidRole:
             return item->uid();
         case IdRole:
@@ -125,9 +127,7 @@ QHash<int, QByteArray> FileTreeModel::roleNames() const {
     return roles;
 }
 
-bool FileTreeModel::isDraft() const {
-    return is_draft_;
-}
+bool FileTreeModel::isDraft() const { return is_draft_; }
 
 std::vector<int> FileTreeModel::getCertList(int file_id) {
     if (!item_map.at(file_id).expired()) {
@@ -136,28 +136,32 @@ std::vector<int> FileTreeModel::getCertList(int file_id) {
     return {};
 }
 
-bool FileTreeModel::addNode(const QVariantList& list) {
+bool FileTreeModel::addNode(const QVariantList &list) {
     qWarning() << "FileTreeModel::addNode()" << list.size();
     if (!list.empty()) {
         QStringList file_list;
-        std::for_each(list.cbegin(), list.cend(),[&file_list](const QVariant &item) {
-            qWarning() << "FileTreeModel::addNode()" << item.metaType().name();
-            file_list.append(qvariant_cast<QUrl>(item.value<QVariant>()).toString());
-        });
+        std::for_each(
+            list.cbegin(), list.cend(), [&file_list](const QVariant &item) {
+                qWarning() << "FileTreeModel::addNode()"
+                           << item.metaType().name();
+                file_list.append(
+                    qvariant_cast<QUrl>(item.value<QVariant>()).toString());
+            });
 
-        file_list.erase(
-            std::remove_if(file_list.begin(), file_list.end(),
-                           [this](const QString &file_name) {
-                               return root_item->contains(QUrl(file_name).toLocalFile());
-                           }),
-            file_list.end());
+        file_list.erase(std::remove_if(file_list.begin(), file_list.end(),
+                                       [this](const QString &file_name) {
+                                           return root_item->contains(
+                                               QUrl(file_name).toLocalFile());
+                                       }),
+                        file_list.end());
         QJsonArray file_array;
         std::for_each(
             file_list.begin(), file_list.end(),
             [this, &file_array](const QString &file_name) {
                 if (!root_item->contains(QUrl(file_name).toLocalFile())) {
                     file_array.append(QUrl(file_name).toLocalFile());
-                    qWarning() << "FileTreeModel::addNode()" << QUrl(file_name).toLocalFile();
+                    qWarning() << "FileTreeModel::addNode()"
+                               << QUrl(file_name).toLocalFile();
                 }
             });
         if (!ctx_available_) {
@@ -261,18 +265,21 @@ void FileTreeModel::setupModelData(const QJsonArray &doc, TreeItem *parent) {
         if (obj.contains("ref_ids")) {
             QJsonArray refArray = obj["ref_ids"].toArray();
             if (refArray.size() > 0) {
-                std::for_each(refArray.begin(), refArray.end(),[&fileData](const auto &ref_id) {
-                       fileData.ref_ids.emplace_back(ref_id.toInt());
-                });
+                std::for_each(refArray.begin(), refArray.end(),
+                              [&fileData](const auto &ref_id) {
+                                  fileData.ref_ids.emplace_back(ref_id.toInt());
+                              });
             }
         }
         if (obj.contains("mrpa_ids")) {
             QJsonArray mrpaRefArray = obj["ref_ids"].toArray();
             if (mrpaRefArray.size() > 0) {
-                std::for_each(mrpaRefArray.begin(), mrpaRefArray.end(),[&fileData](const auto &mrpa_id) {
-                       fileData.mrpa_ids.emplace_back(mrpa_id.toInt());
-                });
-            fileData.mrpa_id_size = mrpaRefArray.size();
+                std::for_each(
+                    mrpaRefArray.begin(), mrpaRefArray.end(),
+                    [&fileData](const auto &mrpa_id) {
+                        fileData.mrpa_ids.emplace_back(mrpa_id.toInt());
+                    });
+                fileData.mrpa_id_size = mrpaRefArray.size();
             }
         }
         if (obj.contains("has_check_result")) {
@@ -280,21 +287,28 @@ void FileTreeModel::setupModelData(const QJsonArray &doc, TreeItem *parent) {
             if (fileData.has_check_result && obj.contains("check_results")) {
                 QJsonArray checkArray;
                 checkArray = obj["check_results"].toArray();
-                std::for_each(checkArray.begin(), checkArray.end(), [&fileData](const auto &item) {
-                    if (item.isObject()) {
-                        QJsonObject item_obj = item.toObject();
-                        if (item_obj.contains("file_id") && item_obj.contains("check_summary")) {
-                            CheckResult check_result;
-                            check_result.file_id = item_obj["file_id"].toInt();
-                            check_result.check_summary = item_obj["check_summary"].toBool();
-                            if (fileData.check_results.has_value()) {
-                                fileData.check_results.value().emplace_back(check_result);
-                            } else {
-                                fileData.check_results = std::vector{check_result};
+                std::for_each(
+                    checkArray.begin(), checkArray.end(),
+                    [&fileData](const auto &item) {
+                        if (item.isObject()) {
+                            QJsonObject item_obj = item.toObject();
+                            if (item_obj.contains("file_id") &&
+                                item_obj.contains("check_summary")) {
+                                CheckResult check_result;
+                                check_result.file_id =
+                                    item_obj["file_id"].toInt();
+                                check_result.check_summary =
+                                    item_obj["check_summary"].toBool();
+                                if (fileData.check_results.has_value()) {
+                                    fileData.check_results.value().emplace_back(
+                                        check_result);
+                                } else {
+                                    fileData.check_results =
+                                        std::vector{check_result};
+                                }
                             }
                         }
-                    }
-                });
+                    });
             }
         }
 
@@ -450,19 +464,18 @@ void FileTreeModel::processDraftTree() {
         }
         state_ = Done;
         QJsonArray add_array;
-        std::for_each(
-            operation_data_.begin(), operation_data_.end(),
-            [this, &add_array](const auto &pair) {
-                    if (pair.second.operation == Add) {
-                        add_array.append(pair.first);
-                    }
-                }
-            );
-        std::for_each(add_array.begin(), add_array.end(),[this](const auto &item) {
-            if (item.isString()) {
-            operation_data_.erase(item.toString());
-            }
-        });
+        std::for_each(operation_data_.begin(), operation_data_.end(),
+                      [this, &add_array](const auto &pair) {
+                          if (pair.second.operation == Add) {
+                              add_array.append(pair.first);
+                          }
+                      });
+        std::for_each(add_array.begin(), add_array.end(),
+                      [this](const auto &item) {
+                          if (item.isString()) {
+                              operation_data_.erase(item.toString());
+                          }
+                      });
         if (!add_array.empty()) {
             processAdd(add_array);
         }
@@ -472,17 +485,17 @@ void FileTreeModel::processDraftTree() {
         std::for_each(
             operation_data_.begin(), operation_data_.end(),
             [this, &delete_array, &delete_array_helper](const auto &pair) {
-                    if (pair.second.operation == Delete) {
-                        delete_array.append(pair.second.file_id.value());
-                        delete_array_helper.append(pair.first);
-                    }
+                if (pair.second.operation == Delete) {
+                    delete_array.append(pair.second.file_id.value());
+                    delete_array_helper.append(pair.first);
                 }
-            );
-        std::for_each(delete_array_helper.begin(), delete_array_helper.end(),[this](const auto &item) {
-            if (item.isString()) {
-                operation_data_.erase(item.toString());
-            }
-        });
+            });
+        std::for_each(delete_array_helper.begin(), delete_array_helper.end(),
+                      [this](const auto &item) {
+                          if (item.isString()) {
+                              operation_data_.erase(item.toString());
+                          }
+                      });
         if (!delete_array.empty()) {
             processDelete(delete_array);
         }
@@ -506,7 +519,9 @@ void FileTreeModel::processSignedTree() {
                     qWarning() << "[DEBUG]"
                                << " FileTreeModel::processSignedTree(): "
                                << "completed and ready";
-                    qWarning() << "[DEBUG]" << "root child count: " << root_item->childCount();
+                    qWarning()
+                        << "[DEBUG]"
+                        << "root child count: " << root_item->childCount();
 
                     is_draft_ = false;
                     emit isDraftChanged();
@@ -518,19 +533,17 @@ void FileTreeModel::processSignedTree() {
     }
 
     QJsonArray add_array;
-    std::for_each(
-        operation_data_.begin(), operation_data_.end(),
-        [this, &add_array](const auto &pair) {
-                if (pair.second.operation == Add) {
-                    add_array.append(QUrl(pair.first).toLocalFile());
-                }
-            }
-        );
-    std::for_each(add_array.begin(), add_array.end(),[this](const auto &item) {
-            if (item.isString()) {
+    std::for_each(operation_data_.begin(), operation_data_.end(),
+                  [this, &add_array](const auto &pair) {
+                      if (pair.second.operation == Add) {
+                          add_array.append(QUrl(pair.first).toLocalFile());
+                      }
+                  });
+    std::for_each(add_array.begin(), add_array.end(), [this](const auto &item) {
+        if (item.isString()) {
             operation_data_.erase(item.toString());
-            }
-        });
+        }
+    });
     if (!add_array.empty()) {
         processAdd(add_array);
     }
@@ -540,17 +553,17 @@ void FileTreeModel::processSignedTree() {
     std::for_each(
         operation_data_.begin(), operation_data_.end(),
         [this, &delete_array, &delete_array_helper](const auto &pair) {
-                if (pair.second.operation == Delete) {
-                    delete_array.append(pair.second.file_id.value());
-                    delete_array_helper.append(pair.first);
-                }
-            }
-        );
-    std::for_each(delete_array_helper.begin(), delete_array_helper.end(),[this](const auto &item) {
-            if (item.isString()) {
-                operation_data_.erase(item.toString());
+            if (pair.second.operation == Delete) {
+                delete_array.append(pair.second.file_id.value());
+                delete_array_helper.append(pair.first);
             }
         });
+    std::for_each(delete_array_helper.begin(), delete_array_helper.end(),
+                  [this](const auto &item) {
+                      if (item.isString()) {
+                          operation_data_.erase(item.toString());
+                      }
+                  });
     if (!delete_array.empty()) {
         processDelete(delete_array);
     }

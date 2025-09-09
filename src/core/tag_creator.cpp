@@ -19,8 +19,8 @@ QString TagCreator::embedAnnot(
         auto qb_file_path = file_path.toUtf8();
         std::unique_ptr<pdfcsp::pdf::CEmbedAnnotResult,
                         decltype(&pdfcsp::pdf::CFreeEmbedAnnotResult)>
-            res(pdfcsp::pdf::PerfomAnnotEmbeddign(params.data(), params.size(),
-                                                  qb_tmp_path, qb_file_path),
+            res(pdfcsp::pdf::PerformAnnotEmbedding(params.data(), params.size(),
+                                                   qb_tmp_path, qb_file_path),
                 &pdfcsp::pdf::CFreeEmbedAnnotResult);
         if (res != nullptr && res->status) {
             return res->tmp_file_path;
