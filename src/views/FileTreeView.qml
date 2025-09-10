@@ -8,10 +8,9 @@ import StyleSheet
 TreeView {
     id: treeView
 
+    Layout.alignment: Qt.AlignLeft
     Layout.fillHeight: true
     Layout.leftMargin: 5
-    Layout.alignment: Qt.AlignLeft
-
     clip: true
     model: fileTreeModel
 
@@ -27,44 +26,24 @@ TreeView {
         required property int row
         required property TreeView treeView
 
+        //switch according to enum Types in tree_item.hpp
         function getImageForNode(type) {
             switch (type) {
-                case "Zip" :
-                    return StyleSheet.box_icon;
-                case "Dir":
-                    return StyleSheet.folder_plus_icon;
-                case "File":
-                    return StyleSheet.file_simple_icon;
-                case "Sig":
-                    return StyleSheet.medal_icon;
-                case "Asig":
-                    return StyleSheet.box_icon;
-                case "Mrpa":
-                    return StyleSheet.file_simple_icon;
-                default:
-                    return "";
+            case 0:
+                return StyleSheet.box_icon
+            case 1:
+                return StyleSheet.folder_plus_icon
+            case 2:
+                return StyleSheet.file_simple_icon
+            case 3:
+                return StyleSheet.medal_icon
+            case 4:
+                return StyleSheet.box_icon
+            case 5:
+                return StyleSheet.file_simple_icon
+            default:
+                return ""
             }
-        }
-
-        function getCheckResultsColor(results) {
-            if (!results || results.length === 0) {
-                return "gray";
-            }
-
-            var allPassed = true;
-            var allFailed = true;
-
-            for (var i = 0; i < results.length; i++) {
-                if (results[i].check_summary) {
-                    allFailed = false;
-                } else {
-                    allPassed = false;
-                }
-            }
-
-            if (allPassed) return "green";
-            if (allFailed) return "red";
-            return "yellow";
         }
 
         implicitHeight: nameField.implicitHeight * 1.6
@@ -74,10 +53,9 @@ TreeView {
             id: background
 
             anchors.fill: parent
-            color: "transparent"
             border.color: row === treeView.currentRow ? "#3daee9" : "transparent"
+            color: "transparent"
         }
-
         RowLayout {
             anchors.fill: parent
             spacing: 0
@@ -100,20 +78,20 @@ TreeView {
 
                 TapHandler {
                     onSingleTapped: {
-                        let index = treeView.index(row, column);
-                        treeView.selectionModel.setCurrentIndex(index, ItemSelectionModel.NoUpdate);
-                        treeView.toggleExpanded(row);
+                        let index = treeView.index(row, column)
+                        treeView.selectionModel.setCurrentIndex(
+                                    index, ItemSelectionModel.NoUpdate)
+                        treeView.toggleExpanded(row)
                     }
                 }
             }
             Rectangle {
                 id: treeIndent
 
-                color: "transparent"
-
                 Layout.fillHeight: true
-                Layout.minimumWidth: hasChildren ? indentation : indentation + 10
                 Layout.maximumWidth: hasChildren ? indentation : indentation + 10
+                Layout.minimumWidth: hasChildren ? indentation : indentation + 10
+                color: "transparent"
             }
             Image {
                 id: image
@@ -156,13 +134,12 @@ TreeView {
                 text: model.size
                 visible: model.type !== "temp"
             }
-
             BusyIndicator {
                 id: size_busy_indicator
-                visible: model.type === "temp"
-                Layout.preferredWidth: sizeColumn
-            }
 
+                Layout.preferredWidth: sizeColumn
+                visible: model.type === "temp"
+            }
             Label {
                 id: lastEditField
 
@@ -175,13 +152,12 @@ TreeView {
                 text: model.modification_time
                 visible: model.type !== "temp"
             }
-
             BusyIndicator {
                 id: date_busy_indicator
-                visible: model.type === "temp"
-                Layout.preferredWidth: editColumn
-            }
 
+                Layout.preferredWidth: editColumn
+                visible: model.type === "temp"
+            }
             Label {
                 id: signStatusField
 
@@ -191,40 +167,17 @@ TreeView {
                 color: StyleSheet.font_color_extra
                 font.pixelSize: column === 0 ? 14 : 10
                 horizontalAlignment: Text.AlignHCenter
-                text: {
-                    if (model.type === "File") {
-                        if (model.encrypted) {
-                            return qsTr("Bad")
-                        }
-                        if (model.refs_num > 0) {
-                            return model.refs_num
-                        }
-                    }
-                    if (model.type === "Asig") {
-                        
-                    }
-                    return qsTr("Ok")
-                }
+                text: model.sig_status
                 visible: signStatusField.text !== "" && !fileTreeModel.isDraft
 
                 background: Rectangle {
-                    color: {
-                        if (model.type === "File") {
-                            if (model.encrypted) {
-                                return "red"
-                            }
-                            if (model.refs_num > 0) {
-                                let list = model.refs_list
-                                getCheckResultsColor(model.refs_list)
-                            }
-                        }
-                        return "green"
-                    }
-                    width: signStatusField.contentWidth + 12
+                    anchors.centerIn: parent
+                    color: model.sig_color
                     height: signStatusField.contentHeight + 6
                     radius: height / 4
-                    anchors.centerIn: parent
-                    visible: signStatusField.text !== "" && !fileTreeModel.isDraft
+                    visible: signStatusField.text !== ""
+                             && !fileTreeModel.isDraft
+                    width: signStatusField.contentWidth + 12
 
                     MouseArea {
                         id: sigStatusArea
@@ -233,33 +186,31 @@ TreeView {
                         hoverEnabled: true
 
                         onClicked: {
-                            console.warn("before click " + rightSideBar.visible)
-                            rightSideBar.showState = RightSideBar.ShowState.SigInfo;
-                            console.warn("after click " + rightSideBar.visible)
+                            rightSideBar.showState = RightSideBar.ShowState.Certs
                         }
                         onEntered: {
-                            cursorShape = Qt.PointingHandCursor;
+                            cursorShape = Qt.PointingHandCursor
                         }
                         onExited: {
-                            cursorShape = Qt.ArrowCursor;
+                            cursorShape = Qt.ArrowCursor
                         }
                     }
                 }
             }
-
             Rectangle {
                 id: sign_status_dummy
+
                 Layout.alignment: Qt.AlignLeft
                 Layout.preferredWidth: signColumn
-                visible: !signStatusField.visible && !sign_busy_indicator.visible
+                visible: !signStatusField.visible
+                         && !sign_busy_indicator.visible
             }
-
             BusyIndicator {
                 id: sign_busy_indicator
-                visible: fileTreeModel.isDraft
-                Layout.preferredWidth: signColumn
-            }
 
+                Layout.preferredWidth: signColumn
+                visible: fileTreeModel.isDraft
+            }
             Label {
                 id: mrpaStatusField
 
@@ -269,16 +220,17 @@ TreeView {
                 color: StyleSheet.font_color_extra
                 font.pixelSize: column === 0 ? 14 : 10
                 horizontalAlignment: Text.AlignHCenter
-                text: "mrpa"
-                visible: model.sig_status && !fileTreeModel.isDraft
+                text: model.mrpa_status
+                visible: !fileTreeModel.isDraft
 
                 background: Rectangle {
-                    color: "green"
-                    width: mrpaStatusField.contentWidth + 12
+                    anchors.centerIn: parent
+                    color: model.mrpa_color
                     height: mrpaStatusField.contentHeight + 6
                     radius: height / 4
-                    anchors.centerIn: parent
-                    visible: mrpaStatusField.text !== "" && !fileTreeModel.isDraft
+                    visible: mrpaStatusField.text !== ""
+                             && !fileTreeModel.isDraft
+                    width: mrpaStatusField.contentWidth + 12
 
                     MouseArea {
                         id: mrpaStatusArea
@@ -287,56 +239,54 @@ TreeView {
                         hoverEnabled: true
 
                         onClicked: {
-                            rightSideBar.showState = RightSideBar.ShowState.Certs;
+                            rightSideBar.showState = RightSideBar.ShowState.Certs
                         }
                         onEntered: {
-                            cursorShape = Qt.PointingHandCursor;
+                            cursorShape = Qt.PointingHandCursor
                         }
                         onExited: {
-                            cursorShape = Qt.ArrowCursor;
+                            cursorShape = Qt.ArrowCursor
                         }
                     }
                 }
             }
-
             Rectangle {
                 id: mrpa_status_dummy
+
                 Layout.alignment: Qt.AlignLeft
                 Layout.preferredWidth: signColumn
-                visible: !mrpaStatusField.visible && !mrpa_busy_indicator.visible
+                visible: !mrpaStatusField.visible
+                         && !mrpa_busy_indicator.visible
             }
-
             BusyIndicator {
                 id: mrpa_busy_indicator
 
-                visible: fileTreeModel.isDraft
                 Layout.preferredWidth: mrpaColumn
+                visible: fileTreeModel.isDraft
             }
-
             ToolButton {
                 id: deleteBtn
 
-                visible: depth === 0
                 Layout.preferredWidth: deleteColumn
+                height: 20
                 icon.height: 20
                 icon.source: StyleSheet.trash_icon
                 icon.width: 20
-                height: 20
+                visible: depth === 0
                 width: 20
 
                 onClicked: {
-                    console.warn("delete node res: " + fileTreeModel.deleteNode(model.full_path, row, model.uid, model.id))
+                    console.warn("delete node res: " + fileTreeModel.deleteNode(
+                                     model.full_path, row, model.uid, model.id))
                 }
             }
-
             Item {
                 id: dummyDelete
 
-                visible: !deleteBtn.visible
                 Layout.preferredWidth: deleteColumn
+                visible: !deleteBtn.visible
             }
         }
-
     }
     selectionModel: ItemSelectionModel {
         model: treeView.model

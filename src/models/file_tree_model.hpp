@@ -23,6 +23,9 @@ class FileTreeModel : public QAbstractItemModel {
         SizeRole,
         LastEditRole,
         SigStatusRole,
+        SigColorRole,
+        MrpaStatusRole,
+        MrpaColorRole,
         HasKidsRole,
         DescriptionRole,
         TypeRole,
@@ -64,12 +67,12 @@ class FileTreeModel : public QAbstractItemModel {
     [[nodiscard]] bool isDraft() const;
 
     Q_INVOKABLE std::vector<int> getCertList(int fie_id);
-    Q_INVOKABLE bool addNode(const QVariantList& list);
+    Q_INVOKABLE bool addNode(const QVariantList &list);
     Q_INVOKABLE bool deleteNode(const QString &full_path, int row, QUuid uid,
                                 int id);
     Q_INVOKABLE void deleteTree();
 
-    signals:
+   signals:
     void isDraftChanged();
 
    private:
@@ -80,6 +83,8 @@ class FileTreeModel : public QAbstractItemModel {
     void processSignedTree();
     void addFilesUI(const QStringList &file_list);
     void deleteFilesUI(int row, QUuid uid, int id);
+
+    void processChecks(FileData &data);
 
     pdfcsp::DocTree tree_;
     std::unique_ptr<TreeFuture> tree_future_;

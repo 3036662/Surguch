@@ -1,17 +1,29 @@
 #ifndef TREE_ITEM_HPP
 #define TREE_ITEM_HPP
 
+#include <QJsonObject>
 #include <QUuid>
 #include <QVariantList>
-#include <QJsonObject>
 #include <memory>
 
+// possible node types
+enum NodeTypes {
+    Zip,
+    Dir,
+    File,
+    Sig,
+    Asig,
+    Mrpa,
+};
+
 struct CheckResult {
-    uint32_t file_id = 0;
+    int file_id = 0;
     bool check_summary = false;
 };
 
+// struct to hold all needed data about node from libmrpa
 struct FileData {
+    NodeTypes type;
     bool encrypted = false;
     int id = 0;
     int size = 0;
@@ -21,10 +33,18 @@ struct FileData {
     std::vector<int> ref_ids;
     std::vector<int> mrpa_ids;
     QString name;
-    QString type;
     QString full_path;
+
+    // most of nodes could have relations with MRPA or Signs
     std::optional<bool> has_check_result = false;
-    std::optional<std::vector<CheckResult>> check_results;
+    std::vector<CheckResult> check_results;
+    QString sig_text;
+    QString sig_color;
+    QString mrpa_text;
+    QString mrpa_color;
+
+    // MRPA specific fields
+    std::optional<bool> time_valid = false;
     std::optional<QJsonObject> mrpa_data;
 };
 

@@ -71,8 +71,8 @@ QSGNode *PreviewRender::updatePaintNode(
     if (target_height_qml > max_height_) {
         scale_fact = max_height_ / target_height_qml;
     }
-    target_height_qml*=scale_fact;
-    const auto target_width_qml = target_height_qml/yx_ratio_result;
+    target_height_qml *= scale_fact;
+    const auto target_width_qml = target_height_qml / yx_ratio_result;
 
     const auto img_tmp = result_->image_->scaled(
         static_cast<int>(result_->image_->width() * scale_fact),

@@ -32,14 +32,6 @@ target_include_directories(models PUBLIC
 )
 
 target_include_directories(models PUBLIC
-        ${PDFCSP_MRPA_INCLUDE_DIR}/tree
-)
-
-target_include_directories(models PUBLIC
-        ${PDFCSP_MRPA_INCLUDE_DIR}/zip
-)
-
-target_include_directories(models PUBLIC
         ${PDFCSP_INCLUDE_DIR}csp/checks
 )
 target_include_directories(models PUBLIC

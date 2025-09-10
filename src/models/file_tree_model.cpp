@@ -1,5 +1,7 @@
 #include "file_tree_model.hpp"
 
+#include <qpalette.h>
+
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -37,11 +39,13 @@ QVariant FileTreeModel::data(const QModelIndex &index, int role) const {
         case TypeRole:
             return item->data().type;
         case SigStatusRole:
-            if (item->data().has_check_result.has_value() &&
-                item->data().has_check_result.value()) {
-                return QVariant::fromValue(item->data().check_results.value());
-            }
-            return false;
+            return item->data().sig_text;
+        case SigColorRole:
+            return item->data().sig_color;
+        case MrpaStatusRole:
+            return item->data().mrpa_text;
+        case MrpaColorRole:
+            return item->data().mrpa_color;
         case UidRole:
             return item->uid();
         case IdRole:
@@ -113,6 +117,9 @@ QHash<int, QByteArray> FileTreeModel::roleNames() const {
     roles[SizeRole] = "size";
     roles[LastEditRole] = "modification_time";
     roles[SigStatusRole] = "sig_status";
+    roles[SigColorRole] = "sig_color";
+    roles[MrpaStatusRole] = "mrpa_status";
+    roles[MrpaColorRole] = "mrpa_color";
     roles[DescriptionRole] = "description";
     roles[FullPathRole] = "full_path";
     roles[TypeRole] = "type";
@@ -247,7 +254,20 @@ void FileTreeModel::setupModelData(const QJsonArray &doc, TreeItem *parent) {
             fileData.last_modified = statArray["modification_time"].toInt();
         }
         if (obj.contains("type")) {
-            fileData.type = obj["type"].toString();
+            QString type = obj["type"].toString();
+            if (type == "File") {
+                fileData.type = File;
+            } else if (type == "Dir") {
+                fileData.type = Dir;
+            } else if (type == "Zip") {
+                fileData.type = Zip;
+            } else if (type == "Asig") {
+                fileData.type = Asig;
+            } else if (type == "Sig") {
+                fileData.type = Sig;
+            } else if (type == "Mrpa") {
+                fileData.type = Mrpa;
+            }
         }
         if (statArray.contains("encrypted")) {
             fileData.encrypted = statArray["encrypted"].toBool();
@@ -299,13 +319,8 @@ void FileTreeModel::setupModelData(const QJsonArray &doc, TreeItem *parent) {
                                     item_obj["file_id"].toInt();
                                 check_result.check_summary =
                                     item_obj["check_summary"].toBool();
-                                if (fileData.check_results.has_value()) {
-                                    fileData.check_results.value().emplace_back(
-                                        check_result);
-                                } else {
-                                    fileData.check_results =
-                                        std::vector{check_result};
-                                }
+                                fileData.check_results.emplace_back(
+                                    check_result);
                             }
                         }
                     });
@@ -314,6 +329,14 @@ void FileTreeModel::setupModelData(const QJsonArray &doc, TreeItem *parent) {
 
         if (obj.contains("mrpa_json_repr")) {
             fileData.mrpa_data = obj["mrpa_json_repr"].toObject();
+        }
+
+        if (obj.contains("time_valid")) {
+            fileData.time_valid = obj["time_valid"].toBool();
+        }
+
+        if (!is_draft_) {
+            processChecks(fileData);
         }
 
         QUuid const uid(QUuid::createUuid());
@@ -442,10 +465,10 @@ void FileTreeModel::processDraftTree() {
                 if (json_doc.isObject()) {
                     QJsonArray const data_ = json_doc["children"].toArray();
                     beginResetModel();
-                    root_item->deleteChildren();
-                    setupModelData(data_, root_item.get());
                     is_draft_ = true;
                     emit isDraftChanged();
+                    root_item->deleteChildren();
+                    setupModelData(data_, root_item.get());
                     qWarning() << "[DEBUG]"
                                << " FileTreeModel::processDraftTree(): "
                                << "completed and ready";
@@ -514,6 +537,8 @@ void FileTreeModel::processSignedTree() {
                 if (json_doc.isObject()) {
                     QJsonArray const data_ = json_doc["children"].toArray();
                     beginResetModel();
+                    is_draft_ = false;
+                    emit isDraftChanged();
                     root_item->deleteChildren();
                     setupModelData(data_, root_item.get());
                     qWarning() << "[DEBUG]"
@@ -522,9 +547,6 @@ void FileTreeModel::processSignedTree() {
                     qWarning()
                         << "[DEBUG]"
                         << "root child count: " << root_item->childCount();
-
-                    is_draft_ = false;
-                    emit isDraftChanged();
                     endResetModel();
                 }
             }
@@ -594,4 +616,124 @@ void FileTreeModel::deleteFilesUI(int row, QUuid uid, int id) {
     beginRemoveRows(QModelIndex(), row, row);
     root_item->deleteItem(uid);
     endRemoveRows();
+}
+
+void FileTreeModel::processChecks(FileData &data) {
+    switch (data.type) {
+        case Zip:
+            data.sig_text = "";
+            return;
+        case Dir:
+            data.sig_text = "";
+            return;
+        case Sig:
+            if (data.has_check_result.has_value() &&
+                data.has_check_result.value()) {
+                if (data.check_results.size() > 0) {
+                    int valid = 0;
+                    int invalid = 0;
+                    std::for_each(data.check_results.cbegin(),
+                                  data.check_results.cend(),
+                                  [&valid, &invalid](const CheckResult &res) {
+                                      if (res.check_summary) {
+                                          ++valid;
+                                      } else {
+                                          ++invalid;
+                                      }
+                                  });
+                    if (valid > 0 && invalid == 0) {
+                        data.sig_text = "good";
+                        data.sig_color = "green";
+                        return;
+                    }
+                    if (valid > 0 && invalid > 0) {
+                        data.sig_text = "mixed";
+                        data.sig_color = "orange";
+                        return;
+                    }
+                    data.sig_text = "bad";
+                    data.sig_color = "red";
+                    return;
+                }
+            }
+            data.sig_text = "notfound";
+            data.sig_color = "red";
+            return;
+        case Asig:
+            if (data.has_check_result.has_value() &&
+                data.has_check_result.value()) {
+                if (data.check_results.size() > 0) {
+                    int valid = 0;
+                    int invalid = 0;
+                    std::for_each(data.check_results.cbegin(),
+                                  data.check_results.cend(),
+                                  [&valid, &invalid](const CheckResult &item) {
+                                      if (item.check_summary) {
+                                          ++valid;
+                                      } else {
+                                          ++invalid;
+                                      }
+                                  });
+                    if (valid > 0 && invalid == 0) {
+                        data.sig_text = "good";
+                        data.sig_color = "green";
+                        return;
+                    }
+                    if (valid > 0 && invalid > 0) {
+                        data.sig_text = "mixed";
+                        data.sig_color = "orange";
+                        return;
+                    }
+                    data.sig_text = "bad";
+                    data.sig_color = "red";
+                    return;
+                }
+            }
+            data.sig_text = "notfound";
+            data.sig_color = "red";
+            return;
+        case File:
+            if (data.encrypted) {
+                data.sig_text = "lock";
+                data.sig_color = "red";
+                return;
+            }
+            if (data.ref_id_size > 0) {
+                data.sig_text = QString::number(data.ref_id_size);
+                data.sig_color = "green";
+            }
+            if (data.mrpa_id_size > 0) {
+                if (data.mrpa_id_size == data.ref_id_size) {
+                    data.mrpa_text = QString::number(data.mrpa_id_size);
+                    data.mrpa_color = "green";
+                    return;
+                }
+                data.mrpa_text = QString::number(data.mrpa_id_size);
+                data.mrpa_color = "orange";
+            }
+            data.sig_text = "nosign";
+            data.sig_color = "orange";
+            data.mrpa_text = "nomrpa";
+            data.mrpa_color = "orange";
+            return;
+        case Mrpa:
+            data.sig_text = "mrpa";
+            if (data.time_valid.has_value() && !data.time_valid.value()) {
+                data.mrpa_text = "old";
+                data.mrpa_color = "orange";
+                return;
+            }
+            if (data.ref_id_size > 0) {
+                data.mrpa_text = "ok";
+                data.mrpa_color = "green";
+                return;
+            }
+            data.mrpa_text = "nosign";
+            data.mrpa_color = "orange";
+            return;
+        default:
+            data.sig_text = "unknown";
+            return;
+            ;
+    }
 }
