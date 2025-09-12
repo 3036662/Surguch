@@ -136,11 +136,65 @@ QHash<int, QByteArray> FileTreeModel::roleNames() const {
 
 bool FileTreeModel::isDraft() const { return is_draft_; }
 
-std::vector<int> FileTreeModel::getCertList(int file_id) {
-    if (!item_map.at(file_id).expired()) {
-        return item_map[file_id].lock()->data().ref_ids;
+void FileTreeModel::getCertList(int file_id) {
+    if (item_map.at(file_id).expired()) {
+        return;
     }
-    return {};
+
+    std::vector<std::shared_ptr<core::ValidationResult>> res;
+    std::vector<size_t> res_ind;
+    switch (item_map.at(file_id).lock()->data().type) {
+        case File:
+            emit updateSigCount(
+                item_map.at(file_id).lock()->data().ref_id_size);
+            for (size_t i = 0; i < item_map[file_id].lock()->data().ref_id_size;
+                 ++i) {
+                pdfcsp::c_bridge::CPodResult const *pod =
+                    tree_.GetCheckResultForNode(
+                        item_map[file_id].lock()->data().ref_ids[i], file_id);
+                core::ValidationResult val_res;
+                core::createCSPResponse(val_res, pod);
+                res.emplace_back(std::move(
+                    std::make_shared<core::ValidationResult>(val_res)));
+                res_ind.emplace_back(i);
+            }
+            emit signatureReady(res, res_ind);
+            break;
+        case Sig:
+            emit updateSigCount(
+                item_map.at(file_id).lock()->data().ref_id_size);
+            for (int i = 0; i < item_map[file_id].lock()->data().ref_id_size;
+                 ++i) {
+                pdfcsp::c_bridge::CPodResult const *pod =
+                    tree_.GetCheckResultForNode(
+                        file_id, item_map[file_id].lock()->data().ref_ids[i]);
+                core::ValidationResult val_res;
+                core::createCSPResponse(val_res, pod);
+                res.emplace_back(std::move(
+                    std::make_shared<core::ValidationResult>(val_res)));
+                res_ind.emplace_back(i);
+            }
+            emit signatureReady(res, res_ind);
+            break;
+        case Asig:
+            emit updateSigCount(
+                item_map.at(file_id).lock()->data().ref_id_size);
+            for (int i = 0; i < item_map[file_id].lock()->data().ref_id_size;
+                 ++i) {
+                pdfcsp::c_bridge::CPodResult const *pod =
+                    tree_.GetCheckResultForNode(
+                        file_id, item_map[file_id].lock()->data().ref_ids[i]);
+                core::ValidationResult val_res;
+                core::createCSPResponse(val_res, pod);
+                res.emplace_back(std::move(
+                    std::make_shared<core::ValidationResult>(val_res)));
+                res_ind.emplace_back(i);
+            }
+            emit signatureReady(res, res_ind);
+            break;
+        default:
+            break;
+    }
 }
 
 bool FileTreeModel::addNode(const QVariantList &list) {
@@ -532,6 +586,7 @@ void FileTreeModel::processSignedTree() {
         state_ = Done;
         if (operation_data_.empty()) {
             if (res.has_value()) {
+                qWarning() << "[QDEBUG]" << res;
                 const QJsonDocument json_doc =
                     QJsonDocument::fromJson(res.value().data());
                 if (json_doc.isObject()) {

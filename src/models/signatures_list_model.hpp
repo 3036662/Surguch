@@ -82,6 +82,10 @@ class SignaturesListModel : public QAbstractListModel {
     void saveValidationResult(
         std::shared_ptr<core::ValidationResult> validation_result, size_t ind);
 
+    void saveValidationResultBatch(
+        std::vector<std::shared_ptr<core::ValidationResult>> validation_results,
+        std::vector<size_t> ind_vec);
+
    private:
     QHash<int, QByteArray> role_names_;
     std::vector<core::RawSignature> raw_signatures_;

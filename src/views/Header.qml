@@ -61,7 +61,7 @@ RowLayout {
             //text: qsTr("Open")
             text: qsTr("PDF")
             onClicked: kdeVersion === "5" ? labsFileDialog.open(
-            ) : fileDialog.open()
+                                                ) : fileDialog.open()
         }
 
         HeaderBarComponents.TopBarButton {
@@ -69,7 +69,7 @@ RowLayout {
             //text: qsTr("Open")
             text: qsTr("File")
             onClicked: kdeVersion === "5" ? labsFileDialog.open(
-            ) : fileDialog.open()
+                                                ) : fileTreeDialog.open()
         }
 
         HeaderBarComponents.TopBarButton {
@@ -84,7 +84,7 @@ RowLayout {
             text: qsTr("Save as ...")
             enabled: pdfListView.source.length > 0
             onClicked: kdeVersion === "5" ? labsSaveFileDialog.open(
-            ) : saveFileDialog.open()
+                                                ) : saveFileDialog.open()
         }
 
         Row {
@@ -114,10 +114,10 @@ RowLayout {
                     rightSideBar.showState = RightSideBar.ShowState.ProfileInfo
                     // set the certificates for select
                     rightSideBar.edit_profile.cert_data_raw
-                        = profileComboBox.model.getUserCertsJSON()
+                            = profileComboBox.model.getUserCertsJSON()
                     //set the stamps for select
                     rightSideBar.edit_profile.stamps_data_raw
-                        = profileComboBox.model.getUserStampsJSON()
+                            = profileComboBox.model.getUserStampsJSON()
                     // set a reference to this model
                     rightSideBar.edit_profile.profiles_model = profileComboBox.model
                     rightSideBar.edit_profile.profile_data
@@ -333,6 +333,20 @@ RowLayout {
     }
 
     CommonDialogs.FileDialog {
+        id: fileTreeDialog
+        fileMode: CommonDialogs.FileDialog.OpenFiles
+        //nameFilters: ["PDF files (*.pdf)","Any file (* *.*)"];
+        //nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
+        currentFolder: StandardPaths.writableLocation(
+                           StandardPaths.DocumentsLocation)
+        onAccepted: {
+            fileTreeModel.addNode(currentFiles)
+            rightSideBar.showState = RightSideBar.ShowState.Invisible
+            changeShowType(2)
+        }
+    }
+
+    CommonDialogs.FileDialog {
         id: saveFileDialog
 
         property bool quitAfterSave: false
@@ -365,7 +379,6 @@ RowLayout {
                 Qt.quit()
             }
         }
-
     }
 
     // KDE5 - use lab LabsDialogs

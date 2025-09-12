@@ -21,21 +21,30 @@ Item {
     property alias edit_profile: edit_profile_panel
     property int showState: RightSideBar.ShowState.Invisible
     property var jsonData
-    property int sigCount: 0
+    property int sigCount
+
+    signal showSigData(string data)
 
     function showData(data) {
+        console.warn("show data")
         try {
             if (!data) {
                 jsonData = undefined
                 return
             }
             //console.warn(data);
+            console.warn("show data")
             jsonData = JSON.parse(data)
             showState = RightSideBar.ShowState.SigInfo
             sigInfoPanel.contentY = 0
         } catch (e) {
             console.error("Error parsing JSON" + e.message)
         }
+    }
+
+    function setSigCount(sig_count) {
+        sigCount = sig_count
+        console.warn("QMLDEBUG sigCount = " + sigCount)
     }
 
     visible: showState != RightSideBar.ShowState.Invisible
@@ -75,6 +84,6 @@ Item {
 
     InfoPanelComponents.SignaturesList {
         id: rSigListView
-        visible: showState == LeftSideBar.ShowState.Certs && sigCount > 0
+        visible: showState == RightSideBar.ShowState.Certs && sigCount > 0
     }
 }

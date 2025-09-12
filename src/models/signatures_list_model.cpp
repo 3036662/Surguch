@@ -40,11 +40,12 @@ int SignaturesListModel::rowCount(const QModelIndex &parent) const {
     if (parent.isValid()) {
         return 0;
     }
-    return static_cast<int>(raw_signatures_.size());
+    return static_cast<int>(
+        std::max(raw_signatures_.size(), validation_results_.size()));
 }
 
 QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
-    if (!index.isValid() || index.row() > raw_signatures_.size() - 1) {
+    if (!index.isValid() || index.row() > validation_results_.size() - 1) {
         return {};
     }
     switch (role) {
@@ -67,6 +68,7 @@ QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
             return false;
             break;
         case EmptyRole:
+            return false;
             return raw_signatures_.at(index.row()).getSigData().empty();
             break;
         case SigData:
@@ -199,6 +201,17 @@ void SignaturesListModel::saveValidationResult(
     validation_results_[ind] = std::move(validation_result);
     const QModelIndex qInd = index(static_cast<int>(ind), 0);
     emit dataChanged(qInd, qInd);
+}
+
+void SignaturesListModel::saveValidationResultBatch(
+    std::vector<std::shared_ptr<core::ValidationResult>> validation_results,
+    std::vector<size_t> ind_vec) {
+    beginResetModel();
+    validation_results_.clear();
+    for (size_t ind : ind_vec) {
+        validation_results_[ind] = std::move(validation_results[ind]);
+    }
+    endResetModel();
 }
 
 /// @brief recover the document to state when it signed by signature

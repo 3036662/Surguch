@@ -187,6 +187,9 @@ TreeView {
 
                         onClicked: {
                             rightSideBar.showState = RightSideBar.ShowState.Certs
+
+                            fileTreeModel.getCertList(model.id)
+                            console.warn(rightSideBar.sigCount)
                         }
                         onEntered: {
                             cursorShape = Qt.PointingHandCursor

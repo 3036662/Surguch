@@ -82,6 +82,7 @@ ListView {
                 anchors.fill: parent
 
                 onClicked: {
+                    console.warn("click show cert data")
                     showSigData(JSON.stringify(model.sigData))
                 }
             }

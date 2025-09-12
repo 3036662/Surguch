@@ -71,6 +71,8 @@ struct ValidationResult {
     QString file_path;
 };
 
+void createCSPResponse(ValidationResult &res, pdfcsp::c_bridge::CPodResult const* pod);
+
 }  // namespace core
 
 #endif  // CSP_RESPONSE_HPP

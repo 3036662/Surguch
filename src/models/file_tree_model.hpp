@@ -9,6 +9,7 @@
 #include <doc_archive_public.hpp>
 
 #include "tree_item.hpp"
+#include "validation_result.hpp"
 
 class FileTreeModel : public QAbstractItemModel {
     Q_OBJECT
@@ -66,7 +67,7 @@ class FileTreeModel : public QAbstractItemModel {
 
     [[nodiscard]] bool isDraft() const;
 
-    Q_INVOKABLE std::vector<int> getCertList(int fie_id);
+    Q_INVOKABLE void getCertList(int fie_id);
     Q_INVOKABLE bool addNode(const QVariantList &list);
     Q_INVOKABLE bool deleteNode(const QString &full_path, int row, QUuid uid,
                                 int id);
@@ -74,6 +75,12 @@ class FileTreeModel : public QAbstractItemModel {
 
    signals:
     void isDraftChanged();
+
+    void signatureReady(
+        std::vector<std::shared_ptr<core::ValidationResult>> validation_result,
+        std::vector<size_t> ind);
+
+    void updateSigCount(int count);
 
    private:
     void setupModelData(const QJsonArray &doc, TreeItem *parent);
