@@ -42,10 +42,10 @@ class SignaturesListModel : public QAbstractListModel {
         SigData = Qt::UserRole + 4
     };
 
+   public:
     enum SigSource { Undefined, Pdf, FileTree };
     Q_ENUM(SigSource)
 
-   public:
     explicit SignaturesListModel(QObject *parent = nullptr);
 
     [[nodiscard]] QVariant headerData(int /*section*/,

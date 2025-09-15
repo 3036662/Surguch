@@ -231,6 +231,7 @@ void SignaturesListModel::saveValidationResultBatch(
     sig_source_ = FileTree;
     emit sigSourceChanged();
     beginResetModel();
+    raw_signatures_.clear();
     validation_results_.clear();
     for (size_t ind : ind_vec) {
         validation_results_[ind] = std::move(validation_results[ind]);
