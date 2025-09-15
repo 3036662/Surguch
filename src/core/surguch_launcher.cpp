@@ -22,7 +22,7 @@ void SurguchLauncher::launchSurguch(const QUrl &file) {
             });
     process->setProgram(surguch_executable_);
     process->setArguments({file.toLocalFile()});
-    process->start(surguch_executable_, {file.toLocalFile()});
+    process->startDetached(surguch_executable_, {file.toLocalFile()});
 }
 
 }  // namespace core
