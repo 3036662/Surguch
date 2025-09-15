@@ -50,8 +50,14 @@ ApplicationWindow {
 
                 onChangeShowType: newType => {
                                       showType = newType
-                                      fileDropArea.enabled = false
-                                      pdfDropArea.width = parent.width
+                                      if (showType === Main.ShowType.Pdf) {
+                                          fileDropArea.enabled = false
+                                          pdfDropArea.width = parent.width
+                                      }
+                                      if (showType === Main.ShowType.Files) {
+                                          fileDropArea.enabled = false
+                                          pdfDropArea.width = parent.width
+                                      }
                                   }
             }
             HeaderSubBar {

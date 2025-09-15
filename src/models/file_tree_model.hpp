@@ -61,7 +61,7 @@ class FileTreeModel : public QAbstractItemModel {
         int row, int column, const QModelIndex &parent = {}) const override;
     [[nodiscard]] QModelIndex parent(const QModelIndex &index) const override;
     [[nodiscard]] int rowCount(const QModelIndex &parent = {}) const override;
-    [[nodiscard]] QHash<int, QByteArray> roleNames() const;
+    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
     [[nodiscard]] int columnCount(
         const QModelIndex &parent = {}) const override;
 

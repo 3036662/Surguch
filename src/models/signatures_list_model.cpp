@@ -40,12 +40,22 @@ int SignaturesListModel::rowCount(const QModelIndex &parent) const {
     if (parent.isValid()) {
         return 0;
     }
-    return static_cast<int>(
-        std::max(raw_signatures_.size(), validation_results_.size()));
+    switch (sig_source_) {
+        case Pdf:
+            return static_cast<int>(raw_signatures_.size());
+            break;
+        case FileTree:
+            return static_cast<int>(validation_results_.size());
+            break;
+        default:
+            return 0;
+            break;
+    }
 }
 
 QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
-    if (!index.isValid() || index.row() > validation_results_.size() - 1) {
+    if (!index.isValid() || index.row() > raw_signatures_.size() - 1 ||
+        index.row() > validation_results_.size() - 1) {
         return {};
     }
     switch (role) {
@@ -68,8 +78,14 @@ QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
             return false;
             break;
         case EmptyRole:
-            return false;
-            return raw_signatures_.at(index.row()).getSigData().empty();
+            switch (sig_source_) {
+                case Pdf:
+                    return raw_signatures_.at(index.row()).getSigData().empty();
+                case FileTree:
+                    return false;
+                default:
+                    return false;
+            }
             break;
         case SigData:
             if (validation_results_.count(index.row()) > 0) {
@@ -84,6 +100,8 @@ QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
 
 void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
                                         const QString &file_source) {
+    sig_source_ = Pdf;
+    emit sigSourceChanged();
     beginResetModel();
     validation_results_.clear();
     raw_signatures_ = std::move(sigs);
@@ -196,6 +214,10 @@ QHash<int, QByteArray> SignaturesListModel::roleNames() const {
     return role_names_;
 }
 
+SignaturesListModel::SigSource SignaturesListModel::sigSource() const {
+    return sig_source_;
+}
+
 void SignaturesListModel::saveValidationResult(
     std::shared_ptr<core::ValidationResult> validation_result, size_t ind) {
     validation_results_[ind] = std::move(validation_result);
@@ -206,6 +228,8 @@ void SignaturesListModel::saveValidationResult(
 void SignaturesListModel::saveValidationResultBatch(
     std::vector<std::shared_ptr<core::ValidationResult>> validation_results,
     std::vector<size_t> ind_vec) {
+    sig_source_ = FileTree;
+    emit sigSourceChanged();
     beginResetModel();
     validation_results_.clear();
     for (size_t ind : ind_vec) {

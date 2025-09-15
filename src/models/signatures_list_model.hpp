@@ -32,6 +32,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
  */
 class SignaturesListModel : public QAbstractListModel {
     Q_OBJECT
+    Q_PROPERTY(SigSource sigSource READ sigSource NOTIFY sigSourceChanged)
 
     enum RoleNames {
         SigInfoRole = Qt::UserRole,
@@ -40,6 +41,9 @@ class SignaturesListModel : public QAbstractListModel {
         EmptyRole = Qt::UserRole + 3,
         SigData = Qt::UserRole + 4
     };
+
+    enum SigSource { Undefined, Pdf, FileTree };
+    Q_ENUM(SigSource)
 
    public:
     explicit SignaturesListModel(QObject *parent = nullptr);
@@ -55,10 +59,15 @@ class SignaturesListModel : public QAbstractListModel {
 
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
+    [[nodiscard]] SigSource sigSource() const;
+
     /// @brief recover the document to state when it signed by signature
     Q_INVOKABLE void recoverDoc(qint64 sig_index);
 
    signals:
+
+    /// @brief source of signatures changed(Pdf or FileTree)
+    void sigSourceChanged();
 
     /// @brief send common document status to QML
     void commonDocStatus(QString common_coverage_status);
@@ -78,15 +87,18 @@ class SignaturesListModel : public QAbstractListModel {
     void updateSigList(std::vector<core::RawSignature> sigs,
                        const QString &file_source);
 
-    /// @brief Save validation result for one signature
+    /// @brief Save validation result for one signature(from Pdf mode)
     void saveValidationResult(
         std::shared_ptr<core::ValidationResult> validation_result, size_t ind);
 
+    /// @brief Save validation result for multiply signatures(from FileTree
+    /// mode)
     void saveValidationResultBatch(
         std::vector<std::shared_ptr<core::ValidationResult>> validation_results,
         std::vector<size_t> ind_vec);
 
    private:
+    SigSource sig_source_ = Undefined;
     QHash<int, QByteArray> role_names_;
     std::vector<core::RawSignature> raw_signatures_;
     std::vector<std::unique_ptr<QThread>> worker_threads_;

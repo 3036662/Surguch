@@ -586,7 +586,6 @@ void FileTreeModel::processSignedTree() {
         state_ = Done;
         if (operation_data_.empty()) {
             if (res.has_value()) {
-                qWarning() << "[QDEBUG]" << res;
                 const QJsonDocument json_doc =
                     QJsonDocument::fromJson(res.value().data());
                 if (json_doc.isObject()) {

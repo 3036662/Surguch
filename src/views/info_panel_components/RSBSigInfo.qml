@@ -2,7 +2,6 @@ import QtQuick
 import QtQuick.Controls
 import StyleSheet
 
-
 Flickable {
     width: parent.width
     height: parent.height
@@ -11,7 +10,7 @@ Flickable {
     rightMargin: 10
     topMargin: 10
 
-    signal closeClicked()
+    signal closeClicked
 
     Item {
         width: parent.width
@@ -211,10 +210,11 @@ Flickable {
             keyText: qsTr("The signature covers the entire document")
             value: jsonData !== undefined ? jsonData.full_coverage : false
             status_text_color: value ? "green" : "red"
+            visible: siglistModel.sigSource === 1
         }
         TextPairBool {
             id: recoverableStatus
-            visible: !fullCoverageStatus.value
+            visible: !fullCoverageStatus.value && siglistModel.sigSource === 1
             keyText: qsTr("It is possible to open a signed version")
             value: jsonData !== undefined ? jsonData.can_be_casted_to_full_coverage : false
         }
@@ -223,7 +223,7 @@ Flickable {
         Item {
             width: parent.width
             height: 50
-            visible: recoverableStatus.value
+            visible: recoverableStatus.value && siglistModel.sigSource === 1
             Button {
                 id: recoverDocButton
                 text: qsTr("Recover the document")
