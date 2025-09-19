@@ -13,6 +13,7 @@ RowLayout {
     id: toolbar_layout
 
     signal changeShowType(int newType)
+    signal signTree(string path)
 
     function getCurrentProfileValue() {
         return profileComboBox.currentValue
@@ -251,16 +252,22 @@ RowLayout {
             anchors.bottom: parent.bottom
 
             onClicked: {
-                if (profileComboBox.currentValue === "new"
-                        || profileComboBox.currentIndex === -1) {
-                    profileComboBox.popup.open()
-                } else {
-                    headerSubBar.disableTagMode()
-                    pdfListView.signMode = !pdfListView.signMode
-                    if (!down) {
-                        pdfListView.resetRotation()
+                if (showType === Main.ShowType.Pdf) {
+                    if (profileComboBox.currentValue === "new"
+                            || profileComboBox.currentIndex === -1) {
+                        profileComboBox.popup.open()
+                    } else {
+                        headerSubBar.disableTagMode()
+                        pdfListView.signMode = !pdfListView.signMode
+                        if (!down) {
+                            pdfListView.resetRotation()
+                        }
+                        down = !down
                     }
-                    down = !down
+                }
+                if (showType === Main.ShowType.Files) {
+                    console.warn("SignTree")
+                    saveFolderDialog.open()
                 }
             }
         }
@@ -378,6 +385,14 @@ RowLayout {
             if (quitAfterSave) {
                 Qt.quit()
             }
+        }
+    }
+
+    CommonDialogs.FolderDialog {
+        id: saveFolderDialog
+
+        onAccepted: {
+            signTree(selectedFolder)
         }
     }
 

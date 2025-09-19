@@ -47,5 +47,7 @@
         <file>DisappearingHint.qml</file>
         <file>FileTreeView.qml</file>
         <file>FileModeHeaderSubBar.qml</file>
+        <file>info_panel_components/MrpaList.qml</file>
+        <file>info_panel_components/MrpaInfo.qml</file>
     </qresource>
 </RCC>

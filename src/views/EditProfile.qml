@@ -475,9 +475,9 @@ Flickable {
         InfoPanelComponents.RSBComboSelect {
             id: selectFileSignType
             model: [{
-                    "title": "Otsoedenennaya"
+                    "title": qsTr("Atached")
                 }, {
-                    "title": "Prisoedenennaya"
+                    "title": qsTr("Detached")
                 }]
             textRole: "title"
             valueRole: "title"

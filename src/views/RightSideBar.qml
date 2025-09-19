@@ -15,15 +15,19 @@ Item {
         SigInfo,
         ProfileInfo,
         Certs,
-        Mrpa
+        Mrpa,
+        MrpaInfo
     }
 
     property alias edit_profile: edit_profile_panel
     property int showState: RightSideBar.ShowState.Invisible
     property var jsonData
     property int sigCount
+    property var mrpaListData
+    property var mrpaData
 
     signal showSigData(string data)
+    signal showMrpaData(var data)
 
     function showData(data) {
         console.warn("show data")
@@ -33,10 +37,39 @@ Item {
                 return
             }
             //console.warn(data);
-            console.warn("show data")
             jsonData = JSON.parse(data)
             showState = RightSideBar.ShowState.SigInfo
             sigInfoPanel.contentY = 0
+        } catch (e) {
+            console.error("Error parsing JSON" + e.message)
+        }
+    }
+
+    function showMrpaList(data) {
+        try {
+            if (!data) {
+                mrpaListData = undefined
+                return
+            }
+            mrpaListData = data
+            //console.warn(JSON.stringify(mrpaListData))
+            showState = RightSideBar.ShowState.Mrpa
+            mrpaInfoPanel.contentY = 0
+        } catch (e) {
+            console.error("Error parsing JSON" + e.message)
+        }
+    }
+
+    function showMrpa(data) {
+        try {
+            if (!data) {
+                mrpaData = undefined
+                return
+            }
+            mrpaData = data
+            //console.warn(JSON.stringify(mrpaData))
+            showState = RightSideBar.ShowState.MrpaInfo
+            mrpaInfoPanel.contentY = 0
         } catch (e) {
             console.error("Error parsing JSON" + e.message)
         }
@@ -85,5 +118,19 @@ Item {
     InfoPanelComponents.SignaturesList {
         id: rSigListView
         visible: showState == RightSideBar.ShowState.Certs && sigCount > 0
+    }
+
+    InfoPanelComponents.MrpaInfo {
+        id: mrpaInfoPanel
+        visible: showState == RightSideBar.ShowState.MrpaInfo
+
+        onCloseClicked: {
+            showState = RightSideBar.ShowState.Invisible
+        }
+    }
+
+    InfoPanelComponents.MrpaList {
+        id: rMrpaListView
+        visible: showState == RightSideBar.ShowState.Mrpa
     }
 }

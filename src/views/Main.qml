@@ -253,6 +253,10 @@ ApplicationWindow {
     // --------------------------------------
     //  connect the events
     Component.onCompleted: {
+        // attmept to sign files in tree
+        header.signTree.connect(fileTreeView.gatherParamsTree)
+        // show data about MrpaList
+        fileTreeView.showMrpaList.connect(rightSideBar.showMrpaList)
         // update page count in header
         pdfListView.pagesCountChanged.connect(headerSubBar.changePageCount)
         // update curr page in header
@@ -265,6 +269,7 @@ ApplicationWindow {
         // show signature info
         leftSideBar.showSigData.connect(rightSideBar.showData)
         rightSideBar.showSigData.connect(rightSideBar.showData)
+        rightSideBar.showMrpaData.connect(rightSideBar.showMrpa)
         // update zoom value in header
         pdfListView.zoomFactorUpdate.connect(headerSubBar.updateZoomValue)
         // update horizontal scroll position after flick

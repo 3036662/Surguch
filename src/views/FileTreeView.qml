@@ -14,6 +14,43 @@ TreeView {
     clip: true
     model: fileTreeModel
 
+    signal showMrpaList(var data)
+
+    function gatherParamsTree(path) {
+        let curr_profile = {}
+        let cert_array = {}
+        curr_profile = JSON.parse(header.getCurrentProfileValue())
+        cert_array = JSON.parse(profilesModel.getUserCertsJSON())
+        let cert_index = cert_array.findIndex(cert => {
+                                                  return curr_profile.cert_serial === cert.serial
+                                              })
+        if (cert_index === -1) {
+            errorMessageDialog.text = qsTr(
+                        "Certificate not found, looks like it was deleted.﻿")
+            errorMessageDialog.open()
+            throw new Error('Certificate data not found')
+        }
+
+        console.warn(JSON.stringify(curr_profile))
+        console.warn("---------------------------------")
+
+        // gather all information needed to create a signature visual representation
+        let params = {
+            "cert_serial": curr_profile.cert_serial,
+            "cert_subject": cert_array[cert_index].subject_common_name,
+            "cades_type": curr_profile.CADES_format,
+            "tsp_url": curr_profile.tsp_url,
+            "sig_ext": curr_profile.sig_ext,
+            "dest_dir_path": path,
+            "create_attached": curr_profile.sign_type === "Atached" ? 1 : 0,
+            "create_base_64_encoded": curr_profile.encode_type === "PEM" ? 1 : 0
+            //"pack_to_zip": ,
+            //"pack_separate_zips":
+        }
+        console.warn(JSON.stringify(params))
+        fileTreeModel.signTree(params)
+    }
+
     delegate: Item {
         required property int column
         required property bool current
@@ -242,7 +279,8 @@ TreeView {
                         hoverEnabled: true
 
                         onClicked: {
-                            rightSideBar.showState = RightSideBar.ShowState.Certs
+                            showMrpaList(fileTreeModel.getMrpaData(model.id))
+                            rightSideBar.showState = RightSideBar.ShowState.Mrpa
                         }
                         onEntered: {
                             cursorShape = Qt.PointingHandCursor

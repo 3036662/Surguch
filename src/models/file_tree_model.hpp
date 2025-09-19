@@ -49,6 +49,32 @@ class FileTreeModel : public QAbstractItemModel {
     };
 
    public:
+    /// @brief utility structure for storing parameters for library
+    struct CBatchSigSettingsWrapper {
+        QByteArray qb_cert_serial;
+        QByteArray qb_cert_subject;
+        QByteArray qb_cades_type;
+        QByteArray qb_tsp_link;
+        QByteArray qb_sig_extension;
+        QByteArray qb_dest_dir_path;
+        pdfcsp::c_bridge::BatchSignatureSettings pod_settings;
+    };
+
+    struct SigSettings {
+        QString cert_serial;
+        QString cert_subject;
+        QString cades_type;
+        QString tsp_link;
+        QString sig_extension;
+        QString dest_dir_path;
+        bool create_attached;
+        bool create_base_64_encoded;
+        bool pack_to_zip;
+        bool pack_separate_zips;
+    };
+
+    using SharedSettingsWrapper = std::shared_ptr<CBatchSigSettingsWrapper>;
+
     explicit FileTreeModel(QObject *parent = nullptr);
 
     using TreeFuture = QFuture<std::optional<std::string>>;
@@ -68,10 +94,12 @@ class FileTreeModel : public QAbstractItemModel {
     [[nodiscard]] bool isDraft() const;
 
     Q_INVOKABLE void getCertList(int fie_id);
+    Q_INVOKABLE QJsonArray getMrpaData(int node_id);
     Q_INVOKABLE bool addNode(const QVariantList &list);
     Q_INVOKABLE bool deleteNode(const QString &full_path, int row, QUuid uid,
                                 int id);
     Q_INVOKABLE void deleteTree();
+    Q_INVOKABLE bool signTree(const QVariantMap &qvparams);
 
    signals:
     void isDraftChanged();
@@ -83,6 +111,7 @@ class FileTreeModel : public QAbstractItemModel {
     void updateSigCount(int count);
 
    private:
+    SigSettings createSigSettings(const QVariantMap &qvparams);
     void setupModelData(const QJsonArray &doc, TreeItem *parent);
     void processAdd(const QJsonArray &arr);
     void processDelete(const QJsonArray &arr);

@@ -197,6 +197,32 @@ void FileTreeModel::getCertList(int file_id) {
     }
 }
 
+QJsonArray FileTreeModel::getMrpaData(int node_id) {
+    QJsonArray arr;
+    switch (item_map.at(node_id).lock()->data().type) {
+        case Mrpa:
+            arr.append(item_map.at(node_id).lock()->data().mrpa_data.value());
+            return arr;
+            break;
+        case File:
+            if (item_map.at(node_id).lock()->data().mrpa_id_size > 0) {
+                for (size_t ind = 0;
+                     ind < item_map.at(node_id).lock()->data().mrpa_id_size;
+                     ++ind) {
+                    arr.append(
+                        item_map.at(ind).lock()->data().mrpa_data.value());
+                }
+                int mrpa = item_map.at(node_id).lock()->data().mrpa_ids[0];
+                return arr;
+            }
+            break;
+        default:
+            return {};
+            break;
+    }
+    return {};
+}
+
 bool FileTreeModel::addNode(const QVariantList &list) {
     qWarning() << "FileTreeModel::addNode()" << list.size();
     if (!list.empty()) {
@@ -283,6 +309,52 @@ void FileTreeModel::deleteTree() {
     endResetModel();
 }
 
+bool FileTreeModel::signTree(const QVariantMap &qvparams) {
+    tree_.SignTree({});
+    return true;
+}
+
+FileTreeModel::SigSettings FileTreeModel::createSigSettings(
+    const QVariantMap &qvparams) {
+    FileTreeModel::SigSettings settings{};
+    if (qvparams.contains("cert_serial")) {
+        settings.cert_serial = qvparams.value("cert_serial").toString();
+    }
+    if (qvparams.contains("cert_subject")) {
+        settings.cert_subject = qvparams.value("cert_subject").toString();
+    }
+    if (qvparams.contains("cades_type")) {
+        settings.cades_type = qvparams.value("cades_type").toString();
+    }
+    if (qvparams.contains("tsp_link")) {
+        settings.tsp_link = qvparams.value("tsp_link").toString();
+    }
+    if (qvparams.contains("sig_extension")) {
+        settings.sig_extension = qvparams.value("sig_extension").toString();
+    }
+    if (qvparams.contains("dest_dir_path")) {
+        settings.dest_dir_path = qvparams.value("dest_dir_path").toString();
+    }
+    if (qvparams.contains("create_attached")) {
+        settings.create_attached = qvparams.value("create_attached").toBool();
+    }
+    if (qvparams.contains("create_base_64_encoded")) {
+        settings.create_base_64_encoded =
+            qvparams.value("create_base_64_encoded").toBool();
+    }
+    if (qvparams.contains("pack_to_zip")) {
+        settings.pack_to_zip = qvparams.value("pack_to_zip").toBool();
+    }
+    if (qvparams.contains("pack_separate_zips")) {
+        settings.pack_separate_zips =
+            qvparams.value("pack_separate_zips").toBool();
+    }
+    if (qvparams.contains("cert_serial")) {
+        settings.cert_serial = qvparams.value("cert_serial").toString();
+    }
+    return {};
+}
+
 void FileTreeModel::setupModelData(const QJsonArray &doc, TreeItem *parent) {
     for (const auto &value : doc) {
         if (!value.isObject()) {
@@ -346,7 +418,7 @@ void FileTreeModel::setupModelData(const QJsonArray &doc, TreeItem *parent) {
             }
         }
         if (obj.contains("mrpa_ids")) {
-            QJsonArray mrpaRefArray = obj["ref_ids"].toArray();
+            QJsonArray mrpaRefArray = obj["mrpa_ids"].toArray();
             if (mrpaRefArray.size() > 0) {
                 std::for_each(
                     mrpaRefArray.begin(), mrpaRefArray.end(),
@@ -381,8 +453,10 @@ void FileTreeModel::setupModelData(const QJsonArray &doc, TreeItem *parent) {
             }
         }
 
-        if (obj.contains("mrpa_json_repr")) {
-            fileData.mrpa_data = obj["mrpa_json_repr"].toObject();
+        if (fileData.type == Mrpa) {
+            if (obj.contains("mrpa_json_repr")) {
+                fileData.mrpa_data = obj["mrpa_json_repr"].toObject();
+            }
         }
 
         if (obj.contains("time_valid")) {
@@ -764,6 +838,11 @@ void FileTreeModel::processChecks(FileData &data) {
                 }
                 data.mrpa_text = QString::number(data.mrpa_id_size);
                 data.mrpa_color = "orange";
+                return;
+            } else {
+                data.mrpa_text = "nomrpa";
+                data.mrpa_color = "orange";
+                return;
             }
             data.sig_text = "nosign";
             data.sig_color = "orange";
