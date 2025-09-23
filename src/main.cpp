@@ -41,6 +41,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "models/signatures_list_model.hpp"
 #include "printer_launcher.hpp"
 #include "surguch_launcher.hpp"
+#include "surguch_translator.hpp"
 
 int main(int argc, char* argv[]) {
     // translation
@@ -88,6 +89,8 @@ int main(int argc, char* argv[]) {
 
     qmlRegisterType<core::gui::WheelEventFilter>("alt.pdfcsp.wheelFilter", 1, 0,
                                                  "WheelFilter");
+    qmlRegisterType<core::SurguchTranslator>("alt.pdfcsp.surguchTranslator", 1,
+                                             0, "SurguchTranslator");
     // the eventFilterInstaller singleton is utilized to fix the Qt6.4 bug
     // when the wheel event is not propagated to the popup nested within a
     // combobox

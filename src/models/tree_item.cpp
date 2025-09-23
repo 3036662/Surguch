@@ -45,6 +45,16 @@ bool TreeItem::contains(const QString &full_path) const {
                        });
 }
 
+void TreeItem::setSigStats(const QString &text, const QString &color) {
+    file_data_.sig_text = text;
+    file_data_.sig_color = color;
+}
+
+void TreeItem::setMrpaStats(const QString &text, const QString &color) {
+    file_data_.mrpa_text = text;
+    file_data_.mrpa_color = color;
+}
+
 void TreeItem::deleteItem(QUuid id) {
     child_items_.erase(
         std::remove_if(child_items_.begin(), child_items_.end(),

@@ -9,6 +9,7 @@
 #include <doc_archive_public.hpp>
 
 #include "tree_item.hpp"
+#include "tree_sign_helper.hpp"
 #include "validation_result.hpp"
 
 class FileTreeModel : public QAbstractItemModel {
@@ -49,36 +50,12 @@ class FileTreeModel : public QAbstractItemModel {
     };
 
    public:
-    /// @brief utility structure for storing parameters for library
-    struct CBatchSigSettingsWrapper {
-        QByteArray qb_cert_serial;
-        QByteArray qb_cert_subject;
-        QByteArray qb_cades_type;
-        QByteArray qb_tsp_link;
-        QByteArray qb_sig_extension;
-        QByteArray qb_dest_dir_path;
-        pdfcsp::c_bridge::BatchSignatureSettings pod_settings;
-    };
-
-    struct SigSettings {
-        QString cert_serial;
-        QString cert_subject;
-        QString cades_type;
-        QString tsp_link;
-        QString sig_extension;
-        QString dest_dir_path;
-        bool create_attached;
-        bool create_base_64_encoded;
-        bool pack_to_zip;
-        bool pack_separate_zips;
-    };
-
-    using SharedSettingsWrapper = std::shared_ptr<CBatchSigSettingsWrapper>;
-
     explicit FileTreeModel(QObject *parent = nullptr);
 
     using TreeFuture = QFuture<std::optional<std::string>>;
     using TreeFutureWatcher = QFutureWatcher<std::optional<std::string>>;
+    using SignFuture = QFuture<bool>;
+    using SignFutureWatcher = QFutureWatcher<bool>;
 
     [[nodiscard]] QVariant data(const QModelIndex &index,
                                 int role) const override;
@@ -99,7 +76,7 @@ class FileTreeModel : public QAbstractItemModel {
     Q_INVOKABLE bool deleteNode(const QString &full_path, int row, QUuid uid,
                                 int id);
     Q_INVOKABLE void deleteTree();
-    Q_INVOKABLE bool signTree(const QVariantMap &qvparams);
+    Q_INVOKABLE void signTree(const QVariantMap &qvparams);
 
    signals:
     void isDraftChanged();
@@ -110,21 +87,26 @@ class FileTreeModel : public QAbstractItemModel {
 
     void updateSigCount(int count);
 
+    void signDone(QVariant sign_result);
+
    private:
-    SigSettings createSigSettings(const QVariantMap &qvparams);
     void setupModelData(const QJsonArray &doc, TreeItem *parent);
     void processAdd(const QJsonArray &arr);
     void processDelete(const QJsonArray &arr);
     void processDraftTree();
     void processSignedTree();
+    void processSignResult();
     void addFilesUI(const QStringList &file_list);
     void deleteFilesUI(int row, QUuid uid, int id);
 
-    void processChecks(FileData &data);
+    void processChecks(int id);
 
     pdfcsp::DocTree tree_;
+    core::TreeSignHelper sign_helper_;
     std::unique_ptr<TreeFuture> tree_future_;
     std::unique_ptr<TreeFutureWatcher> tree_watcher_;
+    std::unique_ptr<SignFuture> sign_future_;
+    std::unique_ptr<SignFutureWatcher> sign_watcher_;
 
     std::unordered_map<QString, OperationData> operation_data_;
 

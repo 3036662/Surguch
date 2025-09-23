@@ -15,6 +15,7 @@ import alt.pdfcsp.fileTreeModel
 import StyleSheet
 import alt.pdfcsp.eventFilterInstaller
 import alt.pdfcsp.wheelFilter
+import alt.pdfcsp.surguchTranslator
 
 ApplicationWindow {
     id: root_window
@@ -250,6 +251,10 @@ ApplicationWindow {
         id: main_window_wheel_filter
     }
 
+    SurguchTranslator {
+        id: surguchTranslator
+    }
+
     // --------------------------------------
     //  connect the events
     Component.onCompleted: {
@@ -430,6 +435,10 @@ ApplicationWindow {
     }
     InfoDialog {
         id: appInfoDialog
+    }
+
+    TreeSignResultDialog {
+        id: treeSignResultDialog
     }
 
     // Info dialog in center of window

@@ -63,6 +63,9 @@ class TreeItem {
     [[nodiscard]] FileData data() const;
     [[nodiscard]] bool contains(const QString &full_path) const;
 
+    void setSigStats(const QString &text, const QString &color);
+    void setMrpaStats(const QString &text, const QString &color);
+
     void deleteItem(QUuid id);
 
     void deleteChildren();

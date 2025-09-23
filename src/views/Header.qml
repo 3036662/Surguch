@@ -390,6 +390,8 @@ RowLayout {
 
     CommonDialogs.FolderDialog {
         id: saveFolderDialog
+        currentFolder: StandardPaths.writableLocation(
+                           StandardPaths.HomeLocation)
 
         onAccepted: {
             signTree(selectedFolder)

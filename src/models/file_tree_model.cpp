@@ -216,6 +216,30 @@ QJsonArray FileTreeModel::getMrpaData(int node_id) {
                 return arr;
             }
             break;
+        case Sig:
+            if (item_map.at(node_id).lock()->data().mrpa_id_size > 0) {
+                for (size_t ind = 0;
+                     ind < item_map.at(node_id).lock()->data().mrpa_id_size;
+                     ++ind) {
+                    arr.append(
+                        item_map.at(ind).lock()->data().mrpa_data.value());
+                }
+                int mrpa = item_map.at(node_id).lock()->data().mrpa_ids[0];
+                return arr;
+            }
+            break;
+        case Asig:
+            if (item_map.at(node_id).lock()->data().mrpa_id_size > 0) {
+                for (size_t ind = 0;
+                     ind < item_map.at(node_id).lock()->data().mrpa_id_size;
+                     ++ind) {
+                    arr.append(
+                        item_map.at(ind).lock()->data().mrpa_data.value());
+                }
+                int mrpa = item_map.at(node_id).lock()->data().mrpa_ids[0];
+                return arr;
+            }
+            break;
         default:
             return {};
             break;
@@ -309,50 +333,32 @@ void FileTreeModel::deleteTree() {
     endResetModel();
 }
 
-bool FileTreeModel::signTree(const QVariantMap &qvparams) {
-    tree_.SignTree({});
-    return true;
+void FileTreeModel::signTree(const QVariantMap &qvparams) {
+    sign_helper_.createSigSettings(qvparams);
+    auto setting_wrapper = sign_helper_.createWrapper();
+    sign_watcher_ = std::make_unique<SignFutureWatcher>();
+    QObject::connect(sign_watcher_.get(), &SignFutureWatcher::finished,
+                     [this]() { processSignResult(); });
+    sign_future_ = std::make_unique<SignFuture>(
+        QtConcurrent::run([this, settings = std::move(setting_wrapper)]() {
+            return tree_.SignTree(settings->pod_settings);
+        }));
+    sign_watcher_->setFuture(*sign_future_);
+    return;
 }
 
-FileTreeModel::SigSettings FileTreeModel::createSigSettings(
-    const QVariantMap &qvparams) {
-    FileTreeModel::SigSettings settings{};
-    if (qvparams.contains("cert_serial")) {
-        settings.cert_serial = qvparams.value("cert_serial").toString();
+void FileTreeModel::processSignResult() {
+    if (sign_future_ && sign_future_->isValid()) {
+        bool res = sign_future_->takeResult();
+        auto status = tree_.LastSignStatus();
+        if (status.has_value()) {
+            if (!res) {
+                qWarning() << "[DEBUG] " << res;
+            }
+            emit signDone(QString(status.value().data()));
+        }
     }
-    if (qvparams.contains("cert_subject")) {
-        settings.cert_subject = qvparams.value("cert_subject").toString();
-    }
-    if (qvparams.contains("cades_type")) {
-        settings.cades_type = qvparams.value("cades_type").toString();
-    }
-    if (qvparams.contains("tsp_link")) {
-        settings.tsp_link = qvparams.value("tsp_link").toString();
-    }
-    if (qvparams.contains("sig_extension")) {
-        settings.sig_extension = qvparams.value("sig_extension").toString();
-    }
-    if (qvparams.contains("dest_dir_path")) {
-        settings.dest_dir_path = qvparams.value("dest_dir_path").toString();
-    }
-    if (qvparams.contains("create_attached")) {
-        settings.create_attached = qvparams.value("create_attached").toBool();
-    }
-    if (qvparams.contains("create_base_64_encoded")) {
-        settings.create_base_64_encoded =
-            qvparams.value("create_base_64_encoded").toBool();
-    }
-    if (qvparams.contains("pack_to_zip")) {
-        settings.pack_to_zip = qvparams.value("pack_to_zip").toBool();
-    }
-    if (qvparams.contains("pack_separate_zips")) {
-        settings.pack_separate_zips =
-            qvparams.value("pack_separate_zips").toBool();
-    }
-    if (qvparams.contains("cert_serial")) {
-        settings.cert_serial = qvparams.value("cert_serial").toString();
-    }
-    return {};
+    return;
 }
 
 void FileTreeModel::setupModelData(const QJsonArray &doc, TreeItem *parent) {
@@ -461,10 +467,6 @@ void FileTreeModel::setupModelData(const QJsonArray &doc, TreeItem *parent) {
 
         if (obj.contains("time_valid")) {
             fileData.time_valid = obj["time_valid"].toBool();
-        }
-
-        if (!is_draft_) {
-            processChecks(fileData);
         }
 
         QUuid const uid(QUuid::createUuid());
@@ -675,6 +677,13 @@ void FileTreeModel::processSignedTree() {
                     qWarning()
                         << "[DEBUG]"
                         << "root child count: " << root_item->childCount();
+                    std::for_each(item_map.begin(), item_map.end(),
+                                  [this](auto &item) {
+                                      if (!item.second.expired()) {
+                                          processChecks(item.first);
+                                      }
+                                  });
+
                     endResetModel();
                 }
             }
@@ -746,22 +755,21 @@ void FileTreeModel::deleteFilesUI(int row, QUuid uid, int id) {
     endRemoveRows();
 }
 
-void FileTreeModel::processChecks(FileData &data) {
-    switch (data.type) {
+void FileTreeModel::processChecks(int id) {
+    auto item = item_map.at(id).lock();
+    switch (item->data().type) {
         case Zip:
-            data.sig_text = "";
             return;
         case Dir:
-            data.sig_text = "";
             return;
         case Sig:
-            if (data.has_check_result.has_value() &&
-                data.has_check_result.value()) {
-                if (data.check_results.size() > 0) {
+            if (item->data().has_check_result.has_value() &&
+                item->data().has_check_result.value()) {
+                if (item->data().check_results.size() > 0) {
                     int valid = 0;
                     int invalid = 0;
-                    std::for_each(data.check_results.cbegin(),
-                                  data.check_results.cend(),
+                    auto smht = item->data().check_results;
+                    std::for_each(smht.cbegin(), smht.cend(),
                                   [&valid, &invalid](const CheckResult &res) {
                                       if (res.check_summary) {
                                           ++valid;
@@ -770,102 +778,107 @@ void FileTreeModel::processChecks(FileData &data) {
                                       }
                                   });
                     if (valid > 0 && invalid == 0) {
-                        data.sig_text = "good";
-                        data.sig_color = "green";
+                        item->setSigStats("good", "green");
                         return;
                     }
                     if (valid > 0 && invalid > 0) {
-                        data.sig_text = "mixed";
-                        data.sig_color = "orange";
+                        item->setSigStats("mixed", "orange");
                         return;
                     }
-                    data.sig_text = "bad";
-                    data.sig_color = "red";
+                    item->setSigStats("bad", "red");
                     return;
                 }
             }
-            data.sig_text = "notfound";
-            data.sig_color = "red";
+            item->setSigStats("no_file", "red");
             return;
         case Asig:
-            if (data.has_check_result.has_value() &&
-                data.has_check_result.value()) {
-                if (data.check_results.size() > 0) {
+            if (item->data().has_check_result.has_value() &&
+                item->data().has_check_result.value()) {
+                if (item->data().check_results.size() > 0) {
                     int valid = 0;
                     int invalid = 0;
-                    std::for_each(data.check_results.cbegin(),
-                                  data.check_results.cend(),
-                                  [&valid, &invalid](const CheckResult &item) {
-                                      if (item.check_summary) {
+                    auto smht = item->data().check_results;
+                    std::for_each(smht.cbegin(), smht.cend(),
+                                  [&valid, &invalid](const CheckResult &res) {
+                                      if (res.check_summary) {
                                           ++valid;
                                       } else {
                                           ++invalid;
                                       }
                                   });
                     if (valid > 0 && invalid == 0) {
-                        data.sig_text = "good";
-                        data.sig_color = "green";
+                        item->setSigStats("good", "green");
                         return;
                     }
                     if (valid > 0 && invalid > 0) {
-                        data.sig_text = "mixed";
-                        data.sig_color = "orange";
+                        item->setSigStats("mixed", "orange");
                         return;
                     }
-                    data.sig_text = "bad";
-                    data.sig_color = "red";
+                    item->setSigStats("bad", "red");
                     return;
                 }
             }
-            data.sig_text = "notfound";
-            data.sig_color = "red";
+            item->setSigStats("not found", "red");
             return;
         case File:
-            if (data.encrypted) {
-                data.sig_text = "lock";
-                data.sig_color = "red";
+            item->setSigStats("nosign", "orange");
+            item->setMrpaStats("nomrpa", "orange");
+            if (item->data().encrypted) {
+                item->setSigStats("lock", "red");
                 return;
             }
-            if (data.ref_id_size > 0) {
-                data.sig_text = QString::number(data.ref_id_size);
-                data.sig_color = "green";
+            if (item->data().ref_id_size > 0) {
+                const auto smth = item->data().ref_ids;
+                int valid = 0;
+                int invalid = 0;
+                std::for_each(
+                    smth.cbegin(), smth.cend(),
+                    [&item, &valid, &invalid, this](int ref_id) {
+                        if (tree_
+                                .GetCheckResultForNode(ref_id, item->data().id)
+                                ->bres.check_summary) {
+                            ++valid;
+                        } else {
+                            ++invalid;
+                        }
+                    });
+                if (valid > 0 && invalid == 0) {
+                    item->setSigStats(QString::number(valid), "green");
+                }
+                if (valid > 0 && invalid > 0) {
+                    item->setSigStats(QString::number(valid), "orange");
+                }
+                if (valid == 0 && invalid > 0) {
+                    item->setSigStats(QString::number(invalid), "red");
+                }
             }
-            if (data.mrpa_id_size > 0) {
-                if (data.mrpa_id_size == data.ref_id_size) {
-                    data.mrpa_text = QString::number(data.mrpa_id_size);
-                    data.mrpa_color = "green";
+            if (item->data().mrpa_id_size > 0) {
+                if (item->data().mrpa_id_size == item->data().ref_id_size) {
+                    item->setMrpaStats(
+                        QString::number(item->data().mrpa_id_size), "green");
                     return;
                 }
-                data.mrpa_text = QString::number(data.mrpa_id_size);
-                data.mrpa_color = "orange";
+                item->setMrpaStats(QString::number(item->data().mrpa_id_size),
+                                   "orange");
                 return;
             } else {
-                data.mrpa_text = "nomrpa";
-                data.mrpa_color = "orange";
+                item->setMrpaStats("nomrpa", "orange");
                 return;
             }
-            data.sig_text = "nosign";
-            data.sig_color = "orange";
-            data.mrpa_text = "nomrpa";
-            data.mrpa_color = "orange";
             return;
         case Mrpa:
-            data.sig_text = "mrpa";
-            if (data.time_valid.has_value() && !data.time_valid.value()) {
-                data.mrpa_text = "old";
-                data.mrpa_color = "orange";
+            if (item->data().time_valid.has_value() &&
+                !item->data().time_valid.value()) {
+                item->setMrpaStats("old", "orange");
                 return;
             }
-            if (data.ref_id_size > 0) {
-                data.mrpa_text = "ok";
-                data.mrpa_color = "green";
+            if (item->data().ref_id_size > 0) {
+                item->setMrpaStats("ok", "green");
                 return;
             }
-            data.mrpa_text = "nosign";
-            data.mrpa_color = "orange";
+            item->setMrpaStats("nosign", "orange");
             return;
         default:
-            data.sig_text = "unknown";
             return;
             ;
     }

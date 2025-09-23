@@ -16,6 +16,8 @@ add_library(appcore OBJECT
         font_helper.hpp
         surguch_launcher.cpp
         surguch_launcher.hpp
+        tree_sign_helper.hpp tree_sign_helper.cpp
+        surguch_translator.hpp surguch_translator.cpp
 )
 
 

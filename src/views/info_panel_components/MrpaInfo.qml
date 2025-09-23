@@ -28,6 +28,10 @@ ScrollView {
         return isObj(o) ? Object.keys(o).filter(k => !k.startsWith("@")) : []
     }
 
+    function mrpaTr(str) {
+        return surguchTranslator.surguchTranslate(str)
+    }
+
     function lastTitle(path) {
         if (!path || path.length === 0)
             return qsTr("Доверенность")
@@ -117,7 +121,7 @@ ScrollView {
                 spacing: 6
 
                 Text {
-                    text: modelData.title
+                    text: mrpaTr(modelData.title)
                     font.weight: Font.DemiBold
                     font.family: "Noto Sans"
                     color: StyleSheet.font_color_extra
@@ -126,7 +130,7 @@ ScrollView {
                 Repeater {
                     model: modelData.attrs
                     delegate: TextPair {
-                        keyText: modelData.key
+                        keyText: mrpaTr(String(modelData.key).slice(1))
                         value: String(modelData.value)
                     }
                 }
