@@ -1,5 +1,6 @@
 #include "surguch_translator.hpp"
 
+#include <QLocale>
 #include <array>
 #include <string_view>
 
@@ -512,7 +513,10 @@ QString SurguchTranslator::surguchTranslate(const QString &str) const {
     for (std::size_t i = 0; i < tag_names.size(); ++i) {
         if (QString::fromUtf8(tag_names[i].data(), tag_names[i].size()) ==
             str) {
-            return QString::fromUtf8(rus_expl[i].data());
+            if (QLocale::system().language() == QLocale::Russian) {
+                return QString::fromUtf8(rus_expl[i].data());
+            }
+            return QString::fromUtf8(eng_expl[i].data());
         }
     }
     return str;

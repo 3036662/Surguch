@@ -5,14 +5,16 @@ import StyleSheet
 
 Dialog {
     id: root
-    title: qsTr("Signing result")
-    modal: true
 
     property var sign_result
+    property bool sign_done: false
 
+    title: qsTr("Signing result")
+    modal: true
     width: 520
     height: 400
     padding: 12
+    closePolicy: Popup.CloseOnEscape
 
     function toFileUrl(p) {
         if (!p)
@@ -21,9 +23,18 @@ Dialog {
         return encoded.startsWith("file://") ? encoded : "file://" + encoded
     }
 
+    BusyIndicator {
+        visible: !root.sign_done
+        running: !root.sign_done
+        anchors.centerIn: parent
+        width: 64
+        height: 64
+    }
+
     ColumnLayout {
         anchors.fill: parent
         spacing: 10
+        visible: root.sign_done
 
         Label {
             text: qsTr("Files")
@@ -38,7 +49,12 @@ Dialog {
                 id: filesArea
                 Layout.fillWidth: true
                 readOnly: true
-                text: (sign_result?.files ?? sign_result.warnings).join("\n")
+                text: sign_result ? ((sign_result.files
+                                      && sign_result.files.length
+                                      > 0) ? sign_result.files.join(
+                                                 "\n") : sign_result.warnings.join(
+                                                 "\n")) : ""
+
                 placeholderText: qsTr("No files")
                 selectByMouse: true
                 wrapMode: Text.WordWrap
@@ -49,12 +65,6 @@ Dialog {
                 background: Rectangle {
                     border.color: StyleSheet.slider_border_color
                     color: StyleSheet.text_area_background
-                }
-
-                onTextChanged: {
-                    if (!ignore_changes) {
-                        root.settingChanged()
-                    }
                 }
             }
             ScrollBar.vertical: ScrollBar {

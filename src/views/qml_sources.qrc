@@ -49,5 +49,6 @@
         <file>FileModeHeaderSubBar.qml</file>
         <file>info_panel_components/MrpaList.qml</file>
         <file>info_panel_components/MrpaInfo.qml</file>
+        <file>TreeSignResultDialog.qml</file>
     </qresource>
 </RCC>

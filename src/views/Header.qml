@@ -243,7 +243,7 @@ RowLayout {
         HeaderBarComponents.TopBarButton {
             id: signModeButton
 
-            //enabled: false
+            enabled: showType !== Main.ShowType.Empty
             icon.source: StyleSheet.pencil_line_icon
             text: qsTr("Sign")
             icon.height: 25
@@ -395,6 +395,9 @@ RowLayout {
 
         onAccepted: {
             signTree(selectedFolder)
+            signModeButton.down = true
+            signModeButton.enabled = false
+            treeSignResultDialog.open()
         }
     }
 

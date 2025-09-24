@@ -87,7 +87,7 @@ class FileTreeModel : public QAbstractItemModel {
 
     void updateSigCount(int count);
 
-    void signDone(QVariant sign_result);
+    void signDone(QVariant sign_result, bool sign_done);
 
    private:
     void setupModelData(const QJsonArray &doc, TreeItem *parent);

@@ -15,6 +15,8 @@ TreeView {
     model: fileTreeModel
 
     signal showMrpaList(var data)
+    signal cleanWindow
+    signal enableSignButton
 
     function gatherParamsTree(path) {
         let curr_profile = {}
@@ -335,10 +337,15 @@ TreeView {
 
     Connections {
         target: treeView.model
-        function onSignDone(sign_result) {
+        function onSignDone(sign_result, sign_done) {
             console.warn("from treeView model:", JSON.stringify(sign_result))
             treeSignResultDialog.sign_result = JSON.parse(sign_result)
-            treeSignResultDialog.open()
+            treeSignResultDialog.sign_done = true
+            enableSignButton()
+            if (sign_done) {
+                fileTreeModel.deleteTree()
+                cleanWindow()
+            }
         }
     }
 }

@@ -355,7 +355,7 @@ void FileTreeModel::processSignResult() {
             if (!res) {
                 qWarning() << "[DEBUG] " << res;
             }
-            emit signDone(QString(status.value().data()));
+            emit signDone(QString(status.value().data()), res);
         }
     }
     return;
@@ -768,8 +768,8 @@ void FileTreeModel::processChecks(int id) {
                 if (item->data().check_results.size() > 0) {
                     int valid = 0;
                     int invalid = 0;
-                    auto smht = item->data().check_results;
-                    std::for_each(smht.cbegin(), smht.cend(),
+                    auto checks = item->data().check_results;
+                    std::for_each(checks.cbegin(), checks.cend(),
                                   [&valid, &invalid](const CheckResult &res) {
                                       if (res.check_summary) {
                                           ++valid;
@@ -797,8 +797,8 @@ void FileTreeModel::processChecks(int id) {
                 if (item->data().check_results.size() > 0) {
                     int valid = 0;
                     int invalid = 0;
-                    auto smht = item->data().check_results;
-                    std::for_each(smht.cbegin(), smht.cend(),
+                    auto checks = item->data().check_results;
+                    std::for_each(checks.cbegin(), checks.cend(),
                                   [&valid, &invalid](const CheckResult &res) {
                                       if (res.check_summary) {
                                           ++valid;
@@ -828,11 +828,11 @@ void FileTreeModel::processChecks(int id) {
                 return;
             }
             if (item->data().ref_id_size > 0) {
-                const auto smth = item->data().ref_ids;
+                const auto checks = item->data().ref_ids;
                 int valid = 0;
                 int invalid = 0;
                 std::for_each(
-                    smth.cbegin(), smth.cend(),
+                    checks.cbegin(), checks.cend(),
                     [&item, &valid, &invalid, this](int ref_id) {
                         if (tree_
                                 .GetCheckResultForNode(ref_id, item->data().id)

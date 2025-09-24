@@ -258,6 +258,12 @@ ApplicationWindow {
     // --------------------------------------
     //  connect the events
     Component.onCompleted: {
+        // enable sign button
+        fileTreeView.enableSignButton.connect(header.enableSignMode)
+        // clean windows after signing tree
+        fileTreeView.cleanWindow.connect(function () {
+            root_window.showType = Main.ShowType.Empty
+        })
         // attmept to sign files in tree
         header.signTree.connect(fileTreeView.gatherParamsTree)
         // show data about MrpaList
@@ -493,6 +499,12 @@ ApplicationWindow {
 
         anchors.horizontalCenter: parent.horizontalCenter
         y: 20
+    }
+
+    onShowTypeChanged: {
+        if (showType === Main.ShowType.Empty) {
+            header.disableSignMode()
+        }
     }
 
     onWidthChanged: {
