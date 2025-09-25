@@ -132,7 +132,79 @@ ApplicationWindow {
 
         Item {
             Layout.fillWidth: true
+            Layout.fillHeight: true
             visible: showType === Main.ShowType.Empty
+
+            Row {
+                anchors.centerIn: parent
+                spacing: parent.width * 0.05
+
+                Rectangle {
+                    id: pdfZone
+
+                    width: root_window.width / 6
+                    height: width
+                    radius: 6
+                    color: "transparent"
+                    border.width: pdfDropArea.containsDrag ? 2 : 1
+                    border.color: pdfDropArea.containsDrag ? StyleSheet.slider_border_color : "#c7c7c7"
+
+                    Column {
+                        anchors.centerIn: parent
+                        spacing: 8
+
+                        Image {
+                            source: StyleSheet.file_text_icon
+                            width: pdfZone.width * 0.25
+                            height: width
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            fillMode: Image.PreserveAspectFit
+                        }
+
+                        Text {
+                            text: qsTr("PDF\nDrag&Drop")
+                            font.pixelSize: 14
+                            font.family: "Noto Sans"
+                            horizontalAlignment: Text.AlignHCenter
+                            wrapMode: Text.WordWrap
+                            color: StyleSheet.font_color_extra
+                        }
+                    }
+                }
+
+                Rectangle {
+                    id: fileZone
+
+                    width: root_window.width / 6
+                    height: width
+                    radius: 6
+                    color: "transparent"
+                    border.width: fileDropArea.containsDrag ? 2 : 1
+                    border.color: fileDropArea.containsDrag ? StyleSheet.slider_border_color : "#c7c7c7"
+
+                    Column {
+                        anchors.centerIn: parent
+                        spacing: 8
+
+                        Image {
+                            source: StyleSheet.file_simple_icon
+                            width: fileZone.width * 0.25
+                            height: width
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            fillMode: Image.PreserveAspectFit
+                        }
+
+                        Text {
+                            text: qsTr("File\nDrag&Drop")
+                            font.pixelSize: 14
+                            font.family: "Noto Sans"
+                            horizontalAlignment: Text.AlignHCenter
+                            wrapMode: Text.WordWrap
+                            color: StyleSheet.font_color_extra
+                        }
+                    }
+                }
+            }
         }
 
         LeftSideBar {

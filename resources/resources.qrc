@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <RCC>
     <qresource prefix="/">
         <file>translations/ru_RU.qm</file>
@@ -63,5 +62,7 @@
         <file>icons/dark/info_icon.svg</file>
         <file>icons/light/box.svg</file>
         <file>icons/dark/box.svg</file>
+        <file>icons/dark/file_text.svg</file>
+        <file>icons/light/file_text.svg</file>
     </qresource>
 </RCC>
