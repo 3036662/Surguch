@@ -40,9 +40,6 @@ void TreeSignHelper::createSigSettings(const QVariantMap &qvparams) {
         settings_.pack_separate_zips =
             qvparams.value("pack_separate_zips").toBool();
     }
-    if (qvparams.contains("cert_serial")) {
-        settings_.cert_serial = qvparams.value("cert_serial").toString();
-    }
 }
 
 TreeSignHelper::SharedSettingsWrapper TreeSignHelper::createWrapper() {

@@ -58,30 +58,27 @@ Flickable {
                 }
                 logoPath.text = profile_json.logo_path
                 tspUrlEdit.text = profile_json.tsp_url
-                const sign_type_indx = selectFileSignType.indexOfValue(
-                                         profile_json.sign_type)
+                const sign_type_indx = profile_json.create_attached
                 selectFileSignType.currentIndex = sign_type_indx
                 selectFileSignType.item_selected = true
                 if (sign_type_indx !== -1) {
                     selectFileSignType.displayText = selectFileSignType.model[sign_type_indx].title
                 }
-                const encode_type_indx = selectFileEncodingType.indexOfValue(
-                                           profile_json.encode_type)
+                const encode_type_indx = profile_json.create_base_64_encoded
                 selectFileEncodingType.currentIndex = encode_type_indx
                 selectFileEncodingType.item_selected = true
                 if (encode_type_indx !== -1) {
                     selectFileEncodingType.displayText
                             = selectFileEncodingType.model[encode_type_indx].title
                 }
-                const file_ext_indx = selectFileExtension.indexOfValue(
-                                        profile_json.file_ext)
-                selectFileExtension.currentIndex = file_ext_indx
+                const sig_ext_indx = selectFileExtension.indexOfValue(
+                                       profile_json.sig_ext)
+                selectFileExtension.currentIndex = sig_ext_indx
                 selectFileExtension.item_selected = true
-                if (file_ext_indx !== -1) {
-                    selectFileExtension.displayText = selectFileExtension.model[file_ext_indx].title
+                if (sig_ext_indx !== -1) {
+                    selectFileExtension.displayText = selectFileExtension.model[sig_ext_indx].title
                 }
-                const archive_type_indx = selectArchive.indexOfValue(
-                                            profile_json.archive)
+                const archive_type_indx = profile_json.pack_to_zip + profile_json.pack_separate_zips
                 selectArchive.currentIndex = archive_type_indx
                 selectArchive.item_selected = true
                 if (archive_type_indx !== -1) {
@@ -109,17 +106,17 @@ Flickable {
             logoPath.text = ""
             tspUrlEdit.text = ""
             selectFileSignType.currentIndex = 0
-            selectFileSignType.item_selected = false
-            selectFileSignType.displayText = selectFileSignType.displayTextDefault
+            selectFileSignType.item_selected = true
+            selectFileSignType.displayText = selectFileSignType.model[0].title
             selectFileEncodingType.currentIndex = 0
-            selectFileEncodingType.item_selected = false
-            selectFileEncodingType.displayText = selectFileEncodingType.displayTextDefault
+            selectFileEncodingType.item_selected = true
+            selectFileEncodingType.displayText = selectFileEncodingType.model[0].title
             selectFileExtension.currentIndex = 0
-            selectFileExtension.item_selected = false
-            selectFileExtension.displayText = selectFileExtension.displayTextDefault
+            selectFileExtension.item_selected = true
+            selectFileExtension.displayText = selectFileExtension.model[0].title
             selectArchive.currentIndex = 0
-            selectArchive.item_selected = false
-            selectArchive.displayText = selectArchive.displayTextDefault
+            selectArchive.item_selected = true
+            selectArchive.displayText = selectArchive.model[0].title
         }
     }
 
@@ -449,6 +446,7 @@ Flickable {
             }
         }
 
+        // files signing settings
         InfoPanelComponents.RightSBHorizontalDelimiter {
             width: parent.width
             topPadding: 10
@@ -475,13 +473,14 @@ Flickable {
         InfoPanelComponents.RSBComboSelect {
             id: selectFileSignType
             model: [{
-                    "title": qsTr("Atached")
-                }, {
                     "title": qsTr("Detached")
+                }, {
+                    "title": qsTr("Attached")
                 }]
             textRole: "title"
             valueRole: "title"
-            displayText: displayTextDefault
+            currentIndex: 0
+            item_selected: true
             property string displayTextDefault: qsTr("Select sign format")
         }
 
@@ -502,7 +501,8 @@ Flickable {
                 }]
             textRole: "title"
             valueRole: "title"
-            displayText: displayTextDefault
+            currentIndex: 0
+            item_selected: true
             property string displayTextDefault: qsTr("Select encoding type")
         }
 
@@ -527,7 +527,8 @@ Flickable {
                 }]
             textRole: "title"
             valueRole: "title"
-            displayText: displayTextDefault
+            currentIndex: 0
+            item_selected: true
             property string displayTextDefault: qsTr("Select signature file extension")
         }
 
@@ -542,15 +543,16 @@ Flickable {
         InfoPanelComponents.RSBComboSelect {
             id: selectArchive
             model: [{
-                    "title": "Common ZIP file"
+                    "title": qsTr("Don't use")
                 }, {
-                    "title": "Separate ZIP file"
+                    "title": qsTr("Common ZIP file")
                 }, {
-                    "title": "Don't use"
+                    "title": qsTr("Separate ZIP file")
                 }]
             textRole: "title"
             valueRole: "title"
-            displayText: displayTextDefault
+            currentIndex: 1
+            item_selected: true
             property string displayTextDefault: qsTr("Select archive after signing")
         }
 
@@ -620,10 +622,11 @@ Flickable {
                     profile_json["stamp_type"] = selectStampTypeCombo.currentText
                     profile_json["logo_path"] = logoPath.text
                     profile_json["tsp_url"] = tspUrlEdit.text
-                    profile_json["sign_type"] = selectFileSignType.currentValue
-                    profile_json["encode_type"] = selectFileEncodingType.currentValue
-                    profile_json["file_ext"] = selectFileExtension.currentValue
-                    profile_json["archive"] = selectArchive.currentValue
+                    profile_json["create_attached"] = selectFileSignType.currentIndex
+                    profile_json["create_base_64_encoded"] = selectFileEncodingType.currentIndex
+                    profile_json["sig_ext"] = selectFileExtension.currentValue
+                    profile_json["pack_to_zip"] = selectArchive.currentIndex
+                    profile_json["pack_separate_zips"] = selectArchive.currentIndex === 2 ? 1 : 0
 
                     const new_profile_data = JSON.stringify(profile_json)
                     if (profiles_model.saveProfile(new_profile_data)) {

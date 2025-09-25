@@ -42,12 +42,12 @@ TreeView {
             "cert_subject": cert_array[cert_index].subject_common_name,
             "cades_type": curr_profile.CADES_format,
             "tsp_url": curr_profile.tsp_url,
-            "sig_ext": curr_profile.file_ext,
+            "sig_ext": curr_profile.sig_ext,
             "dest_dir_path": path,
-            "create_attached": curr_profile.sign_type === "Atached" ? 1 : 0,
-            "create_base_64_encoded": curr_profile.encode_type === "PEM" ? 1 : 0,
-            "pack_to_zip": 1,
-            "pack_separate_zips": 1
+            "create_attached": curr_profile.create_attached,
+            "create_base_64_encoded": curr_profile.create_base_64_encoded,
+            "pack_to_zip": curr_profile.pack_to_zip,
+            "pack_separate_zips": curr_profile.pack_separate_zips
         }
         console.warn(JSON.stringify(params))
         fileTreeModel.signTree(params)
