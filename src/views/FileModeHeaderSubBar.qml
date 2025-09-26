@@ -7,7 +7,7 @@ import "header_bar_components" as HeaderBarComponents
 
 ColumnLayout {
 
-    property int sizeColumn: parent.width * 0.1 - 1
+    property int sizeColumn: parent.width * 0.05 - 1
     property int editColumn: parent.width * 0.1 - 1
     property int signColumn: parent.width * 0.05 - 1
     property int mrpaColumn: parent.width * 0.05 - 1
@@ -29,10 +29,10 @@ ColumnLayout {
             text: "Name"
             Layout.fillWidth: true
             color: StyleSheet.font_color_extra
+            font.pixelSize: 12
         }
 
-        HeaderBarComponents.HeaderToolSeparator {
-        }
+        HeaderBarComponents.HeaderToolSeparator {}
 
         Text {
             text: "Size"
@@ -40,10 +40,10 @@ ColumnLayout {
             Layout.preferredWidth: sizeColumn
             Layout.maximumWidth: sizeColumn
             color: StyleSheet.font_color_extra
+            font.pixelSize: 12
         }
 
-        HeaderBarComponents.HeaderToolSeparator {
-        }
+        HeaderBarComponents.HeaderToolSeparator {}
 
         Text {
             text: "Last edit"
@@ -51,10 +51,10 @@ ColumnLayout {
             Layout.preferredWidth: editColumn
             Layout.maximumWidth: editColumn
             color: StyleSheet.font_color_extra
+            font.pixelSize: 12
         }
 
-        HeaderBarComponents.HeaderToolSeparator {
-        }
+        HeaderBarComponents.HeaderToolSeparator {}
 
         Text {
             text: "Sign"
@@ -62,10 +62,10 @@ ColumnLayout {
             Layout.preferredWidth: parent.width * 0.05 - 1
             Layout.maximumWidth: parent.width * 0.05 - 1
             color: StyleSheet.font_color_extra
+            font.pixelSize: 12
         }
 
-        HeaderBarComponents.HeaderToolSeparator {
-        }
+        HeaderBarComponents.HeaderToolSeparator {}
 
         Text {
             text: "MRPA"
@@ -73,10 +73,10 @@ ColumnLayout {
             Layout.preferredWidth: parent.width * 0.05 - 1
             Layout.maximumWidth: parent.width * 0.05 - 1
             color: StyleSheet.font_color_extra
+            font.pixelSize: 12
         }
 
-        HeaderBarComponents.HeaderToolSeparator {
-        }
+        HeaderBarComponents.HeaderToolSeparator {}
 
         ToolButton {
             id: deleteAllBtn
@@ -92,8 +92,7 @@ ColumnLayout {
             }
         }
 
-        HeaderBarComponents.HeaderToolSeparator {
-        }
+        HeaderBarComponents.HeaderToolSeparator {}
 
         Text {
             text: "Details"

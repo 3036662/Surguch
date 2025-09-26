@@ -150,7 +150,7 @@ TreeView {
                 ToolTip.visible: nameArea.containsMouse
                 clip: true
                 color: StyleSheet.font_color_extra
-                font.pixelSize: column === 0 ? 16 : 10
+                font.pixelSize: column === 0 ? 14 : 10
                 text: model.name
 
                 MouseArea {
