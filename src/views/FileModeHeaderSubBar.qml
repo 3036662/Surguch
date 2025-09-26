@@ -7,11 +7,11 @@ import "header_bar_components" as HeaderBarComponents
 
 ColumnLayout {
 
-    property int sizeColumn: parent.width * 0.05 - 1
-    property int editColumn: parent.width * 0.1 - 1
-    property int signColumn: parent.width * 0.05 - 1
-    property int mrpaColumn: parent.width * 0.05 - 1
-    property int deleteColumn: parent.width * 0.05 - 1
+    property int sizeColumn: parent.width * 0.05
+    property int editColumn: parent.width * 0.1
+    property int signColumn: parent.width * 0.05
+    property int mrpaColumn: parent.width * 0.05
+    property int deleteColumn: parent.width * 0.05
 
     Rectangle {
         height: 1
@@ -32,7 +32,9 @@ ColumnLayout {
             font.pixelSize: 12
         }
 
-        HeaderBarComponents.HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {
+            padding: 0
+        }
 
         Text {
             text: "Size"
@@ -43,7 +45,9 @@ ColumnLayout {
             font.pixelSize: 12
         }
 
-        HeaderBarComponents.HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {
+            padding: 0
+        }
 
         Text {
             text: "Last edit"
@@ -54,7 +58,9 @@ ColumnLayout {
             font.pixelSize: 12
         }
 
-        HeaderBarComponents.HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {
+            padding: 0
+        }
 
         Text {
             text: "Sign"
@@ -65,7 +71,9 @@ ColumnLayout {
             font.pixelSize: 12
         }
 
-        HeaderBarComponents.HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {
+            padding: 0
+        }
 
         Text {
             text: "MRPA"
@@ -76,7 +84,9 @@ ColumnLayout {
             font.pixelSize: 12
         }
 
-        HeaderBarComponents.HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {
+            padding: 0
+        }
 
         ToolButton {
             id: deleteAllBtn
@@ -92,7 +102,9 @@ ColumnLayout {
             }
         }
 
-        HeaderBarComponents.HeaderToolSeparator {}
+        HeaderBarComponents.HeaderToolSeparator {
+            padding: 0
+        }
 
         Text {
             text: "Details"

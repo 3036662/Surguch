@@ -11,6 +11,8 @@ TreeView {
     Layout.alignment: Qt.AlignLeft
     Layout.fillHeight: true
     Layout.leftMargin: 5
+    Layout.maximumWidth: parent.width - 300
+    Layout.minimumWidth: parent.width - 300
     clip: true
     model: fileTreeModel
 
@@ -95,19 +97,20 @@ TreeView {
             border.color: row === treeView.currentRow ? "#3daee9" : "transparent"
             color: "transparent"
         }
-        RowLayout {
+        Item {
             anchors.fill: parent
-            spacing: 0
 
             Rectangle {
                 id: indent
 
-                Layout.preferredWidth: indentation * depth
+                anchors.left: parent.left
+                width: indentation * depth
                 color: "transparent"
             }
             Image {
                 id: indicator
 
+                anchors.left: indent.right
                 height: 20
                 source: expanded ? StyleSheet.chevron_down : StyleSheet.chevron_right
                 sourceSize.height: expanded ? 10 : 15
@@ -127,89 +130,132 @@ TreeView {
             Rectangle {
                 id: treeIndent
 
-                Layout.fillHeight: true
-                Layout.maximumWidth: hasChildren ? indentation : indentation + 10
-                Layout.minimumWidth: hasChildren ? indentation : indentation + 10
+                anchors.left: indicator.right
+                width: hasChildren ? indentation : indentation + 10
                 color: "transparent"
             }
             Image {
                 id: image
 
+                anchors.left: treeIndent.right
                 height: 15
                 source: getImageForNode(model.type)
                 visible: column === 0 && model.type !== "temp"
                 width: 15
             }
-            Label {
-                id: nameField
+            Item {
+                id: nameItem
 
-                Layout.fillWidth: true
-                Layout.leftMargin: 5
-                ToolTip.delay: 500
-                ToolTip.text: model.name
-                ToolTip.visible: nameArea.containsMouse
-                clip: true
-                color: StyleSheet.font_color_extra
-                font.pixelSize: column === 0 ? 14 : 10
-                text: model.name
+                anchors.left: image.right
+                anchors.right: sizeItem.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
 
-                MouseArea {
-                    id: nameArea
+                Text {
+                    id: nameField
 
-                    acceptedButtons: Qt.NoButton
-                    anchors.fill: parent
-                    hoverEnabled: true
+                    horizontalAlignment: Text.AlignRight
+                    verticalAlignment: Text.AlignVCenter
+                    ToolTip.delay: 500
+                    ToolTip.text: model.name
+                    ToolTip.visible: nameArea.containsMouse
+                    clip: true
+                    color: StyleSheet.font_color_extra
+                    font.pixelSize: column === 0 ? 14 : 10
+                    text: model.name
+
+                    MouseArea {
+                        id: nameArea
+
+                        acceptedButtons: Qt.NoButton
+                        anchors.fill: parent
+                        hoverEnabled: true
+                    }
                 }
             }
-            Label {
-                id: sizeField
 
-                Layout.alignment: Qt.AlignLeft
-                Layout.preferredWidth: sizeColumn
-                clip: true
-                color: StyleSheet.font_color_extra
-                font.pixelSize: column === 0 ? 14 : 10
-                horizontalAlignment: Text.AlignHCenter
-                text: model.size
-                visible: model.type !== "temp"
+            Item {
+                id: sizeItem
+                anchors.right: dateItem.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                width: sizeColumn
+
+                Text {
+                    id: sizeField
+
+                    anchors.centerIn: parent
+                    width: sizeColumn
+                    clip: true
+                    color: StyleSheet.font_color_extra
+                    font.pixelSize: column === 0 ? 14 : 10
+                    horizontalAlignment: Text.AlignHCenter
+                    text: model.size
+                    // model.type = 1 is Dir which in our case doesn't have size or creation Date
+                    visible: model.type !== "temp" && model.type !== 1
+                }
+                Rectangle {
+                    id: size_dummy
+
+                    anchors.fill: parent
+                    color: "transparent"
+                    visible: model.type === 1
+                }
+
+                BusyIndicator {
+                    id: size_busy_indicator
+
+                    anchors.centerIn: parent
+                    width: sizeColumn
+                    visible: model.type === "temp"
+                }
             }
-            BusyIndicator {
-                id: size_busy_indicator
 
-                Layout.preferredWidth: sizeColumn
-                visible: model.type === "temp"
+            Item {
+                id: dateItem
+                anchors.right: signItem.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                width: editColumn
+
+                Text {
+                    id: lastEditField
+
+                    anchors.centerIn: parent
+                    width: editColumn
+                    clip: true
+                    color: StyleSheet.font_color_extra
+                    font.pixelSize: column === 0 ? 14 : 10
+                    horizontalAlignment: Text.AlignHCenter
+                    text: model.modification_time
+                    visible: model.type !== "temp" && model.type !== 1
+                }
+                Rectangle {
+                    id: date_dummy
+
+                    anchors.fill: parent
+                    color: "transparent"
+                    visible: model.type === 1
+                }
+
+                BusyIndicator {
+                    id: date_busy_indicator
+
+                    anchors.centerIn: parent
+                    width: editColumn
+                    visible: model.type === "temp"
+                }
             }
-            Label {
-                id: lastEditField
 
-                Layout.alignment: Qt.AlignLeft
-                Layout.preferredWidth: editColumn
-                clip: true
-                color: StyleSheet.font_color_extra
-                font.pixelSize: column === 0 ? 14 : 10
-                horizontalAlignment: Text.AlignHCenter
-                text: model.modification_time
-                visible: model.type !== "temp"
-            }
-            BusyIndicator {
-                id: date_busy_indicator
+            Item {
+                id: signItem
+                anchors.right: mrpaItem.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                width: signColumn
 
-                Layout.preferredWidth: editColumn
-                visible: model.type === "temp"
-            }
-            Label {
-                id: signStatusField
-
-                Layout.alignment: Qt.AlignLeft
-                Layout.preferredWidth: signColumn
-                clip: true
-                color: StyleSheet.font_color_extra
-                font.pixelSize: column === 0 ? 14 : 10
-                horizontalAlignment: Text.AlignHCenter
-                text: model.sig_status
-                visible: signStatusField.text !== "" && !fileTreeModel.isDraft
-
-                background: Rectangle {
+                Rectangle {
+                    anchors.fill: parent
                     anchors.centerIn: parent
                     color: model.sig_color
                     height: signStatusField.contentHeight + 6
@@ -238,34 +284,47 @@ TreeView {
                         }
                     }
                 }
+
+                Text {
+                    id: signStatusField
+
+                    anchors.centerIn: parent
+                    width: signColumn
+                    clip: true
+                    color: StyleSheet.font_color_extra
+                    font.pixelSize: column === 0 ? 14 : 10
+                    horizontalAlignment: Text.AlignHCenter
+                    text: model.sig_status
+                    visible: signStatusField.text !== ""
+                             && !fileTreeModel.isDraft
+                }
+                Rectangle {
+                    id: sign_status_dummy
+
+                    anchors.fill: parent
+                    width: signColumn
+                    color: "transparent"
+                    visible: !signStatusField.visible
+                             && !sign_busy_indicator.visible
+                }
+                BusyIndicator {
+                    id: sign_busy_indicator
+
+                    anchors.fill: parent
+                    width: signColumn
+                    visible: fileTreeModel.isDraft
+                }
             }
-            Rectangle {
-                id: sign_status_dummy
 
-                Layout.alignment: Qt.AlignLeft
-                Layout.preferredWidth: signColumn
-                visible: !signStatusField.visible
-                         && !sign_busy_indicator.visible
-            }
-            BusyIndicator {
-                id: sign_busy_indicator
+            Item {
+                id: mrpaItem
+                anchors.right: deleteItem.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                width: mrpaColumn
 
-                Layout.preferredWidth: signColumn
-                visible: fileTreeModel.isDraft
-            }
-            Label {
-                id: mrpaStatusField
-
-                Layout.alignment: Qt.AlignLeft
-                Layout.preferredWidth: mrpaColumn
-                clip: true
-                color: StyleSheet.font_color_extra
-                font.pixelSize: column === 0 ? 14 : 10
-                horizontalAlignment: Text.AlignHCenter
-                text: model.mrpa_status
-                visible: !fileTreeModel.isDraft
-
-                background: Rectangle {
+                Rectangle {
+                    anchors.fill: parent
                     anchors.centerIn: parent
                     color: model.mrpa_color
                     height: mrpaStatusField.contentHeight + 6
@@ -292,42 +351,67 @@ TreeView {
                         }
                     }
                 }
-            }
-            Rectangle {
-                id: mrpa_status_dummy
 
-                Layout.alignment: Qt.AlignLeft
-                Layout.preferredWidth: signColumn
-                visible: !mrpaStatusField.visible
-                         && !mrpa_busy_indicator.visible
-            }
-            BusyIndicator {
-                id: mrpa_busy_indicator
+                Text {
+                    id: mrpaStatusField
 
-                Layout.preferredWidth: mrpaColumn
-                visible: fileTreeModel.isDraft
-            }
-            ToolButton {
-                id: deleteBtn
+                    anchors.centerIn: parent
+                    width: mrpaColumn
+                    clip: true
+                    color: StyleSheet.font_color_extra
+                    font.pixelSize: column === 0 ? 14 : 10
+                    horizontalAlignment: Text.AlignHCenter
+                    text: model.mrpa_status
+                    visible: !fileTreeModel.isDraft
+                }
+                Rectangle {
+                    id: mrpa_status_dummy
 
-                Layout.preferredWidth: deleteColumn
-                height: 20
-                icon.height: 20
-                icon.source: StyleSheet.trash_icon
-                icon.width: 20
-                visible: depth === 0
-                width: 20
+                    anchors.fill: parent
+                    width: mrpaColumn
+                    visible: !mrpaStatusField.visible
+                             && !mrpa_busy_indicator.visible
+                }
+                BusyIndicator {
+                    id: mrpa_busy_indicator
 
-                onClicked: {
-                    console.warn("delete node res: " + fileTreeModel.deleteNode(
-                                     model.full_path, row, model.uid, model.id))
+                    anchors.fill: parent
+                    width: mrpaColumn
+                    visible: fileTreeModel.isDraft
                 }
             }
-            Item {
-                id: dummyDelete
 
-                Layout.preferredWidth: deleteColumn
-                visible: !deleteBtn.visible
+            Item {
+                id: deleteItem
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                width: deleteColumn
+
+                ToolButton {
+                    id: deleteBtn
+
+                    anchors.centerIn: parent
+                    width: deleteColumn
+                    icon.height: 20
+                    icon.source: StyleSheet.trash_icon
+                    icon.width: 20
+                    visible: depth === 0
+                    leftPadding: 0
+                    rightPadding: 0
+                    onClicked: {
+                        console.warn("delete node res: " + fileTreeModel.deleteNode(
+                                         model.full_path, row, model.uid,
+                                         model.id))
+                    }
+                }
+                Item {
+                    id: dummyDelete
+
+                    anchors.fill: parent
+                    width: deleteColumn
+                    visible: !deleteBtn.visible
+                }
             }
         }
     }
