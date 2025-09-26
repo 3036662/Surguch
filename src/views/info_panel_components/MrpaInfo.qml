@@ -2,17 +2,12 @@ import QtQuick
 import QtQuick.Controls
 import StyleSheet
 
-ScrollView {
+Item {
     id: root
     width: parent.width
     height: parent.height
-    contentHeight: contentCol.implicitHeight + 20
 
-    anchors.leftMargin: 10
-    anchors.rightMargin: 10
-    anchors.topMargin: 10
     property var mrpa: mrpaData
-
     signal closeClicked
 
     function isObj(x) {
@@ -27,21 +22,17 @@ ScrollView {
     function secKeys(o) {
         return isObj(o) ? Object.keys(o).filter(k => !k.startsWith("@")) : []
     }
-
     function mrpaTr(str) {
         return surguchTranslator.surguchTranslate(str)
     }
-
     function lastTitle(path) {
         if (!path || path.length === 0)
-            return qsTr("Доверенность")
+            return qsTr("About MRPA")
         return path[path.length - 1]
     }
-
     function buildSections(node, path, out) {
         if (!isObj(node) && !isArr(node))
             return
-
         if (isObj(node)) {
             const title = lastTitle(path)
             const attrs = attrKeys(node).map(k => ({
@@ -61,15 +52,13 @@ ScrollView {
             }
             return
         }
-
         const last = lastTitle(path)
-        for (var i = 0; i < node.length; ++i) {
-            const indexed = (last || "(array)") + " [" + i + "]"
+        for (var j = 0; j < node.length; ++j) {
+            const indexed = (last || "(array)") + " [" + j + "]"
             const nextPath = path.slice(0, -1).concat([indexed])
-            buildSections(node[i], nextPath, out)
+            buildSections(node[j], nextPath, out)
         }
     }
-
     function computeSections() {
         const res = []
         if (mrpa)
@@ -81,8 +70,12 @@ ScrollView {
     onMrpaChanged: sections = computeSections()
 
     Item {
+        id: mrpaHeader
         width: parent.width
         height: 40
+        anchors.top: parent.top
+        z: 2
+
         ToolButton {
             flat: true
             display: AbstractButton.IconOnly
@@ -90,18 +83,10 @@ ScrollView {
             icon.width: 20
             icon.height: 20
             icon.color: StyleSheet.font_color
-            leftPadding: 0
-            topPadding: 0
-            rightPadding: 0
-            bottomPadding: 0
-            anchors.top: parent.top
             anchors.left: parent.left
             width: 20
             height: 20
-
-            onClicked: {
-                rightSideBar.showState = RightSideBar.ShowState.Mrpa
-            }
+            onClicked: rightSideBar.showState = RightSideBar.ShowState.Mrpa
         }
 
         RSBCloseButton {
@@ -109,35 +94,83 @@ ScrollView {
         }
     }
 
-    Column {
-        id: contentCol
-        width: parent.width
-        spacing: 10
+    Flickable {
+        id: flick
+        anchors {
+            top: mrpaHeader.bottom
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+            leftMargin: 10
+            rightMargin: 10
+            topMargin: 10
+        }
+        clip: true
+        contentWidth: width
+        contentHeight: contentCol.implicitHeight + 20
+        z: 1
 
-        Repeater {
-            model: sections
-            delegate: Column {
-                width: parent.width
-                spacing: 6
+        Column {
+            id: contentCol
+            width: flick.width
+            spacing: 10
 
-                Text {
-                    text: mrpaTr(modelData.title)
-                    font.weight: Font.DemiBold
-                    font.family: "Noto Sans"
-                    color: StyleSheet.font_color_extra
-                }
+            Repeater {
+                model: sections
+                delegate: Column {
+                    width: parent.width - 15
+                    spacing: 6
 
-                Repeater {
-                    model: modelData.attrs
-                    delegate: TextPair {
-                        keyText: mrpaTr(String(modelData.key).slice(1))
-                        value: String(modelData.value)
+                    Text {
+                        text: mrpaTr(modelData.title)
+                        width: parent.width
+                        horizontalAlignment: Text.AlignHCenter
+                        wrapMode: Text.WordWrap
+                        leftPadding: 12
+                        rightPadding: 12
+                        topPadding: 4
+                        bottomPadding: 2
+                        font.weight: Font.DemiBold
+                        font.family: "Noto Sans"
+                        color: StyleSheet.font_color_extra
+                    }
+
+                    Repeater {
+                        model: modelData.attrs
+
+                        delegate: TextPair {
+                            width: parent.width
+                            keyText: mrpaTr(String(modelData.key).slice(1))
+                            value: String(modelData.value)
+                            isMrpa: true
+                        }
+                    }
+
+                    RightSBHorizontalDelimiter {
+                        width: parent.width
                     }
                 }
+            }
+        }
 
-                RightSBHorizontalDelimiter {
-                    width: parent.width
-                }
+        ScrollBar.vertical: ScrollBar {
+            id: mrpaScroll
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.rightMargin: 4
+            width: 8
+            policy: ScrollBar.AlwaysOn
+
+            contentItem: Rectangle {
+                implicitWidth: 6
+                radius: width / 2
+                color: StyleSheet.slider_fill_color
+                border.width: 2
+                border.color: StyleSheet.slider_border_color
+            }
+            background: Rectangle {
+                color: "transparent"
             }
         }
     }
