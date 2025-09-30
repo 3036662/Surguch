@@ -64,5 +64,11 @@
         <file>icons/dark/box.svg</file>
         <file>icons/dark/file_text.svg</file>
         <file>icons/light/file_text.svg</file>
+        <file>icons/dark/cell.svg</file>
+        <file>icons/dark/cell-green.svg</file>
+        <file>icons/dark/cell-red.svg</file>
+        <file>icons/light/cell.svg</file>
+        <file>icons/light/cell-green.svg</file>
+        <file>icons/light/cell-red.svg</file>
     </qresource>
 </RCC>

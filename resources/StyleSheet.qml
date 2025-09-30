@@ -43,6 +43,9 @@ Item {
     property string tag_icon
     property string info_icon
     property string box_icon
+    property string cell_icon_empty
+    property string cell_icon_green
+    property string cell_icon_red
     property color slider_fill_color
     property color slider_border_color
     property color slider_handle_color
@@ -90,6 +93,9 @@ Item {
                 tag_icon: "qrc:/icons/dark/tag_icon.svg"
                 info_icon: "qrc:/icons/dark/info_icon.svg"
                 box_icon: "qrc:/icons/dark/box.svg"
+                cell_icon_empty: "qrc:/icons/dark/cell.svg"
+                cell_icon_green: "qrc:/icons/dark/cell-green.svg"
+                cell_icon_red: "qrc:/icons/dark/cell-red.svg"
                 slider_fill_color: "#454A4E"
                 slider_border_color: "#454A4E"
                 slider_handle_color: "#31363B"
@@ -136,6 +142,9 @@ Item {
                 tag_icon: "qrc:/icons/light/tag_icon.svg"
                 info_icon: "qrc:/icons/light/info_icon.svg"
                 box_icon: "qrc:/icons/light/box.svg"
+                cell_icon_empty: "qrc:/icons/light/cell.svg"
+                cell_icon_green: "qrc:/icons/light/cell-green.svg"
+                cell_icon_red: "qrc:/icons/light/cell-red.svg"
                 slider_fill_color: "#57534C"
                 slider_border_color: "#57534C"
                 slider_handle_color: "#ffffff"
