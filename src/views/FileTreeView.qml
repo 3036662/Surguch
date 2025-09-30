@@ -156,6 +156,8 @@ TreeView {
 
                     horizontalAlignment: Text.AlignRight
                     verticalAlignment: Text.AlignVCenter
+                    maximumLineCount: 1
+                    elide: Text.ElideRight
                     ToolTip.delay: 500
                     ToolTip.text: model.name
                     ToolTip.visible: nameArea.containsMouse

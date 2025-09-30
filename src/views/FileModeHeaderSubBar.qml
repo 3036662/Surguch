@@ -40,6 +40,7 @@ ColumnLayout {
             text: "Size"
             horizontalAlignment: Text.AlignHCenter
             Layout.preferredWidth: sizeColumn
+            Layout.minimumWidth: sizeColumn
             Layout.maximumWidth: sizeColumn
             color: StyleSheet.font_color_extra
             font.pixelSize: 12
@@ -53,6 +54,7 @@ ColumnLayout {
             text: "Last edit"
             horizontalAlignment: Text.AlignHCenter
             Layout.preferredWidth: editColumn
+            Layout.minimumWidth: editColumn
             Layout.maximumWidth: editColumn
             color: StyleSheet.font_color_extra
             font.pixelSize: 12
@@ -65,8 +67,9 @@ ColumnLayout {
         Text {
             text: "Sign"
             horizontalAlignment: Text.AlignHCenter
-            Layout.preferredWidth: parent.width * 0.05 - 1
-            Layout.maximumWidth: parent.width * 0.05 - 1
+            Layout.preferredWidth: signColumn
+            Layout.minimumWidth: signColumn
+            Layout.maximumWidth: signColumn
             color: StyleSheet.font_color_extra
             font.pixelSize: 12
         }
@@ -78,8 +81,9 @@ ColumnLayout {
         Text {
             text: "MRPA"
             horizontalAlignment: Text.AlignHCenter
-            Layout.preferredWidth: parent.width * 0.05 - 1
-            Layout.maximumWidth: parent.width * 0.05 - 1
+            Layout.preferredWidth: mrpaColumn
+            Layout.minimumWidth: mrpaColumn
+            Layout.maximumWidth: mrpaColumn
             color: StyleSheet.font_color_extra
             font.pixelSize: 12
         }
@@ -95,6 +99,7 @@ ColumnLayout {
             icon.width: 20
             icon.height: 20
             Layout.preferredWidth: deleteColumn
+            Layout.minimumWidth: deleteColumn
             Layout.maximumWidth: deleteColumn
 
             onClicked: {
@@ -113,7 +118,6 @@ ColumnLayout {
             Layout.maximumWidth: 300
             Layout.preferredWidth: 300
             Layout.minimumWidth: 300
-            Layout.fillWidth: true
         }
     }
 }
