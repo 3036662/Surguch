@@ -15,6 +15,21 @@ Flickable {
     Item {
         width: parent.width
         height: 40
+
+        ToolButton {
+            flat: true
+            display: AbstractButton.IconOnly
+            icon.source: StyleSheet.back_icon
+            icon.width: 20
+            icon.height: 20
+            icon.color: StyleSheet.font_color
+            anchors.left: parent.left
+            width: 20
+            height: 20
+            onClicked: rightSideBar.showState = RightSideBar.ShowState.Certs
+            visible: siglistModel.sigSource === 2
+        }
+
         RSBCloseButton {
             onClicked: {
                 closeClicked()
@@ -28,6 +43,8 @@ Flickable {
 
         Text {
             text: qsTr("Signature")
+            width: parent.width
+            horizontalAlignment: Text.AlignHCenter
             font.weight: Font.DemiBold
             font.family: "Noto Sans"
             color: StyleSheet.font_color_extra

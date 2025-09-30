@@ -118,6 +118,10 @@ Item {
     InfoPanelComponents.SignaturesList {
         id: rSigListView
         visible: showState == RightSideBar.ShowState.Certs && sigCount > 0
+
+        onCloseClicked: {
+            showState = RightSideBar.ShowState.Invisible
+        }
     }
 
     InfoPanelComponents.MrpaInfo {
@@ -132,5 +136,9 @@ Item {
     InfoPanelComponents.MrpaList {
         id: rMrpaListView
         visible: showState == RightSideBar.ShowState.Mrpa
+
+        onCloseClicked: {
+            showState = RightSideBar.ShowState.Invisible
+        }
     }
 }

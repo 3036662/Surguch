@@ -95,6 +95,40 @@ TreeView {
                 return (bytes / (1024 * 1024)).toFixed(1) + qsTr(" MB")
         }
 
+        function getSignIcon(color) {
+            switch (color) {
+            case "sig_green":
+                return StyleSheet.medal_green_icon
+            case "sig_red":
+                return StyleSheet.medal_pink_icon
+            case "sig_mixed":
+                return StyleSheet.medal_icon
+            case "file_green":
+                return StyleSheet.cell_icon_green
+            case "file_red":
+                return StyleSheet.cell_icon_red
+            case "file_mixed":
+                return StyleSheet.cell_icon
+            }
+        }
+
+        function getMrpaIcon(color) {
+            switch (color) {
+            case "mrpa_green":
+                return StyleSheet.medal_green_icon
+            case "mrpa_red":
+                return StyleSheet.medal_pink_icon
+            case "mrpa_mixed":
+                return StyleSheet.medal_icon
+            case "file_green":
+                return StyleSheet.cell_icon_green
+            case "file_red":
+                return StyleSheet.cell_icon_red
+            case "file_mixed":
+                return StyleSheet.cell_icon
+            }
+        }
+
         implicitHeight: nameField.implicitHeight * 1.6
         implicitWidth: treeView.width - padding * 2
 
@@ -108,53 +142,69 @@ TreeView {
         Item {
             anchors.fill: parent
 
-            Rectangle {
+            Item {
                 id: indent
 
                 anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
                 width: indentation * depth
-                color: "transparent"
             }
-            Image {
-                id: indicator
-
+            Item {
+                id: indicatorItem
                 anchors.left: indent.right
-                height: 20
-                source: expanded ? StyleSheet.chevron_down : StyleSheet.chevron_right
-                sourceSize.height: expanded ? 10 : 15
-                sourceSize.width: expanded ? 20 : 10
-                visible: isTreeNode && hasChildren
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
                 width: 20
 
-                TapHandler {
-                    onSingleTapped: {
-                        let index = treeView.index(row, column)
-                        treeView.selectionModel.setCurrentIndex(
-                                    index, ItemSelectionModel.NoUpdate)
-                        treeView.toggleExpanded(row)
+                Image {
+                    id: indicator
+
+                    anchors.centerIn: parent
+                    source: expanded ? StyleSheet.chevron_down : StyleSheet.chevron_right
+                    sourceSize.height: expanded ? 10 : 15
+                    sourceSize.width: expanded ? 20 : 10
+                    visible: isTreeNode && hasChildren
+
+                    TapHandler {
+                        onSingleTapped: {
+                            let index = treeView.index(row, column)
+                            treeView.selectionModel.setCurrentIndex(
+                                        index, ItemSelectionModel.NoUpdate)
+                            treeView.toggleExpanded(row)
+                        }
                     }
                 }
             }
-            Rectangle {
+            Item {
                 id: treeIndent
 
-                anchors.left: indicator.right
+                anchors.left: indicatorItem.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
                 width: hasChildren ? indentation : indentation + 10
-                color: "transparent"
             }
-            Image {
-                id: image
-
+            Item {
+                id: imageItem
                 anchors.left: treeIndent.right
-                height: 15
-                source: getImageForNode(model.type)
-                visible: column === 0 && model.type !== "temp"
-                width: 15
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.rightMargin: 3
+                width: height
+
+                Image {
+                    id: image
+
+                    anchors.fill: parent
+                    source: getImageForNode(model.type)
+                    visible: column === 0 && model.type !== "temp"
+                }
             }
+
             Item {
                 id: nameItem
 
-                anchors.left: image.right
+                anchors.left: imageItem.right
                 anchors.right: sizeItem.left
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
@@ -202,6 +252,9 @@ TreeView {
 
                     anchors.centerIn: parent
                     width: sizeColumn
+                    ToolTip.delay: 500
+                    ToolTip.text: convertSizes(model.size)
+                    ToolTip.visible: sizeArea.containsMouse
                     clip: true
                     color: StyleSheet.font_color_extra
                     font.pixelSize: column === 0 ? 14 : 10
@@ -209,6 +262,14 @@ TreeView {
                     text: convertSizes(model.size)
                     // model.type = 1 is Dir which in our case doesn't have size or creation Date
                     visible: model.type !== "temp" && model.type !== 1
+
+                    MouseArea {
+                        id: sizeArea
+
+                        acceptedButtons: Qt.NoButton
+                        anchors.fill: parent
+                        hoverEnabled: true
+                    }
                 }
                 Rectangle {
                     id: size_dummy
@@ -241,12 +302,23 @@ TreeView {
 
                     anchors.centerIn: parent
                     width: editColumn
+                    ToolTip.delay: 500
+                    ToolTip.text: model.modification_time
+                    ToolTip.visible: dateArea.containsMouse
                     clip: true
                     color: StyleSheet.font_color_extra
                     font.pixelSize: column === 0 ? 14 : 10
                     horizontalAlignment: Text.AlignHCenter
                     text: model.modification_time
                     visible: model.type !== "temp" && model.type !== 1
+
+                    MouseArea {
+                        id: dateArea
+
+                        acceptedButtons: Qt.NoButton
+                        anchors.fill: parent
+                        hoverEnabled: true
+                    }
                 }
                 Rectangle {
                     id: date_dummy
@@ -273,58 +345,55 @@ TreeView {
                 width: signColumn
                 clip: true
 
-                Rectangle {
+                MouseArea {
+                    id: sigStatusArea
+
                     anchors.fill: parent
-                    anchors.centerIn: parent
-                    color: model.sig_color
-                    height: signStatusField.contentHeight + 6
-                    radius: height / 4
-                    visible: signStatusField.text !== ""
-                             && !fileTreeModel.isDraft
-                    width: signStatusField.contentWidth + 12
+                    hoverEnabled: true
 
-                    MouseArea {
-                        id: sigStatusArea
+                    onClicked: {
+                        rightSideBar.showState = RightSideBar.ShowState.Certs
 
-                        anchors.fill: parent
-                        hoverEnabled: true
-
-                        onClicked: {
-                            rightSideBar.showState = RightSideBar.ShowState.Certs
-
-                            fileTreeModel.getCertList(model.id)
-                            console.warn(rightSideBar.sigCount)
-                        }
-                        onEntered: {
-                            cursorShape = Qt.PointingHandCursor
-                        }
-                        onExited: {
-                            cursorShape = Qt.ArrowCursor
-                        }
+                        fileTreeModel.getCertList(model.id)
+                        console.warn(rightSideBar.sigCount)
+                    }
+                    onEntered: {
+                        cursorShape = Qt.PointingHandCursor
+                    }
+                    onExited: {
+                        cursorShape = Qt.ArrowCursor
                     }
                 }
 
-                Text {
-                    id: signStatusField
-
+                Image {
                     anchors.centerIn: parent
-                    width: signColumn
-                    clip: true
-                    color: StyleSheet.font_color_extra
-                    font.pixelSize: column === 0 ? 14 : 10
-                    horizontalAlignment: Text.AlignHCenter
-                    text: model.sig_status
-                    visible: signStatusField.text !== ""
-                             && !fileTreeModel.isDraft
+                    source: getSignIcon(model.sig_color)
+                    // visible: signStatusField.text !== ""
+                    //          && !fileTreeModel.isDraft
+                    visible: !fileTreeModel.isDraft
+                    width: height
                 }
+
+                // Text {
+                //     id: signStatusField
+
+                //     width: signColumn
+                //     clip: true
+                //     color: StyleSheet.font_color_extra
+                //     font.pixelSize: column === 0 ? 14 : 10
+                //     horizontalAlignment: Text.AlignHCenter
+                //     text: model.sig_status
+                //     visible: signStatusField.text !== ""
+                //              && !fileTreeModel.isDraft
+                // }
                 Rectangle {
                     id: sign_status_dummy
 
                     anchors.fill: parent
                     width: signColumn
                     color: "transparent"
-                    visible: !signStatusField.visible
-                             && !sign_busy_indicator.visible
+                    visible: //!signStatusField.visible
+                             /*&&*/ !sign_busy_indicator.visible
                 }
                 BusyIndicator {
                     id: sign_busy_indicator

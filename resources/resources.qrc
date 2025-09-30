@@ -70,5 +70,7 @@
         <file>icons/light/cell.svg</file>
         <file>icons/light/cell-green.svg</file>
         <file>icons/light/cell-red.svg</file>
+        <file>icons/light/back.svg</file>
+        <file>icons/dark/back.svg</file>
     </qresource>
 </RCC>

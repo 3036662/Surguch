@@ -14,6 +14,20 @@ ListView {
     flickableDirection: Flickable.VerticalFlick
     model: mrpaListData
 
+    signal closeClicked
+
+    header: Item {
+        width: root.width
+        height: 30
+
+        RSBCloseButton {
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.margins: 5
+            onClicked: root.closeClicked()
+        }
+    }
+
     function g(o, ...p) {
         try {
             return p.reduce((a, k) => a[k], o)

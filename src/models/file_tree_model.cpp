@@ -778,18 +778,18 @@ void FileTreeModel::processChecks(int id) {
                                       }
                                   });
                     if (valid > 0 && invalid == 0) {
-                        item->setSigStats("good", "green");
+                        item->setSigStats("good", "sig_green");
                         return;
                     }
                     if (valid > 0 && invalid > 0) {
-                        item->setSigStats("mixed", "orange");
+                        item->setSigStats("mixed", "sig_mixed");
                         return;
                     }
-                    item->setSigStats("bad", "red");
+                    item->setSigStats("bad", "sig_red");
                     return;
                 }
             }
-            item->setSigStats("no_file", "red");
+            item->setSigStats("no_file", "sig_red");
             return;
         case Asig:
             if (item->data().has_check_result.has_value() &&
@@ -807,24 +807,24 @@ void FileTreeModel::processChecks(int id) {
                                       }
                                   });
                     if (valid > 0 && invalid == 0) {
-                        item->setSigStats("good", "green");
+                        item->setSigStats("good", "sig_green");
                         return;
                     }
                     if (valid > 0 && invalid > 0) {
-                        item->setSigStats("mixed", "orange");
+                        item->setSigStats("mixed", "sig_mixed");
                         return;
                     }
-                    item->setSigStats("bad", "red");
+                    item->setSigStats("bad", "sig_red");
                     return;
                 }
             }
-            item->setSigStats("not found", "red");
+            item->setSigStats("not found", "sig_red");
             return;
         case File:
-            item->setSigStats("nosign", "orange");
+            item->setSigStats("nosign", "file_mixed");
             item->setMrpaStats("nomrpa", "orange");
             if (item->data().encrypted) {
-                item->setSigStats("lock", "red");
+                item->setSigStats("lock", "file_red");
                 return;
             }
             if (item->data().ref_id_size > 0) {
@@ -843,13 +843,13 @@ void FileTreeModel::processChecks(int id) {
                         }
                     });
                 if (valid > 0 && invalid == 0) {
-                    item->setSigStats(QString::number(valid), "green");
+                    item->setSigStats(QString::number(valid), "file_green");
                 }
                 if (valid > 0 && invalid > 0) {
-                    item->setSigStats(QString::number(valid), "orange");
+                    item->setSigStats(QString::number(valid), "file_mixed");
                 }
                 if (valid == 0 && invalid > 0) {
-                    item->setSigStats(QString::number(invalid), "red");
+                    item->setSigStats(QString::number(invalid), "file_red");
                 }
             }
             if (item->data().mrpa_id_size > 0) {

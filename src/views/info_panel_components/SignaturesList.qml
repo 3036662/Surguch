@@ -14,6 +14,21 @@ ListView {
     flickableDirection: Flickable.VerticalFlick
     model: siglistModel
 
+    signal closeClicked
+
+    header: Item {
+        width: root.width
+        height: 30
+        visible: siglistModel.sigSource === 2
+
+        RSBCloseButton {
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.margins: 5
+            onClicked: root.closeClicked()
+        }
+    }
+
     delegate: ColumnLayout {
         width: root.width
         height: 50
