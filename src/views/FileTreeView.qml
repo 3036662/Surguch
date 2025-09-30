@@ -38,7 +38,6 @@ TreeView {
         console.warn(JSON.stringify(curr_profile))
         console.warn("---------------------------------")
 
-        // gather all information needed to create a signature visual representation
         let params = {
             "cert_serial": curr_profile.cert_serial,
             "cert_subject": cert_array[cert_index].subject_common_name,
@@ -85,6 +84,15 @@ TreeView {
             default:
                 return ""
             }
+        }
+
+        function convertSizes(bytes) {
+            if (bytes < 1024)
+                return bytes + qsTr(" B")
+            else if (bytes < 1024 * 1024)
+                return (bytes / 1024).toFixed(1) + qsTr(" KB")
+            else if (bytes < 1024 * 1024 * 1024)
+                return (bytes / (1024 * 1024)).toFixed(1) + qsTr(" MB")
         }
 
         implicitHeight: nameField.implicitHeight * 1.6
@@ -150,14 +158,18 @@ TreeView {
                 anchors.right: sizeItem.left
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
+                anchors.rightMargin: 3
+                clip: true
 
                 Text {
                     id: nameField
 
-                    horizontalAlignment: Text.AlignRight
+                    anchors.fill: parent
+                    horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
                     maximumLineCount: 1
                     elide: Text.ElideRight
+                    wrapMode: Text.NoWrap
                     ToolTip.delay: 500
                     ToolTip.text: model.name
                     ToolTip.visible: nameArea.containsMouse
@@ -182,6 +194,8 @@ TreeView {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 width: sizeColumn
+                anchors.rightMargin: 3
+                clip: true
 
                 Text {
                     id: sizeField
@@ -192,7 +206,7 @@ TreeView {
                     color: StyleSheet.font_color_extra
                     font.pixelSize: column === 0 ? 14 : 10
                     horizontalAlignment: Text.AlignHCenter
-                    text: model.size
+                    text: convertSizes(model.size)
                     // model.type = 1 is Dir which in our case doesn't have size or creation Date
                     visible: model.type !== "temp" && model.type !== 1
                 }
@@ -218,7 +232,9 @@ TreeView {
                 anchors.right: signItem.left
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
+                anchors.rightMargin: 3
                 width: editColumn
+                clip: true
 
                 Text {
                     id: lastEditField
@@ -255,6 +271,7 @@ TreeView {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 width: signColumn
+                clip: true
 
                 Rectangle {
                     anchors.fill: parent
@@ -324,6 +341,7 @@ TreeView {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 width: mrpaColumn
+                clip: true
 
                 Rectangle {
                     anchors.fill: parent
