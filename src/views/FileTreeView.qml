@@ -109,6 +109,8 @@ TreeView {
                 return StyleSheet.cell_icon_red
             case "file_mixed":
                 return StyleSheet.cell_icon
+            default:
+                return ""
             }
         }
 
@@ -126,6 +128,8 @@ TreeView {
                 return StyleSheet.cell_icon_red
             case "file_mixed":
                 return StyleSheet.cell_icon
+            default:
+                return ""
             }
         }
 
@@ -350,6 +354,7 @@ TreeView {
 
                     anchors.fill: parent
                     hoverEnabled: true
+                    enabled: signImage.visible
 
                     onClicked: {
                         rightSideBar.showState = RightSideBar.ShowState.Certs
@@ -366,11 +371,12 @@ TreeView {
                 }
 
                 Image {
+                    id: signImage
                     anchors.centerIn: parent
                     source: getSignIcon(model.sig_color)
                     // visible: signStatusField.text !== ""
                     //          && !fileTreeModel.isDraft
-                    visible: !fileTreeModel.isDraft
+                    visible: !fileTreeModel.isDraft && model.sig_color !== ""
                     width: height
                 }
 
@@ -412,47 +418,36 @@ TreeView {
                 width: mrpaColumn
                 clip: true
 
-                Rectangle {
+                MouseArea {
+                    id: mrpaStatusArea
+
                     anchors.fill: parent
-                    anchors.centerIn: parent
-                    color: model.mrpa_color
-                    height: mrpaStatusField.contentHeight + 6
-                    radius: height / 4
-                    visible: mrpaStatusField.text !== ""
-                             && !fileTreeModel.isDraft
-                    width: mrpaStatusField.contentWidth + 12
+                    hoverEnabled: true
 
-                    MouseArea {
-                        id: mrpaStatusArea
-
-                        anchors.fill: parent
-                        hoverEnabled: true
-
-                        onClicked: {
-                            showMrpaList(fileTreeModel.getMrpaData(model.id))
-                            rightSideBar.showState = RightSideBar.ShowState.Mrpa
-                        }
-                        onEntered: {
-                            cursorShape = Qt.PointingHandCursor
-                        }
-                        onExited: {
-                            cursorShape = Qt.ArrowCursor
-                        }
+                    onClicked: {
+                        showMrpaList(fileTreeModel.getMrpaData(model.id))
+                        rightSideBar.showState = RightSideBar.ShowState.Mrpa
+                    }
+                    onEntered: {
+                        cursorShape = Qt.PointingHandCursor
+                    }
+                    onExited: {
+                        cursorShape = Qt.ArrowCursor
                     }
                 }
 
-                Text {
-                    id: mrpaStatusField
+                // Text {
+                //     id: mrpaStatusField
 
-                    anchors.centerIn: parent
-                    width: mrpaColumn
-                    clip: true
-                    color: StyleSheet.font_color_extra
-                    font.pixelSize: column === 0 ? 14 : 10
-                    horizontalAlignment: Text.AlignHCenter
-                    text: model.mrpa_status
-                    visible: !fileTreeModel.isDraft
-                }
+                //     anchors.centerIn: parent
+                //     width: mrpaColumn
+                //     clip: true
+                //     color: StyleSheet.font_color_extra
+                //     font.pixelSize: column === 0 ? 14 : 10
+                //     horizontalAlignment: Text.AlignHCenter
+                //     text: model.mrpa_status
+                //     visible: !fileTreeModel.isDraft
+                // }
                 Rectangle {
                     id: mrpa_status_dummy
 

@@ -664,6 +664,7 @@ void FileTreeModel::processSignedTree() {
             if (res.has_value()) {
                 const QJsonDocument json_doc =
                     QJsonDocument::fromJson(res.value().data());
+                qWarning() << "[DEBUG]" << res.value().data();
                 if (json_doc.isObject()) {
                     QJsonArray const data_ = json_doc["children"].toArray();
                     beginResetModel();
@@ -789,7 +790,7 @@ void FileTreeModel::processChecks(int id) {
                     return;
                 }
             }
-            item->setSigStats("no_file", "sig_red");
+            item->setSigStats("no_file", "sig_mixed");
             return;
         case Asig:
             if (item->data().has_check_result.has_value() &&
@@ -818,10 +819,10 @@ void FileTreeModel::processChecks(int id) {
                     return;
                 }
             }
-            item->setSigStats("not found", "sig_red");
+            item->setSigStats("not found", "sig_mixed");
             return;
         case File:
-            item->setSigStats("nosign", "file_mixed");
+            item->setSigStats("nosign", "");
             item->setMrpaStats("nomrpa", "orange");
             if (item->data().encrypted) {
                 item->setSigStats("lock", "file_red");
