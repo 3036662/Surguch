@@ -436,6 +436,16 @@ TreeView {
                     }
                 }
 
+                Image {
+                    id: mrpaImage
+                    anchors.centerIn: parent
+                    source: getSignIcon(model.mrpa_color)
+                    // visible: signStatusField.text !== ""
+                    //          && !fileTreeModel.isDraft
+                    visible: !fileTreeModel.isDraft && model.mrpa_color !== ""
+                    width: height
+                }
+
                 // Text {
                 //     id: mrpaStatusField
 
@@ -453,8 +463,8 @@ TreeView {
 
                     anchors.fill: parent
                     width: mrpaColumn
-                    visible: !mrpaStatusField.visible
-                             && !mrpa_busy_indicator.visible
+                    visible: //!mrpaStatusField.visible
+                             /*&&*/ !mrpa_busy_indicator.visible
                 }
                 BusyIndicator {
                     id: mrpa_busy_indicator

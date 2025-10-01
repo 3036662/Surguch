@@ -521,9 +521,11 @@ Flickable {
                 }, {
                     "title": ".sign"
                 }, {
-                    "title": ".p7b"
+                    "title": ".sgn"
                 }, {
                     "title": ".p7s"
+                }, {
+                    "title": ".bin"
                 }]
             textRole: "title"
             valueRole: "title"
