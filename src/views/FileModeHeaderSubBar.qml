@@ -26,7 +26,7 @@ ColumnLayout {
         Layout.leftMargin: 5
 
         Text {
-            text: "Name"
+            text: qsTr("Name")
             Layout.fillWidth: true
             color: StyleSheet.font_color_extra
             font.pixelSize: 12
@@ -37,7 +37,7 @@ ColumnLayout {
         }
 
         Text {
-            text: "Size"
+            text: qsTr("Size")
             horizontalAlignment: Text.AlignHCenter
             Layout.preferredWidth: sizeColumn
             Layout.minimumWidth: sizeColumn
@@ -51,7 +51,7 @@ ColumnLayout {
         }
 
         Text {
-            text: "Last edit"
+            text: qsTr("Last edit")
             horizontalAlignment: Text.AlignHCenter
             Layout.preferredWidth: editColumn
             Layout.minimumWidth: editColumn
@@ -65,7 +65,7 @@ ColumnLayout {
         }
 
         Text {
-            text: "Sign"
+            text: qsTr("Sign")
             horizontalAlignment: Text.AlignHCenter
             Layout.preferredWidth: signColumn
             Layout.minimumWidth: signColumn
@@ -79,7 +79,7 @@ ColumnLayout {
         }
 
         Text {
-            text: "MRPA"
+            text: qsTr("MRPA")
             horizontalAlignment: Text.AlignHCenter
             Layout.preferredWidth: mrpaColumn
             Layout.minimumWidth: mrpaColumn
@@ -112,7 +112,7 @@ ColumnLayout {
         }
 
         Text {
-            text: "Details"
+            text: qsTr("Details")
             color: StyleSheet.font_color_extra
             horizontalAlignment: Text.AlignHCenter
             Layout.maximumWidth: 300
