@@ -108,7 +108,7 @@ TreeView {
             case "file_red":
                 return StyleSheet.cell_icon_red
             case "file_mixed":
-                return StyleSheet.cell_icon
+                return StyleSheet.cell_icon_empty
             default:
                 return ""
             }
@@ -127,7 +127,7 @@ TreeView {
             case "file_red":
                 return StyleSheet.cell_icon_red
             case "file_mixed":
-                return StyleSheet.cell_icon
+                return StyleSheet.cell_icon_empty
             default:
                 return ""
             }
@@ -374,32 +374,17 @@ TreeView {
                     id: signImage
                     anchors.centerIn: parent
                     source: getSignIcon(model.sig_color)
-                    // visible: signStatusField.text !== ""
-                    //          && !fileTreeModel.isDraft
                     visible: !fileTreeModel.isDraft && model.sig_color !== ""
                     width: height
                 }
 
-                // Text {
-                //     id: signStatusField
-
-                //     width: signColumn
-                //     clip: true
-                //     color: StyleSheet.font_color_extra
-                //     font.pixelSize: column === 0 ? 14 : 10
-                //     horizontalAlignment: Text.AlignHCenter
-                //     text: model.sig_status
-                //     visible: signStatusField.text !== ""
-                //              && !fileTreeModel.isDraft
-                // }
                 Rectangle {
                     id: sign_status_dummy
 
                     anchors.fill: parent
                     width: signColumn
                     color: "transparent"
-                    visible: //!signStatusField.visible
-                             /*&&*/ !sign_busy_indicator.visible
+                    visible: !sign_busy_indicator.visible
                 }
                 BusyIndicator {
                     id: sign_busy_indicator
@@ -423,6 +408,7 @@ TreeView {
 
                     anchors.fill: parent
                     hoverEnabled: true
+                    enabled: mrpaImage.visible
 
                     onClicked: {
                         showMrpaList(fileTreeModel.getMrpaData(model.id))
@@ -439,32 +425,18 @@ TreeView {
                 Image {
                     id: mrpaImage
                     anchors.centerIn: parent
-                    source: getSignIcon(model.mrpa_color)
-                    // visible: signStatusField.text !== ""
-                    //          && !fileTreeModel.isDraft
+                    source: getMrpaIcon(model.mrpa_color)
                     visible: !fileTreeModel.isDraft && model.mrpa_color !== ""
                     width: height
                 }
 
-                // Text {
-                //     id: mrpaStatusField
-
-                //     anchors.centerIn: parent
-                //     width: mrpaColumn
-                //     clip: true
-                //     color: StyleSheet.font_color_extra
-                //     font.pixelSize: column === 0 ? 14 : 10
-                //     horizontalAlignment: Text.AlignHCenter
-                //     text: model.mrpa_status
-                //     visible: !fileTreeModel.isDraft
-                // }
                 Rectangle {
                     id: mrpa_status_dummy
 
                     anchors.fill: parent
                     width: mrpaColumn
-                    visible: //!mrpaStatusField.visible
-                             /*&&*/ !mrpa_busy_indicator.visible
+                    color: "transparent"
+                    visible: !mrpa_busy_indicator.visible
                 }
                 BusyIndicator {
                     id: mrpa_busy_indicator

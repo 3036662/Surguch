@@ -760,6 +760,51 @@ void FileTreeModel::processChecks(int id) {
     auto item = item_map.at(id).lock();
     switch (item->data().type) {
         case Zip:
+            item->setSigStats("nosign", "");
+            item->setMrpaStats("nomrpa", "file_mixed");
+            if (item->data().encrypted) {
+                item->setSigStats("lock", "file_red");
+                return;
+            }
+            if (item->data().ref_id_size > 0) {
+                const auto checks = item->data().ref_ids;
+                int valid = 0;
+                int invalid = 0;
+                std::for_each(
+                    checks.cbegin(), checks.cend(),
+                    [&item, &valid, &invalid, this](int ref_id) {
+                        if (tree_
+                                .GetCheckResultForNode(ref_id, item->data().id)
+                                ->bres.check_summary) {
+                            ++valid;
+                        } else {
+                            ++invalid;
+                        }
+                    });
+                if (valid > 0 && invalid == 0) {
+                    item->setSigStats(QString::number(valid), "file_green");
+                }
+                if (valid > 0 && invalid > 0) {
+                    item->setSigStats(QString::number(valid), "file_mixed");
+                }
+                if (valid == 0 && invalid > 0) {
+                    item->setSigStats(QString::number(invalid), "file_red");
+                }
+            }
+            if (item->data().mrpa_id_size > 0) {
+                if (item->data().mrpa_id_size == item->data().ref_id_size) {
+                    item->setMrpaStats(
+                        QString::number(item->data().mrpa_id_size),
+                        "file_green");
+                    return;
+                }
+                item->setMrpaStats(QString::number(item->data().mrpa_id_size),
+                                   "file_mixed");
+                return;
+            } else {
+                item->setMrpaStats("nomrpa", "file_mixed");
+                return;
+            }
             return;
         case Dir:
             return;
