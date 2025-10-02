@@ -761,7 +761,7 @@ void FileTreeModel::processChecks(int id) {
     switch (item->data().type) {
         case Zip:
             item->setSigStats("nosign", "");
-            item->setMrpaStats("nomrpa", "file_mixed");
+            item->setMrpaStats("nomrpa", "");
             if (item->data().encrypted) {
                 item->setSigStats("lock", "file_red");
                 return;
@@ -790,20 +790,20 @@ void FileTreeModel::processChecks(int id) {
                 if (valid == 0 && invalid > 0) {
                     item->setSigStats(QString::number(invalid), "file_red");
                 }
-            }
-            if (item->data().mrpa_id_size > 0) {
-                if (item->data().mrpa_id_size == item->data().ref_id_size) {
+                if (item->data().mrpa_id_size > 0) {
+                    if (item->data().mrpa_id_size == item->data().ref_id_size) {
+                        item->setMrpaStats(
+                            QString::number(item->data().mrpa_id_size),
+                            "file_green");
+                        return;
+                    }
                     item->setMrpaStats(
-                        QString::number(item->data().mrpa_id_size),
-                        "file_green");
+                        QString::number(item->data().mrpa_id_size), "warning");
+                    return;
+                } else {
+                    item->setMrpaStats("nomrpa", "file_mixed");
                     return;
                 }
-                item->setMrpaStats(QString::number(item->data().mrpa_id_size),
-                                   "file_mixed");
-                return;
-            } else {
-                item->setMrpaStats("nomrpa", "file_mixed");
-                return;
             }
             return;
         case Dir:
@@ -828,7 +828,7 @@ void FileTreeModel::processChecks(int id) {
                         return;
                     }
                     if (valid > 0 && invalid > 0) {
-                        item->setSigStats("mixed", "sig_mixed");
+                        item->setSigStats("mixed", "sig_red");
                         return;
                     }
                     item->setSigStats("bad", "sig_red");
@@ -868,7 +868,7 @@ void FileTreeModel::processChecks(int id) {
             return;
         case File:
             item->setSigStats("nosign", "");
-            item->setMrpaStats("nomrpa", "file_mixed");
+            item->setMrpaStats("nomrpa", "");
             if (item->data().encrypted) {
                 item->setSigStats("lock", "file_red");
                 return;
@@ -897,33 +897,33 @@ void FileTreeModel::processChecks(int id) {
                 if (valid == 0 && invalid > 0) {
                     item->setSigStats(QString::number(invalid), "file_red");
                 }
-            }
-            if (item->data().mrpa_id_size > 0) {
-                if (item->data().mrpa_id_size == item->data().ref_id_size) {
+                if (item->data().mrpa_id_size > 0) {
+                    if (item->data().mrpa_id_size == item->data().ref_id_size) {
+                        item->setMrpaStats(
+                            QString::number(item->data().mrpa_id_size),
+                            "file_green");
+                        return;
+                    }
                     item->setMrpaStats(
-                        QString::number(item->data().mrpa_id_size),
-                        "file_green");
+                        QString::number(item->data().mrpa_id_size), "warning");
+                    return;
+                } else {
+                    item->setMrpaStats("nomrpa", "warning");
                     return;
                 }
-                item->setMrpaStats(QString::number(item->data().mrpa_id_size),
-                                   "file_mixed");
-                return;
-            } else {
-                item->setMrpaStats("nomrpa", "file_mixed");
-                return;
             }
             return;
         case Mrpa:
-            if (item->data().time_valid.has_value() &&
-                !item->data().time_valid.value()) {
-                item->setMrpaStats("old", "file_mixed");
-                return;
-            }
+            item->setMrpaStats("nosign", "invalid");
             if (item->data().ref_id_size > 0) {
-                item->setMrpaStats("ok", "file_green");
+                if (item->data().time_valid.has_value() &&
+                    !item->data().time_valid.value()) {
+                    item->setMrpaStats("old", "old");
+                    return;
+                }
+                item->setMrpaStats("ok", "valid");
                 return;
             }
-            item->setMrpaStats("nosign", "file_mixed");
             return;
         default:
             return;

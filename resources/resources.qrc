@@ -74,5 +74,9 @@
         <file>icons/dark/back.svg</file>
         <file>icons/dark/warning.svg</file>
         <file>icons/light/warning.svg</file>
+        <file>icons/light/file_text_red.svg</file>
+        <file>icons/light/file_text_green.svg</file>
+        <file>icons/dark/file_text_green.svg</file>
+        <file>icons/dark/file_text_red.svg</file>
     </qresource>
 </RCC>

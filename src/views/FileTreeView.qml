@@ -116,16 +116,18 @@ TreeView {
 
         function getMrpaIcon(color) {
             switch (color) {
-            case "mrpa_green":
+            case "warning":
+                return StyleSheet.warning_icon
+            case "valid":
                 return StyleSheet.medal_green_icon
-            case "mrpa_red":
+            case "old":
                 return StyleSheet.medal_pink_icon
-            case "mrpa_mixed":
-                return StyleSheet.medal_icon
+            case "invalid":
+                return StyleSheet.file_text_icon
             case "file_green":
-                return StyleSheet.cell_icon_green
+                return StyleSheet.file_text_green
             case "file_red":
-                return StyleSheet.cell_icon_red
+                return StyleSheet.file_text_red
             case "file_mixed":
                 return StyleSheet.cell_icon_empty
             default:

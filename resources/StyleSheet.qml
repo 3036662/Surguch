@@ -23,6 +23,8 @@ Item {
     property string file_plus_icon
     property string file_simple_icon
     property string file_text_icon
+    property string file_text_red
+    property string file_text_green
     property string folder_plus_icon
     property string fullscreen_icon
     property string medal_icon
@@ -75,6 +77,8 @@ Item {
                 file_plus_icon: "qrc:/icons/dark/file_plus.svg"
                 file_simple_icon: "qrc:/icons/dark/file_simple.svg"
                 file_text_icon: "qrc:/icons/dark/file_text.svg"
+                file_text_red: "qrc:/icons/dark/file_text_red.svg"
+                file_text_green: "qrc:/icons/dark/file_text_green.svg"
                 folder_plus_icon: "qrc:/icons/dark/folder_plus.svg"
                 fullscreen_icon: "qrc:/icons/dark/fullscreen-custom.svg"
                 medal_icon: "qrc:/icons/dark/medal-ribbon.svg"
@@ -126,6 +130,8 @@ Item {
                 file_plus_icon: "qrc:/icons/light/file_plus.svg"
                 file_simple_icon: "qrc:/icons/light/file_simple.svg"
                 file_text_icon: "qrc:/icons/light/file_text.svg"
+                file_text_red: "qrc:/icons/light/file_text_red.svg"
+                file_text_green: "qrc:/icons/light/file_text_green.svg"
                 folder_plus_icon: "qrc:/icons/light/folder_plus.svg"
                 fullscreen_icon: "qrc:/icons/light/fullscreen-custom.svg"
                 medal_icon: "qrc:/icons/light/medal-ribbon.svg"
