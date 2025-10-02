@@ -410,7 +410,7 @@ TreeView {
 
                     anchors.fill: parent
                     hoverEnabled: true
-                    enabled: mrpaImage.visible
+                    enabled: mrpaImage.visible && model.mrpa_color !== "warning"
 
                     onClicked: {
                         showMrpaList(fileTreeModel.getMrpaData(model.id))

@@ -204,6 +204,18 @@ QJsonArray FileTreeModel::getMrpaData(int node_id) {
             arr.append(item_map.at(node_id).lock()->data().mrpa_data.value());
             return arr;
             break;
+        case Zip:
+            if (item_map.at(node_id).lock()->data().mrpa_id_size > 0) {
+                for (size_t ind = 0;
+                     ind < item_map.at(node_id).lock()->data().mrpa_id_size;
+                     ++ind) {
+                    arr.append(
+                        item_map.at(ind).lock()->data().mrpa_data.value());
+                }
+                int mrpa = item_map.at(node_id).lock()->data().mrpa_ids[0];
+                return arr;
+            }
+            break;
         case File:
             if (item_map.at(node_id).lock()->data().mrpa_id_size > 0) {
                 for (size_t ind = 0;
@@ -825,14 +837,27 @@ void FileTreeModel::processChecks(int id) {
                                   });
                     if (valid > 0 && invalid == 0) {
                         item->setSigStats("good", "sig_green");
-                        return;
-                    }
-                    if (valid > 0 && invalid > 0) {
+                    } else if (valid > 0 && invalid > 0) {
                         item->setSigStats("mixed", "sig_red");
+                    } else {
+                        item->setSigStats("bad", "sig_red");
+                    }
+                    if (item->data().mrpa_id_size > 0) {
+                        if (item->data().mrpa_id_size ==
+                            item->data().ref_id_size) {
+                            item->setMrpaStats(
+                                QString::number(item->data().mrpa_id_size),
+                                "file_green");
+                            return;
+                        }
+                        item->setMrpaStats(
+                            QString::number(item->data().mrpa_id_size),
+                            "warning");
+                        return;
+                    } else {
+                        item->setMrpaStats("nomrpa", "warning");
                         return;
                     }
-                    item->setSigStats("bad", "sig_red");
-                    return;
                 }
             }
             item->setSigStats("no_file", "sig_mixed");
@@ -854,14 +879,27 @@ void FileTreeModel::processChecks(int id) {
                                   });
                     if (valid > 0 && invalid == 0) {
                         item->setSigStats("good", "sig_green");
-                        return;
-                    }
-                    if (valid > 0 && invalid > 0) {
+                    } else if (valid > 0 && invalid > 0) {
                         item->setSigStats("mixed", "sig_mixed");
+                    } else {
+                        item->setSigStats("bad", "sig_red");
+                    }
+                    if (item->data().mrpa_id_size > 0) {
+                        if (item->data().mrpa_id_size ==
+                            item->data().ref_id_size) {
+                            item->setMrpaStats(
+                                QString::number(item->data().mrpa_id_size),
+                                "file_green");
+                            return;
+                        }
+                        item->setMrpaStats(
+                            QString::number(item->data().mrpa_id_size),
+                            "warning");
+                        return;
+                    } else {
+                        item->setMrpaStats("nomrpa", "warning");
                         return;
                     }
-                    item->setSigStats("bad", "sig_red");
-                    return;
                 }
             }
             item->setSigStats("not found", "sig_mixed");
