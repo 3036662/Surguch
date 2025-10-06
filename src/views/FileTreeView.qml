@@ -119,9 +119,9 @@ TreeView {
             case "warning":
                 return StyleSheet.warning_icon
             case "valid":
-                return StyleSheet.green_sign_icon
+                return StyleSheet.file_text_green
             case "old":
-                return StyleSheet.red_sign_icon
+                return StyleSheet.file_text_red
             case "invalid":
                 return StyleSheet.file_text_icon
             case "file_green":

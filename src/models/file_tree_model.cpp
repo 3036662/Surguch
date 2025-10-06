@@ -210,9 +210,13 @@ QJsonArray FileTreeModel::getMrpaData(int node_id) {
                      ind < item_map.at(node_id).lock()->data().mrpa_id_size;
                      ++ind) {
                     arr.append(
-                        item_map.at(ind).lock()->data().mrpa_data.value());
+                        item_map
+                            .at(item_map.at(node_id).lock()->data().mrpa_ids.at(
+                                ind))
+                            .lock()
+                            ->data()
+                            .mrpa_data.value());
                 }
-                int mrpa = item_map.at(node_id).lock()->data().mrpa_ids[0];
                 return arr;
             }
             break;
@@ -222,9 +226,13 @@ QJsonArray FileTreeModel::getMrpaData(int node_id) {
                      ind < item_map.at(node_id).lock()->data().mrpa_id_size;
                      ++ind) {
                     arr.append(
-                        item_map.at(ind).lock()->data().mrpa_data.value());
+                        item_map
+                            .at(item_map.at(node_id).lock()->data().mrpa_ids.at(
+                                ind))
+                            .lock()
+                            ->data()
+                            .mrpa_data.value());
                 }
-                int mrpa = item_map.at(node_id).lock()->data().mrpa_ids[0];
                 return arr;
             }
             break;
@@ -234,9 +242,13 @@ QJsonArray FileTreeModel::getMrpaData(int node_id) {
                      ind < item_map.at(node_id).lock()->data().mrpa_id_size;
                      ++ind) {
                     arr.append(
-                        item_map.at(ind).lock()->data().mrpa_data.value());
+                        item_map
+                            .at(item_map.at(node_id).lock()->data().mrpa_ids.at(
+                                ind))
+                            .lock()
+                            ->data()
+                            .mrpa_data.value());
                 }
-                int mrpa = item_map.at(node_id).lock()->data().mrpa_ids[0];
                 return arr;
             }
             break;
@@ -246,9 +258,13 @@ QJsonArray FileTreeModel::getMrpaData(int node_id) {
                      ind < item_map.at(node_id).lock()->data().mrpa_id_size;
                      ++ind) {
                     arr.append(
-                        item_map.at(ind).lock()->data().mrpa_data.value());
+                        item_map
+                            .at(item_map.at(node_id).lock()->data().mrpa_ids.at(
+                                ind))
+                            .lock()
+                            ->data()
+                            .mrpa_data.value());
                 }
-                int mrpa = item_map.at(node_id).lock()->data().mrpa_ids[0];
                 return arr;
             }
             break;
@@ -943,7 +959,8 @@ void FileTreeModel::processChecks(int id) {
                         return;
                     }
                     item->setMrpaStats(
-                        QString::number(item->data().mrpa_id_size), "warning");
+                        QString::number(item->data().mrpa_id_size),
+                        "file_mixed");
                     return;
                 } else {
                     item->setMrpaStats("nomrpa", "warning");
