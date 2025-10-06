@@ -125,9 +125,9 @@ TreeView {
             case "invalid":
                 return StyleSheet.file_text_icon
             case "file_green":
-                return StyleSheet.file_text_green
+                return StyleSheet.cell_icon_green
             case "file_red":
-                return StyleSheet.file_text_red
+                return StyleSheet.cell_icon_red
             case "file_mixed":
                 return StyleSheet.cell_icon_empty
             default:
@@ -181,6 +181,13 @@ TreeView {
                         }
                     }
                 }
+
+                Item {
+                    id: dummyItemIndicator
+
+                    anchors.fill: parent
+                    visible: !indicator.visible
+                }
             }
             Item {
                 id: treeIndent
@@ -188,7 +195,7 @@ TreeView {
                 anchors.left: indicatorItem.right
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
-                width: hasChildren ? indentation : indentation + 10
+                width: indentation
             }
             Item {
                 id: imageItem
@@ -359,6 +366,9 @@ TreeView {
                 anchors.bottom: parent.bottom
                 width: signColumn
                 clip: true
+                ToolTip.delay: 500
+                ToolTip.text: "Sign"
+                ToolTip.visible: sigStatusArea.containsMouse
 
                 MouseArea {
                     id: sigStatusArea
@@ -368,6 +378,9 @@ TreeView {
                     enabled: signImage.visible
 
                     onClicked: {
+                        let index = treeView.index(row, column)
+                        treeView.selectionModel.setCurrentIndex(
+                                    index, ItemSelectionModel.NoUpdate)
                         rightSideBar.showState = RightSideBar.ShowState.Certs
 
                         fileTreeModel.getCertList(model.id)
@@ -385,7 +398,8 @@ TreeView {
                     id: signImage
                     anchors.centerIn: parent
                     source: getSignIcon(model.sig_color)
-                    visible: !fileTreeModel.isDraft && model.sig_color !== ""
+                    visible: !fileTreeModel.isDraft
+                             && model.sig_color !== "empty"
                     width: height
                 }
 
@@ -414,18 +428,20 @@ TreeView {
                 width: mrpaColumn
                 clip: true
                 ToolTip.delay: 500
-                ToolTip.text: "Warning"
+                ToolTip.text: "MRPA"
                 ToolTip.visible: mrpaStatusArea.containsMouse
-                                 && model.mrpa_color === "warning"
 
                 MouseArea {
                     id: mrpaStatusArea
 
                     anchors.fill: parent
                     hoverEnabled: true
-                    enabled: mrpaImage.visible && model.mrpa_color !== "warning"
+                    enabled: mrpaImage.visible && model.mrpa_color !== "empty"
 
                     onClicked: {
+                        let index = treeView.index(row, column)
+                        treeView.selectionModel.setCurrentIndex(
+                                    index, ItemSelectionModel.NoUpdate)
                         showMrpaList(fileTreeModel.getMrpaData(model.id))
                         rightSideBar.showState = RightSideBar.ShowState.Mrpa
                     }
@@ -441,7 +457,8 @@ TreeView {
                     id: mrpaImage
                     anchors.centerIn: parent
                     source: getMrpaIcon(model.mrpa_color)
-                    visible: !fileTreeModel.isDraft && model.mrpa_color !== ""
+                    visible: !fileTreeModel.isDraft
+                             && model.mrpa_color !== "empty"
                     width: height
                 }
 

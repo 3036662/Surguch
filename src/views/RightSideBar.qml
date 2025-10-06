@@ -52,7 +52,6 @@ Item {
                 return
             }
             mrpaListData = data
-            //console.warn(JSON.stringify(mrpaListData))
             showState = RightSideBar.ShowState.Mrpa
             rMrpaListView.contentY = 0
         } catch (e) {
@@ -67,9 +66,7 @@ Item {
                 return
             }
             mrpaData = data
-            //console.warn(JSON.stringify(mrpaData))
             showState = RightSideBar.ShowState.MrpaInfo
-            //mrpaInfoPanel.contentY = 0
         } catch (e) {
             console.error("Error parsing JSON" + e.message)
         }

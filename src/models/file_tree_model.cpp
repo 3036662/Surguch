@@ -788,8 +788,8 @@ void FileTreeModel::processChecks(int id) {
     auto item = item_map.at(id).lock();
     switch (item->data().type) {
         case Zip:
-            item->setSigStats("nosign", "");
-            item->setMrpaStats("nomrpa", "");
+            item->setSigStats("nosign", "empty");
+            item->setMrpaStats("nomrpa", "empty");
             if (item->data().encrypted) {
                 item->setSigStats("lock", "file_red");
                 return;
@@ -826,7 +826,7 @@ void FileTreeModel::processChecks(int id) {
                         return;
                     }
                     item->setMrpaStats(
-                        QString::number(item->data().mrpa_id_size), "warning");
+                        QString::number(item->data().mrpa_id_size), "empty");
                     return;
                 } else {
                     item->setMrpaStats("nomrpa", "file_mixed");
@@ -835,8 +835,12 @@ void FileTreeModel::processChecks(int id) {
             }
             return;
         case Dir:
+            item->setSigStats("nosign", "empty");
+            item->setMrpaStats("nomrpa", "empty");
             return;
         case Sig:
+            item->setSigStats("nosign", "empty");
+            item->setMrpaStats("nomrpa", "empty");
             if (item->data().has_check_result.has_value() &&
                 item->data().has_check_result.value()) {
                 if (item->data().check_results.size() > 0) {
@@ -868,10 +872,10 @@ void FileTreeModel::processChecks(int id) {
                         }
                         item->setMrpaStats(
                             QString::number(item->data().mrpa_id_size),
-                            "warning");
+                            "empty");
                         return;
                     } else {
-                        item->setMrpaStats("nomrpa", "warning");
+                        item->setMrpaStats("nomrpa", "empty");
                         return;
                     }
                 }
@@ -879,6 +883,8 @@ void FileTreeModel::processChecks(int id) {
             item->setSigStats("no_file", "sig_mixed");
             return;
         case Asig:
+            item->setSigStats("nosign", "empty");
+            item->setMrpaStats("nomrpa", "empty");
             if (item->data().has_check_result.has_value() &&
                 item->data().has_check_result.value()) {
                 if (item->data().check_results.size() > 0) {
@@ -910,10 +916,10 @@ void FileTreeModel::processChecks(int id) {
                         }
                         item->setMrpaStats(
                             QString::number(item->data().mrpa_id_size),
-                            "warning");
+                            "empty");
                         return;
                     } else {
-                        item->setMrpaStats("nomrpa", "warning");
+                        item->setMrpaStats("nomrpa", "empty");
                         return;
                     }
                 }
@@ -921,8 +927,8 @@ void FileTreeModel::processChecks(int id) {
             item->setSigStats("not found", "sig_mixed");
             return;
         case File:
-            item->setSigStats("nosign", "");
-            item->setMrpaStats("nomrpa", "");
+            item->setSigStats("nosign", "empty");
+            item->setMrpaStats("nomrpa", "empty");
             if (item->data().encrypted) {
                 item->setSigStats("lock", "file_red");
                 return;
@@ -963,12 +969,13 @@ void FileTreeModel::processChecks(int id) {
                         "file_mixed");
                     return;
                 } else {
-                    item->setMrpaStats("nomrpa", "warning");
+                    item->setMrpaStats("nomrpa", "empty");
                     return;
                 }
             }
             return;
         case Mrpa:
+            item->setSigStats("nosign", "empty");
             item->setMrpaStats("nosign", "invalid");
             if (item->data().ref_id_size > 0) {
                 if (item->data().time_valid.has_value() &&
@@ -981,6 +988,8 @@ void FileTreeModel::processChecks(int id) {
             }
             return;
         default:
+            item->setSigStats("nosign", "empty");
+            item->setMrpaStats("nomrpa", "empty");
             return;
             ;
     }
