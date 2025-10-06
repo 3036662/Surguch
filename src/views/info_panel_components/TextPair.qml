@@ -34,5 +34,18 @@ Column {
         //color: "grey"
         font.family: "Noto Sans"
         color: StyleSheet.font_color_extra
+
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: value.startsWith(
+                             "http") ? Qt.PointingHandCursor : Qt.ArrowCursor
+            hoverEnabled: value.startsWith("http")
+            enabled: value.startsWith("http")
+            onClicked: {
+                if (value) {
+                    Qt.openUrlExternally(value)
+                }
+            }
+        }
     }
 }

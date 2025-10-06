@@ -17,10 +17,12 @@ Item {
         return Array.isArray(x)
     }
     function attrKeys(o) {
-        return isObj(o) ? Object.keys(o).filter(k => k.startsWith("@")) : []
+        return isObj(o) ? Object.keys(o).filter(k => k.startsWith("@")
+                                                || k === "text") : []
     }
     function secKeys(o) {
-        return isObj(o) ? Object.keys(o).filter(k => !k.startsWith("@")) : []
+        return isObj(o) ? Object.keys(o).filter(k => !k.startsWith("@")
+                                                && k !== "text") : []
     }
     function mrpaTr(str) {
         return surguchTranslator.surguchTranslate(str)
@@ -64,6 +66,10 @@ Item {
         if (mrpa)
             buildSections(mrpa, [], res)
         return res
+    }
+
+    function isNumeric(value) {
+        return /^\d+$/.test(value)
     }
 
     property var sections: computeSections()
@@ -140,7 +146,15 @@ Item {
 
                         delegate: TextPair {
                             width: parent.width
-                            keyText: mrpaTr(String(modelData.key).slice(1))
+                            keyText: {
+                                let name = mrpaTr(String(
+                                                      modelData.key).slice(1))
+                                if (name === "ext")
+                                    return ""
+                                if (isNumeric(String(modelData.key)))
+                                    return ("№ " + String(modelData.key))
+                                return name
+                            }
                             value: String(modelData.value)
                             isMrpa: true
                         }

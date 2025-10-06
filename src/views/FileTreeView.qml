@@ -98,9 +98,9 @@ TreeView {
         function getSignIcon(color) {
             switch (color) {
             case "sig_green":
-                return StyleSheet.medal_green_icon
+                return StyleSheet.green_sign_icon
             case "sig_red":
-                return StyleSheet.medal_pink_icon
+                return StyleSheet.red_sign_icon
             case "sig_mixed":
                 return StyleSheet.medal_icon
             case "file_green":
@@ -119,9 +119,9 @@ TreeView {
             case "warning":
                 return StyleSheet.warning_icon
             case "valid":
-                return StyleSheet.medal_green_icon
+                return StyleSheet.green_sign_icon
             case "old":
-                return StyleSheet.medal_pink_icon
+                return StyleSheet.red_sign_icon
             case "invalid":
                 return StyleSheet.file_text_icon
             case "file_green":
@@ -413,6 +413,10 @@ TreeView {
                 anchors.bottom: parent.bottom
                 width: mrpaColumn
                 clip: true
+                ToolTip.delay: 500
+                ToolTip.text: "Warning"
+                ToolTip.visible: mrpaStatusArea.containsMouse
+                                 && model.mrpa_color === "warning"
 
                 MouseArea {
                     id: mrpaStatusArea

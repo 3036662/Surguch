@@ -50,6 +50,8 @@ Item {
     property string cell_icon_red
     property string back_icon
     property string warning_icon
+    property string red_sign_icon
+    property string green_sign_icon
     property color slider_fill_color
     property color slider_border_color
     property color slider_handle_color
@@ -104,6 +106,8 @@ Item {
                 cell_icon_red: "qrc:/icons/dark/cell-red.svg"
                 back_icon: "qrc:/icons/dark/back.svg"
                 warning_icon: "qrc:/icons/dark/warning.svg"
+                red_sign_icon: "qrc:/icons/dark/red_sign.svg"
+                green_sign_icon: "qrc:/icons/dark/green_sign.svg"
                 slider_fill_color: "#454A4E"
                 slider_border_color: "#454A4E"
                 slider_handle_color: "#31363B"
@@ -157,6 +161,8 @@ Item {
                 cell_icon_red: "qrc:/icons/light/cell-red.svg"
                 back_icon: "qrc:/icons/light/back.svg"
                 warning_icon: "qrc:/icons/light/warning.svg"
+                red_sign_icon: "qrc:/icons/light/red_sign.svg"
+                green_sign_icon: "qrc:/icons/light/green_sign.svg"
                 slider_fill_color: "#57534C"
                 slider_border_color: "#57534C"
                 slider_handle_color: "#ffffff"

@@ -16,13 +16,6 @@ Dialog {
     padding: 12
     closePolicy: Popup.CloseOnEscape
 
-    function toFileUrl(p) {
-        if (!p)
-            return ""
-        const encoded = encodeURI(p)
-        return encoded.startsWith("file://") ? encoded : "file://" + encoded
-    }
-
     BusyIndicator {
         visible: !root.sign_done
         running: !root.sign_done
@@ -35,6 +28,33 @@ Dialog {
         anchors.fill: parent
         spacing: 10
         visible: root.sign_done
+
+        Label {
+            text: qsTr("Final directory")
+            font.bold: true
+            Layout.fillWidth: true
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 8
+
+            TextField {
+                id: dirField
+                readOnly: true
+                text: sign_result?.final_dir ?? ""
+                placeholderText: qsTr("No directory")
+                Layout.fillWidth: true
+            }
+
+            Button {
+                text: qsTr("Open")
+                enabled: !!(sign_result?.final_dir)
+                onClicked: Qt.openUrlExternally(
+                               "file://" + sign_result.final_dir)
+                           && root.close()
+            }
+        }
 
         Label {
             text: qsTr("Files")
@@ -89,36 +109,10 @@ Dialog {
             }
         }
 
-        Label {
-            text: qsTr("Final directory")
-            font.bold: true
-            Layout.fillWidth: true
+        DialogButtonBox {
+            Layout.alignment: Qt.AlignRight
+            standardButtons: Dialog.Ok
+            onAccepted: root.close()
         }
-
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: 8
-
-            TextField {
-                id: dirField
-                readOnly: true
-                text: sign_result?.final_dir ?? ""
-                placeholderText: qsTr("No directory")
-                Layout.fillWidth: true
-            }
-
-            Button {
-                text: qsTr("Open")
-                enabled: !!(sign_result?.final_dir)
-                onClicked: Qt.openUrlExternally(root.toFileUrl(
-                                                    sign_result.final_dir))
-            }
-        }
-
-        // DialogButtonBox {
-        //     Layout.alignment: Qt.AlignRight
-        //     standardButtons: Dialog.Ok
-        //     onAccepted: root.close()
-        // }
     }
 }
