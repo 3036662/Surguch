@@ -217,6 +217,15 @@ TreeView {
                 anchors.rightMargin: 3
                 clip: true
 
+                ContextMenu.menu: Menu {
+                    MenuItem {
+                        text: qsTr("Open copy")
+                        onTriggered: {
+                            Qt.openUrlExternally("file://" + model.full_path)
+                        }
+                    }
+                }
+
                 Text {
                     id: nameField
 

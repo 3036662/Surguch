@@ -320,9 +320,9 @@
         <translation>Расширение файла подписи</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+23"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+20"/>
-        <location filename="../../src/views/EditProfile.qml" line="+21"/>
+        <location filename="../../src/views/EditProfile.qml" line="+23"/>
         <source>Select signature file extension</source>
         <translation>Выбрать расширение файла подписи</translation>
     </message>
@@ -432,7 +432,7 @@
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/FileTreeView.qml" line="+32"/>
         <location filename="../../src/views/FileTreeView.qml" line="+32"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
-        <translation type="unfinished">Сертификат не найден, возможно он был удален</translation>
+        <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
     <message>
         <location line="+59"/>
@@ -451,6 +451,12 @@
         <location filename="../../src/views/FileTreeView.qml" line="+2"/>
         <source> MB</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+127"/>
+        <location filename="../../src/views/FileTreeView.qml" line="+127"/>
+        <source>Open copy</source>
+        <translation>Открыть копию</translation>
     </message>
 </context>
 <context>
