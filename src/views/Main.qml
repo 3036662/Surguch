@@ -411,6 +411,7 @@ ApplicationWindow {
             errorMessageDialog.open()
             pdfListView.source = ""
             leftSideBar.source = ""
+            root_window.showType = Main.ShowType.Empty
         })
         // file common status alerts
         siglistModel.commonDocStatus.connect(function (status) {

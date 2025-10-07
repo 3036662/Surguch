@@ -16,6 +16,7 @@ Column {
         text: keyText
         width: parent.width
         font.family: "Noto Sans"
+        font.pixelSize: 12
         wrapMode: isMrpa ? TextEdit.WrapAnywhere : Text.WordWrap
         color: StyleSheet.font_color_extra
     }
@@ -33,6 +34,7 @@ Column {
         text: value
         //color: "grey"
         font.family: "Noto Sans"
+        font.pixelSize: 12
         color: StyleSheet.font_color_extra
 
         MouseArea {

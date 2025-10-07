@@ -224,15 +224,6 @@ TreeView {
                 anchors.rightMargin: 3
                 clip: true
 
-                ContextMenu.menu: Menu {
-                    MenuItem {
-                        text: qsTr("Open copy")
-                        onTriggered: {
-                            Qt.openUrlExternally("file://" + model.full_path)
-                        }
-                    }
-                }
-
                 Text {
                     id: nameField
 
@@ -253,9 +244,28 @@ TreeView {
                     MouseArea {
                         id: nameArea
 
-                        acceptedButtons: Qt.NoButton
+                        acceptedButtons: Qt.RightButton
                         anchors.fill: parent
                         hoverEnabled: true
+
+                        onClicked: mouse => {
+                                       let index = treeView.index(row, column)
+                                       treeView.selectionModel.setCurrentIndex(
+                                           index, ItemSelectionModel.NoUpdate)
+                                       if (mouse.button === Qt.RightButton)
+                                       contextMenu.popup()
+                                   }
+
+                        Menu {
+                            id: contextMenu
+                            MenuItem {
+                                text: qsTr("Open copy")
+                                onTriggered: {
+                                    Qt.openUrlExternally(
+                                                "file://" + model.full_path)
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -9,12 +9,14 @@ Column {
     Text {
         text: keyText
         font.family: "Noto Sans"
+        font.pixelSize: 12
         color: StyleSheet.font_color_extra
     }
     Text {
         id: titleText
 
         font.family: "Noto Sans"
+        font.pixelSize: 12
         text: {
             if (value === "no_field") {
                 return qsTr("Field is absent")

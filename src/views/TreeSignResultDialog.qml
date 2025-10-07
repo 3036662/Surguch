@@ -32,6 +32,8 @@ Dialog {
         Label {
             text: qsTr("Final directory")
             font.bold: true
+            font.family: "Noto Sans"
+            font.pixelSize: 12
             Layout.fillWidth: true
         }
 
@@ -44,6 +46,8 @@ Dialog {
                 readOnly: true
                 text: sign_result?.final_dir ?? ""
                 placeholderText: qsTr("No directory")
+                font.family: "Noto Sans"
+                font.pixelSize: 12
                 Layout.fillWidth: true
             }
 
@@ -60,6 +64,8 @@ Dialog {
             text: qsTr("Files")
             font.bold: true
             Layout.fillWidth: true
+            font.family: "Noto Sans"
+            font.pixelSize: 12
         }
 
         ScrollView {
@@ -80,6 +86,7 @@ Dialog {
                 wrapMode: Text.WordWrap
                 placeholderTextColor: "grey"
                 font.family: "Noto Sans"
+                font.pixelSize: 12
                 color: StyleSheet.font_color_extra
 
                 background: Rectangle {

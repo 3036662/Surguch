@@ -53,12 +53,12 @@ ListView {
 
     delegate: ColumnLayout {
         width: root.width
-        height: 50
+        height: 70
 
         Item {
             Layout.alignment: Qt.AlignVCenter
             Layout.fillWidth: true
-            Layout.preferredHeight: 30
+            Layout.preferredHeight: 50
 
             RowLayout {
                 anchors.fill: parent
@@ -77,8 +77,8 @@ ListView {
                         elide: Text.ElideRight
                         wrapMode: Text.WordWrap
                         maximumLineCount: 3
-                        font.pointSize: text.length > 40 ? 5 : 10
                         font.family: "Noto Sans"
+                        font.pixelSize: 12
                         color: StyleSheet.font_color_extra
                     }
                 }

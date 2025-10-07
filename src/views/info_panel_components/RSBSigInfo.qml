@@ -47,6 +47,7 @@ Flickable {
             horizontalAlignment: Text.AlignHCenter
             font.weight: Font.DemiBold
             font.family: "Noto Sans"
+            font.pixelSize: 12
             color: StyleSheet.font_color_extra
         }
 
@@ -123,6 +124,7 @@ Flickable {
                     topPadding: 10
                     bottomPadding: 10
                     font.family: "Noto Sans"
+                    font.pixelSize: 12
                     color: StyleSheet.font_color_extra
                 }
                 RSideBarStatusMedal {
@@ -181,6 +183,7 @@ Flickable {
                     topPadding: 10
                     bottomPadding: 10
                     font.family: "Noto Sans"
+                    font.pixelSize: 12
                     color: StyleSheet.font_color_extra
                 }
                 Repeater {

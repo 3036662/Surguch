@@ -138,6 +138,7 @@ Item {
                         bottomPadding: 2
                         font.weight: Font.DemiBold
                         font.family: "Noto Sans"
+                        font.pixelSize: 12
                         color: StyleSheet.font_color_extra
                     }
 
