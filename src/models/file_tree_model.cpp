@@ -62,8 +62,6 @@ QVariant FileTreeModel::data(const QModelIndex &index, int role) const {
             return QVariant::fromValue(item->data().mrpa_ids);
         case EncryptedRole:
             return item->data().encrypted;
-        // case SigCheckResultRole:
-        //     return item->data().check_results.value();
         case HasKidsRole:
             return item->childCount() > 0;
         default:
@@ -712,7 +710,6 @@ void FileTreeModel::processSignedTree() {
                                           processChecks(item.first);
                                       }
                                   });
-
                     endResetModel();
                 }
             }

@@ -55,6 +55,8 @@ TreeView {
     }
 
     delegate: Item {
+        id: delegateTree
+
         required property int column
         required property bool current
         required property int depth
@@ -173,12 +175,25 @@ TreeView {
                     visible: isTreeNode && hasChildren
 
                     TapHandler {
-                        onSingleTapped: {
-                            let index = treeView.index(row, column)
-                            treeView.selectionModel.setCurrentIndex(
-                                        index, ItemSelectionModel.NoUpdate)
-                            treeView.toggleExpanded(row)
-                        }
+                        onTapped: eventPoint => {
+                                      var ind
+                                      try {
+                                          ind = treeView.index(row, column)
+                                      } catch (e) {
+                                          let cell = treeView.cellAtPosition(
+                                              eventPoint.pressPosition)
+
+                                          // The user must have right-clicked an empty area; ignore it.
+                                          if (cell.x === -1 && cell.y === -1) {
+                                              return
+                                          }
+                                          ind = treeView.modelIndex(cell.y,
+                                                                    cell.x)
+                                      }
+                                      treeView.selectionModel.setCurrentIndex(
+                                          ind, ItemSelectionModel.NoUpdate)
+                                      treeView.toggleExpanded(row)
+                                  }
                     }
                 }
 
@@ -249,9 +264,23 @@ TreeView {
                         hoverEnabled: true
 
                         onClicked: mouse => {
-                                       let index = treeView.index(row, column)
+                                       var ind
+                                       try {
+                                           ind = treeView.index(row, column)
+                                       } catch (e) {
+                                           let cell = treeView.cellAtPosition(
+                                               mouse.pressPosition)
+
+                                           // The user must have right-clicked an empty area; ignore it.
+                                           if (cell.x === -1 && cell.y === -1) {
+                                               return
+                                           }
+
+                                           ind = treeView.modelIndex(cell.y,
+                                                                     cell.x)
+                                       }
                                        treeView.selectionModel.setCurrentIndex(
-                                           index, ItemSelectionModel.NoUpdate)
+                                           ind, ItemSelectionModel.NoUpdate)
                                        if (mouse.button === Qt.RightButton)
                                        contextMenu.popup()
                                    }
@@ -387,15 +416,27 @@ TreeView {
                     hoverEnabled: true
                     enabled: signImage.visible
 
-                    onClicked: {
-                        let index = treeView.index(row, column)
-                        treeView.selectionModel.setCurrentIndex(
-                                    index, ItemSelectionModel.NoUpdate)
-                        rightSideBar.showState = RightSideBar.ShowState.Certs
+                    onClicked: mouse => {
+                                   var ind
+                                   try {
+                                       ind = treeView.index(row, column)
+                                   } catch (e) {
+                                       let cell = treeView.cellAtPosition(
+                                           mouse.pressPosition)
 
-                        fileTreeModel.getCertList(model.id)
-                        console.warn(rightSideBar.sigCount)
-                    }
+                                       // The user must have right-clicked an empty area; ignore it.
+                                       if (cell.x === -1 && cell.y === -1) {
+                                           return
+                                       }
+
+                                       ind = treeView.modelIndex(cell.y, cell.x)
+                                   }
+                                   treeView.selectionModel.setCurrentIndex(
+                                       ind, ItemSelectionModel.NoUpdate)
+                                   rightSideBar.showState = RightSideBar.ShowState.Certs
+
+                                   fileTreeModel.getCertList(model.id)
+                               }
                     onEntered: {
                         cursorShape = Qt.PointingHandCursor
                     }
@@ -448,13 +489,27 @@ TreeView {
                     hoverEnabled: true
                     enabled: mrpaImage.visible && model.mrpa_color !== "empty"
 
-                    onClicked: {
-                        let index = treeView.index(row, column)
-                        treeView.selectionModel.setCurrentIndex(
-                                    index, ItemSelectionModel.NoUpdate)
-                        showMrpaList(fileTreeModel.getMrpaData(model.id))
-                        rightSideBar.showState = RightSideBar.ShowState.Mrpa
-                    }
+                    onClicked: mouse => {
+                                   var ind
+                                   try {
+                                       ind = treeView.index(row, column)
+                                   } catch (e) {
+                                       let cell = treeView.cellAtPosition(
+                                           mouse.pressPosition)
+
+                                       // The user must have right-clicked an empty area; ignore it.
+                                       if (cell.x === -1 && cell.y === -1) {
+                                           return
+                                       }
+
+                                       ind = treeView.modelIndex(cell.y, cell.x)
+                                   }
+                                   treeView.selectionModel.setCurrentIndex(
+                                       ind, ItemSelectionModel.NoUpdate)
+                                   showMrpaList(fileTreeModel.getMrpaData(
+                                                    model.id))
+                                   rightSideBar.showState = RightSideBar.ShowState.Mrpa
+                               }
                     onEntered: {
                         cursorShape = Qt.PointingHandCursor
                     }
@@ -524,7 +579,7 @@ TreeView {
         }
     }
     selectionModel: ItemSelectionModel {
-        model: treeView.model
+        model: fileTreeModel
     }
 
     Connections {

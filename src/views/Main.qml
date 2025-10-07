@@ -335,6 +335,10 @@ ApplicationWindow {
         // clean windows after signing tree
         fileTreeView.cleanWindow.connect(function () {
             root_window.showType = Main.ShowType.Empty
+            fileDropArea.width = width / 2
+            fileDropArea.enabled = true
+            pdfDropArea.width = width / 2
+            pdfDropArea.enabled = true
         })
         // attmept to sign files in tree
         header.signTree.connect(fileTreeView.gatherParamsTree)
@@ -412,6 +416,10 @@ ApplicationWindow {
             pdfListView.source = ""
             leftSideBar.source = ""
             root_window.showType = Main.ShowType.Empty
+            fileDropArea.width = width / 2
+            fileDropArea.enabled = true
+            pdfDropArea.width = width / 2
+            pdfDropArea.enabled = true
         })
         // file common status alerts
         siglistModel.commonDocStatus.connect(function (status) {
