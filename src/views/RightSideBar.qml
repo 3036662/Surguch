@@ -74,7 +74,6 @@ Item {
 
     function setSigCount(sig_count) {
         sigCount = sig_count
-        console.warn("QMLDEBUG sigCount = " + sigCount)
     }
 
     visible: showState != RightSideBar.ShowState.Invisible

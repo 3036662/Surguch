@@ -269,7 +269,7 @@ TreeView {
                                            ind = treeView.index(row, column)
                                        } catch (e) {
                                            let cell = treeView.cellAtPosition(
-                                               mouse.pressPosition)
+                                               Qt.point(mouse.x, mouse.y))
 
                                            // The user must have right-clicked an empty area; ignore it.
                                            if (cell.x === -1 && cell.y === -1) {
@@ -407,43 +407,7 @@ TreeView {
                 clip: true
                 ToolTip.delay: 500
                 ToolTip.text: "Sign"
-                ToolTip.visible: sigStatusArea.containsMouse
-
-                MouseArea {
-                    id: sigStatusArea
-
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    enabled: signImage.visible
-
-                    onClicked: mouse => {
-                                   var ind
-                                   try {
-                                       ind = treeView.index(row, column)
-                                   } catch (e) {
-                                       let cell = treeView.cellAtPosition(
-                                           mouse.pressPosition)
-
-                                       // The user must have right-clicked an empty area; ignore it.
-                                       if (cell.x === -1 && cell.y === -1) {
-                                           return
-                                       }
-
-                                       ind = treeView.modelIndex(cell.y, cell.x)
-                                   }
-                                   treeView.selectionModel.setCurrentIndex(
-                                       ind, ItemSelectionModel.NoUpdate)
-                                   rightSideBar.showState = RightSideBar.ShowState.Certs
-
-                                   fileTreeModel.getCertList(model.id)
-                               }
-                    onEntered: {
-                        cursorShape = Qt.PointingHandCursor
-                    }
-                    onExited: {
-                        cursorShape = Qt.ArrowCursor
-                    }
-                }
+                ToolTip.visible: sigStatusArea.hovered
 
                 Image {
                     id: signImage
@@ -452,6 +416,35 @@ TreeView {
                     visible: !fileTreeModel.isDraft
                              && model.sig_color !== "empty"
                     width: height
+                }
+
+                TapHandler {
+                    enabled: signImage.visible
+                    onTapped: eventPoint => {
+                                  var ind
+                                  try {
+                                      ind = treeView.index(row, column)
+                                  } catch (e) {
+                                      let cell = treeView.cellAtPosition(
+                                          eventPoint.pressPosition)
+
+                                      // The user must have right-clicked an empty area; ignore it.
+                                      if (cell.x === -1 && cell.y === -1) {
+                                          return
+                                      }
+                                      ind = treeView.modelIndex(cell.y, cell.x)
+                                  }
+                                  treeView.selectionModel.setCurrentIndex(
+                                      ind, ItemSelectionModel.NoUpdate)
+                                  rightSideBar.showState = RightSideBar.ShowState.Certs
+                                  fileTreeModel.getCertList(model.id)
+                              }
+                }
+
+                HoverHandler {
+                    id: sigStatusArea
+                    enabled: signImage.visible
+                    cursorShape: Qt.PointingHandCursor
                 }
 
                 Rectangle {
@@ -480,43 +473,7 @@ TreeView {
                 clip: true
                 ToolTip.delay: 500
                 ToolTip.text: "MRPA"
-                ToolTip.visible: mrpaStatusArea.containsMouse
-
-                MouseArea {
-                    id: mrpaStatusArea
-
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    enabled: mrpaImage.visible && model.mrpa_color !== "empty"
-
-                    onClicked: mouse => {
-                                   var ind
-                                   try {
-                                       ind = treeView.index(row, column)
-                                   } catch (e) {
-                                       let cell = treeView.cellAtPosition(
-                                           mouse.pressPosition)
-
-                                       // The user must have right-clicked an empty area; ignore it.
-                                       if (cell.x === -1 && cell.y === -1) {
-                                           return
-                                       }
-
-                                       ind = treeView.modelIndex(cell.y, cell.x)
-                                   }
-                                   treeView.selectionModel.setCurrentIndex(
-                                       ind, ItemSelectionModel.NoUpdate)
-                                   showMrpaList(fileTreeModel.getMrpaData(
-                                                    model.id))
-                                   rightSideBar.showState = RightSideBar.ShowState.Mrpa
-                               }
-                    onEntered: {
-                        cursorShape = Qt.PointingHandCursor
-                    }
-                    onExited: {
-                        cursorShape = Qt.ArrowCursor
-                    }
-                }
+                ToolTip.visible: mrpaStatusArea.hovered
 
                 Image {
                     id: mrpaImage
@@ -525,6 +482,36 @@ TreeView {
                     visible: !fileTreeModel.isDraft
                              && model.mrpa_color !== "empty"
                     width: height
+                }
+
+                TapHandler {
+                    enabled: mrpaImage.visible
+                    onTapped: eventPoint => {
+                                  var ind
+                                  try {
+                                      ind = treeView.index(row, column)
+                                  } catch (e) {
+                                      let cell = treeView.cellAtPosition(
+                                          eventPoint.pressPosition)
+
+                                      // The user must have right-clicked an empty area; ignore it.
+                                      if (cell.x === -1 && cell.y === -1) {
+                                          return
+                                      }
+                                      ind = treeView.modelIndex(cell.y, cell.x)
+                                  }
+                                  treeView.selectionModel.setCurrentIndex(
+                                      ind, ItemSelectionModel.NoUpdate)
+                                  showMrpaList(fileTreeModel.getMrpaData(
+                                                   model.id))
+                                  rightSideBar.showState = RightSideBar.ShowState.Mrpa
+                              }
+                }
+
+                HoverHandler {
+                    id: mrpaStatusArea
+                    enabled: mrpaImage.visible
+                    cursorShape: Qt.PointingHandCursor
                 }
 
                 Rectangle {
