@@ -89,6 +89,8 @@ class FileTreeModel : public QAbstractItemModel {
 
     void signDone(QVariant sign_result, bool sign_done);
 
+    void dropState();
+
    private:
     void setupModelData(const QJsonArray &doc, TreeItem *parent);
     void processAdd(const QJsonArray &arr);

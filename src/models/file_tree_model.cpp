@@ -354,6 +354,7 @@ bool FileTreeModel::deleteNode(const QString &full_path, int row, QUuid uid,
 
 void FileTreeModel::deleteTree() {
     beginResetModel();
+    emit dropState();
     root_item->deleteChildren();
     tree_.ResetContext();
     endResetModel();

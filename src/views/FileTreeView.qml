@@ -19,7 +19,6 @@ TreeView {
     signal showMrpaList(var data)
     signal cleanWindow
     signal enableSignButton
-    signal loadState
 
     property var state: []
     property var state_val: []
@@ -71,8 +70,6 @@ TreeView {
         readonly property real padding: 5
         required property int row
         required property TreeView treeView
-
-        property bool need_to_load_state: false
 
         //switch according to enum Types in tree_item.hpp
         function getImageForNode(type) {
@@ -150,14 +147,14 @@ TreeView {
 
             let index_in_state = treeView.state.indexOf(model.id)
             if (index_in_state >= 0 && treeView.state_val[index_in_state]) {
-                console.warn("STATE: expand " + model.id)
+                //console.warn("STATE: expand " + model.id)
                 expand(row)
             }
         }
 
         onExpandedChanged: {
-            //console.warn("id:"+ model.id +  "EXPANDED:" +isExpanded() )
-            if (!model.id) {
+            //console.warn("id:" + model.id + "EXPANDED:" + isExpanded())
+            if (model.id === undefined) {
                 return
             }
 
@@ -168,20 +165,26 @@ TreeView {
                 treeView.state.push(model.id)
                 treeView.state_val.push(expanded)
             }
-            console.warn("STATEX:" + JSON.stringify(treeView.state))
-            console.warn("STATEX:" + JSON.stringify(treeView.state_val))
-        }
-
-        Connections {
-            target: treeView
-
-            function onLoadState() {
-                need_to_load_state = true
-            }
+            // console.warn("STATEX:" + JSON.stringify(treeView.state))
+            // console.warn("STATEX:" + JSON.stringify(treeView.state_val))
         }
 
         implicitHeight: nameField.implicitHeight * 1.6
         implicitWidth: treeView.width - padding * 2
+
+        Item {
+            property int id_model: model.id
+
+            onId_modelChanged: {
+                //console.warn("STATEX: call restore from child:" + model.id)
+                parent.restore()
+            }
+
+            Component.onCompleted: {
+                //console.warn("STATEX: call restore from child:" + model.id)
+                parent.restore()
+            }
+        }
 
         Rectangle {
             id: background
@@ -192,11 +195,6 @@ TreeView {
         }
         Item {
             anchors.fill: parent
-
-            Component.onCompleted: {
-                // console.warn("STATEX: call restore from child:"+model.id)
-                parent.restore()
-            }
 
             Item {
                 id: indent
@@ -634,8 +632,9 @@ TreeView {
             }
         }
 
-        function onModelReset() {
-            treeView.loadState()
+        function onDropState() {
+            state = []
+            state_val = []
         }
     }
 }
