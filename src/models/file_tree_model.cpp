@@ -147,14 +147,44 @@ void FileTreeModel::getCertList(int file_id) {
                 item_map.at(file_id).lock()->data().ref_id_size);
             for (size_t i = 0; i < item_map[file_id].lock()->data().ref_id_size;
                  ++i) {
-                pdfcsp::c_bridge::CPodResult const *pod =
-                    tree_.GetCheckResultForNode(
-                        item_map[file_id].lock()->data().ref_ids[i], file_id);
-                core::ValidationResult val_res;
-                core::createCSPResponse(val_res, pod);
-                res.emplace_back(std::move(
-                    std::make_shared<core::ValidationResult>(val_res)));
-                res_ind.emplace_back(i);
+                if (!item_map.at(item_map[file_id].lock()->data().ref_ids[i])
+                         .expired()) {
+                    pdfcsp::c_bridge::CPodResult const *pod =
+                        tree_.GetCheckResultForNode(
+                            item_map[file_id].lock()->data().ref_ids[i],
+                            file_id);
+                    core::ValidationResult val_res;
+                    if (!pod) {
+                        continue;
+                    }
+                    core::createCSPResponse(val_res, pod);
+                    res.emplace_back(std::move(
+                        std::make_shared<core::ValidationResult>(val_res)));
+                    res_ind.emplace_back(i);
+                }
+            }
+            emit signatureReady(res, res_ind);
+            break;
+        case Zip:
+            emit updateSigCount(
+                item_map.at(file_id).lock()->data().ref_id_size);
+            for (size_t i = 0; i < item_map[file_id].lock()->data().ref_id_size;
+                 ++i) {
+                if (!item_map.at(item_map[file_id].lock()->data().ref_ids[i])
+                         .expired()) {
+                    pdfcsp::c_bridge::CPodResult const *pod =
+                        tree_.GetCheckResultForNode(
+                            item_map[file_id].lock()->data().ref_ids[i],
+                            file_id);
+                    core::ValidationResult val_res;
+                    if (!pod) {
+                        continue;
+                    }
+                    core::createCSPResponse(val_res, pod);
+                    res.emplace_back(std::move(
+                        std::make_shared<core::ValidationResult>(val_res)));
+                    res_ind.emplace_back(i);
+                }
             }
             emit signatureReady(res, res_ind);
             break;
@@ -167,6 +197,9 @@ void FileTreeModel::getCertList(int file_id) {
                     tree_.GetCheckResultForNode(
                         file_id, item_map[file_id].lock()->data().ref_ids[i]);
                 core::ValidationResult val_res;
+                if (!pod) {
+                    continue;
+                }
                 core::createCSPResponse(val_res, pod);
                 res.emplace_back(std::move(
                     std::make_shared<core::ValidationResult>(val_res)));
@@ -183,6 +216,9 @@ void FileTreeModel::getCertList(int file_id) {
                     tree_.GetCheckResultForNode(
                         file_id, item_map[file_id].lock()->data().ref_ids[i]);
                 core::ValidationResult val_res;
+                if (!pod) {
+                    continue;
+                }
                 core::createCSPResponse(val_res, pod);
                 res.emplace_back(std::move(
                     std::make_shared<core::ValidationResult>(val_res)));
@@ -938,7 +974,10 @@ void FileTreeModel::processChecks(int id) {
                 std::for_each(
                     checks.cbegin(), checks.cend(),
                     [&item, &valid, &invalid, this](int ref_id) {
-                        if (tree_
+                        if (!item_map.at(ref_id).expired() &&
+                            tree_.GetCheckResultForNode(ref_id,
+                                                        item->data().id) &&
+                            tree_
                                 .GetCheckResultForNode(ref_id, item->data().id)
                                 ->bres.check_summary) {
                             ++valid;
