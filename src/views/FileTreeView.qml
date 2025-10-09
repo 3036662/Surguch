@@ -636,5 +636,9 @@ TreeView {
             state = []
             state_val = []
         }
+
+        function onIsDraftChanged() {
+            console.warn("--------------is_draft_=  " << fileTreeModel.isDraft)
+        }
     }
 }

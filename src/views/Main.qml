@@ -289,6 +289,13 @@ ApplicationWindow {
 
     FileTreeModel {
         id: fileTreeModel
+
+        onIsDraftChanged: {
+            if (fileTreeModel.isDraft)
+                header.disableSignMode()
+            else
+                header.enableSignMode()
+        }
     }
 
     ProfilesModel {
