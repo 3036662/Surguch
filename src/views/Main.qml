@@ -52,12 +52,14 @@ ApplicationWindow {
                 onChangeShowType: newType => {
                                       showType = newType
                                       if (showType === Main.ShowType.Pdf) {
+                                          pdfDropArea.enabled = true
                                           fileDropArea.enabled = false
                                           pdfDropArea.width = parent.width
                                       }
                                       if (showType === Main.ShowType.Files) {
-                                          fileDropArea.enabled = false
-                                          pdfDropArea.width = parent.width
+                                          pdfDropArea.enabled = false
+                                          fileDropArea.enabled = true
+                                          fileDropArea.width = parent.width
                                       }
                                   }
             }
