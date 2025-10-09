@@ -9,6 +9,7 @@ Item {
 
     property var mrpa: mrpaData
     signal closeClicked
+    signal backClicked
 
     function isObj(x) {
         return x && typeof x === "object" && !Array.isArray(x)
@@ -90,12 +91,17 @@ Item {
             icon.height: 20
             icon.color: StyleSheet.font_color
             anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.margins: 5
             width: 20
             height: 20
-            onClicked: rightSideBar.showState = RightSideBar.ShowState.Mrpa
+            onClicked: {
+                root.backClicked()
+            }
         }
 
         RSBCloseButton {
+            anchors.margins: 5
             onClicked: root.closeClicked()
         }
     }
@@ -140,10 +146,13 @@ Item {
                         font.family: "Noto Sans"
                         font.pixelSize: 12
                         color: StyleSheet.font_color_extra
+                        visible: String(modelData.title).trim(
+                                     ) === "ПодпИзобр" ? false : true
                     }
 
                     Repeater {
-                        model: modelData.attrs
+                        model: String(modelData.title).trim(
+                                   ) === "ПодпИзобр" ? "" : modelData.attrs
 
                         delegate: TextPair {
                             width: parent.width
@@ -152,8 +161,6 @@ Item {
                                                       modelData.key).slice(1))
                                 if (name === "ext")
                                     return ""
-                                if (isNumeric(String(modelData.key)))
-                                    return ("№ " + String(modelData.key))
                                 return name
                             }
                             value: String(modelData.value)
@@ -163,6 +170,8 @@ Item {
 
                     RightSBHorizontalDelimiter {
                         width: parent.width
+                        visible: String(modelData.title).trim(
+                                     ) === "ПодпИзобр" ? false : true
                     }
                 }
             }

@@ -97,6 +97,10 @@ Item {
         onCloseClicked: {
             showState = RightSideBar.ShowState.Invisible
         }
+
+        onBackClicked: {
+            rightSideBar.showState = RightSideBar.ShowState.Certs
+        }
     }
 
     EditProfile {
@@ -126,6 +130,10 @@ Item {
 
         onCloseClicked: {
             showState = RightSideBar.ShowState.Invisible
+        }
+
+        onBackClicked: {
+            rightSideBar.showState = RightSideBar.ShowState.Mrpa
         }
     }
 

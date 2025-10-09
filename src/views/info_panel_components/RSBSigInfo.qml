@@ -11,6 +11,7 @@ Flickable {
     topMargin: 10
 
     signal closeClicked
+    signal backClicked
 
     Item {
         width: parent.width
@@ -24,10 +25,14 @@ Flickable {
             icon.height: 20
             icon.color: StyleSheet.font_color
             anchors.left: parent.left
+            anchors.top: parent.top
             width: 20
             height: 20
-            onClicked: rightSideBar.showState = RightSideBar.ShowState.Certs
             visible: siglistModel.sigSource === 2
+
+            onClicked: {
+                backClicked()
+            }
         }
 
         RSBCloseButton {
