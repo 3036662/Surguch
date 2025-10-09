@@ -321,12 +321,14 @@ bool FileTreeModel::addNode(const QVariantList &list) {
                     qvariant_cast<QUrl>(item.value<QVariant>()).toString());
             });
 
-        file_list.erase(std::remove_if(file_list.begin(), file_list.end(),
-                                       [this](const QString &file_name) {
-                                           return root_item->contains(
-                                               QUrl(file_name).toLocalFile());
-                                       }),
-                        file_list.end());
+        file_list.erase(
+            std::remove_if(
+                file_list.begin(), file_list.end(),
+                [this](const QString &file_name) {
+                    return QFileInfo(QUrl(file_name).toLocalFile()).isDir() ||
+                           root_item->contains(QUrl(file_name).toLocalFile());
+                }),
+            file_list.end());
         QJsonArray file_array;
         std::for_each(
             file_list.begin(), file_list.end(),

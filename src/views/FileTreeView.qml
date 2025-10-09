@@ -619,6 +619,28 @@ TreeView {
         model: fileTreeModel
     }
 
+    MouseArea {
+        anchors.fill: parent
+        onDoubleClicked: mouse => {
+                             let cell = treeView.cellAtPosition(
+                                 Qt.point(mouse.x, mouse.y))
+                             var ind
+                             try {
+                                 ind = treeView.index(cell.y, cell.x)
+                             } catch (e) {
+                                 // The user must have right-clicked an empty area; ignore it.
+                                 if (cell.x === -1 && cell.y === -1) {
+                                     return
+                                 }
+                                 ind = treeView.modelIndex(cell.y, cell.x)
+                             }
+                             treeView.selectionModel.setCurrentIndex(
+                                 ind, ItemSelectionModel.NoUpdate)
+                             treeView.toggleExpanded(cell.y)
+                             mouse.accepted = false
+                         }
+    }
+
     Connections {
         target: treeView.model
         function onSignDone(sign_result, sign_done) {
