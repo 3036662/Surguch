@@ -627,7 +627,7 @@ Flickable {
                     profile_json["create_attached"] = selectFileSignType.currentIndex
                     profile_json["create_base_64_encoded"] = selectFileEncodingType.currentIndex
                     profile_json["sig_ext"] = selectFileExtension.currentValue
-                    profile_json["pack_to_zip"] = selectArchive.currentIndex
+                    profile_json["pack_to_zip"] = selectArchive.currentIndex > 0 ? 1 : 0
                     profile_json["pack_separate_zips"] = selectArchive.currentIndex === 2 ? 1 : 0
 
                     const new_profile_data = JSON.stringify(profile_json)
