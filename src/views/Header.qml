@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import Qt.labs.platform as LabsDialogs
 
 import QtQuick.Dialogs as CommonDialogs
 import QtCore
@@ -61,16 +60,14 @@ RowLayout {
             icon.source: StyleSheet.file_plus_icon
             //text: qsTr("Open")
             text: qsTr("PDF")
-            onClicked: kdeVersion === "5" ? labsFileDialog.open(
-                                                ) : fileDialog.open()
+            onClicked: fileDialog.open()
         }
 
         HeaderBarComponents.TopBarButton {
             icon.source: StyleSheet.plus_circle_icon
             //text: qsTr("Open")
             text: qsTr("File")
-            onClicked: kdeVersion === "5" ? labsFileDialog.open(
-                                                ) : fileTreeDialog.open()
+            onClicked: fileTreeDialog.open()
         }
 
         HeaderBarComponents.TopBarButton {
@@ -84,8 +81,7 @@ RowLayout {
             icon.source: StyleSheet.folder_plus_icon
             text: qsTr("Save as ...")
             enabled: pdfListView.source.length > 0
-            onClicked: kdeVersion === "5" ? labsSaveFileDialog.open(
-                                                ) : saveFileDialog.open()
+            onClicked: saveFileDialog.open()
         }
 
         Row {
@@ -398,59 +394,6 @@ RowLayout {
             signModeButton.down = true
             signModeButton.enabled = false
             treeSignResultDialog.open()
-        }
-    }
-
-    // KDE5 - use lab LabsDialogs
-    LabsDialogs.FileDialog {
-        id: labsFileDialog
-
-        currentFile: ""
-        fileMode: LabsDialogs.FileDialog.OpenFile
-        nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
-        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
-        onAccepted: {
-            enableSignMode()
-            // source is chosen by user, not a temporary file
-            pdfListView.openFile(currentFile)
-            leftSideBar.source = currentFile
-            rightSideBar.showState = RightSideBar.ShowState.Invisible
-            changeShowType(1)
-        }
-    }
-    // KDE5 - use lab LabsDialogs
-    LabsDialogs.FileDialog {
-        id: labsSaveFileDialog
-
-        property bool quitAfterSave: false
-
-        fileMode: LabsDialogs.FileDialog.SaveFile
-        defaultSuffix: "pdf"
-        currentFile: pdfListView.source
-        nameFilters: ["PDF files (*.pdf)"]
-        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
-
-        onAccepted: {
-            pdfModel.mustExtractText = false
-            if (pdfListView.tagInProgress) {
-                let tmp_file = tagCreator.embedAnnot(pdfModel.getAnnotParams(),
-                                                     pdfModel.getSource())
-                pdfModel.mustProcessSignatures = false
-                pdfModel.mustExtractText = false
-                pdfListView.openTmpFile(tmp_file)
-                pdfModel.mustProcessSignatures = true
-                pdfModel.mustExtractText = true
-                pdfListView.saveTo(tmp_file, currentFile)
-            } else {
-                let tmp_file = pdfModel.getSource()
-                pdfListView.saveTo(tmp_file, currentFile)
-            }
-            pdfModel.clearHistory()
-            pdfModel.mustExtractText = true
-            headerSubBar.updateHistory()
-            if (quitAfterSave) {
-                Qt.quit()
-            }
         }
     }
 }
