@@ -636,7 +636,6 @@ TreeView {
                            }
                            ind = treeView.modelIndex(cell.x, cell.y)
                        }
-                       console.warn("i work")
                        treeView.selectionModel.setCurrentIndex(
                            ind, ItemSelectionModel.NoUpdate)
                        mouse.accepted = false
@@ -653,7 +652,7 @@ TreeView {
                                  if (cell.x === -1 && cell.y === -1) {
                                      return
                                  }
-                                 ind = treeView.modelIndex(cell.y, cell.x)
+                                 nd = treeView.modelIndex(cell.x, cell.y)
                              }
                              treeView.selectionModel.setCurrentIndex(
                                  ind, ItemSelectionModel.NoUpdate)
@@ -665,7 +664,7 @@ TreeView {
     Connections {
         target: treeView.model
         function onSignDone(sign_result, sign_done) {
-            console.warn("from treeView model:", JSON.stringify(sign_result))
+            //console.warn("from treeView model:", JSON.stringify(sign_result))
             treeSignResultDialog.sign_result = JSON.parse(sign_result)
             treeSignResultDialog.sign_done = true
             enableSignButton()
@@ -678,10 +677,6 @@ TreeView {
         function onDropState() {
             state = []
             state_val = []
-        }
-
-        function onIsDraftChanged() {
-            console.warn("--------------is_draft_=  " << fileTreeModel.isDraft)
         }
     }
 }

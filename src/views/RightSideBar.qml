@@ -30,7 +30,6 @@ Item {
     signal showMrpaData(var data)
 
     function showData(data) {
-        console.warn("show data")
         try {
             if (!data) {
                 jsonData = undefined

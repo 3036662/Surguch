@@ -87,7 +87,6 @@ ListView {
                 anchors.fill: parent
 
                 onClicked: {
-                    console.warn("click show mrpa data")
                     showMrpaData(modelData)
                 }
             }
