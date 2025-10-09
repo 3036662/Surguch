@@ -824,10 +824,10 @@ void FileTreeModel::processChecks(int id) {
     auto item = item_map.at(id).lock();
     switch (item->data().type) {
         case Zip:
-            item->setSigStats("nosign", "empty");
-            item->setMrpaStats("nomrpa", "empty");
+            item->setSigStats("", "empty");
+            item->setMrpaStats("", "empty");
             if (item->data().encrypted) {
-                item->setSigStats("lock", "file_red");
+                item->setSigStats(tr("Encrypted"), "file_red");
                 return;
             }
             if (item->data().ref_id_size > 0) {
@@ -846,37 +846,35 @@ void FileTreeModel::processChecks(int id) {
                         }
                     });
                 if (valid > 0 && invalid == 0) {
-                    item->setSigStats(QString::number(valid), "file_green");
+                    item->setSigStats(tr("Signature valid"), "file_green");
                 }
                 if (valid > 0 && invalid > 0) {
-                    item->setSigStats(QString::number(valid), "file_mixed");
+                    item->setSigStats(tr("Ambigious"), "file_mixed");
                 }
                 if (valid == 0 && invalid > 0) {
-                    item->setSigStats(QString::number(invalid), "file_red");
+                    item->setSigStats(tr("Signature invalid"), "file_red");
                 }
                 if (item->data().mrpa_id_size > 0) {
                     if (item->data().mrpa_id_size == item->data().ref_id_size) {
-                        item->setMrpaStats(
-                            QString::number(item->data().mrpa_id_size),
-                            "file_green");
+                        item->setMrpaStats(tr("MRPA signed"), "file_green");
                         return;
                     }
-                    item->setMrpaStats(
-                        QString::number(item->data().mrpa_id_size), "empty");
+                    item->setMrpaStats(tr("The quantity does not match"),
+                                       "file_mixed");
                     return;
                 } else {
-                    item->setMrpaStats("nomrpa", "file_mixed");
+                    item->setMrpaStats("", "empty");
                     return;
                 }
             }
             return;
         case Dir:
-            item->setSigStats("nosign", "empty");
-            item->setMrpaStats("nomrpa", "empty");
+            item->setSigStats("", "empty");
+            item->setMrpaStats("", "empty");
             return;
         case Sig:
-            item->setSigStats("nosign", "empty");
-            item->setMrpaStats("nomrpa", "empty");
+            item->setSigStats("", "empty");
+            item->setMrpaStats("", "empty");
             if (item->data().has_check_result.has_value() &&
                 item->data().has_check_result.value()) {
                 if (item->data().check_results.size() > 0) {
@@ -892,35 +890,32 @@ void FileTreeModel::processChecks(int id) {
                                       }
                                   });
                     if (valid > 0 && invalid == 0) {
-                        item->setSigStats("good", "sig_green");
+                        item->setSigStats(tr("Signature valid"), "sig_green");
                     } else if (valid > 0 && invalid > 0) {
-                        item->setSigStats("mixed", "sig_red");
+                        item->setSigStats(tr("File not found"), "sig_red");
                     } else {
-                        item->setSigStats("bad", "sig_red");
+                        item->setSigStats(tr("Signature invalid"), "sig_red");
                     }
                     if (item->data().mrpa_id_size > 0) {
                         if (item->data().mrpa_id_size ==
                             item->data().ref_id_size) {
-                            item->setMrpaStats(
-                                QString::number(item->data().mrpa_id_size),
-                                "file_green");
+                            item->setMrpaStats(tr("MRPA signed"), "file_green");
                             return;
                         }
-                        item->setMrpaStats(
-                            QString::number(item->data().mrpa_id_size),
-                            "empty");
+                        item->setMrpaStats(tr("The quantity does not match"),
+                                           "empty");
                         return;
                     } else {
-                        item->setMrpaStats("nomrpa", "empty");
+                        item->setMrpaStats("", "empty");
                         return;
                     }
                 }
             }
-            item->setSigStats("no_file", "sig_mixed");
+            item->setSigStats(tr("File not found"), "sig_mixed");
             return;
         case Asig:
-            item->setSigStats("nosign", "empty");
-            item->setMrpaStats("nomrpa", "empty");
+            item->setSigStats("", "empty");
+            item->setMrpaStats("", "empty");
             if (item->data().has_check_result.has_value() &&
                 item->data().has_check_result.value()) {
                 if (item->data().check_results.size() > 0) {
@@ -936,37 +931,34 @@ void FileTreeModel::processChecks(int id) {
                                       }
                                   });
                     if (valid > 0 && invalid == 0) {
-                        item->setSigStats("good", "sig_green");
+                        item->setSigStats(tr("Signature valid"), "sig_green");
                     } else if (valid > 0 && invalid > 0) {
-                        item->setSigStats("mixed", "sig_mixed");
+                        item->setSigStats(tr("File not found"), "sig_mixed");
                     } else {
-                        item->setSigStats("bad", "sig_red");
+                        item->setSigStats(tr("Signature invalid"), "sig_red");
                     }
                     if (item->data().mrpa_id_size > 0) {
                         if (item->data().mrpa_id_size ==
                             item->data().ref_id_size) {
-                            item->setMrpaStats(
-                                QString::number(item->data().mrpa_id_size),
-                                "file_green");
+                            item->setMrpaStats(tr("MRPA signed"), "file_green");
                             return;
                         }
-                        item->setMrpaStats(
-                            QString::number(item->data().mrpa_id_size),
-                            "empty");
+                        item->setMrpaStats(tr("The quantity does not match"),
+                                           "empty");
                         return;
                     } else {
-                        item->setMrpaStats("nomrpa", "empty");
+                        item->setMrpaStats("", "empty");
                         return;
                     }
                 }
             }
-            item->setSigStats("not found", "sig_mixed");
+            item->setSigStats(tr("File not found"), "sig_mixed");
             return;
         case File:
-            item->setSigStats("nosign", "empty");
-            item->setMrpaStats("nomrpa", "empty");
+            item->setSigStats("", "empty");
+            item->setMrpaStats("", "empty");
             if (item->data().encrypted) {
-                item->setSigStats("lock", "file_red");
+                item->setSigStats(tr("Encrypted"), "file_red");
                 return;
             }
             if (item->data().ref_id_size > 0) {
@@ -988,47 +980,44 @@ void FileTreeModel::processChecks(int id) {
                         }
                     });
                 if (valid > 0 && invalid == 0) {
-                    item->setSigStats(QString::number(valid), "file_green");
+                    item->setSigStats(tr("Signature valid"), "file_green");
                 }
                 if (valid > 0 && invalid > 0) {
-                    item->setSigStats(QString::number(valid), "file_mixed");
+                    item->setSigStats(tr("Ambigious"), "file_mixed");
                 }
                 if (valid == 0 && invalid > 0) {
-                    item->setSigStats(QString::number(invalid), "file_red");
+                    item->setSigStats(tr("Signature invalid"), "file_red");
                 }
                 if (item->data().mrpa_id_size > 0) {
                     if (item->data().mrpa_id_size == item->data().ref_id_size) {
-                        item->setMrpaStats(
-                            QString::number(item->data().mrpa_id_size),
-                            "file_green");
+                        item->setMrpaStats(tr("MRPA signed"), "file_green");
                         return;
                     }
-                    item->setMrpaStats(
-                        QString::number(item->data().mrpa_id_size),
-                        "file_mixed");
+                    item->setMrpaStats(tr("The quantity does not match"),
+                                       "file_mixed");
                     return;
                 } else {
-                    item->setMrpaStats("nomrpa", "empty");
+                    item->setMrpaStats("", "empty");
                     return;
                 }
             }
             return;
         case Mrpa:
-            item->setSigStats("nosign", "empty");
-            item->setMrpaStats("nosign", "invalid");
+            item->setSigStats("", "empty");
+            item->setMrpaStats(tr("MRPA"), "invalid");
             if (item->data().ref_id_size > 0) {
                 if (item->data().time_valid.has_value() &&
                     !item->data().time_valid.value()) {
-                    item->setMrpaStats("old", "old");
+                    item->setMrpaStats(tr("MRPA outdated"), "old");
                     return;
                 }
-                item->setMrpaStats("ok", "valid");
+                item->setMrpaStats(tr("MRPA valid"), "valid");
                 return;
             }
             return;
         default:
-            item->setSigStats("nosign", "empty");
-            item->setMrpaStats("nomrpa", "empty");
+            item->setSigStats("", "empty");
+            item->setMrpaStats("", "empty");
             return;
             ;
     }

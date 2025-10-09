@@ -427,16 +427,86 @@
     </message>
 </context>
 <context>
+    <name>FileTreeModel</name>
+    <message>
+        <location filename="../../src/models/file_tree_model.cpp" line="+830"/>
+        <location line="+131"/>
+        <source>Encrypted</source>
+        <translation>Зашифровано</translation>
+    </message>
+    <message>
+        <location line="-112"/>
+        <location line="+44"/>
+        <location line="+41"/>
+        <location line="+49"/>
+        <source>Signature valid</source>
+        <translation>Подпись верна</translation>
+    </message>
+    <message>
+        <location line="-131"/>
+        <location line="+134"/>
+        <source>Ambigious</source>
+        <translation>Неоднозначно</translation>
+    </message>
+    <message>
+        <location line="-131"/>
+        <location line="+42"/>
+        <location line="+41"/>
+        <location line="+51"/>
+        <source>Signature invalid</source>
+        <translation>Подпись неверна</translation>
+    </message>
+    <message>
+        <location line="-130"/>
+        <location line="+43"/>
+        <location line="+41"/>
+        <location line="+50"/>
+        <source>MRPA signed</source>
+        <translation>МЧД подписана</translation>
+    </message>
+    <message>
+        <location line="-131"/>
+        <location line="+43"/>
+        <location line="+41"/>
+        <location line="+50"/>
+        <source>The quantity does not match</source>
+        <translation>Не совпадает количество</translation>
+    </message>
+    <message>
+        <location line="-101"/>
+        <location line="+19"/>
+        <location line="+22"/>
+        <location line="+19"/>
+        <source>File not found</source>
+        <translation>Файл не найден</translation>
+    </message>
+    <message>
+        <location line="+52"/>
+        <source>MRPA</source>
+        <translation>МЧД</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>MRPA outdated</source>
+        <translation>МЧД просрочена</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>MRPA valid</source>
+        <translation>МЧД подписана</translation>
+    </message>
+</context>
+<context>
     <name>FileTreeView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/FileTreeView.qml" line="+32"/>
-        <location filename="../../src/views/FileTreeView.qml" line="+32"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/FileTreeView.qml" line="+35"/>
+        <location filename="../../src/views/FileTreeView.qml" line="+35"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
     <message>
-        <location line="+59"/>
-        <location filename="../../src/views/FileTreeView.qml" line="+59"/>
+        <location line="+61"/>
+        <location filename="../../src/views/FileTreeView.qml" line="+61"/>
         <source> B</source>
         <translation type="unfinished"></translation>
     </message>
@@ -453,8 +523,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+127"/>
-        <location filename="../../src/views/FileTreeView.qml" line="+127"/>
+        <location line="+241"/>
+        <location filename="../../src/views/FileTreeView.qml" line="+241"/>
         <source>Open copy</source>
         <translation>Открыть копию</translation>
     </message>
@@ -466,9 +536,9 @@
         <translation type="vanished">Открыть</translation>
     </message>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+78"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+75"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+77"/>
-        <location filename="../../src/views/Header.qml" line="+78"/>
+        <location filename="../../src/views/Header.qml" line="+75"/>
         <source>Show in folder</source>
         <translation>Показать в папке</translation>
     </message>
@@ -484,9 +554,9 @@
         <translation type="vanished">Печать</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+53"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+54"/>
-        <location filename="../../src/views/Header.qml" line="+54"/>
+        <location filename="../../src/views/Header.qml" line="+53"/>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>
@@ -503,52 +573,48 @@
     </message>
     <message>
         <location line="+81"/>
-        <location line="+81"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+75"/>
         <location line="+55"/>
         <location filename="../../src/views/Header.qml" line="+81"/>
-        <location line="+81"/>
         <source>Any file (* *.*)</source>
         <translation>Любой файл (* *.*)</translation>
     </message>
     <message>
-        <location line="-81"/>
+        <location line="+0"/>
         <location line="+34"/>
-        <location line="+47"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="-55"/>
         <location line="+20"/>
         <location line="+35"/>
-        <location filename="../../src/views/Header.qml" line="-81"/>
+        <location filename="../../src/views/Header.qml" line="+0"/>
         <location line="+34"/>
-        <location line="+47"/>
         <source>PDF files (*.pdf)</source>
         <translation>PDF файлы (*.pdf)</translation>
     </message>
     <message>
-        <location line="-305"/>
+        <location line="-258"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="-273"/>
-        <location filename="../../src/views/Header.qml" line="-305"/>
+        <location filename="../../src/views/Header.qml" line="-258"/>
         <source>Profile settings</source>
         <translation>Настройка профиля</translation>
     </message>
     <message>
-        <location line="-42"/>
+        <location line="-39"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="-42"/>
-        <location filename="../../src/views/Header.qml" line="-42"/>
+        <location filename="../../src/views/Header.qml" line="-39"/>
         <source>PDF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+7"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+8"/>
-        <location filename="../../src/views/Header.qml" line="+8"/>
+        <location filename="../../src/views/Header.qml" line="+7"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+213"/>
+        <location line="+211"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+207"/>
-        <location filename="../../src/views/Header.qml" line="+213"/>
+        <location filename="../../src/views/Header.qml" line="+211"/>
         <source>About program</source>
         <translation>О программе</translation>
     </message>
@@ -762,8 +828,8 @@
         <translation type="vanished">Общая ошибка</translation>
     </message>
     <message>
-        <location line="+128"/>
-        <location filename="../../src/views/Main.qml" line="+128"/>
+        <location line="+126"/>
+        <location filename="../../src/views/Main.qml" line="+126"/>
         <source>PDF
 Drag&amp;Drop</source>
         <translation type="unfinished"></translation>
@@ -776,9 +842,9 @@ Drag&amp;Drop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+222"/>
+        <location line="+238"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+282"/>
-        <location filename="../../src/views/Main.qml" line="+222"/>
+        <location filename="../../src/views/Main.qml" line="+238"/>
         <source>The document was changed after signing, but can be restored</source>
         <translation>Документ был изменен после подписания! Присутствует возможность восстановить подписанную версию</translation>
     </message>
@@ -862,8 +928,8 @@ Drag&amp;Drop</source>
 <context>
     <name>MrpaInfo</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/MrpaInfo.qml" line="+30"/>
-        <location filename="../../src/views/info_panel_components/MrpaInfo.qml" line="+30"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/MrpaInfo.qml" line="+33"/>
+        <location filename="../../src/views/info_panel_components/MrpaInfo.qml" line="+33"/>
         <source>About MRPA</source>
         <translation>Сведения об МЧД</translation>
     </message>
@@ -1005,26 +1071,26 @@ Drag&amp;Drop</source>
 <context>
     <name>RSBSigInfo</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+45"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+50"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+31"/>
-        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+45"/>
+        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+50"/>
         <source>Signature</source>
         <translation>Электронная подпись</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <location line="+73"/>
+        <location line="+12"/>
+        <location line="+74"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+9"/>
         <location line="+73"/>
-        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+11"/>
-        <location line="+73"/>
+        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+12"/>
+        <location line="+74"/>
         <source>Status</source>
         <translation>Статус</translation>
     </message>
     <message>
-        <location line="-64"/>
+        <location line="-65"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="-64"/>
-        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="-64"/>
+        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="-65"/>
         <source>Document integrity</source>
         <translation>Целостность документа</translation>
     </message>
@@ -1054,21 +1120,21 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="-40"/>
-        <location line="+98"/>
+        <location line="+99"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="-40"/>
         <location line="+98"/>
         <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="-40"/>
-        <location line="+98"/>
+        <location line="+99"/>
         <source>OCSP status</source>
         <translation>Статус OCSP</translation>
     </message>
     <message>
-        <location line="-90"/>
-        <location line="+48"/>
+        <location line="-91"/>
+        <location line="+49"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="-90"/>
         <location line="+48"/>
-        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="-90"/>
-        <location line="+48"/>
+        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="-91"/>
+        <location line="+49"/>
         <source>Date of creation</source>
         <translation>Дата подписи</translation>
     </message>
@@ -1077,26 +1143,26 @@ Drag&amp;Drop</source>
         <translation type="vanished">CADES стандарт</translation>
     </message>
     <message>
-        <location line="-41"/>
+        <location line="-42"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="-41"/>
-        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="-41"/>
+        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="-42"/>
         <source>CADES standard</source>
         <translation>CADES стандарт</translation>
     </message>
     <message>
         <location line="+9"/>
-        <location line="+111"/>
+        <location line="+113"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+9"/>
         <location line="+111"/>
         <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+9"/>
-        <location line="+111"/>
+        <location line="+113"/>
         <source>Certificate chain</source>
         <translation>Цепочка сертификатов</translation>
     </message>
     <message>
-        <location line="-72"/>
+        <location line="-73"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="-72"/>
-        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="-72"/>
+        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="-73"/>
         <source>Serial number</source>
         <translation>Серийный номер</translation>
     </message>
@@ -1115,9 +1181,9 @@ Drag&amp;Drop</source>
         <translation>Цепочка сертификатов штампа времени TSP</translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+30"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+29"/>
-        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+29"/>
+        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+30"/>
         <source>Certificate status</source>
         <translation>Статус сертификата</translation>
     </message>
@@ -1708,9 +1774,9 @@ Drag&amp;Drop</source>
 <context>
     <name>TextPairBool</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/TextPairBool.qml" line="+23"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/TextPairBool.qml" line="+24"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/TextPairBool.qml" line="+23"/>
-        <location filename="../../src/views/info_panel_components/TextPairBool.qml" line="+23"/>
+        <location filename="../../src/views/info_panel_components/TextPairBool.qml" line="+24"/>
         <source>Valid</source>
         <translation>Верно</translation>
     </message>
@@ -1725,9 +1791,9 @@ Drag&amp;Drop</source>
 <context>
     <name>TextPairStatus</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/TextPairStatus.qml" line="+20"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/TextPairStatus.qml" line="+22"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/TextPairStatus.qml" line="+20"/>
-        <location filename="../../src/views/info_panel_components/TextPairStatus.qml" line="+20"/>
+        <location filename="../../src/views/info_panel_components/TextPairStatus.qml" line="+22"/>
         <source>Field is absent</source>
         <translation>Поле отсутствует</translation>
     </message>
@@ -1769,32 +1835,32 @@ Drag&amp;Drop</source>
         <translation>Результат</translation>
     </message>
     <message>
-        <location line="+28"/>
-        <location filename="../../src/views/TreeSignResultDialog.qml" line="+28"/>
+        <location line="+52"/>
+        <location filename="../../src/views/TreeSignResultDialog.qml" line="+52"/>
         <source>Files</source>
         <translation>Файлы</translation>
     </message>
     <message>
-        <location line="+18"/>
-        <location filename="../../src/views/TreeSignResultDialog.qml" line="+18"/>
+        <location line="+20"/>
+        <location filename="../../src/views/TreeSignResultDialog.qml" line="+20"/>
         <source>No files</source>
         <translation>Нет файлов</translation>
     </message>
     <message>
-        <location line="+35"/>
-        <location filename="../../src/views/TreeSignResultDialog.qml" line="+35"/>
+        <location line="-51"/>
+        <location filename="../../src/views/TreeSignResultDialog.qml" line="-51"/>
         <source>Final directory</source>
         <translation>Итоговая директория</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <location filename="../../src/views/TreeSignResultDialog.qml" line="+13"/>
+        <location line="+15"/>
+        <location filename="../../src/views/TreeSignResultDialog.qml" line="+15"/>
         <source>No directory</source>
         <translation>Нет директории</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <location filename="../../src/views/TreeSignResultDialog.qml" line="+5"/>
+        <location line="+7"/>
+        <location filename="../../src/views/TreeSignResultDialog.qml" line="+7"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>

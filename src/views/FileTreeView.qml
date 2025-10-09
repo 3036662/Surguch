@@ -456,8 +456,9 @@ TreeView {
                 width: signColumn
                 clip: true
                 ToolTip.delay: 500
-                ToolTip.text: "Sign"
+                ToolTip.text: model.sig_status
                 ToolTip.visible: sigStatusArea.hovered
+                                 && model.sig_status !== ""
 
                 Image {
                     id: signImage
@@ -522,8 +523,9 @@ TreeView {
                 width: mrpaColumn
                 clip: true
                 ToolTip.delay: 500
-                ToolTip.text: "MRPA"
+                ToolTip.text: model.mrpa_status
                 ToolTip.visible: mrpaStatusArea.hovered
+                                 && model.mrpa_status !== ""
 
                 Image {
                     id: mrpaImage
