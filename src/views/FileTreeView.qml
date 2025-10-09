@@ -619,8 +619,29 @@ TreeView {
         model: fileTreeModel
     }
 
+    /// manually do everything as in mate & qt6.4 clicks nothing works
     MouseArea {
         anchors.fill: parent
+
+        onClicked: mouse => {
+                       let cell = treeView.cellAtPosition(Qt.point(mouse.x,
+                                                                   mouse.y))
+                       var ind
+                       try {
+                           ind = treeView.index(cell.y, cell.x)
+                       } catch (e) {
+                           // The user must have right-clicked an empty area; ignore it.
+                           if (cell.x === -1 && cell.y === -1) {
+                               return
+                           }
+                           ind = treeView.modelIndex(cell.x, cell.y)
+                       }
+                       console.warn("i work")
+                       treeView.selectionModel.setCurrentIndex(
+                           ind, ItemSelectionModel.NoUpdate)
+                       mouse.accepted = false
+                   }
+
         onDoubleClicked: mouse => {
                              let cell = treeView.cellAtPosition(
                                  Qt.point(mouse.x, mouse.y))
