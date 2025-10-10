@@ -101,7 +101,8 @@ Item {
         }
 
         RSBCloseButton {
-            anchors.margins: 5
+            anchors.topMargin: 5
+            anchors.rightMargin: 15
             onClicked: root.closeClicked()
         }
     }

@@ -36,6 +36,7 @@ Flickable {
         }
 
         RSBCloseButton {
+            anchors.margins: 5
             onClicked: {
                 closeClicked()
             }
