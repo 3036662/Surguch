@@ -209,7 +209,7 @@ TreeView {
                 anchors.left: indent.right
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
-                width: 20
+                width: 30
 
                 Image {
                     id: indicator
@@ -219,32 +219,31 @@ TreeView {
                     sourceSize.height: expanded ? 10 : 15
                     sourceSize.width: expanded ? 20 : 10
                     visible: isTreeNode && hasChildren
+                }
 
-                    TapHandler {
-                        onTapped: eventPoint => {
-                                      var ind
-                                      try {
-                                          ind = treeView.index(row, column)
-                                      } catch (e) {
-                                          let cell = treeView.cellAtPosition(
-                                              eventPoint.pressPosition)
+                TapHandler {
+                    onTapped: eventPoint => {
+                                  var ind
+                                  try {
+                                      ind = treeView.index(row, column)
+                                  } catch (e) {
+                                      let cell = treeView.cellAtPosition(
+                                          eventPoint.pressPosition)
 
-                                          // The user must have right-clicked an empty area; ignore it.
-                                          if (cell.x === -1 && cell.y === -1) {
-                                              return
-                                          }
-                                          ind = treeView.modelIndex(cell.y,
-                                                                    cell.x)
+                                      // The user must have right-clicked an empty area; ignore it.
+                                      if (cell.x === -1 && cell.y === -1) {
+                                          return
                                       }
-                                      treeView.selectionModel.setCurrentIndex(
-                                          ind, ItemSelectionModel.NoUpdate)
-                                      treeView.toggleExpanded(row)
+                                      ind = treeView.modelIndex(cell.y, cell.x)
                                   }
-                    }
+                                  treeView.selectionModel.setCurrentIndex(
+                                      ind, ItemSelectionModel.NoUpdate)
+                                  treeView.toggleExpanded(row)
+                              }
+                }
 
-                    HoverHandler {
-                        cursorShape: Qt.PointingHandCursor
-                    }
+                HoverHandler {
+                    cursorShape: Qt.PointingHandCursor
                 }
 
                 Item {
@@ -260,7 +259,7 @@ TreeView {
                 anchors.left: indicatorItem.right
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
-                width: indentation
+                width: indentation - 10
             }
             Item {
                 id: imageItem
