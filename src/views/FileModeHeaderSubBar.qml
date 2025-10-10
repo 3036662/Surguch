@@ -25,6 +25,7 @@ ColumnLayout {
         Text {
             id: nameText
             text: qsTr("Name")
+            clip: true
             anchors.left: parent.left
             anchors.right: sepName.left
             anchors.top: parent.top
@@ -50,6 +51,7 @@ ColumnLayout {
         Text {
             id: sizeText
             text: qsTr("Size")
+            clip: true
             width: sizeColumn
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: sepSize.left
@@ -73,6 +75,7 @@ ColumnLayout {
         Text {
             id: editText
             text: qsTr("Last edit")
+            clip: true
             width: editColumn
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: sepEdit.left
@@ -96,6 +99,7 @@ ColumnLayout {
         Text {
             id: signText
             text: qsTr("Sign")
+            clip: true
             width: signColumn
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: sepSign.left
@@ -119,6 +123,7 @@ ColumnLayout {
         Text {
             id: mrpaText
             text: qsTr("MRPA")
+            clip: true
             width: mrpaColumn
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: sepDeleteBtn.left
@@ -167,6 +172,7 @@ ColumnLayout {
         Text {
             id: detailText
             text: qsTr("Details")
+            clip: true
             width: 300
             anchors.top: parent.top
             anchors.bottom: parent.bottom
