@@ -654,7 +654,7 @@ TreeView {
                                  if (cell.x === -1 && cell.y === -1) {
                                      return
                                  }
-                                 nd = treeView.modelIndex(cell.x, cell.y)
+                                 ind = treeView.modelIndex(cell.x, cell.y)
                              }
                              treeView.selectionModel.setCurrentIndex(
                                  ind, ItemSelectionModel.NoUpdate)
