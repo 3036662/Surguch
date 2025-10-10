@@ -58,7 +58,7 @@ ListView {
         Item {
             Layout.alignment: Qt.AlignVCenter
             Layout.fillWidth: true
-            Layout.preferredHeight: 50
+            Layout.preferredHeight: 70
 
             RowLayout {
                 anchors.fill: parent
