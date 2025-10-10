@@ -26,6 +26,10 @@ Flickable {
             icon.color: StyleSheet.font_color
             anchors.left: parent.left
             anchors.top: parent.top
+            leftPadding: 0
+            topPadding: 0
+            rightPadding: 0
+            bottomPadding: 0
             width: 20
             height: 20
             visible: siglistModel.sigSource === 2
