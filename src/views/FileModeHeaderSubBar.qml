@@ -104,6 +104,7 @@ ColumnLayout {
 
             onClicked: {
                 fileTreeModel.deleteTree()
+                rightSideBar.showState = RightSideBar.ShowState.Invisible
             }
         }
 

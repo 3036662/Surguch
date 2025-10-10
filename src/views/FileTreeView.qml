@@ -607,6 +607,7 @@ TreeView {
                         console.warn("delete node res: " + fileTreeModel.deleteNode(
                                          model.full_path, row, model.uid,
                                          model.id))
+                        rightSideBar.showState = RightSideBar.ShowState.Invisible
                     }
                 }
                 Item {
