@@ -141,6 +141,7 @@ ELSE ()
             QML_FILES views/info_panel_components/MrpaInfo.qml
             QML_FILES views/info_panel_components/MrpaList.qml
             QML_FILES views/TreeSignResultDialog.qml
+            QML_FILES views/info_panel_components/RSBBackButton.qml
     )
 
     qt6_import_qml_plugins(surguch)

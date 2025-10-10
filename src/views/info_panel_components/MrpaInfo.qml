@@ -83,22 +83,8 @@ Item {
         anchors.top: parent.top
         z: 2
 
-        ToolButton {
-            flat: true
-            display: AbstractButton.IconOnly
-            icon.source: StyleSheet.back_icon
-            icon.width: 20
-            icon.height: 20
-            icon.color: StyleSheet.font_color
-            anchors.left: parent.left
-            anchors.top: parent.top
+        RSBBackButton {
             anchors.margins: 5
-            leftPadding: 0
-            topPadding: 0
-            rightPadding: 0
-            bottomPadding: 0
-            width: 20
-            height: 20
             onClicked: {
                 root.backClicked()
             }
