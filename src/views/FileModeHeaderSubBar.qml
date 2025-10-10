@@ -121,4 +121,8 @@ ColumnLayout {
             Layout.minimumWidth: 300
         }
     }
+
+    onWidthChanged: {
+        update()
+    }
 }
