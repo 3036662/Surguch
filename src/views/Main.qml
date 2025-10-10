@@ -452,6 +452,47 @@ ApplicationWindow {
                 break
             }
         })
+        // open error window if file singing went wrong
+        fileTreeView.errorOnSign.connect(function (err) {
+            switch (err) {
+            case "INVALID_PARAMETERS":
+                errorMessageDialog.text = qsTr("Invalid parameters")
+                errorMessageDialog.open()
+                treeSignResultDialog.close()
+                break
+            case "INVALID_DESTINATION":
+                errorMessageDialog.text = qsTr("Invalid destination path")
+                errorMessageDialog.open()
+                treeSignResultDialog.close()
+                break
+            case "SIGN_ALL_FILES_FAILED":
+                errorMessageDialog.text = qsTr("Failed to sign all files")
+                errorMessageDialog.open()
+                treeSignResultDialog.close()
+                break
+            case "CREATE_ZIP_FAILED":
+                errorMessageDialog.text = qsTr("Failed to create archive")
+                errorMessageDialog.open()
+                treeSignResultDialog.close()
+                break
+            case "COPY_SRC_FILES_FAILED":
+                errorMessageDialog.text = qsTr(
+                            "You trying to create files which already exist")
+                errorMessageDialog.open()
+                treeSignResultDialog.close()
+                break
+            case "COPY_SRC_MRPA_FILES_FAILED":
+                errorMessageDialog.text = qsTr(
+                            "You trying to create files which already exist")
+                errorMessageDialog.open()
+                treeSignResultDialog.close()
+                break
+            case "SOME_FILES_WHERE_RENAMED":
+                errorMessageDialog.text = qsTr("Some files were renamed")
+                errorMessageDialog.open()
+                break
+            }
+        })
         // open the recovered file
         siglistModel.fileRecovered.connect(function (dest) {
             rightSideBar.showState = RightSideBar.ShowState.Invisible

@@ -19,6 +19,7 @@ TreeView {
     signal showMrpaList(var data)
     signal cleanWindow
     signal enableSignButton
+    signal errorOnSign(var err)
 
     property var state: []
     property var state_val: []
@@ -670,6 +671,9 @@ TreeView {
         target: treeView.model
         function onSignDone(sign_result, sign_done) {
             //console.warn("from treeView model:", JSON.stringify(sign_result))
+            if (JSON.parse(sign_result).warnings !== "") {
+                errorOnSign(String(JSON.parse(sign_result).warnings))
+            }
             treeSignResultDialog.sign_result = JSON.parse(sign_result)
             treeSignResultDialog.sign_done = true
             enableSignButton()

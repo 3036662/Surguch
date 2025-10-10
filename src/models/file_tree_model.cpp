@@ -356,7 +356,6 @@ bool FileTreeModel::addNode(const QVariantList &list) {
                 });
         }
         processAdd(file_array);
-        qWarning() << "[DEBUG] " << "FileTreeModel::addNode()" << file_list;
         return true;
     }
     return false;
