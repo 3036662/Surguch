@@ -16,6 +16,9 @@ Dialog {
     padding: 12
     closePolicy: Popup.CloseOnEscape
 
+    x: (parent.width - width) / 2
+    y: (parent.height - height) / 2
+
     BusyIndicator {
         visible: !root.sign_done
         running: !root.sign_done

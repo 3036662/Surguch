@@ -2,11 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import StyleSheet
-
 import "header_bar_components" as HeaderBarComponents
 
 ColumnLayout {
-
     property int sizeColumn: parent.width * 0.05
     property int editColumn: parent.width * 0.1
     property int signColumn: parent.width * 0.05
@@ -19,110 +17,164 @@ ColumnLayout {
         Layout.fillWidth: true
     }
 
-    RowLayout {
+    Item {
         id: toolbar_subpanel
-        spacing: 0
         Layout.fillWidth: true
-        Layout.leftMargin: 5
+        Layout.preferredHeight: 30
 
         Text {
+            id: nameText
             text: qsTr("Name")
-            Layout.fillWidth: true
+            anchors.left: parent.left
+            anchors.right: sepName.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignLeft
+            elide: Text.ElideRight
             color: StyleSheet.font_color_extra
             font.pixelSize: 12
         }
-
         HeaderBarComponents.HeaderToolSeparator {
-            padding: 0
+            id: sepName
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.right: sizeText.left
+            width: 1
+            leftPadding: 0
+            rightPadding: 0
+            topPadding: 0
+            bottomPadding: 0
         }
 
         Text {
+            id: sizeText
             text: qsTr("Size")
-            horizontalAlignment: Text.AlignHCenter
-            Layout.preferredWidth: sizeColumn
-            Layout.minimumWidth: sizeColumn
-            Layout.maximumWidth: sizeColumn
+            width: sizeColumn
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: sepSize.left
             color: StyleSheet.font_color_extra
             font.pixelSize: 12
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
-
         HeaderBarComponents.HeaderToolSeparator {
-            padding: 0
+            id: sepSize
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.right: editText.left
+            width: 1
+            leftPadding: 0
+            rightPadding: 0
+            topPadding: 0
+            bottomPadding: 0
         }
 
         Text {
+            id: editText
             text: qsTr("Last edit")
-            horizontalAlignment: Text.AlignHCenter
-            Layout.preferredWidth: editColumn
-            Layout.minimumWidth: editColumn
-            Layout.maximumWidth: editColumn
+            width: editColumn
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: sepEdit.left
             color: StyleSheet.font_color_extra
             font.pixelSize: 12
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
-
         HeaderBarComponents.HeaderToolSeparator {
-            padding: 0
+            id: sepEdit
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.right: signText.left
+            width: 1
+            leftPadding: 0
+            rightPadding: 0
+            topPadding: 0
+            bottomPadding: 0
         }
 
         Text {
+            id: signText
             text: qsTr("Sign")
-            horizontalAlignment: Text.AlignHCenter
-            Layout.preferredWidth: signColumn
-            Layout.minimumWidth: signColumn
-            Layout.maximumWidth: signColumn
+            width: signColumn
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: sepSign.left
             color: StyleSheet.font_color_extra
             font.pixelSize: 12
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
-
         HeaderBarComponents.HeaderToolSeparator {
-            padding: 0
+            id: sepSign
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.right: mrpaText.left
+            width: 1
+            leftPadding: 0
+            rightPadding: 0
+            topPadding: 0
+            bottomPadding: 0
         }
 
         Text {
+            id: mrpaText
             text: qsTr("MRPA")
-            horizontalAlignment: Text.AlignHCenter
-            Layout.preferredWidth: mrpaColumn
-            Layout.minimumWidth: mrpaColumn
-            Layout.maximumWidth: mrpaColumn
+            width: mrpaColumn
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: sepDeleteBtn.left
             color: StyleSheet.font_color_extra
             font.pixelSize: 12
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
-
         HeaderBarComponents.HeaderToolSeparator {
-            padding: 0
+            id: sepDeleteBtn
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.right: deleteAllBtn.left
+            width: 1
+            leftPadding: 0
+            rightPadding: 0
+            topPadding: 0
+            bottomPadding: 0
         }
 
         ToolButton {
             id: deleteAllBtn
-
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: sepDetails.left
+            width: deleteColumn
             icon.source: StyleSheet.trash_icon
             icon.width: 20
             icon.height: 20
-            Layout.preferredWidth: deleteColumn
-            Layout.minimumWidth: deleteColumn
-            Layout.maximumWidth: deleteColumn
-
             onClicked: {
                 fileTreeModel.deleteTree()
                 rightSideBar.showState = RightSideBar.ShowState.Invisible
             }
         }
-
         HeaderBarComponents.HeaderToolSeparator {
-            padding: 0
+            id: sepDetails
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.right: detailText.left
+            width: 1
+            leftPadding: 0
+            rightPadding: 0
+            topPadding: 0
+            bottomPadding: 0
         }
 
         Text {
+            id: detailText
             text: qsTr("Details")
+            width: 300
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
             color: StyleSheet.font_color_extra
             horizontalAlignment: Text.AlignHCenter
-            Layout.maximumWidth: 300
-            Layout.preferredWidth: 300
-            Layout.minimumWidth: 300
+            verticalAlignment: Text.AlignVCenter
+            elide: Text.ElideRight
         }
-    }
-
-    onWidthChanged: {
-        update()
     }
 }
