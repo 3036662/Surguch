@@ -330,14 +330,17 @@ TreeView {
                                        }
                                        treeView.selectionModel.setCurrentIndex(
                                            ind, ItemSelectionModel.NoUpdate)
-                                       if (mouse.button === Qt.RightButton)
-                                       contextMenu.popup()
+                                       if (mouse.button === Qt.RightButton
+                                           && model.type !== 1) {
+                                           contextMenu.popup()
+                                       }
                                    }
 
                         Menu {
                             id: contextMenu
                             MenuItem {
-                                text: qsTr("Open copy")
+                                text: depth === 0 ? qsTr("Open file") : qsTr(
+                                                        "Open copy")
                                 onTriggered: {
                                     Qt.openUrlExternally(
                                                 "file://" + model.full_path)
