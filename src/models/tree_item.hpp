@@ -66,8 +66,10 @@ class TreeItem {
     void setSigStats(const QString &text, const QString &color);
     void setMrpaStats(const QString &text, const QString &color);
 
+    /// @brief delete item
     void deleteItem(QUuid id);
 
+    /// @brief delete items childs
     void deleteChildren();
 
    private:
