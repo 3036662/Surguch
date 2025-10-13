@@ -17,11 +17,71 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "t_tree.hpp"
 
+#include <QDebug>
+#include <QFile>
+#include <QTest>
+
 #include "models/file_tree_model.hpp"
 
 TTree::TTree(QObject *parent) : QObject{parent} {}
 
-void TTree::testAddNode() {
+void TTree::testEmpty() {
     FileTreeModel tree_;
-    tree_.addNode({SENSITIVE_DIR + file1_});
+
+    for (int i = 0; i < 50; ++i) {
+        tree_.addNode({"a" + QString::number(i)});
+    }
+
+    {
+        tree_.setupModelData({""}, tree_.root_item.get());
+        tree_.getCertList(-1);
+        tree_.getMrpaData(-10);
+        tree_.signTree({});
+    }
+
+    {
+        QFile file(test_json_file);
+        QVERIFY(file.exists());
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        QVERIFY(file.isOpen());
+        QByteArray file_data = file.readAll();
+        file.close();
+        QJsonParseError parse_error;
+        QJsonDocument json_doc =
+            QJsonDocument::fromJson(file_data, &parse_error);
+        QVERIFY(parse_error.error == QJsonParseError::NoError);
+        QJsonObject root = json_doc.object();
+        QJsonArray data_ = root["children"].toArray();
+        tree_.setupModelData(data_, tree_.root_item.get());
+        tree_.getCertList(10);
+        tree_.getMrpaData(10);
+        tree_.signTree({});
+    }
+
+    {
+        QFile file(test_broken_json_file);
+        QVERIFY(file.exists());
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        QVERIFY(file.isOpen());
+        QByteArray file_data = file.readAll();
+        file.close();
+        QJsonParseError parse_error;
+        QJsonDocument json_doc =
+            QJsonDocument::fromJson(file_data, &parse_error);
+        QVERIFY(parse_error.error != QJsonParseError::NoError);
+        QJsonObject root = json_doc.object();
+        QJsonArray data_ = root["children"].toArray();
+        tree_.setupModelData(data_, tree_.root_item.get());
+        tree_.getCertList(10);
+        tree_.getMrpaData(10);
+        tree_.signTree({});
+    }
+
+    {
+        tree_.deleteTree();
+        tree_.setupModelData({"blablabla"}, tree_.root_item.get());
+        tree_.getCertList(-1);
+        tree_.getMrpaData(-10);
+        tree_.signTree({});
+    }
 }

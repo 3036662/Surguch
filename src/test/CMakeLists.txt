@@ -75,7 +75,13 @@ qt_add_executable(test_golink test_golink.cpp
 # file tree
 qt_add_executable(test_tree test_tree.cpp
     t_tree.hpp t_tree.cpp
+    ${CMAKE_SOURCE_DIR}/src/models/tree_item.hpp
+    ${CMAKE_SOURCE_DIR}/src/models/tree_item.cpp
+    ${CMAKE_SOURCE_DIR}/src/models/file_tree_model.hpp
+    ${CMAKE_SOURCE_DIR}/src/models/file_tree_model.cpp
+    mocked_tree.hpp
 )
+target_compile_definitions(test_tree PRIVATE MOC_TREE_FOR_TESTS=1)
 
 #-------------------------------
 #link test1
@@ -158,7 +164,6 @@ target_link_libraries(test_golink
 target_link_libraries(test_tree PUBLIC Qt::Test Qt6::Quick Qt6::Concurrent)
 target_link_libraries(test_tree PUBLIC appcore)
 target_link_libraries(test_tree PUBLIC gui_core)
-target_link_libraries(test_tree PUBLIC models)
 target_link_libraries(test_tree PUBLIC csp_c_bridge_qt)
 target_link_libraries(test_tree PUBLIC ${PDFCSP_LINK_PATH})
 target_link_libraries(test_tree PRIVATE ${MUPDF_LINK_PATH}) # harcoded mupdf linkage

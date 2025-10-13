@@ -19,4 +19,4 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "t_tree.hpp"
 
-QTEST_MAIN(TTree)
+QTEST_MAIN(TTree);

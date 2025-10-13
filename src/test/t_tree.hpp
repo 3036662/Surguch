@@ -15,26 +15,27 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef T_TREE_H
-#define T_TREE_H
+#pragma once
 
 #include <QObject>
 
+// @brief tests if backand send us null everywhere and if json we get is broken
 class TTree : public QObject {
+    Q_OBJECT
    public:
-    TTree(QObject *parent = nullptr);
+    explicit TTree(QObject *parent = nullptr);
 
    signals:
 
    private slots:
 
-    void testAddNode();
+    void testEmpty();
 
    private:
     const QString test_files_dir_ = SENSITIVE_DIR;
+    const QString test_json_file = test_files_dir_ + "test_data.txt";
+    const QString test_broken_json_file = test_files_dir_ + "broken_data.txt";
     const QString file1_ = test_files_dir_ + "1.zip";
     const QString file2_ = test_files_dir_ + "2.zip";
     const QString file3_ = test_files_dir_ + "3.zip";
 };
-
-#endif  // T_TREE_H

@@ -152,7 +152,7 @@ QHash<int, QByteArray> FileTreeModel::roleNames() const {
 bool FileTreeModel::isDraft() const { return is_draft_; }
 
 void FileTreeModel::getCertList(int file_id) {
-    if (item_map.at(file_id).expired()) {
+    if (item_map.count(file_id) == 0 || item_map.at(file_id).expired()) {
         return;
     }
 
@@ -250,6 +250,10 @@ void FileTreeModel::getCertList(int file_id) {
 
 QJsonArray FileTreeModel::getMrpaData(int node_id) {
     QJsonArray arr;
+    if (item_map.count(node_id) == 0 || item_map.at(node_id).expired()) {
+        return arr;
+    }
+
     switch (item_map.at(node_id).lock()->data().type) {
         case Mrpa:
             arr.append(item_map.at(node_id).lock()->data().mrpa_data.value());

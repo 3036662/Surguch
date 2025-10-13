@@ -23,7 +23,12 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QFutureWatcher>
 #include <QJsonArray>
 #include <QVariant>
+
+#ifndef MOC_TREE_FOR_TESTS
 #include <doc_archive_public.hpp>
+#else
+#include "test/mocked_tree.hpp"
+#endif
 
 #include "tree_item.hpp"
 #include "tree_sign_helper.hpp"
@@ -143,7 +148,12 @@ class FileTreeModel : public QAbstractItemModel {
     /// @brief parse data to select icons/tooltips in UI for items
     void processChecks(int id);
 
+#ifndef MOC_TREE_FOR_TESTS
     pdfcsp::DocTree tree_;
+#else
+    MocedTree tree_;
+#endif
+
     core::TreeSignHelper sign_helper_;
     std::unique_ptr<TreeFuture> tree_future_;
     std::unique_ptr<TreeFutureWatcher> tree_watcher_;
@@ -160,7 +170,7 @@ class FileTreeModel : public QAbstractItemModel {
     bool ctx_available_ = true;
     bool is_draft_ = true;
 
-#ifdef WITH_QTEST
+#ifdef MOC_TREE_FOR_TESTS
     friend class TTree;
 #endif
 };
