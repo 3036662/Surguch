@@ -78,6 +78,9 @@ unit-test-job: # This job runs in the test stage.
     - $(pwd)/build/src/test/test_preview -platform offscreen
     - $(pwd)/build/src/test/test_search
     - $(pwd)/build/src/test/test_search2
+    - $(pwd)/build/src/test/test_rubber
+    - $(pwd)/build/src/test/test_golink
+    - $(pwd)/build/src/test/test_tree
   needs: [ "build:c10f2" ]
   tags:
     - C10f2
