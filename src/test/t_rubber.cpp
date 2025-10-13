@@ -34,7 +34,7 @@ void TRubber::createRubber1() {
     QJsonObject json_obj = json_doc.object();
     QVariantMap varmap = json_obj.toVariantMap();
     RubberPreviewRender renderer;
-    QSignalSpy spy(&renderer, &RubberPreviewRender::rubberImageReady);
+    QSignalSpy spy(&renderer, &RubberPreviewRender::rubberBadResult);
 
     renderer.createImage(varmap);
     QTest::qWait(500);
@@ -45,9 +45,9 @@ void TRubber::createRubber2() {
     qWarning() << "section 2";
     const QString json =
         QString(
-            R"( {"stamp_width":900,"stamp_height":300,"create_from_image":1,"img_path":"})") +
+            R"( {"stamp_width":900,"stamp_height":300,"create_from_image":1,"img_path":")") +
         TEST_FILES_DIR +
-        R"({tag_5_logo.jpg","border_width":7,"border_radius":50,"text_color_red":50,"text_color_green":62,"text_color_blue":168,"border_color_red":50,"border_color_green":62,"border_color_blue":168,"bg_color_red":50,"bg_color_green":62,"bg_color_blue":168,"font_family":"Noto Sans","annotation_text":"Сургуч","bg_transparent":0,"annotation_width":300})";
+        R"(tag_5_logo.jpg","border_width":7,"border_radius":50,"text_color_red":50,"text_color_green":62,"text_color_blue":168,"border_color_red":50,"border_color_green":62,"border_color_blue":168,"bg_color_red":50,"bg_color_green":62,"bg_color_blue":168,"font_family":"Noto Sans","annotation_text":"Сургуч","bg_transparent":0,"annotation_width":300})";
     QJsonParseError parse_error;
     QJsonDocument json_doc =
         QJsonDocument::fromJson(json.toUtf8(), &parse_error);

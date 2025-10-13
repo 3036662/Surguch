@@ -114,5 +114,5 @@ void PreviewRender::saveImage() {
         emit imageReady();
         return;
     }
-    stampPreviewBadResult();
+    emit stampPreviewBadResult();
 }
