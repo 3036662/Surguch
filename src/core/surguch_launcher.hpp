@@ -20,8 +20,7 @@ class SurguchLauncher : public QObject {
     Q_INVOKABLE void launchSurguch(const QUrl& file);
 
    private:
-    const QString surguch_executable_ =  // "/usr/bin/surguch"
-        "/home/dv/surguch/surguch/cmake-build-debug/src/surguch";
+    const QString surguch_executable_ = "surguch";
 };
 
 }  // namespace core
