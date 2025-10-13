@@ -90,7 +90,7 @@ class FileTreeModel : public QAbstractItemModel {
     [[nodiscard]] bool isDraft() const;
 
     /// @brief send list of certificates to GUI
-    Q_INVOKABLE void getCertList(int fie_id);
+    Q_INVOKABLE void getCertList(int file_id);
     /// @brief get JSON with data about MRPA
     Q_INVOKABLE QJsonArray getMrpaData(int node_id);
     /// @brief add node to file tree
@@ -159,6 +159,10 @@ class FileTreeModel : public QAbstractItemModel {
     State state_ = Done;
     bool ctx_available_ = true;
     bool is_draft_ = true;
+
+#ifdef WITH_QTEST
+    friend class TTree;
+#endif
 };
 
 #endif  // FILE_TREE_MODEL_HPP

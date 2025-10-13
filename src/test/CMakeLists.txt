@@ -14,9 +14,12 @@ include_directories(${PDFCSP_INCLUDE_DIR}/csp)
 file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/testfiles/")
 set(TEST_DIR "${CMAKE_BINARY_DIR}/testfiles/")
 set(TEST_FILES_DIR "${CMAKE_SOURCE_DIR}/test_files/")
+# clone repo with test data to test_files
+set(SENSITIVE_DIR "${CMAKE_SOURCE_DIR}/test_files/csp_test_data/")
 message("Test files will be created here:${TEST_DIR}/test_files")
 add_definitions(-DTEST_DIR="${TEST_DIR}")
 add_definitions(-DTEST_FILES_DIR="${TEST_FILES_DIR}")
+add_definitions(-DSENSITIVE_DIR="${SENSITIVE_DIR}")
 
 
 #-------------------------------
@@ -66,6 +69,12 @@ qt_add_executable(test_gui_utils test_guiutils.cpp
 # golink
 qt_add_executable(test_golink test_golink.cpp
     tgolink.hpp tgolink.cpp
+)
+
+#-------------------------------
+# file tree
+qt_add_executable(test_tree test_tree.cpp
+    t_tree.hpp t_tree.cpp
 )
 
 #-------------------------------
@@ -142,5 +151,17 @@ target_link_libraries(test_golink
     PUBLIC ${MUPDF_LINK_PATH}
     PRIVATE ${PDFCSP_LINK_PATH}
 )
+
+#-------------------------------
+
+# link test_tree
+target_link_libraries(test_tree PUBLIC Qt::Test Qt6::Quick Qt6::Concurrent)
+target_link_libraries(test_tree PUBLIC appcore)
+target_link_libraries(test_tree PUBLIC gui_core)
+target_link_libraries(test_tree PUBLIC models)
+target_link_libraries(test_tree PUBLIC csp_c_bridge_qt)
+target_link_libraries(test_tree PUBLIC ${PDFCSP_LINK_PATH})
+target_link_libraries(test_tree PRIVATE ${MUPDF_LINK_PATH}) # harcoded mupdf linkage
+target_link_libraries(test_tree PRIVATE ${PDFCSP_MRPA_LINK_PATH})
 
 #-------------------------------
