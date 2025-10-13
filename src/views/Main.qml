@@ -152,7 +152,7 @@ ApplicationWindow {
                         spacing: 8
 
                         Image {
-                            source: StyleSheet.file_text_icon
+                            source: StyleSheet.file_text_big_icon
                             width: pdfZone.width * 0.25
                             height: width
                             anchors.horizontalCenter: parent.horizontalCenter

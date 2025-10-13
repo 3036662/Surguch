@@ -82,5 +82,7 @@
         <file>icons/light/red_sign.svg</file>
         <file>icons/dark/green_sign.svg</file>
         <file>icons/dark/red_sign.svg</file>
+        <file>icons/dark/file_text_big.svg</file>
+        <file>icons/light/file_text_big.svg</file>
     </qresource>
 </RCC>
