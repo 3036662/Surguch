@@ -34,9 +34,9 @@ FileTreeModel::FileTreeModel(QObject *parent)
 
 int FileTreeModel::columnCount(const QModelIndex &parent) const {
     if (parent.isValid()) {
-        return static_cast<TreeItem *>(parent.internalPointer())->columnCount();
+        return TreeItem::columnCount();
     }
-    return root_item->columnCount();
+    return TreeItem::columnCount();
 }
 
 QVariant FileTreeModel::data(const QModelIndex &index, int role) const {
@@ -44,8 +44,7 @@ QVariant FileTreeModel::data(const QModelIndex &index, int role) const {
         return {};
     }
 
-    const TreeItem *item =
-        static_cast<const TreeItem *>(index.internalPointer());
+    const auto *item = static_cast<const TreeItem *>(index.internalPointer());
 
     switch (role) {
         case FileNameRole:
@@ -85,7 +84,7 @@ QVariant FileTreeModel::data(const QModelIndex &index, int role) const {
         case HasKidsRole:
             return item->childCount() > 0;
         default:
-            return QVariant();
+            return {};
     }
 }
 
@@ -124,7 +123,9 @@ QModelIndex FileTreeModel::parent(const QModelIndex &index) const {
 }
 
 int FileTreeModel::rowCount(const QModelIndex &parent) const {
-    if (parent.column() > 0) return 0;
+    if (parent.column() > 0) {
+        return 0;
+    }
 
     const TreeItem *parentItem =
         parent.isValid()
@@ -169,10 +170,10 @@ void FileTreeModel::getCertList(int file_id) {
     switch (item_data.type) {
         case TreeItem::File:
             emit updateSigCount(item_data.ref_id_size);
-            for (const int i : item_data.ref_ids) {
-                if (!item_map.at(i).expired()) {
+            for (const int ind : item_data.ref_ids) {
+                if (!item_map.at(ind).expired()) {
                     pdfcsp::c_bridge::CPodResult const *pod =
-                        tree_.GetCheckResultForNode(i, file_id);
+                        tree_.GetCheckResultForNode(ind, file_id);
                     core::ValidationResult val_res;
                     if (pod == nullptr) {
                         continue;
@@ -186,10 +187,10 @@ void FileTreeModel::getCertList(int file_id) {
             break;
         case TreeItem::Zip:
             emit updateSigCount(item_data.ref_id_size);
-            for (const int i : item_data.ref_ids) {
-                if (!item_map.at(i).expired()) {
+            for (const int ind : item_data.ref_ids) {
+                if (!item_map.at(ind).expired()) {
                     pdfcsp::c_bridge::CPodResult const *pod =
-                        tree_.GetCheckResultForNode(i, file_id);
+                        tree_.GetCheckResultForNode(ind, file_id);
                     core::ValidationResult val_res;
                     if (pod == nullptr) {
                         continue;
@@ -203,9 +204,9 @@ void FileTreeModel::getCertList(int file_id) {
             break;
         case TreeItem::Sig:
             emit updateSigCount(item_data.ref_id_size);
-            for (const int i : item_data.ref_ids) {
+            for (const int ind : item_data.ref_ids) {
                 pdfcsp::c_bridge::CPodResult const *pod =
-                    tree_.GetCheckResultForNode(file_id, i);
+                    tree_.GetCheckResultForNode(file_id, ind);
                 core::ValidationResult val_res;
                 if (pod == nullptr) {
                     continue;
@@ -218,9 +219,9 @@ void FileTreeModel::getCertList(int file_id) {
             break;
         case TreeItem::Asig:
             emit updateSigCount(item_data.ref_id_size);
-            for (const int i : item_data.ref_ids) {
+            for (const int ind : item_data.ref_ids) {
                 pdfcsp::c_bridge::CPodResult const *pod =
-                    tree_.GetCheckResultForNode(file_id, i);
+                    tree_.GetCheckResultForNode(file_id, ind);
                 core::ValidationResult val_res;
                 if (pod == nullptr) {
                     continue;
@@ -245,14 +246,18 @@ QJsonArray FileTreeModel::getMrpaData(int node_id) {
     const auto &item_data = item_map[node_id].lock()->data();
     switch (item_data.type) {
         case TreeItem::Mrpa:
-            arr.append(item_data.mrpa_data.value());
+            if (item_data.mrpa_data.has_value()) {
+                arr.append(item_data.mrpa_data.value());
+            }
             return arr;
             break;
         case TreeItem::Zip:
             if (item_data.mrpa_id_size > 0) {
                 for (const int ind : item_data.mrpa_ids) {
-                    arr.append(
-                        item_map.at(ind).lock()->data().mrpa_data.value());
+                    if (item_map.at(ind).lock()->data().mrpa_data.has_value()) {
+                        arr.append(
+                            item_map.at(ind).lock()->data().mrpa_data.value());
+                    }
                 }
                 return arr;
             }
@@ -260,8 +265,10 @@ QJsonArray FileTreeModel::getMrpaData(int node_id) {
         case TreeItem::File:
             if (item_data.mrpa_id_size > 0) {
                 for (const int ind : item_data.mrpa_ids) {
-                    arr.append(
-                        item_map.at(ind).lock()->data().mrpa_data.value());
+                    if (item_map.at(ind).lock()->data().mrpa_data.has_value()) {
+                        arr.append(
+                            item_map.at(ind).lock()->data().mrpa_data.value());
+                    }
                 }
                 return arr;
             }
@@ -269,8 +276,10 @@ QJsonArray FileTreeModel::getMrpaData(int node_id) {
         case TreeItem::Sig:
             if (item_data.mrpa_id_size > 0) {
                 for (const int ind : item_data.mrpa_ids) {
-                    arr.append(
-                        item_map.at(ind).lock()->data().mrpa_data.value());
+                    if (item_map.at(ind).lock()->data().mrpa_data.has_value()) {
+                        arr.append(
+                            item_map.at(ind).lock()->data().mrpa_data.value());
+                    }
                 }
                 return arr;
             }
@@ -278,8 +287,10 @@ QJsonArray FileTreeModel::getMrpaData(int node_id) {
         case TreeItem::Asig:
             if (item_data.mrpa_id_size > 0) {
                 for (const int ind : item_data.mrpa_ids) {
-                    arr.append(
-                        item_map.at(ind).lock()->data().mrpa_data.value());
+                    if (item_map.at(ind).lock()->data().mrpa_data.has_value()) {
+                        arr.append(
+                            item_map.at(ind).lock()->data().mrpa_data.value());
+                    }
                 }
                 return arr;
             }
@@ -339,7 +350,7 @@ bool FileTreeModel::addNode(const QVariantList &list) {
 }
 
 bool FileTreeModel::deleteNode(const QString &full_path, int row, QUuid uid,
-                               int id) {
+                               int node_id) {
     if (row >= 0) {
         if (!ctx_available_) {
             if (operation_data_.count(full_path) > 0 &&
@@ -349,13 +360,13 @@ bool FileTreeModel::deleteNode(const QString &full_path, int row, QUuid uid,
                 operation_data_[full_path].operation = Delete;
                 operation_data_[full_path].row = row;
                 operation_data_[full_path].file_uid = uid;
-                operation_data_[full_path].file_id = id;
+                operation_data_[full_path].file_id = node_id;
             }
         }
         QJsonObject obj;
         obj["row"] = row;
         obj["uid"] = uid.toString();
-        obj["id"] = id;
+        obj["id"] = node_id;
         QJsonArray delete_array;
         delete_array.append(obj);
         processDelete(delete_array);
@@ -521,10 +532,10 @@ void FileTreeModel::processAdd(const QJsonArray &arr) {
             tree_watcher_ = std::make_unique<TreeFutureWatcher>();
             QObject::connect(tree_watcher_.get(), &TreeFutureWatcher::finished,
                              [this]() { processDraftTree(); });
-            tree_future_ = std::make_unique<TreeFuture>(
-                QtConcurrent::run([this, f_arr = std::move(arr)]() {
+            tree_future_ =
+                std::make_unique<TreeFuture>(QtConcurrent::run([this, arr]() {
                     return tree_.AddFilesJsonList(
-                        QJsonDocument(f_arr).toJson().toStdString());
+                        QJsonDocument(arr).toJson().toStdString());
                 }));
             tree_watcher_->setFuture(*tree_future_);
             return;
@@ -564,8 +575,8 @@ void FileTreeModel::processDelete(const QJsonArray &arr) {
             for (const auto &item : arr) {
                 if (item.isObject()) {
                     QJsonObject obj = item.toObject();
-                    const int id = obj["id"].toInt();
-                    file_array.append(id);
+                    const int node_id = obj["id"].toInt();
+                    file_array.append(node_id);
                 }
                 if (item.isDouble()) {
                     file_array.append(item.toInt());
@@ -587,10 +598,9 @@ void FileTreeModel::processDelete(const QJsonArray &arr) {
             for (const auto &item : arr) {
                 if (item.isObject()) {
                     QJsonObject obj = item.toObject();
-                    const int id = obj["id"].toInt(-1);
                     const int row = obj["row"].toInt(-1);
                     const QString uid_str = obj["uid"].toString();
-                    deleteFilesUI(row, QUuid(uid_str), id);
+                    deleteFilesUI(row, QUuid(uid_str));
                 }
             }
             return;
@@ -599,10 +609,9 @@ void FileTreeModel::processDelete(const QJsonArray &arr) {
             for (const auto &item : arr) {
                 if (item.isObject()) {
                     QJsonObject obj = item.toObject();
-                    const int id = obj["id"].toInt();
                     const int row = obj["row"].toInt();
                     const QString uid_str = obj["uid"].toString();
-                    deleteFilesUI(row, QUuid(uid_str), id);
+                    deleteFilesUI(row, QUuid(uid_str));
                 }
             }
             return;
@@ -777,14 +786,14 @@ void FileTreeModel::addFilesUI(const QStringList &file_list) {
     endInsertRows();
 }
 
-void FileTreeModel::deleteFilesUI(int row, QUuid uid, int id) {
+void FileTreeModel::deleteFilesUI(int row, QUuid uid) {
     beginRemoveRows(QModelIndex(), row, row);
     root_item->deleteItem(uid);
     endRemoveRows();
 }
 
-void FileTreeModel::parseChecksResults(int id) {
-    auto item = item_map.at(id).lock();
+void FileTreeModel::parseChecksResults(int node_id) {
+    auto item = item_map.at(node_id).lock();
     switch (item->data().type) {
         case TreeItem::Zip:
             parseFileCheckResults(item);
@@ -851,13 +860,11 @@ void FileTreeModel::parseFileCheckResults(std::shared_ptr<TreeItem> &item) {
                 return;
             }
             item->setMrpaStats(tr("The quantity does not match"), "file_mixed");
-            return;
         } else {
             item->setMrpaStats("", "empty");
             return;
         }
     }
-    return;
 }
 
 void FileTreeModel::parseMrpaCheckResults(std::shared_ptr<TreeItem> &item) {
@@ -872,7 +879,6 @@ void FileTreeModel::parseMrpaCheckResults(std::shared_ptr<TreeItem> &item) {
         item->setMrpaStats(tr("MRPA valid"), "valid");
         return;
     }
-    return;
 }
 
 void FileTreeModel::parseSignatureCheckResults(
@@ -906,13 +912,10 @@ void FileTreeModel::parseSignatureCheckResults(
                     return;
                 }
                 item->setMrpaStats(tr("The quantity does not match"), "empty");
-                return;
             } else {
                 item->setMrpaStats("", "empty");
-                return;
             }
         }
     }
     item->setSigStats(tr("File not found"), "sig_mixed");
-    return;
 }

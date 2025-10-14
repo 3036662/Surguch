@@ -72,11 +72,11 @@ void TreeItem::setMrpaStats(const QString &text, const QString &color) {
     file_data_.mrpa_color = color;
 }
 
-void TreeItem::deleteItem(QUuid id) {
+void TreeItem::deleteItem(QUuid uid) {
     child_items_.erase(
         std::remove_if(child_items_.begin(), child_items_.end(),
-                       [id](const std::shared_ptr<TreeItem> &item_ptr) {
-                           return item_ptr->uid_ == id;
+                       [uid](const std::shared_ptr<TreeItem> &item_ptr) {
+                           return item_ptr->uid_ == uid;
                        }),
         child_items_.end());
 }

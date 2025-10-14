@@ -52,10 +52,10 @@ class TreeSignHelper {
 
     using SharedSettingsWrapper = std::shared_ptr<CBatchSigSettingsWrapper>;
 
-    explicit TreeSignHelper();
+    explicit TreeSignHelper() = default;
 
     void createSigSettings(const QVariantMap &qvparams);
-    SharedSettingsWrapper createWrapper();
+    SharedSettingsWrapper createWrapper() const;
 
    private:
     SigSettings settings_;

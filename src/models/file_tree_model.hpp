@@ -83,13 +83,12 @@ class FileTreeModel : public QAbstractItemModel {
     [[nodiscard]] QVariant data(const QModelIndex &index,
                                 int role) const override;
     [[nodiscard]] Qt::ItemFlags flags(const QModelIndex &index) const override;
-    [[nodiscard]] QModelIndex index(
-        int row, int column, const QModelIndex &parent = {}) const override;
+    [[nodiscard]] QModelIndex index(int row, int column,
+                                    const QModelIndex &parent) const override;
     [[nodiscard]] QModelIndex parent(const QModelIndex &index) const override;
-    [[nodiscard]] int rowCount(const QModelIndex &parent = {}) const override;
+    [[nodiscard]] int rowCount(const QModelIndex &parent) const override;
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
-    [[nodiscard]] int columnCount(
-        const QModelIndex &parent = {}) const override;
+    [[nodiscard]] int columnCount(const QModelIndex &parent) const override;
 
     /// @brief check if model is in draft mode
     [[nodiscard]] bool isDraft() const;
@@ -102,7 +101,7 @@ class FileTreeModel : public QAbstractItemModel {
     Q_INVOKABLE bool addNode(const QVariantList &list);
     /// @brief delete node from tree
     Q_INVOKABLE bool deleteNode(const QString &full_path, int row, QUuid uid,
-                                int id);
+                                int node_id);
     /// @brief delete all nodes from tree and drop context
     Q_INVOKABLE void deleteTree();
     /// @brief sign all files in with parameters from profile
@@ -142,13 +141,13 @@ class FileTreeModel : public QAbstractItemModel {
     /// @brief add files into UI while context busy
     void addFilesUI(const QStringList &file_list);
     /// @brief delete files from UI while context busy
-    void deleteFilesUI(int row, QUuid uid, int id);
+    void deleteFilesUI(int row, QUuid uid);
 
     /// @brief parse data to select icons/tooltips in UI for items
-    void parseChecksResults(int id);
+    void parseChecksResults(int node_id);
 
-    void parseMrpaCheckResults(std::shared_ptr<TreeItem> &item);
-    void parseSignatureCheckResults(std::shared_ptr<TreeItem> &item);
+    static void parseMrpaCheckResults(std::shared_ptr<TreeItem> &item);
+    static void parseSignatureCheckResults(std::shared_ptr<TreeItem> &item);
     void parseFileCheckResults(std::shared_ptr<TreeItem> &item);
 
 #ifndef MOC_TREE_FOR_TESTS

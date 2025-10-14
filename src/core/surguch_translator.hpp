@@ -27,8 +27,8 @@ class SurguchTranslator : public QObject {
    public:
     explicit SurguchTranslator(QObject *parent = nullptr);
 
-    [[nodiscard]] Q_INVOKABLE QString
-    surguchTranslate(const QString &str) const;
+    [[nodiscard]] static Q_INVOKABLE QString
+    surguchTranslate(const QString &str);
 };
 
 }  // namespace core

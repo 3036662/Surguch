@@ -21,8 +21,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace core {
 
-TreeSignHelper::TreeSignHelper() {}
-
 void TreeSignHelper::createSigSettings(const QVariantMap &qvparams) {
     if (qvparams.contains("cert_serial")) {
         settings_.cert_serial = qvparams.value("cert_serial").toString();
@@ -59,7 +57,7 @@ void TreeSignHelper::createSigSettings(const QVariantMap &qvparams) {
     }
 }
 
-TreeSignHelper::SharedSettingsWrapper TreeSignHelper::createWrapper() {
+TreeSignHelper::SharedSettingsWrapper TreeSignHelper::createWrapper() const {
     auto settings_wrapper = std::make_shared<CBatchSigSettingsWrapper>();
     pdfcsp::c_bridge::BatchSignatureSettings &pod_settings =
         settings_wrapper->pod_settings;

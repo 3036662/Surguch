@@ -89,7 +89,7 @@ class TreeItem {
     void setMrpaStats(const QString &text, const QString &color);
 
     /// @brief delete item
-    void deleteItem(QUuid id);
+    void deleteItem(QUuid uid);
 
     /// @brief delete items childs
     void deleteChildren();

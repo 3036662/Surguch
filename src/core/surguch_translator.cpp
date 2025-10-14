@@ -526,9 +526,10 @@ constexpr std::array<std::string_view, 174> eng_expl{
 
 SurguchTranslator::SurguchTranslator(QObject *parent) : QObject{parent} {}
 
-QString SurguchTranslator::surguchTranslate(const QString &str) const {
+QString SurguchTranslator::surguchTranslate(const QString &str) {
     for (std::size_t i = 0; i < tag_names.size(); ++i) {
-        if (QString::fromUtf8(tag_names[i].data(), tag_names[i].size()) ==
+        if (QString::fromUtf8(tag_names[i].data(),
+                              static_cast<uint64_t>(tag_names[i].size())) ==
             str) {
             if (QLocale::system().language() == QLocale::Russian) {
                 return QString::fromUtf8(rus_expl[i].data());
