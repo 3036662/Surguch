@@ -94,8 +94,8 @@ class SignaturesListModel : public QAbstractListModel {
     /// @brief Save validation result for multiply signatures(from FileTree
     /// mode)
     void saveValidationResultBatch(
-        std::vector<std::shared_ptr<core::ValidationResult>> validation_results,
-        std::vector<size_t> ind_vec);
+        std::vector<std::shared_ptr<core::ValidationResult>>
+            validation_results);
 
    private:
     SigSource sig_source_ = Undefined;

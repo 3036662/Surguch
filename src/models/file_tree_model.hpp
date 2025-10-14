@@ -114,8 +114,7 @@ class FileTreeModel : public QAbstractItemModel {
 
     /// @brief emitted when checking signature done
     void signatureReady(
-        std::vector<std::shared_ptr<core::ValidationResult>> validation_result,
-        std::vector<size_t> ind);
+        std::vector<std::shared_ptr<core::ValidationResult>> validation_result);
 
     /// @brief emit number of signatures for sigList panel
     void updateSigCount(int count);
@@ -146,7 +145,11 @@ class FileTreeModel : public QAbstractItemModel {
     void deleteFilesUI(int row, QUuid uid, int id);
 
     /// @brief parse data to select icons/tooltips in UI for items
-    void processChecks(int id);
+    void parseChecksResults(int id);
+
+    void parseMrpaCheckResults(std::shared_ptr<TreeItem> &item);
+    void parseSignatureCheckResults(std::shared_ptr<TreeItem> &item);
+    void parseFileCheckResults(std::shared_ptr<TreeItem> &item);
 
 #ifndef MOC_TREE_FOR_TESTS
     pdfcsp::DocTree tree_;
@@ -160,6 +163,7 @@ class FileTreeModel : public QAbstractItemModel {
     std::unique_ptr<SignFuture> sign_future_;
     std::unique_ptr<SignFutureWatcher> sign_watcher_;
 
+    /// map to hold added/deleted files we cant process while context busy
     std::unordered_map<QString, OperationData> operation_data_;
 
     std::map<int, std::weak_ptr<TreeItem>> item_map;

@@ -44,10 +44,10 @@ class TreeSignHelper {
         QString tsp_link;
         QString sig_extension;
         QString dest_dir_path;
-        bool create_attached;
-        bool create_base_64_encoded;
-        bool pack_to_zip;
-        bool pack_separate_zips;
+        bool create_attached = false;
+        bool create_base_64_encoded = true;
+        bool pack_to_zip = true;
+        bool pack_separate_zips = false;
     };
 
     using SharedSettingsWrapper = std::shared_ptr<CBatchSigSettingsWrapper>;

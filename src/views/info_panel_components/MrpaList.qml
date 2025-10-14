@@ -28,27 +28,36 @@ ListView {
         }
     }
 
-    function g(o, ...p) {
+
+    /**
+     * Safely retrieves a deeply nested property from an object.
+     * @param {object} obj - The root object to search.
+     * @param {...string} path - The sequence of keys representing the path.
+     * @returns {*} - The value at the nested path, or undefined if any part is missing.
+     */
+    function getNestedValue(obj, ...path) {
         try {
-            return p.reduce((a, k) => a[k], o)
+            return path.reduce((acc, key) => acc[key], obj)
         } catch (_) {
             return undefined
         }
     }
-    function orgName(o) {
-        return g(o, "Документ", "Довер", "СвДоверит", "Доверит", "РосОргДовер",
-                 "СвРосОрг", "@НаимОрг") || g(o, "Документ", "Довер",
-                                              "СвДоверит", "Доверит",
-                                              "РосОргДовер", "СВЮЛ",
-                                              "СвЮЛЕИО", "@НаимОрг")
-                || qsTr("Undefined grantor")
-    }
-    function date(o) {
-        return g(o, "Документ", "Довер", "СвДов", "@ДатаВыдДовер") || ""
-    }
-    function powersCount(o) {
-        const m = g(o, "Документ", "Довер", "СвПолн", "МашПолн")
-        return Array.isArray(m) ? m.length : (m ? 1 : 0)
+
+
+    /**
+     * Extracts the organization (grantor) name from MRPA data.
+     * Tries multiple possible paths depending on the data structure.
+     * Returns "Undefined grantor" (translated) if not found.
+     * @param {object} mrpa_data - The MRPA document data.
+     * @returns {string} - The organization name or a fallback text.
+     */
+    function orgName(mrpa_data) {
+        return (getNestedValue(mrpa_data, "Документ", "Довер", "СвДоверит",
+                               "Доверит", "РосОргДовер", "СвРосОрг", "@НаимОрг")
+                || getNestedValue(mrpa_data, "Документ", "Довер",
+                                  "СвДоверит", "Доверит",
+                                  "РосОргДовер", "СВЮЛ", "СвЮЛЕИО", "@НаимОрг")
+                || qsTr("Undefined grantor"))
     }
 
     delegate: ColumnLayout {

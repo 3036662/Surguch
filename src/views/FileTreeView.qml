@@ -39,9 +39,6 @@ TreeView {
             throw new Error('Certificate data not found')
         }
 
-        console.warn(JSON.stringify(curr_profile))
-        console.warn("---------------------------------")
-
         let params = {
             "cert_serial": curr_profile.cert_serial,
             "cert_subject": cert_array[cert_index].subject_common_name,
@@ -54,7 +51,6 @@ TreeView {
             "pack_to_zip": curr_profile.pack_to_zip,
             "pack_separate_zips": curr_profile.pack_separate_zips
         }
-        console.warn(JSON.stringify(params))
         fileTreeModel.signTree(params)
     }
 
@@ -194,9 +190,12 @@ TreeView {
             border.color: row === treeView.currentRow ? "#3daee9" : "transparent"
             color: "transparent"
         }
+
+        /// main item to represent each node of tree
         Item {
             anchors.fill: parent
 
+            /// little indent
             Item {
                 id: indent
 
@@ -205,6 +204,8 @@ TreeView {
                 anchors.bottom: parent.bottom
                 width: indentation * depth
             }
+
+            /// chevrone icon for expand/collapse action
             Item {
                 id: indicatorItem
                 anchors.left: indent.right
@@ -254,6 +255,8 @@ TreeView {
                     visible: !indicator.visible
                 }
             }
+
+            /// another little indent
             Item {
                 id: treeIndent
 
@@ -262,6 +265,8 @@ TreeView {
                 anchors.bottom: parent.bottom
                 width: indentation - 10
             }
+
+            /// image based on node type
             Item {
                 id: imageItem
                 anchors.left: treeIndent.right
@@ -279,6 +284,7 @@ TreeView {
                 }
             }
 
+            /// name of file in node
             Item {
                 id: nameItem
 
@@ -352,6 +358,7 @@ TreeView {
                 }
             }
 
+            /// size of file in node
             Item {
                 id: sizeItem
                 anchors.right: dateItem.left
@@ -402,6 +409,7 @@ TreeView {
                 }
             }
 
+            /// last edit date of file in node
             Item {
                 id: dateItem
                 anchors.right: signItem.left
@@ -451,6 +459,7 @@ TreeView {
                 }
             }
 
+            /// area with icon about file signature, can be clicked for additional info
             Item {
                 id: signItem
                 anchors.right: mrpaItem.left
@@ -518,6 +527,7 @@ TreeView {
                 }
             }
 
+            /// area with icon about file MRPA, can be clicked for additional info
             Item {
                 id: mrpaItem
                 anchors.right: deleteItem.left
@@ -586,6 +596,7 @@ TreeView {
                 }
             }
 
+            /// button to delete node from tree
             Item {
                 id: deleteItem
                 anchors.right: parent.right
@@ -625,7 +636,7 @@ TreeView {
         model: fileTreeModel
     }
 
-    /// manually do everything as in mate & qt6.4 clicks nothing works
+    /// we catch all clicks manually and push them further, since mouse clicks do not work in mate (qt6.4)
     MouseArea {
         anchors.fill: parent
 

@@ -23,6 +23,8 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace core {
 
+constexpr const char *surguch_executable_ = "surguch";
+
 SurguchLauncher::SurguchLauncher(QObject *parent) : QObject{parent} {}
 
 void SurguchLauncher::launchSurguch(const QUrl &file) {
@@ -33,7 +35,7 @@ void SurguchLauncher::launchSurguch(const QUrl &file) {
     //  error
     connect(process, &QProcess::errorOccurred,
             [process](QProcess::ProcessError err) {
-                qWarning() << "something went wrong in launcher " << err;
+                qDebug() << "[SurguchLauncher] err " << err;
                 process->close();
                 process->deleteLater();
             });

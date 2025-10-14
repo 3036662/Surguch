@@ -226,15 +226,14 @@ void SignaturesListModel::saveValidationResult(
 }
 
 void SignaturesListModel::saveValidationResultBatch(
-    std::vector<std::shared_ptr<core::ValidationResult>> validation_results,
-    std::vector<size_t> ind_vec) {
+    std::vector<std::shared_ptr<core::ValidationResult>> validation_results) {
     sig_source_ = FileTree;
     emit sigSourceChanged();
     beginResetModel();
     raw_signatures_.clear();
     validation_results_.clear();
-    for (size_t ind : ind_vec) {
-        validation_results_[ind] = std::move(validation_results[ind]);
+    for (size_t i = 0; i < validation_results.size(); ++i) {
+        validation_results_[i] = std::move(validation_results[i]);
     }
     endResetModel();
 }

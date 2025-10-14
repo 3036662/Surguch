@@ -29,9 +29,9 @@ TreeItem *TreeItem::child(int row) {
                                           : nullptr;
 }
 
-int TreeItem::childCount() const { return int(child_items_.size()); }
-
-int TreeItem::columnCount() const { return 1; }
+int TreeItem::childCount() const {
+    return static_cast<int>(child_items_.size());
+}
 
 TreeItem *TreeItem::parentItem() const { return parent_item_; }
 
@@ -51,7 +51,7 @@ int TreeItem::row() const {
     return -1;
 }
 
-FileData TreeItem::data() const { return file_data_; }
+const TreeItem::FileData &TreeItem::data() const { return file_data_; }
 
 QUuid TreeItem::uid() const { return uid_; }
 
