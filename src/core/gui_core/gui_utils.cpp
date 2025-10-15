@@ -26,7 +26,7 @@ namespace core::gui {
 
 namespace {
 /// @brief function to glue image with its mask for transparency
-static inline std::vector<unsigned char> *glueImageWithMask(
+inline std::vector<unsigned char> *glueImageWithMask(
     const unsigned char *const img, size_t img_size,
     const unsigned char *img_mask, size_t mask_size) {
     if (img_size == 0 || img == nullptr) {
