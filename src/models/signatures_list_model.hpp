@@ -43,6 +43,7 @@ class SignaturesListModel : public QAbstractListModel {
     };
 
    public:
+    // NOLINTNEXTLINE
     enum SigSource { Undefined, Pdf, FileTree };
     Q_ENUM(SigSource)
 

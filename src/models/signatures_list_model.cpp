@@ -82,7 +82,6 @@ QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
                 case Pdf:
                     return raw_signatures_.at(index.row()).getSigData().empty();
                 case FileTree:
-                    return false;
                 default:
                     return false;
             }

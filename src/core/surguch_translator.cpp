@@ -528,13 +528,11 @@ SurguchTranslator::SurguchTranslator(QObject *parent) : QObject{parent} {}
 
 QString SurguchTranslator::surguchTranslate(const QString &str) {
     for (std::size_t i = 0; i < tag_names.size(); ++i) {
-        if (QString::fromUtf8(tag_names[i].data(),
-                              static_cast<qint64>(tag_names[i].size())) ==
-            str) {
+        if (tag_names.at(i) == str.toStdString()) {
             if (QLocale::system().language() == QLocale::Russian) {
-                return QString::fromUtf8(rus_expl[i].data());
+                return QString::fromUtf8(rus_expl.at(i).data());
             }
-            return QString::fromUtf8(eng_expl[i].data());
+            return QString::fromUtf8(eng_expl.at(i).data());
         }
     }
     return str;

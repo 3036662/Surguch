@@ -28,6 +28,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 class ProfilesModel : public QAbstractListModel {
     Q_OBJECT
 
+    // NOLINTNEXTLINE
     enum RoleNames { TitleRole = Qt::UserRole, ValueRole = Qt::UserRole + 1 };
 
    public:
