@@ -26,7 +26,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 class TreeItem {
    public:
     // possible node types
-    enum NodeTypes {
+    enum NodeTypes {  // NOLINT(performance-enum-size)
         Zip,
         Dir,
         File,

@@ -24,8 +24,9 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace core::gui {
 
+namespace {
 /// @brief function to glue image with its mask for transparency
-inline std::vector<unsigned char> *glueImageWithMask(
+static inline std::vector<unsigned char> *glueImageWithMask(
     const unsigned char *const img, size_t img_size,
     const unsigned char *img_mask, size_t mask_size) {
     if (img_size == 0 || img == nullptr) {
@@ -47,6 +48,7 @@ inline std::vector<unsigned char> *glueImageWithMask(
     }
     return result.release();
 }
+}  // namespace
 
 /// @brief concurrent function to make QImage for sign stamp
 std::unique_ptr<BakeResult> prepareStampImage(

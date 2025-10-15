@@ -55,7 +55,7 @@ class TreeSignHelper {
     explicit TreeSignHelper() = default;
 
     void createSigSettings(const QVariantMap &qvparams);
-    SharedSettingsWrapper createWrapper() const;
+    [[nodiscard]] SharedSettingsWrapper createWrapper() const;
 
    private:
     SigSettings settings_;

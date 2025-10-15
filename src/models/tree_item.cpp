@@ -17,8 +17,8 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "tree_item.hpp"
 
-TreeItem::TreeItem(FileData data, QUuid id, TreeItem *parent)
-    : file_data_(std::move(data)), uid_(id), parent_item_(parent) {}
+TreeItem::TreeItem(FileData data, QUuid uid, TreeItem *parent)
+    : file_data_(std::move(data)), uid_(uid), parent_item_(parent) {}
 
 void TreeItem::appendChild(std::shared_ptr<TreeItem> &&child) {
     child_items_.push_back(std::move(child));
@@ -39,14 +39,15 @@ int TreeItem::row() const {
     if (parent_item_ == nullptr) {
         return 0;
     }
-    const auto it = std::find_if(
+    const auto iter = std::find_if(
         parent_item_->child_items_.cbegin(), parent_item_->child_items_.cend(),
         [this](const std::shared_ptr<TreeItem> &treeItem) {
             return treeItem.get() == this;
         });
 
-    if (it != parent_item_->child_items_.cend()) {
-        return std::distance(parent_item_->child_items_.cbegin(), it);
+    if (iter != parent_item_->child_items_.cend()) {
+        return static_cast<int>(
+            std::distance(parent_item_->child_items_.cbegin(), iter));
     }
     return -1;
 }

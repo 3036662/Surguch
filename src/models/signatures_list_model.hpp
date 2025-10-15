@@ -34,7 +34,7 @@ class SignaturesListModel : public QAbstractListModel {
     Q_OBJECT
     Q_PROPERTY(SigSource sigSource READ sigSource NOTIFY sigSourceChanged)
 
-    enum RoleNames {
+    enum RoleNames {  // NOLINT(performance-enum-size)
         SigInfoRole = Qt::UserRole,
         CheckStatusRole = Qt::UserRole + 1,
         ValidRole = Qt::UserRole + 2,

@@ -33,7 +33,8 @@ class EventFilterInstaller : public QObject {
     Q_OBJECT
    public:
     /// @brief install the filter
-    Q_INVOKABLE void installEventFilter(QObject *target, QObject *filter) {
+    static Q_INVOKABLE void installEventFilter(QObject *target,
+                                               QObject *filter) {
         target->installEventFilter(filter);
     }
 };
@@ -63,11 +64,8 @@ class WheelEventFilter : public QObject {
    protected:
     bool eventFilter(QObject *obj, QEvent *event) override {
         if (event->type() == QEvent::Wheel) {
+            // NOLINTNEXTLINE
             auto *wheelEvent = static_cast<QWheelEvent *>(event);
-            qDebug() << "Wheel event detected on object:" << obj
-                     << "Delta:" << wheelEvent->angleDelta()
-                     << "Position:" << wheelEvent->position()
-                     << "Global position:" << wheelEvent->globalPosition();
         }
         if (dispatch_to_target_) {
             qDebug() << "Sent event to target:" << dispatch_target_;

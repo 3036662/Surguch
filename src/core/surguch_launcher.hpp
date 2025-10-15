@@ -34,7 +34,7 @@ class SurguchLauncher : public QObject {
      * \brief Launch new surguch with selected file
      * \param file - pdf file to open
      */
-    Q_INVOKABLE void launchSurguch(const QUrl& file);
+    static Q_INVOKABLE void launchSurguch(const QUrl& file);
 };
 
 }  // namespace core

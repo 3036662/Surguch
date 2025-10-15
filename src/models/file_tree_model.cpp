@@ -28,6 +28,170 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <iostream>
 #include <thread>
 
+namespace {
+/// @brief class for parsing json to objects for model
+class TreeJsonParser {
+    TreeItem::FileData fileData;
+    QJsonObject obj;
+    QJsonObject statArray;
+
+   public:
+    explicit TreeJsonParser(const QJsonObject &obj) : obj(obj) {
+        if (obj.contains("stat")) {
+            statArray = obj["stat"].toObject();
+        }
+    };
+    TreeItem::FileData getResult() { return fileData; }
+
+    void setName() {
+        if (statArray.contains("name")) {
+            fileData.name = statArray["name"].toString();
+        } else if (obj.contains("name")) {
+            fileData.name = obj["name"].toString();
+        }
+    }
+
+    void setSize() {
+        if (statArray.contains("size")) {
+            fileData.size = statArray["size"].toInt();
+        }
+    }
+
+    void setLastModified() {
+        if (statArray.contains("modification_time")) {
+            fileData.last_modified = statArray["modification_time"].toInt();
+        }
+    }
+
+    void setType() {
+        if (obj.contains("type")) {
+            const QString type = obj["type"].toString();
+            if (type == "File") {
+                fileData.type = TreeItem::File;
+            } else if (type == "Dir") {
+                fileData.type = TreeItem::Dir;
+            } else if (type == "Zip") {
+                fileData.type = TreeItem::Zip;
+            } else if (type == "Asig") {
+                fileData.type = TreeItem::Asig;
+            } else if (type == "Sig") {
+                fileData.type = TreeItem::Sig;
+            } else if (type == "Mrpa") {
+                fileData.type = TreeItem::Mrpa;
+            }
+        }
+    }
+
+    void setEncrypted() {
+        if (statArray.contains("encrypted")) {
+            fileData.encrypted = statArray["encrypted"].toBool();
+        }
+    }
+
+    void setId() {
+        if (obj.contains("id")) {
+            fileData.id = obj["id"].toInt();
+        }
+    }
+
+    void setFullPath() {
+        if (obj.contains("full_path")) {
+            fileData.full_path = obj["full_path"].toString();
+        }
+    }
+
+    void setRefIds() {
+        if (obj.contains("assoc_refs_number")) {
+            fileData.ref_id_size = obj["assoc_refs_number"].toInt();
+        }
+        if (obj.contains("ref_ids") && obj["ref_ids"].isArray()) {
+            const QJsonArray refArray = obj["ref_ids"].toArray();
+            fileData.ref_ids.reserve(fileData.ref_ids.size() + refArray.size());
+            std::transform(refArray.cbegin(), refArray.cend(),
+                           std::back_inserter(fileData.ref_ids),
+                           [](const auto &ref_id) { return ref_id.toInt(); });
+        }
+    }
+
+    void setMrpaIds() {
+        if (obj.contains("mrpa_ids") && obj["mrpa_ids"].isArray()) {
+            const QJsonArray mrpaRefArray = obj["mrpa_ids"].toArray();
+            fileData.mrpa_ids.reserve(fileData.mrpa_ids.size() +
+                                      mrpaRefArray.size());
+            std::transform(mrpaRefArray.cbegin(), mrpaRefArray.cend(),
+                           std::back_inserter(fileData.mrpa_ids),
+                           [](const auto &mrpa_id) { return mrpa_id.toInt(); });
+            fileData.mrpa_id_size = static_cast<int>(mrpaRefArray.size());
+        }
+    }
+
+    static std::vector<TreeItem::CheckResult> setupCheckResults(
+        const QJsonObject &obj, bool has_check_result) {
+        std::vector<TreeItem::CheckResult> results;
+        if (!has_check_result || !obj.contains("check_results") ||
+            !obj["check_results"].isArray()) {
+            return results;
+        }
+
+        const QJsonArray checkArray = obj["check_results"].toArray();
+        std::for_each(checkArray.cbegin(), checkArray.cend(),
+                      [&results](const QJsonValue &item) {
+                          if (!item.isObject()) {
+                              return;
+                          }
+                          const QJsonObject item_obj = item.toObject();
+                          if (item_obj.contains("file_id") &&
+                              item_obj.contains("check_summary")) {
+                              TreeItem::CheckResult check_result;
+                              check_result.file_id =
+                                  item_obj["file_id"].toInt();
+                              check_result.check_summary =
+                                  item_obj["check_summary"].toBool();
+                              results.emplace_back(check_result);
+                          }
+                      });
+        return results;
+    }
+
+    void setCheckResults() {
+        if (obj.contains("has_check_result")) {
+            fileData.has_check_result = obj["has_check_result"].toBool();
+            fileData.check_results =
+                setupCheckResults(obj, fileData.has_check_result);
+        }
+    }
+
+    void setMrpaDataIfMrpa() {
+        if (fileData.type == TreeItem::Mrpa && obj.contains("mrpa_json_repr") &&
+            obj["mrpa_json_repr"].isObject()) {
+            fileData.mrpa_data = obj["mrpa_json_repr"].toObject();
+        }
+    }
+
+    void setTimeValid() {
+        if (obj.contains("time_valid")) {
+            fileData.time_valid = obj["time_valid"].toBool();
+        }
+    }
+
+    TreeItem::FileData parseAll() {
+        setName();
+        setSize();
+        setLastModified();
+        setType();
+        setEncrypted();
+        setId();
+        setFullPath();
+        setRefIds();
+        setMrpaIds();
+        setCheckResults();
+        setMrpaDataIfMrpa();
+        setTimeValid();
+        return fileData;
+    }
+};
+}  // namespace
+
 FileTreeModel::FileTreeModel(QObject *parent)
     : QAbstractItemModel(parent),
       root_item(std::make_unique<TreeItem>(TreeItem::FileData(), QUuid())) {}
@@ -208,8 +372,9 @@ void FileTreeModel::getSignatureCertList(const TreeItem::FileData &item_data,
     emit updateSigCount(item_data.ref_id_size);
     std::vector<std::shared_ptr<core::ValidationResult>> res;
     for (const int ind : item_data.ref_ids) {
-        pdfcsp::c_bridge::CPodResult const *pod = tree_.GetCheckResultForNode(
-            file_id, ind);  // NOLINT(readability-suspicious-call-argument)
+        // NOLINTNEXTLINE
+        pdfcsp::c_bridge::CPodResult const *pod =
+            tree_.GetCheckResultForNode(file_id, ind);
         core::ValidationResult val_res;
         if (pod == nullptr) {
             continue;
@@ -397,98 +562,8 @@ void FileTreeModel::setupModelData(const QJsonArray &doc, TreeItem *parent) {
         }
 
         QJsonObject const obj = value.toObject();
-        QJsonObject statArray;
-        if (obj.contains("stat")) {
-            statArray = obj["stat"].toObject();
-        }
-
-        TreeItem::FileData fileData;
-        if (statArray.contains("name")) {
-            fileData.name = statArray["name"].toString();
-        } else {
-            fileData.name = obj["name"].toString();
-        }
-        if (statArray.contains("size")) {
-            fileData.size = statArray["size"].toInt();
-        }
-        if (statArray.contains("modification_time")) {
-            fileData.last_modified = statArray["modification_time"].toInt();
-        }
-        if (obj.contains("type")) {
-            const QString type = obj["type"].toString();
-            if (type == "File") {
-                fileData.type = TreeItem::File;
-            } else if (type == "Dir") {
-                fileData.type = TreeItem::Dir;
-            } else if (type == "Zip") {
-                fileData.type = TreeItem::Zip;
-            } else if (type == "Asig") {
-                fileData.type = TreeItem::Asig;
-            } else if (type == "Sig") {
-                fileData.type = TreeItem::Sig;
-            } else if (type == "Mrpa") {
-                fileData.type = TreeItem::Mrpa;
-            }
-        }
-        if (statArray.contains("encrypted")) {
-            fileData.encrypted = statArray["encrypted"].toBool();
-        }
-        if (obj.contains("id")) {
-            fileData.id = obj["id"].toInt();
-        }
-        if (obj.contains("full_path")) {
-            fileData.full_path = obj["full_path"].toString();
-        }
-
-        if (obj.contains("assoc_refs_number")) {
-            fileData.ref_id_size = obj["assoc_refs_number"].toInt();
-        }
-        if (obj.contains("ref_ids")) {
-            const QJsonArray refArray = obj["ref_ids"].toArray();
-            std::transform(refArray.cbegin(), refArray.cend(),
-                           std::back_inserter(fileData.ref_ids),
-                           [](const auto &ref_id) { return ref_id.toInt(); });
-        }
-        if (obj.contains("mrpa_ids")) {
-            const QJsonArray mrpaRefArray = obj["mrpa_ids"].toArray();
-            std::transform(mrpaRefArray.cbegin(), mrpaRefArray.cend(),
-                           std::back_inserter(fileData.mrpa_ids),
-                           [](const auto &mrpa_id) { return mrpa_id.toInt(); });
-            fileData.mrpa_id_size = static_cast<int>(mrpaRefArray.size());
-        }
-        if (obj.contains("has_check_result")) {
-            fileData.has_check_result = obj["has_check_result"].toBool();
-            if (fileData.has_check_result && obj.contains("check_results")) {
-                const QJsonArray checkArray = obj["check_results"].toArray();
-                std::for_each(
-                    checkArray.cbegin(), checkArray.cend(),
-                    [&fileData](const auto &item) {
-                        if (item.isObject()) {
-                            const QJsonObject item_obj = item.toObject();
-                            if (item_obj.contains("file_id") &&
-                                item_obj.contains("check_summary")) {
-                                TreeItem::CheckResult check_result;
-                                check_result.file_id =
-                                    item_obj["file_id"].toInt();
-                                check_result.check_summary =
-                                    item_obj["check_summary"].toBool();
-                                fileData.check_results.emplace_back(
-                                    check_result);
-                            }
-                        }
-                    });
-            }
-        }
-
-        if (fileData.type == TreeItem::Mrpa) {
-            if (obj.contains("mrpa_json_repr")) {
-                fileData.mrpa_data = obj["mrpa_json_repr"].toObject();
-            }
-        }
-
-        if (obj.contains("time_valid")) {
-            fileData.time_valid = obj["time_valid"].toBool();
-        }
+        TreeJsonParser parser(obj);
+        const TreeItem::FileData fileData = parser.parseAll();
 
         QUuid const uid(QUuid::createUuid());
         auto newItem = std::make_shared<TreeItem>(fileData, uid, parent);
@@ -502,6 +577,31 @@ void FileTreeModel::setupModelData(const QJsonArray &doc, TreeItem *parent) {
             setupModelData(obj["children"].toArray(), newItem.get());
         }
     }
+}
+
+std::vector<TreeItem::CheckResult> FileTreeModel::setupCheckResults(
+    const QJsonObject &obj, bool has_check_result) {
+    std::vector<TreeItem::CheckResult> results;
+    if (!has_check_result || !obj.contains("check_results")) {
+        return results;
+    }
+    const QJsonArray checkArray = obj["check_results"].toArray();
+    std::for_each(checkArray.cbegin(), checkArray.cend(),
+                  [&results](const QJsonValue &item) {
+                      if (!item.isObject()) {
+                          return;
+                      }
+                      const QJsonObject item_obj = item.toObject();
+                      if (item_obj.contains("file_id") &&
+                          item_obj.contains("check_summary")) {
+                          TreeItem::CheckResult check_result;
+                          check_result.file_id = item_obj["file_id"].toInt();
+                          check_result.check_summary =
+                              item_obj["check_summary"].toBool();
+                          results.emplace_back(check_result);
+                      }
+                  });
+    return results;
 }
 
 void FileTreeModel::processAdd(const QJsonArray &arr) {

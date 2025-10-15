@@ -128,6 +128,9 @@ class FileTreeModel : public QAbstractItemModel {
    private:
     /// @brief recurisve parse all data from libmrpa to build tree
     void setupModelData(const QJsonArray &doc, TreeItem *parent);
+    /// @brief parse objects CheckResults part of json
+    static std::vector<TreeItem::CheckResult> setupCheckResults(
+        const QJsonObject &obj, bool has_check_result);
     /// @brief correctly process added node
     void processAdd(const QJsonArray &arr);
     /// @brief correctly process node deletion
