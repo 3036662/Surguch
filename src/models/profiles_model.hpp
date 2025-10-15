@@ -1,5 +1,5 @@
 /* File: profiles_model.hpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2024-2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -28,6 +28,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 class ProfilesModel : public QAbstractListModel {
     Q_OBJECT
 
+    // NOLINTNEXTLINE
     enum RoleNames { TitleRole = Qt::UserRole, ValueRole = Qt::UserRole + 1 };
 
    public:
@@ -76,7 +77,7 @@ class ProfilesModel : public QAbstractListModel {
     /// @brief path to config directory (/home/$user/.config)
     [[nodiscard]] Q_INVOKABLE QString getConfigPath() const;
 
-    /// @brief TRUE if some global error ocurred
+    /// @brief TRUE if some global error occurred
     /// @details for now, TRUE if no CSP library was found
     Q_PROPERTY(bool errStatus MEMBER error_status_)
 
@@ -107,7 +108,7 @@ class ProfilesModel : public QAbstractListModel {
      * @brief Save logo image
      *
      * @param path source image path
-     * @param dest_name destanation file name
+     * @param dest_name destination file name
      * @param old_logo_path old logo to delete
      * @return QString full path to saved logo on success
      */

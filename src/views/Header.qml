@@ -1,9 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import Qt.labs.platform as LabsDialogs
 
-import QtQuick.Dialogs as CommonDialods
+import QtQuick.Dialogs as CommonDialogs
 import QtCore
 import StyleSheet
 
@@ -11,6 +10,9 @@ import "header_bar_components" as HeaderBarComponents
 
 RowLayout {
     id: toolbar_layout
+
+    signal changeShowType(int newType)
+    signal signTree(string path)
 
     function getCurrentProfileValue() {
         return profileComboBox.currentValue
@@ -56,9 +58,16 @@ RowLayout {
 
         HeaderBarComponents.TopBarButton {
             icon.source: StyleSheet.file_plus_icon
-            text: qsTr("Open")
-            onClicked: kdeVersion === "5" ? labsFileDialog.open(
-                                                ) : fileDialog.open()
+            //text: qsTr("Open")
+            text: qsTr("PDF")
+            onClicked: fileDialog.open()
+        }
+
+        HeaderBarComponents.TopBarButton {
+            icon.source: StyleSheet.plus_circle_icon
+            //text: qsTr("Open")
+            text: qsTr("File")
+            onClicked: fileTreeDialog.open()
         }
 
         HeaderBarComponents.TopBarButton {
@@ -72,8 +81,7 @@ RowLayout {
             icon.source: StyleSheet.folder_plus_icon
             text: qsTr("Save as ...")
             enabled: pdfListView.source.length > 0
-            onClicked: kdeVersion === "5" ? labsSaveFileDialog.open(
-                                                ) : saveFileDialog.open()
+            onClicked: saveFileDialog.open()
         }
 
         Row {
@@ -231,7 +239,7 @@ RowLayout {
         HeaderBarComponents.TopBarButton {
             id: signModeButton
 
-            //enabled: false
+            enabled: showType !== Main.ShowType.Empty
             icon.source: StyleSheet.pencil_line_icon
             text: qsTr("Sign")
             icon.height: 25
@@ -240,16 +248,22 @@ RowLayout {
             anchors.bottom: parent.bottom
 
             onClicked: {
-                if (profileComboBox.currentValue === "new"
-                        || profileComboBox.currentIndex === -1) {
-                    profileComboBox.popup.open()
-                } else {
-                    headerSubBar.disableTagMode()
-                    pdfListView.signMode = !pdfListView.signMode
-                    if (!down) {
-                        pdfListView.reserRotation()
+                if (showType === Main.ShowType.Pdf) {
+                    if (profileComboBox.currentValue === "new"
+                            || profileComboBox.currentIndex === -1) {
+                        profileComboBox.popup.open()
+                    } else {
+                        headerSubBar.disableTagMode()
+                        pdfListView.signMode = !pdfListView.signMode
+                        if (!down) {
+                            pdfListView.resetRotation()
+                        }
+                        down = !down
                     }
-                    down = !down
+                }
+                if (showType === Main.ShowType.Files) {
+                    console.warn("SignTree")
+                    saveFolderDialog.open()
                 }
             }
         }
@@ -263,7 +277,7 @@ RowLayout {
         id: info_button
 
         display: AbstractButton.IconOnly
-        text: qsTr("About programm")
+        text: qsTr("About program")
         icon.source: StyleSheet.info_icon
         icon.width: 20
         icon.height: 20
@@ -304,9 +318,9 @@ RowLayout {
                         event.accepted = false
                     }
 
-    CommonDialods.FileDialog {
+    CommonDialogs.FileDialog {
         id: fileDialog
-        fileMode: CommonDialods.FileDialog.OpenFile
+        fileMode: CommonDialogs.FileDialog.OpenFile
         //nameFilters: ["PDF files (*.pdf)","Any file (* *.*)"];
         nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
         currentFolder: StandardPaths.writableLocation(
@@ -317,15 +331,30 @@ RowLayout {
             pdfListView.openFile(currentFile)
             leftSideBar.source = currentFile
             rightSideBar.showState = RightSideBar.ShowState.Invisible
+            changeShowType(1)
         }
     }
 
-    CommonDialods.FileDialog {
+    CommonDialogs.FileDialog {
+        id: fileTreeDialog
+        fileMode: CommonDialogs.FileDialog.OpenFiles
+        //nameFilters: ["PDF files (*.pdf)","Any file (* *.*)"];
+        //nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
+        currentFolder: StandardPaths.writableLocation(
+                           StandardPaths.DocumentsLocation)
+        onAccepted: {
+            fileTreeModel.addNode(currentFiles)
+            rightSideBar.showState = RightSideBar.ShowState.Invisible
+            changeShowType(2)
+        }
+    }
+
+    CommonDialogs.FileDialog {
         id: saveFileDialog
 
         property bool quitAfterSave: false
 
-        fileMode: CommonDialods.FileDialog.SaveFile
+        fileMode: CommonDialogs.FileDialog.SaveFile
         defaultSuffix: "pdf"
         nameFilters: [qsTr("PDF files (*.pdf)")]
         currentFolder: StandardPaths.writableLocation(
@@ -355,55 +384,16 @@ RowLayout {
         }
     }
 
-    // KDE5 - use lab LabsDialogs
-    LabsDialogs.FileDialog {
-        id: labsFileDialog
-
-        currentFile: ""
-        fileMode: LabsDialogs.FileDialog.OpenFile
-        nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
-        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
-        onAccepted: {
-            enableSignMode()
-            // source is chosen by user, not a temporary file
-            pdfListView.openFile(currentFile)
-            leftSideBar.source = currentFile
-            rightSideBar.showState = RightSideBar.ShowState.Invisible
-        }
-    }
-    // KDE5 - use lab LabsDialogs
-    LabsDialogs.FileDialog {
-        id: labsSaveFileDialog
-
-        property bool quitAfterSave: false
-
-        fileMode: LabsDialogs.FileDialog.SaveFile
-        defaultSuffix: "pdf"
-        currentFile: pdfListView.source
-        nameFilters: ["PDF files (*.pdf)"]
-        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+    CommonDialogs.FolderDialog {
+        id: saveFolderDialog
+        currentFolder: StandardPaths.writableLocation(
+                           StandardPaths.HomeLocation)
 
         onAccepted: {
-            pdfModel.mustExtractText = false
-            if (pdfListView.tagInProgress) {
-                let tmp_file = tagCreator.embedAnnot(pdfModel.getAnnotParams(),
-                                                     pdfModel.getSource())
-                pdfModel.mustProcessSignatures = false
-                pdfModel.mustExtractText = false
-                pdfListView.openTmpFile(tmp_file)
-                pdfModel.mustProcessSignatures = true
-                pdfModel.mustExtractText = true
-                pdfListView.saveTo(tmp_file, currentFile)
-            } else {
-                let tmp_file = pdfModel.getSource()
-                pdfListView.saveTo(tmp_file, currentFile)
-            }
-            pdfModel.clearHistory()
-            pdfModel.mustExtractText = true
-            headerSubBar.updateHistory()
-            if (quitAfterSave) {
-                Qt.quit()
-            }
+            signTree(selectedFolder)
+            signModeButton.down = true
+            signModeButton.enabled = false
+            treeSignResultDialog.open()
         }
     }
 }

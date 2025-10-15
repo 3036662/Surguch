@@ -59,7 +59,7 @@ ColumnLayout {
 
       b) in some cases colors are saved as:
           "R","G","B"
-          in other casees "border_color_red","border_color_green","bg_color_blue"
+          in other cases "border_color_red","border_color_green","bg_color_blue"
     */
     function getParams() {
         let rubber_stamp_params = {
@@ -170,7 +170,7 @@ ColumnLayout {
         color: StyleSheet.font_color_extra
     }
 
-    // text multistring
+    // text multi string
     ScrollView {
         Layout.fillWidth: true
         Layout.maximumHeight: Math.min(rubberStampTextArea.implicitHeight,
@@ -245,10 +245,10 @@ ColumnLayout {
         }
 
         popup.onOpened: {
-            main_window_wheel_filter.dispactch_to_target = true
+            main_window_wheel_filter.dispatch_to_target = true
         }
         popup.onClosed: {
-            main_window_wheel_filter.dispactch_to_target = false
+            main_window_wheel_filter.dispatch_to_target = false
         }
         FontHelper {
             id: fontHelper

@@ -1,5 +1,5 @@
 /* File: signatures_validator.hpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2024-2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -15,8 +15,8 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef SIGNATUES_VALIDATOR_HPP
-#define SIGNATUES_VALIDATOR_HPP
+#ifndef SIGNATURES_VALIDATOR_HPP
+#define SIGNATURES_VALIDATOR_HPP
 
 #include <QObject>
 #include <memory>
@@ -89,7 +89,7 @@ class SignaturesValidator : public QObject {
     explicit SignaturesValidator(QObject *parent = nullptr)
         : QObject{parent} {};
 
-    void abort() { abort_recieved_ = true; };
+    void abort() { abort_received_ = true; };
 
    public slots:
 
@@ -105,8 +105,8 @@ class SignaturesValidator : public QObject {
     void validationFinished(DocStatusEnum::CommonDocCoverageStatus);
 
     /// @brief Validation is finished for one of the signatures.
-    void validatationResult(std::shared_ptr<ValidationResult> validation_result,
-                            size_t index);
+    void validationResult(std::shared_ptr<ValidationResult> validation_result,
+                          size_t index);
 
     /// @brief validation failed
     void validationFailedForSignature(size_t index);
@@ -137,9 +137,9 @@ class SignaturesValidator : public QObject {
         const std::map<size_t, CoverageInfo> &coverage_infos,
         bool raw_signatures_empty);
 
-    bool abort_recieved_ = false;
+    bool abort_received_ = false;
 };
 
 }  // namespace core
 
-#endif  // SIGNATUES_VALIDATOR_HPP
+#endif  // SIGNATURES_VALIDATOR_HPP

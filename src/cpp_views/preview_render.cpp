@@ -1,3 +1,20 @@
+/* File: preview_render.cpp
+Copyright (C) Basealt LLC,  2025
+Author: Daniil-Viktor Ratkin, <ratkinda@basealt.ru>
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include "preview_render.hpp"
 
 #include <QFuture>
@@ -71,8 +88,8 @@ QSGNode *PreviewRender::updatePaintNode(
     if (target_height_qml > max_height_) {
         scale_fact = max_height_ / target_height_qml;
     }
-    target_height_qml*=scale_fact;
-    const auto target_width_qml = target_height_qml/yx_ratio_result;
+    target_height_qml *= scale_fact;
+    const auto target_width_qml = target_height_qml / yx_ratio_result;
 
     const auto img_tmp = result_->image_->scaled(
         static_cast<int>(result_->image_->width() * scale_fact),
@@ -114,5 +131,5 @@ void PreviewRender::saveImage() {
         emit imageReady();
         return;
     }
-    stampPreviewBadResult();
+    emit stampPreviewBadResult();
 }

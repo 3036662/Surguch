@@ -15,8 +15,8 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef BRIGED_UTILS_HPP
-#define BRIGED_UTILS_HPP
+#ifndef BRIDGE_UTILS_HPP
+#define BRIDGE_UTILS_HPP
 #include <QJsonArray>
 #include <QString>
 
@@ -31,4 +31,4 @@ QString getCertListJSON() noexcept;
 
 }  // namespace core::bridge_utils
 
-#endif  // BRIGED_UTILS_HPP
+#endif  // BRIDGE_UTILS_HPP

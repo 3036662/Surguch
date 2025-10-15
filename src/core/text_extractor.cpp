@@ -1,3 +1,20 @@
+/* File: text_extractor.cpp
+Copyright (C) Basealt LLC,  2025
+Author: Oleg Proskurin, <proskurinov@basealt.ru>
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include "text_extractor.hpp"
 
 #include <QDebug>
@@ -26,7 +43,7 @@ void TextExtractor::updateCache() {
         search_context_ = nullptr;
         needles_count_ = 0;
     }
-    cach_mtx_.lock();
+    cache_mtx_.lock();
     cache_watcher_ = std::make_unique<CacheFutureWatcher>();
     QObject::connect(cache_watcher_.get(), &CacheFutureWatcher::finished, this,
                      &TextExtractor::saveCache);
@@ -39,7 +56,7 @@ void TextExtractor::saveCache() {
     if (cache_future_ && cache_future_->isValid()) {
         cache_ = cache_future_->takeResult();
     }
-    cach_mtx_.unlock();
+    cache_mtx_.unlock();
     emit cacheReady();
 }
 
@@ -115,7 +132,7 @@ void TextExtractor::performSearch(const QString &needle, bool case_sensitive) {
 
 TextExtractor::SearchContext TextExtractor::buildSearchContext(
     const QString &needle, bool case_sensitive) {
-    std::unique_lock mtx(cach_mtx_);
+    std::unique_lock mtx(cache_mtx_);
     auto pages_with_needle =
         core::utils::findPagesWithText(needle, cache_, case_sensitive);
     mtx.unlock();
@@ -178,8 +195,8 @@ std::pair<size_t, std::pair<float, float>> TextExtractor::getNeedlePageAndXY(
     }
     const auto &rect = p_vec_rect.at(local_index);
     // save current rect for the additional highlighting
-    current_rect_to_gighlight_ = std::make_unique<RectToHiglightCurrent>(
-        RectToHiglightCurrent{it_page->first, rect});
+    current_rect_to_highlight_ = std::make_unique<RectToHighlightCurrent>(
+        RectToHighlightCurrent{it_page->first, rect});
     const auto &page_rect = it_page->second->page_rect;
     const float page_height = std::fabs(page_rect.y1 - page_rect.y0);
     float y_relative = page_height > 1 ? rect.y0 / page_height : 0.5F;
@@ -209,10 +226,10 @@ core::utils::NeedleRectsOnPage TextExtractor::getNeedlesForPage(
         std::make_shared<utils::PageRects>(*search_context_->at(page_index));
     // if we need to highlight the current item on this page - push it to the
     // result
-    if (current_rect_to_gighlight_ &&
-        current_rect_to_gighlight_->first == page_index) {
+    if (current_rect_to_highlight_ &&
+        current_rect_to_highlight_->first == page_index) {
         result->highlight_current = true;
-        result->current = current_rect_to_gighlight_->second;
+        result->current = current_rect_to_highlight_->second;
     }
     return result;
 }
@@ -230,20 +247,21 @@ TextExtractor::SearchContext TextExtractor::getSearchContext() {
 }
 
 /// @brief get a copy of current rect to highlight
-std::shared_ptr<TextExtractor::RectToHiglightCurrent>
+std::shared_ptr<TextExtractor::RectToHighlightCurrent>
 TextExtractor::getCurrentNeedleRect(size_t page_index) {
-    if (!current_rect_to_gighlight_ ||
-        current_rect_to_gighlight_->first != page_index) {
+    if (!current_rect_to_highlight_ ||
+        current_rect_to_highlight_->first != page_index) {
         return nullptr;
     }
-    return std::make_shared<RectToHiglightCurrent>(*current_rect_to_gighlight_);
+    return std::make_shared<RectToHighlightCurrent>(
+        *current_rect_to_highlight_);
 }
 
 // @brief retrieve all URIs on the given page using provided mouse cursor
 // positions
 std::shared_ptr<utils::PageUriList> TextExtractor::getTargetAllUriPage(
     size_t page_index, core::utils::MousePos const &mouse_pos) {
-    std::shared_lock lock{cach_mtx_, std::defer_lock};
+    std::shared_lock lock{cache_mtx_, std::defer_lock};
 
     if (!lock.try_lock()) {
         return {};
@@ -260,7 +278,7 @@ std::shared_ptr<utils::PageUriList> TextExtractor::getTargetAllUriPage(
 
 bool TextExtractor::checkMouseOverUri(size_t page_index,
                                       utils::MousePos const &mouse_pos) {
-    std::shared_lock lock{cach_mtx_, std::defer_lock};
+    std::shared_lock lock{cache_mtx_, std::defer_lock};
     if (!lock.try_lock()) {
         return {};
     }

@@ -1,5 +1,5 @@
 /* File: file_recover_worker.hpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2024-2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -31,7 +31,7 @@ class FileRecoverWorker : public QObject {
     Q_OBJECT
    public:
     explicit FileRecoverWorker(QObject *parent = nullptr) : QObject(parent) {};
-    void abort() { abort_recieved_ = true; };
+    void abort() { abort_received_ = true; };
 
    public slots:
 
@@ -48,7 +48,7 @@ class FileRecoverWorker : public QObject {
     void recoverCompleted(QString path);
 
    private:
-    bool abort_recieved_ = false;
+    bool abort_received_ = false;
 };
 
 }  // namespace core

@@ -45,5 +45,11 @@
         <file>RubberStampListEntry.qml</file>
         <file>SigCreatorWrapper.qml</file>
         <file>DisappearingHint.qml</file>
+        <file>FileTreeView.qml</file>
+        <file>FileModeHeaderSubBar.qml</file>
+        <file>info_panel_components/MrpaList.qml</file>
+        <file>info_panel_components/MrpaInfo.qml</file>
+        <file>TreeSignResultDialog.qml</file>
+        <file>info_panel_components/RSBBackButton.qml</file>
     </qresource>
 </RCC>

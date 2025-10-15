@@ -1,5 +1,5 @@
 /* File: pdf_doc_model.cpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2024-2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -200,9 +200,9 @@ void PdfDocModel::setSource(const QString &path) {
         fz_drop_document(fzctx_text_, fzdoc_text_);
         fz_drop_context(fzctx_text_);
         fzctx_text_ = fz_new_context(nullptr, nullptr, 100000000);
-        bool text_ctx_err_catched = false;
+        bool text_ctx_err_caught = false;
         fz_var(fzdoc_text_);
-        fz_var(text_ctx_err_catched);
+        fz_var(text_ctx_err_caught);
         fz_try(fzctx_text_) {
             fz_set_aa_level(fzctx_text_, 0);
             fz_register_document_handlers(fzctx_text_);
@@ -212,10 +212,10 @@ void PdfDocModel::setSource(const QString &path) {
             }
         }
         fz_catch(fzctx_text_) {
-            text_ctx_err_catched = true;
+            text_ctx_err_caught = true;
             fz_report_error(fzctx_text_);
         }
-        if (!text_ctx_err_catched) {
+        if (!text_ctx_err_caught) {
             text_extractor_ =
                 std::make_unique<core::TextExtractor>(fzctx_text_, fzdoc_text_);
             text_extractor_->updateCache();
@@ -235,7 +235,7 @@ fz_context *PdfDocModel::getCtx() const { return fzctx_; }
 
 pdf_document *PdfDocModel::getPdfDoc() const { return pdfdoc_; }
 
-/// @brief resert the whole model
+/// @brief reset the whole model
 void PdfDocModel::redrawAll() {
     // qWarning() << "[PdfDocModel] redraw all";
     beginResetModel();
@@ -338,7 +338,7 @@ void PdfDocModel::showInFolder() {
     QDesktopServices::openUrl(folder_url);
 }
 
-/// @brief returns a vector of rectangles to highligt
+/// @brief returns a vector of rectangles to highlight
 PdfDocModel::NeedleRectsOnPage PdfDocModel::getNeedlesForPage(
     size_t page_index) {
     // qWarning() << "getNeedlesForPage" << page_index;
@@ -389,7 +389,7 @@ void PdfDocModel::jumpToNeedle(int needle_index) {
     // qWarning() << "[PdfDocModel] Jump to needle " << needle_index;
 }
 
-std::shared_ptr<core::TextExtractor::RectToHiglightCurrent>
+std::shared_ptr<core::TextExtractor::RectToHighlightCurrent>
 PdfDocModel::getCurrentNeedleRect(size_t page_index) {
     if (!text_extractor_) {
         return nullptr;

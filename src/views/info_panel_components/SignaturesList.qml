@@ -14,14 +14,29 @@ ListView {
     flickableDirection: Flickable.VerticalFlick
     model: siglistModel
 
+    signal closeClicked
+
+    header: Item {
+        width: root.width
+        height: 30
+        visible: siglistModel.sigSource === 2
+
+        RSBCloseButton {
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.margins: 5
+            onClicked: root.closeClicked()
+        }
+    }
+
     delegate: ColumnLayout {
         width: root.width
-        height: 50
+        height: 70
 
         Item {
             Layout.alignment: Qt.AlignVCenter
             Layout.fillWidth: true
-            Layout.preferredHeight: 30
+            Layout.preferredHeight: 70
 
             RowLayout {
                 anchors.fill: parent
@@ -40,7 +55,7 @@ ListView {
                         elide: Text.ElideRight
                         wrapMode: Text.WordWrap
                         maximumLineCount: 3
-                        font.pointSize: text.length > 40 ? 5 : 10
+                        font.pixelSize: 12
                         font.family: "Noto Sans"
                         color: StyleSheet.font_color_extra
                     }
@@ -68,9 +83,10 @@ ListView {
 
                     Item {
                         id: medal_icon
-                        width: 20
+                        width: 60
                         height: 20
                         Image {
+                            anchors.centerIn: parent
                             width: 20
                             height: 20
                             source: model.checkStatus === false ? StyleSheet.medal_icon : (model.valid === true ? StyleSheet.medal_green_icon : StyleSheet.medal_pink_icon)

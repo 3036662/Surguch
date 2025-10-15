@@ -4,8 +4,8 @@ import QtQuick.Controls
 import StyleSheet
 import "../" as Surguch
 
-// left subcolomn
-// size of this column is implictly hardcoded (340)
+// left sub column
+// size of this column is implicitly hardcoded (340)
 ColumnLayout {
     id: previewColumn
 
@@ -35,8 +35,8 @@ ColumnLayout {
     }
 
     // ---------------------
-    // setter functions prevent from triggerring the createPreview() function
-    // on each change, allow making many changes in one stap
+    // setter functions prevent from triggering the createPreview() function
+    // on each change, allow making many changes in one stamp
     function setStampName(val){
         ignore_changes=true;
         stampName.text=val;

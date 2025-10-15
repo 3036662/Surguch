@@ -1,5 +1,5 @@
 /* File: t_signature.cpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2024-2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -156,7 +156,7 @@ void TSignature::OneSigCoverage() {
         QVERIFY(info.full_coverage);
         QVERIFY(!info.can_be_casted_to_full_coverage);
     }
-    // gap at the beginnig
+    // gap at the beginning
     {
         const size_t file_size = 1602;
         const std::vector<unsigned char> sig_data(500, 0xFF);

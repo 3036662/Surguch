@@ -61,8 +61,7 @@ Dialog {
     }
 
     function updatePreview() {
-        let params = rightSubColumn.getParams()
-        // TODO(Oleg) Harcoded?
+        let params = rightSubColumn.getParams()        
         params["stamp_width"] = 400
         params["stamp_height"] = 400
         params["annotation_width"] = previewColumn.tagWidth
@@ -185,7 +184,7 @@ Dialog {
                 }
 
                 // ------------------
-                // right subcolomn
+                // right sub column
                 StampComponents.RubberPreviewRightPanel {
                     id: rightSubColumn
 

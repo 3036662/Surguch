@@ -22,6 +22,9 @@ Item {
     property string book_icon
     property string file_plus_icon
     property string file_simple_icon
+    property string file_text_icon
+    property string file_text_red
+    property string file_text_green
     property string folder_plus_icon
     property string fullscreen_icon
     property string medal_icon
@@ -38,8 +41,19 @@ Item {
     property string trash_icon
     property string chevron_up
     property string chevron_down
+    property string chevron_right
     property string tag_icon
     property string info_icon
+    property string box_icon
+    property string cell_icon_empty
+    property string cell_icon_green
+    property string cell_icon_red
+    property string back_icon
+    property string warning_icon
+    property string red_sign_icon
+    property string green_sign_icon
+    property string file_text_big_icon
+    property string file_simple_big_icon
     property color slider_fill_color
     property color slider_border_color
     property color slider_handle_color
@@ -66,6 +80,9 @@ Item {
                 book_icon: "qrc:/icons/dark/book.svg"
                 file_plus_icon: "qrc:/icons/dark/file_plus.svg"
                 file_simple_icon: "qrc:/icons/dark/file_simple.svg"
+                file_text_icon: "qrc:/icons/dark/file_text.svg"
+                file_text_red: "qrc:/icons/dark/file_text_red.svg"
+                file_text_green: "qrc:/icons/dark/file_text_green.svg"
                 folder_plus_icon: "qrc:/icons/dark/folder_plus.svg"
                 fullscreen_icon: "qrc:/icons/dark/fullscreen-custom.svg"
                 medal_icon: "qrc:/icons/dark/medal-ribbon.svg"
@@ -82,8 +99,19 @@ Item {
                 save_icon: "qrc:/icons/dark/save.svg"
                 chevron_up: "qrc:/icons/dark/chevron_up.svg"
                 chevron_down: "qrc:/icons/dark/chevron_down.svg"
+                chevron_right: "qrc:/icons/dark/chevron_right.svg"
                 tag_icon: "qrc:/icons/dark/tag_icon.svg"
                 info_icon: "qrc:/icons/dark/info_icon.svg"
+                box_icon: "qrc:/icons/dark/box.svg"
+                cell_icon_empty: "qrc:/icons/dark/cell.svg"
+                cell_icon_green: "qrc:/icons/dark/cell-green.svg"
+                cell_icon_red: "qrc:/icons/dark/cell-red.svg"
+                back_icon: "qrc:/icons/dark/back.svg"
+                warning_icon: "qrc:/icons/dark/warning.svg"
+                red_sign_icon: "qrc:/icons/dark/red_sign.svg"
+                green_sign_icon: "qrc:/icons/dark/green_sign.svg"
+                file_text_big_icon: "qrc:/icons/dark/file_text_big.svg"
+                file_simple_big_icon: "qrc:/icons/dark/file_simple_big.svg"
                 slider_fill_color: "#454A4E"
                 slider_border_color: "#454A4E"
                 slider_handle_color: "#31363B"
@@ -109,6 +137,9 @@ Item {
                 book_icon: "qrc:/icons/light/book.svg"
                 file_plus_icon: "qrc:/icons/light/file_plus.svg"
                 file_simple_icon: "qrc:/icons/light/file_simple.svg"
+                file_text_icon: "qrc:/icons/light/file_text.svg"
+                file_text_red: "qrc:/icons/light/file_text_red.svg"
+                file_text_green: "qrc:/icons/light/file_text_green.svg"
                 folder_plus_icon: "qrc:/icons/light/folder_plus.svg"
                 fullscreen_icon: "qrc:/icons/light/fullscreen-custom.svg"
                 medal_icon: "qrc:/icons/light/medal-ribbon.svg"
@@ -125,8 +156,19 @@ Item {
                 save_icon: "qrc:/icons/light/save.svg"
                 chevron_up: "qrc:/icons/light/chevron_up.svg"
                 chevron_down: "qrc:/icons/light/chevron_down.svg"
+                chevron_right: "qrc:/icons/light/chevron_right.svg"
                 tag_icon: "qrc:/icons/light/tag_icon.svg"
                 info_icon: "qrc:/icons/light/info_icon.svg"
+                box_icon: "qrc:/icons/light/box.svg"
+                cell_icon_empty: "qrc:/icons/light/cell.svg"
+                cell_icon_green: "qrc:/icons/light/cell-green.svg"
+                cell_icon_red: "qrc:/icons/light/cell-red.svg"
+                back_icon: "qrc:/icons/light/back.svg"
+                warning_icon: "qrc:/icons/light/warning.svg"
+                red_sign_icon: "qrc:/icons/light/red_sign.svg"
+                green_sign_icon: "qrc:/icons/light/green_sign.svg"
+                file_text_big_icon: "qrc:/icons/light/file_text_big.svg"
+                file_simple_big_icon: "qrc:/icons/light/file_simple_big.svg"
                 slider_fill_color: "#57534C"
                 slider_border_color: "#57534C"
                 slider_handle_color: "#ffffff"

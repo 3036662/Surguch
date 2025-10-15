@@ -1,5 +1,5 @@
 /* File: file_recover_worker.cpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2024-2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -65,7 +65,7 @@ void FileRecoverWorker::recoverFileWithByteRange(const QString &path,
     }
     // copy
     src_file.seek(0);
-    while (!src_file.atEnd() && src_file.pos() < eof_pos && !abort_recieved_) {
+    while (!src_file.atEnd() && src_file.pos() < eof_pos && !abort_received_) {
         char symbol = 0x00;
         if (!src_file.getChar(&symbol)) {
             break;

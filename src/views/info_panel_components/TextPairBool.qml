@@ -16,6 +16,7 @@ Column {
         maximumLineCount: 5
         width: 200
         font.family: "Noto Sans"
+        font.pixelSize: 12
         color: StyleSheet.font_color_extra
     }
     Text {
@@ -23,5 +24,6 @@ Column {
         text: value ? qsTr("Valid") : qsTr("Invalid")
         color: value ? "green" : "red"
         font.family: "Noto Sans"
+        font.pixelSize: 12
     }
 }

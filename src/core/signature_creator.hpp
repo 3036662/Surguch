@@ -1,5 +1,5 @@
 /* File: signature_creator.hpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2024-2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -36,7 +36,7 @@ class SignatureCreator : public QObject {
     /// @brief Handle the result of the signature worker thread.
     void handleResult(const SignWorker::SignResult &res);
 
-    /// @brief Recieve the estimated stamp size and send it to the frontend
+    /// @brief Receive the estimated stamp size and send it to the frontend
     void handleStampResize(SignWorker::AimResizeFactor res);
 
     /**

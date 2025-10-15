@@ -1,5 +1,5 @@
 /* File: bridge_utils.cpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2024-2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -38,9 +38,9 @@ QString getCertListJSON() noexcept {
     pdfcsp::c_bridge::CPodResult *const pod =
         pdfcsp::c_bridge::CGetCertList(params);
     QString res;
-    if (pod != nullptr && pod->user_certifitate_list_json != nullptr &&
+    if (pod != nullptr && pod->user_certificate_list_json != nullptr &&
         pod->common_execution_status) {
-        res = pod->user_certifitate_list_json;
+        res = pod->user_certificate_list_json;
     }
     if (pod != nullptr && !pod->common_execution_status) {
         qWarning() << "ERR STRING" << pod->err_string;

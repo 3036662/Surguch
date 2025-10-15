@@ -1,3 +1,20 @@
+/* File: tgolink.cpp
+Copyright (C) Basealt LLC,  2025
+Author: Oleg Proskurin, <proskurinov@basealt.ru>
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include "tgolink.hpp"
 
 #include <QTest>
@@ -607,15 +624,15 @@ void TGolink::RemoveAllCoveredUriTest_data() {
 
     std::for_each(test_bb_page1.cbegin(), test_bb_page1.cend(),
                   [&](auto const& bounding_box) {
-                      input_data1.emplace_back(core::utils::PageUriData{
-                          bounding_box, -1, test_uri});
+                      input_data1.emplace_back(
+                          core::utils::PageUriData{bounding_box, -1, test_uri});
                   });
 
     core::utils::PageUriList expected_data1;
     std::for_each(expected_bb_page1.cbegin(), expected_bb_page1.cend(),
                   [&](auto const& bounding_box) {
-                      expected_data1.emplace_back(core::utils::PageUriData{
-                          bounding_box, -1, test_uri});
+                      expected_data1.emplace_back(
+                          core::utils::PageUriData{bounding_box, -1, test_uri});
                   });
 
     QTest::newRow("test_data_1") << input_data1 << expected_data1;
@@ -623,15 +640,15 @@ void TGolink::RemoveAllCoveredUriTest_data() {
     core::utils::PageUriList input_data2;
     std::for_each(test_bb_page2.cbegin(), test_bb_page2.cend(),
                   [&](auto const& bounding_box) {
-                      input_data2.emplace_back(core::utils::PageUriData{
-                          bounding_box, -1, test_uri});
+                      input_data2.emplace_back(
+                          core::utils::PageUriData{bounding_box, -1, test_uri});
                   });
 
     core::utils::PageUriList expected_data2;
     std::for_each(expected_bb_page2.cbegin(), expected_bb_page2.cend(),
                   [&](auto const& bounding_box) {
-                      expected_data2.emplace_back(core::utils::PageUriData{
-                          bounding_box, -1, test_uri});
+                      expected_data2.emplace_back(
+                          core::utils::PageUriData{bounding_box, -1, test_uri});
                   });
 
     QTest::newRow("test_data_2") << input_data2 << expected_data2;

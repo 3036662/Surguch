@@ -1,5 +1,5 @@
 /* File: pdf_page_render.hpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2024-2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -49,7 +49,7 @@ class PdfPageRender : public QQuickItem {
     void geometryChange(const QRectF &newGeometry,
                         const QRectF &oldGeometry) override;
 
-    /// @brief perfom the render
+    /// @brief perform the render
     QSGNode *updatePaintNode(
         QSGNode *oldNode,
         QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;

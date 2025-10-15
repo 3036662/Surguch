@@ -1,5 +1,5 @@
 /* File: signatures_validator.cpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2024-2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -34,7 +34,7 @@ void SignaturesValidator::validateSignatures(
     for (index_curr_sig = 0; index_curr_sig < raw_signatures.size();
          ++index_curr_sig) {
         const auto &sig = raw_signatures[index_curr_sig];
-        if (abort_recieved_ ||
+        if (abort_received_ ||
             QThread::currentThread()->isInterruptionRequested()) {
             qWarning() << "Validation abort";
             aborted = true;
@@ -49,7 +49,7 @@ void SignaturesValidator::validateSignatures(
         try {
             result = std::make_shared<ValidationResult>(
                 sig, file_source.toStdString());
-            // analyse byteranges
+            // analyze byteranges
             const QFileInfo f_info(file_source);
             CoverageInfo cov_info = analyzeOneSigCoverage(sig, f_info.size());
             result->full_coverage = cov_info.full_coverage;
@@ -64,7 +64,7 @@ void SignaturesValidator::validateSignatures(
             emit validationFailedForSignature(index_curr_sig);
         }
         if (result) {
-            emit validatationResult(result, index_curr_sig);
+            emit validationResult(result, index_curr_sig);
         }
     }
     if (aborted) {
@@ -190,9 +190,9 @@ DocStatusEnum::CommonDocCoverageStatus SignaturesValidator::coverageStatus(
     // some signatures are suspicious
     const bool doc_suspicious_previous =
         at_least_one_full_coverage && at_lest_one_suspicious;
-    const bool doc_can_be_recoverd_but_suspicious =
+    const bool doc_can_be_recovered_but_suspicious =
         at_least_one_recoverable && at_lest_one_suspicious;
-    // cann't be trusted by default
+    // can't be trusted by default
     DocStatusEnum::CommonDocCoverageStatus status =
         DocStatusEnum::CommonDocCoverageStatus::kDocCantBeTrusted;
     if (everything_is_fine || raw_signatures_empty) {
@@ -204,7 +204,7 @@ DocStatusEnum::CommonDocCoverageStatus SignaturesValidator::coverageStatus(
     if (doc_suspicious_previous) {
         status = DocStatusEnum::CommonDocCoverageStatus::kDocSuspiciousPrevious;
     }
-    if (doc_can_be_recoverd_but_suspicious) {
+    if (doc_can_be_recovered_but_suspicious) {
         status = DocStatusEnum::CommonDocCoverageStatus::
             kDocCanBeRecoveredButSuspicious;
     }

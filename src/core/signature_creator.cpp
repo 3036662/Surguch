@@ -1,5 +1,5 @@
 /* File: signature_creator.cpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2024-2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -28,7 +28,7 @@ namespace core {
 
 SignatureCreator::SignatureCreator(QObject *parent) : QObject{parent} {}
 
-/// @brief parse all parameters recieved from QML
+/// @brief parse all parameters received from QML
 SignWorker::SignParams SignatureCreator::createWorkerParams(
     const QVariantMap &qvparams) {
     SignWorker::SignParams params{};
@@ -184,7 +184,7 @@ void SignatureCreator::estimateStampResizeFactor(const QVariantMap &qvparams) {
     qWarning() << "[SignatureCreator::estimateStampResizeFactor]";
     auto params = createWorkerParams(qvparams);
     if (p_worker_resize_img_ != nullptr || p_resize_img_thread_ != nullptr) {
-        qWarning() << "estimateStampResizeFactor is alreary running";
+        qWarning() << "estimateStampResizeFactor is already running";
         return;
     }
     // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
@@ -232,7 +232,7 @@ void SignatureCreator::handleResult(const SignWorker::SignResult &res) {
     emit signCompleted(js_result);
 }
 
-/// @brief Recieve the estimated stamp size and send it to the frontend
+/// @brief Receive the estimated stamp size and send it to the frontend
 void SignatureCreator::handleStampResize(SignWorker::AimResizeFactor res) {
     QVariantMap js_result;
     js_result["x_resize"] = res.x;
