@@ -185,7 +185,7 @@ ApplicationWindow {
                         spacing: 8
 
                         Image {
-                            source: StyleSheet.file_simple_icon
+                            source: StyleSheet.file_simple_big_icon
                             width: fileZone.width * 0.25
                             height: width
                             anchors.horizontalCenter: parent.horizontalCenter

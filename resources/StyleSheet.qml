@@ -53,6 +53,7 @@ Item {
     property string red_sign_icon
     property string green_sign_icon
     property string file_text_big_icon
+    property string file_simple_big_icon
     property color slider_fill_color
     property color slider_border_color
     property color slider_handle_color
@@ -110,6 +111,7 @@ Item {
                 red_sign_icon: "qrc:/icons/dark/red_sign.svg"
                 green_sign_icon: "qrc:/icons/dark/green_sign.svg"
                 file_text_big_icon: "qrc:/icons/dark/file_text_big.svg"
+                file_simple_big_icon: "qrc:/icons/dark/file_simple_big.svg"
                 slider_fill_color: "#454A4E"
                 slider_border_color: "#454A4E"
                 slider_handle_color: "#31363B"
@@ -166,6 +168,7 @@ Item {
                 red_sign_icon: "qrc:/icons/light/red_sign.svg"
                 green_sign_icon: "qrc:/icons/light/green_sign.svg"
                 file_text_big_icon: "qrc:/icons/light/file_text_big.svg"
+                file_simple_big_icon: "qrc:/icons/light/file_simple_big.svg"
                 slider_fill_color: "#57534C"
                 slider_border_color: "#57534C"
                 slider_handle_color: "#ffffff"

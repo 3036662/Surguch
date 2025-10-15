@@ -5,6 +5,7 @@
     <name>BorderSettings</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/stamp_editor_components/BorderSettings.qml" line="+18"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/BorderSettings.qml" line="+18"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/BorderSettings.qml" line="+18"/>
         <location filename="../../src/views/stamp_editor_components/BorderSettings.qml" line="+18"/>
         <source>Stamp border width: </source>
@@ -12,6 +13,7 @@
     </message>
     <message>
         <location line="+35"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/BorderSettings.qml" line="+35"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/BorderSettings.qml" line="+35"/>
         <location filename="../../src/views/stamp_editor_components/BorderSettings.qml" line="+35"/>
         <source>Stamp border radius: </source>
@@ -22,6 +24,7 @@
     <name>CertInfo</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/CertInfo.qml" line="+36"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/CertInfo.qml" line="+36"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+36"/>
         <location filename="../../src/views/CertInfo.qml" line="+36"/>
         <source>Status</source>
@@ -29,6 +32,7 @@
     </message>
     <message>
         <location line="+6"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/CertInfo.qml" line="+6"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+6"/>
         <location filename="../../src/views/CertInfo.qml" line="+6"/>
         <source>Date of issue</source>
@@ -36,6 +40,7 @@
     </message>
     <message>
         <location line="+6"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/CertInfo.qml" line="+6"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+6"/>
         <location filename="../../src/views/CertInfo.qml" line="+6"/>
         <source>Expiration date</source>
@@ -43,6 +48,7 @@
     </message>
     <message>
         <location line="+6"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/CertInfo.qml" line="+6"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+6"/>
         <location filename="../../src/views/CertInfo.qml" line="+6"/>
         <source>Serial number</source>
@@ -50,6 +56,7 @@
     </message>
     <message>
         <location line="+6"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/CertInfo.qml" line="+6"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+6"/>
         <location filename="../../src/views/CertInfo.qml" line="+6"/>
         <source>Issuer</source>
@@ -57,6 +64,7 @@
     </message>
     <message>
         <location line="+6"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/CertInfo.qml" line="+6"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+6"/>
         <location filename="../../src/views/CertInfo.qml" line="+6"/>
         <source>Subject</source>
@@ -64,6 +72,7 @@
     </message>
     <message>
         <location line="+6"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/CertInfo.qml" line="+6"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+6"/>
         <location filename="../../src/views/CertInfo.qml" line="+6"/>
         <source>Version</source>
@@ -71,6 +80,7 @@
     </message>
     <message>
         <location line="+6"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/CertInfo.qml" line="+6"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+6"/>
         <location filename="../../src/views/CertInfo.qml" line="+6"/>
         <source>Usage</source>
@@ -78,6 +88,7 @@
     </message>
     <message>
         <location line="+8"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/CertInfo.qml" line="+8"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+8"/>
         <location filename="../../src/views/CertInfo.qml" line="+8"/>
         <source>Digital signature; </source>
@@ -85,6 +96,7 @@
     </message>
     <message>
         <location line="+3"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/CertInfo.qml" line="+3"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+3"/>
         <location filename="../../src/views/CertInfo.qml" line="+3"/>
         <source>nonRepudiation; </source>
@@ -92,6 +104,7 @@
     </message>
     <message>
         <location line="+3"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/CertInfo.qml" line="+3"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+3"/>
         <location filename="../../src/views/CertInfo.qml" line="+3"/>
         <source>keyEncipherment; </source>
@@ -99,6 +112,7 @@
     </message>
     <message>
         <location line="+3"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/CertInfo.qml" line="+3"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+3"/>
         <location filename="../../src/views/CertInfo.qml" line="+3"/>
         <source>dataEncipherment; </source>
@@ -106,6 +120,7 @@
     </message>
     <message>
         <location line="+3"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/CertInfo.qml" line="+3"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+3"/>
         <location filename="../../src/views/CertInfo.qml" line="+3"/>
         <source>keyAgreement; </source>
@@ -113,6 +128,7 @@
     </message>
     <message>
         <location line="+3"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/CertInfo.qml" line="+3"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+3"/>
         <location filename="../../src/views/CertInfo.qml" line="+3"/>
         <source>keyCertSign; </source>
@@ -120,6 +136,7 @@
     </message>
     <message>
         <location line="+3"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/CertInfo.qml" line="+3"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+3"/>
         <location filename="../../src/views/CertInfo.qml" line="+3"/>
         <source>cRLSign; </source>
@@ -127,6 +144,7 @@
     </message>
     <message>
         <location line="+3"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/CertInfo.qml" line="+3"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+3"/>
         <location filename="../../src/views/CertInfo.qml" line="+3"/>
         <source>encipherOnly; </source>
@@ -134,6 +152,7 @@
     </message>
     <message>
         <location line="+3"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/CertInfo.qml" line="+3"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/CertInfo.qml" line="+3"/>
         <location filename="../../src/views/CertInfo.qml" line="+3"/>
         <source>decipherOnly; </source>
@@ -144,6 +163,7 @@
     <name>EditProfile</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/EditProfile.qml" line="+141"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+141"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+144"/>
         <location filename="../../src/views/EditProfile.qml" line="+141"/>
         <source>Profile settings</source>
@@ -151,6 +171,7 @@
     </message>
     <message>
         <location line="+11"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+11"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+11"/>
         <location filename="../../src/views/EditProfile.qml" line="+11"/>
         <source>Profile id</source>
@@ -158,6 +179,7 @@
     </message>
     <message>
         <location line="+5"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+5"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+5"/>
         <location filename="../../src/views/EditProfile.qml" line="+5"/>
         <source>Profile name</source>
@@ -165,6 +187,7 @@
     </message>
     <message>
         <location line="+8"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+8"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+8"/>
         <location filename="../../src/views/EditProfile.qml" line="+8"/>
         <source>Enter profile name</source>
@@ -172,6 +195,7 @@
     </message>
     <message>
         <location line="+44"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+44"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+44"/>
         <location filename="../../src/views/EditProfile.qml" line="+44"/>
         <source>Use this profile by default</source>
@@ -183,6 +207,7 @@
     </message>
     <message>
         <location line="-29"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="-29"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="-29"/>
         <location filename="../../src/views/EditProfile.qml" line="-29"/>
         <source>Certificate</source>
@@ -190,6 +215,7 @@
     </message>
     <message>
         <location line="+10"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+10"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+10"/>
         <location filename="../../src/views/EditProfile.qml" line="+10"/>
         <source>Select the certificate</source>
@@ -197,6 +223,7 @@
     </message>
     <message>
         <location line="+29"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+29"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+29"/>
         <location filename="../../src/views/EditProfile.qml" line="+29"/>
         <source>Signature</source>
@@ -204,6 +231,7 @@
     </message>
     <message>
         <location line="+11"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+11"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+11"/>
         <location filename="../../src/views/EditProfile.qml" line="+11"/>
         <source>Cades type</source>
@@ -211,6 +239,7 @@
     </message>
     <message>
         <location line="+17"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+17"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+17"/>
         <location filename="../../src/views/EditProfile.qml" line="+17"/>
         <source>Select Cades format</source>
@@ -218,6 +247,7 @@
     </message>
     <message>
         <location line="+41"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+41"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+41"/>
         <location filename="../../src/views/EditProfile.qml" line="+41"/>
         <source>Stamp</source>
@@ -225,6 +255,7 @@
     </message>
     <message>
         <location line="+14"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+14"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+14"/>
         <location filename="../../src/views/EditProfile.qml" line="+14"/>
         <source>Stamp appearance</source>
@@ -232,6 +263,7 @@
     </message>
     <message>
         <location line="+53"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+53"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+53"/>
         <location filename="../../src/views/EditProfile.qml" line="+53"/>
         <source>Select stamp type</source>
@@ -239,6 +271,7 @@
     </message>
     <message>
         <location line="+53"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+53"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+53"/>
         <location filename="../../src/views/EditProfile.qml" line="+53"/>
         <source>Company logo</source>
@@ -246,6 +279,7 @@
     </message>
     <message>
         <location line="+29"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+29"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+29"/>
         <location filename="../../src/views/EditProfile.qml" line="+29"/>
         <source>Select a logo</source>
@@ -253,6 +287,7 @@
     </message>
     <message>
         <location line="-176"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="-176"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="-176"/>
         <location filename="../../src/views/EditProfile.qml" line="-176"/>
         <source>TSP server URL</source>
@@ -260,6 +295,7 @@
     </message>
     <message>
         <location line="+8"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+8"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+8"/>
         <location filename="../../src/views/EditProfile.qml" line="+8"/>
         <source>Enter TSP service url</source>
@@ -267,6 +303,7 @@
     </message>
     <message>
         <location line="+188"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+188"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+187"/>
         <location filename="../../src/views/EditProfile.qml" line="+188"/>
         <source>File signing</source>
@@ -274,6 +311,7 @@
     </message>
     <message>
         <location line="+10"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+10"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+10"/>
         <location filename="../../src/views/EditProfile.qml" line="+10"/>
         <source>Sign type</source>
@@ -281,18 +319,21 @@
     </message>
     <message>
         <location line="+9"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+9"/>
         <location filename="../../src/views/EditProfile.qml" line="+9"/>
         <source>Detached</source>
         <translation>Отсоединенная</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+2"/>
         <location filename="../../src/views/EditProfile.qml" line="+2"/>
         <source>Attached</source>
         <translation>Присоединённая</translation>
     </message>
     <message>
         <location line="+6"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+6"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+16"/>
         <location filename="../../src/views/EditProfile.qml" line="+6"/>
         <source>Select sign format</source>
@@ -300,6 +341,7 @@
     </message>
     <message>
         <location line="+5"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+5"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+5"/>
         <location filename="../../src/views/EditProfile.qml" line="+5"/>
         <source>Certificate file encoding</source>
@@ -307,6 +349,7 @@
     </message>
     <message>
         <location line="+17"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+17"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+16"/>
         <location filename="../../src/views/EditProfile.qml" line="+17"/>
         <source>Select encoding type</source>
@@ -314,6 +357,7 @@
     </message>
     <message>
         <location line="+5"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+5"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+5"/>
         <location filename="../../src/views/EditProfile.qml" line="+5"/>
         <source>Signature file extension</source>
@@ -321,6 +365,7 @@
     </message>
     <message>
         <location line="+23"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+23"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+20"/>
         <location filename="../../src/views/EditProfile.qml" line="+23"/>
         <source>Select signature file extension</source>
@@ -328,6 +373,7 @@
     </message>
     <message>
         <location line="+5"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+5"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+5"/>
         <location filename="../../src/views/EditProfile.qml" line="+5"/>
         <source>Create an archive after signing</source>
@@ -335,24 +381,28 @@
     </message>
     <message>
         <location line="+9"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+9"/>
         <location filename="../../src/views/EditProfile.qml" line="+9"/>
         <source>Don&apos;t use</source>
         <translation>Не использовать </translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+2"/>
         <location filename="../../src/views/EditProfile.qml" line="+2"/>
         <source>Common ZIP file</source>
         <translation>Общий ZIP файл</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+2"/>
         <location filename="../../src/views/EditProfile.qml" line="+2"/>
         <source>Separate ZIP file</source>
         <translation>Отдельный ZIP файл</translation>
     </message>
     <message>
         <location line="+6"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+6"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+18"/>
         <location filename="../../src/views/EditProfile.qml" line="+6"/>
         <source>Select archive after signing</source>
@@ -360,6 +410,7 @@
     </message>
     <message>
         <location line="+17"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+17"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+17"/>
         <location filename="../../src/views/EditProfile.qml" line="+17"/>
         <source>Save profile</source>
@@ -367,6 +418,7 @@
     </message>
     <message>
         <location line="+10"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+10"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+10"/>
         <location filename="../../src/views/EditProfile.qml" line="+10"/>
         <source>Profile with this name already exists</source>
@@ -374,6 +426,7 @@
     </message>
     <message>
         <location line="+67"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+67"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+66"/>
         <location filename="../../src/views/EditProfile.qml" line="+67"/>
         <source>Delete profile</source>
@@ -381,6 +434,7 @@
     </message>
     <message>
         <location line="+41"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+41"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+41"/>
         <location filename="../../src/views/EditProfile.qml" line="+41"/>
         <source>Issuer: </source>
@@ -390,38 +444,44 @@
 <context>
     <name>FileModeHeaderSubBar</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/FileModeHeaderSubBar.qml" line="+29"/>
-        <location filename="../../src/views/FileModeHeaderSubBar.qml" line="+29"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/FileModeHeaderSubBar.qml" line="+27"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileModeHeaderSubBar.qml" line="+27"/>
+        <location filename="../../src/views/FileModeHeaderSubBar.qml" line="+27"/>
         <source>Name</source>
         <translation>Название</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <location filename="../../src/views/FileModeHeaderSubBar.qml" line="+11"/>
+        <location line="+26"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileModeHeaderSubBar.qml" line="+26"/>
+        <location filename="../../src/views/FileModeHeaderSubBar.qml" line="+26"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <location filename="../../src/views/FileModeHeaderSubBar.qml" line="+14"/>
+        <location line="+24"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileModeHeaderSubBar.qml" line="+24"/>
+        <location filename="../../src/views/FileModeHeaderSubBar.qml" line="+24"/>
         <source>Last edit</source>
         <translation>Изменён</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <location filename="../../src/views/FileModeHeaderSubBar.qml" line="+14"/>
+        <location line="+24"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileModeHeaderSubBar.qml" line="+24"/>
+        <location filename="../../src/views/FileModeHeaderSubBar.qml" line="+24"/>
         <source>Sign</source>
         <translation>Подпись</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <location filename="../../src/views/FileModeHeaderSubBar.qml" line="+14"/>
+        <location line="+24"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileModeHeaderSubBar.qml" line="+24"/>
+        <location filename="../../src/views/FileModeHeaderSubBar.qml" line="+24"/>
         <source>MRPA</source>
         <translation>МЧД</translation>
     </message>
     <message>
-        <location line="+33"/>
-        <location filename="../../src/views/FileModeHeaderSubBar.qml" line="+33"/>
+        <location line="+49"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileModeHeaderSubBar.qml" line="+49"/>
+        <location filename="../../src/views/FileModeHeaderSubBar.qml" line="+49"/>
         <source>Details</source>
         <translation>Сведения</translation>
     </message>
@@ -429,59 +489,47 @@
 <context>
     <name>FileTreeModel</name>
     <message>
-        <location filename="../../src/models/file_tree_model.cpp" line="+830"/>
-        <location line="+131"/>
+        <location filename="../../src/models/file_tree_model.cpp" line="+880"/>
         <source>Encrypted</source>
         <translation>Зашифровано</translation>
     </message>
     <message>
-        <location line="-112"/>
-        <location line="+44"/>
-        <location line="+41"/>
-        <location line="+49"/>
+        <location line="+20"/>
+        <location line="+53"/>
         <source>Signature valid</source>
         <translation>Подпись верна</translation>
     </message>
     <message>
-        <location line="-131"/>
-        <location line="+134"/>
+        <location line="-50"/>
         <source>Ambigious</source>
         <translation>Неоднозначно</translation>
     </message>
     <message>
-        <location line="-131"/>
-        <location line="+42"/>
-        <location line="+41"/>
+        <location line="+3"/>
         <location line="+51"/>
         <source>Signature invalid</source>
         <translation>Подпись неверна</translation>
     </message>
     <message>
-        <location line="-130"/>
-        <location line="+43"/>
-        <location line="+41"/>
-        <location line="+50"/>
+        <location line="-47"/>
+        <location line="+51"/>
         <source>MRPA signed</source>
         <translation>МЧД подписана</translation>
     </message>
     <message>
-        <location line="-131"/>
-        <location line="+43"/>
-        <location line="+41"/>
-        <location line="+50"/>
+        <location line="-48"/>
+        <location line="+51"/>
         <source>The quantity does not match</source>
         <translation>Не совпадает количество</translation>
     </message>
     <message>
-        <location line="-101"/>
-        <location line="+19"/>
-        <location line="+22"/>
-        <location line="+19"/>
+        <location line="-9"/>
+        <location line="+15"/>
         <source>File not found</source>
         <translation>Файл не найден</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="-47"/>
         <source>MRPA</source>
         <translation>МЧД</translation>
     </message>
@@ -499,34 +547,46 @@
 <context>
     <name>FileTreeView</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/FileTreeView.qml" line="+35"/>
-        <location filename="../../src/views/FileTreeView.qml" line="+35"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/FileTreeView.qml" line="+36"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileTreeView.qml" line="+36"/>
+        <location filename="../../src/views/FileTreeView.qml" line="+36"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
     <message>
-        <location line="+61"/>
-        <location filename="../../src/views/FileTreeView.qml" line="+61"/>
+        <location line="+57"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileTreeView.qml" line="+61"/>
+        <location filename="../../src/views/FileTreeView.qml" line="+57"/>
         <source> B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileTreeView.qml" line="+2"/>
         <location filename="../../src/views/FileTreeView.qml" line="+2"/>
         <source> KB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileTreeView.qml" line="+2"/>
         <location filename="../../src/views/FileTreeView.qml" line="+2"/>
         <source> MB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+241"/>
-        <location filename="../../src/views/FileTreeView.qml" line="+241"/>
+        <location line="+252"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileTreeView.qml" line="+242"/>
+        <location filename="../../src/views/FileTreeView.qml" line="+252"/>
         <source>Open copy</source>
         <translation>Открыть копию</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileTreeView.qml" line="+0"/>
+        <location filename="../../src/views/FileTreeView.qml" line="+0"/>
+        <source>Open file</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -537,6 +597,7 @@
     </message>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+75"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+75"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+77"/>
         <location filename="../../src/views/Header.qml" line="+75"/>
         <source>Show in folder</source>
@@ -544,6 +605,7 @@
     </message>
     <message>
         <location line="+7"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+7"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+7"/>
         <location filename="../../src/views/Header.qml" line="+7"/>
         <source>Save as ...</source>
@@ -555,6 +617,7 @@
     </message>
     <message>
         <location line="+53"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+53"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+54"/>
         <location filename="../../src/views/Header.qml" line="+53"/>
         <source>Profile</source>
@@ -562,6 +625,7 @@
     </message>
     <message>
         <location line="+109"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+109"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+109"/>
         <location filename="../../src/views/Header.qml" line="+109"/>
         <source>Sign</source>
@@ -573,6 +637,7 @@
     </message>
     <message>
         <location line="+81"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+81"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+75"/>
         <location line="+55"/>
         <location filename="../../src/views/Header.qml" line="+81"/>
@@ -581,6 +646,8 @@
     </message>
     <message>
         <location line="+0"/>
+        <location line="+34"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+0"/>
         <location line="+34"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="-55"/>
         <location line="+20"/>
@@ -592,6 +659,7 @@
     </message>
     <message>
         <location line="-258"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="-258"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="-273"/>
         <location filename="../../src/views/Header.qml" line="-258"/>
         <source>Profile settings</source>
@@ -599,6 +667,7 @@
     </message>
     <message>
         <location line="-39"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="-39"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="-42"/>
         <location filename="../../src/views/Header.qml" line="-39"/>
         <source>PDF</source>
@@ -606,6 +675,7 @@
     </message>
     <message>
         <location line="+7"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+7"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+8"/>
         <location filename="../../src/views/Header.qml" line="+7"/>
         <source>File</source>
@@ -613,6 +683,7 @@
     </message>
     <message>
         <location line="+211"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+211"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+207"/>
         <location filename="../../src/views/Header.qml" line="+211"/>
         <source>About program</source>
@@ -627,6 +698,7 @@
     <name>HeaderSubBar</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+199"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+199"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+199"/>
         <location filename="../../src/views/HeaderSubBar.qml" line="+199"/>
         <source> of </source>
@@ -634,6 +706,7 @@
     </message>
     <message>
         <location line="+79"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+79"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+79"/>
         <location filename="../../src/views/HeaderSubBar.qml" line="+79"/>
         <source>Auto</source>
@@ -645,6 +718,7 @@
     </message>
     <message>
         <location line="-161"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="-161"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="-161"/>
         <location filename="../../src/views/HeaderSubBar.qml" line="-161"/>
         <source>Miniatures</source>
@@ -652,6 +726,7 @@
     </message>
     <message>
         <location line="+13"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+13"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+13"/>
         <location filename="../../src/views/HeaderSubBar.qml" line="+13"/>
         <source>Signatures</source>
@@ -659,6 +734,7 @@
     </message>
     <message>
         <location line="+11"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+11"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+11"/>
         <location filename="../../src/views/HeaderSubBar.qml" line="+11"/>
         <source>Print</source>
@@ -666,6 +742,7 @@
     </message>
     <message>
         <location line="+12"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+12"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+12"/>
         <location filename="../../src/views/HeaderSubBar.qml" line="+12"/>
         <source>Scroll down</source>
@@ -673,6 +750,7 @@
     </message>
     <message>
         <location line="+11"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+11"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+11"/>
         <location filename="../../src/views/HeaderSubBar.qml" line="+11"/>
         <source>Scroll up</source>
@@ -680,6 +758,7 @@
     </message>
     <message>
         <location line="+45"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+45"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+45"/>
         <location filename="../../src/views/HeaderSubBar.qml" line="+45"/>
         <source>Rotate left</source>
@@ -687,6 +766,7 @@
     </message>
     <message>
         <location line="+9"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+9"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+9"/>
         <location filename="../../src/views/HeaderSubBar.qml" line="+9"/>
         <source>Rotate right</source>
@@ -694,6 +774,7 @@
     </message>
     <message>
         <location line="+15"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+15"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+15"/>
         <location filename="../../src/views/HeaderSubBar.qml" line="+15"/>
         <source>Zoom out</source>
@@ -701,6 +782,7 @@
     </message>
     <message>
         <location line="+9"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+9"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+9"/>
         <location filename="../../src/views/HeaderSubBar.qml" line="+9"/>
         <source>Zoom in</source>
@@ -708,6 +790,7 @@
     </message>
     <message>
         <location line="+61"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+61"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+61"/>
         <location filename="../../src/views/HeaderSubBar.qml" line="+61"/>
         <source>Mark</source>
@@ -715,6 +798,7 @@
     </message>
     <message>
         <location line="+36"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+36"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+36"/>
         <location filename="../../src/views/HeaderSubBar.qml" line="+36"/>
         <source>Choose mark</source>
@@ -722,6 +806,7 @@
     </message>
     <message>
         <location line="+18"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+18"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/HeaderSubBar.qml" line="+18"/>
         <location filename="../../src/views/HeaderSubBar.qml" line="+18"/>
         <source>Search</source>
@@ -732,6 +817,7 @@
     <name>InfoDialog</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/InfoDialog.qml" line="+30"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/InfoDialog.qml" line="+30"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/InfoDialog.qml" line="+30"/>
         <location filename="../../src/views/InfoDialog.qml" line="+30"/>
         <source>Surguch - application for work with digital signature</source>
@@ -739,6 +825,7 @@
     </message>
     <message>
         <location line="+7"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/InfoDialog.qml" line="+7"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/InfoDialog.qml" line="+7"/>
         <location filename="../../src/views/InfoDialog.qml" line="+7"/>
         <source>Version </source>
@@ -746,6 +833,7 @@
     </message>
     <message>
         <location line="+7"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/InfoDialog.qml" line="+7"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/InfoDialog.qml" line="+7"/>
         <location filename="../../src/views/InfoDialog.qml" line="+7"/>
         <source>Help </source>
@@ -768,6 +856,7 @@
     <name>LeftSideBar</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+75"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/LeftSideBar.qml" line="+75"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/LeftSideBar.qml" line="+75"/>
         <location filename="../../src/views/LeftSideBar.qml" line="+75"/>
         <source>No signatures</source>
@@ -778,6 +867,7 @@
     <name>Main</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="+37"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+37"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+36"/>
         <location filename="../../src/views/Main.qml" line="+37"/>
         <source>Surguch</source>
@@ -829,20 +919,25 @@
     </message>
     <message>
         <location line="+126"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+126"/>
         <location filename="../../src/views/Main.qml" line="+126"/>
         <source>PDF
 Drag&amp;Drop</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF
+Drag&amp;Drop</translation>
     </message>
     <message>
         <location line="+33"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+33"/>
         <location filename="../../src/views/Main.qml" line="+33"/>
         <source>File
 Drag&amp;Drop</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл
+Drag&amp;Drop</translation>
     </message>
     <message>
         <location line="+238"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+238"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+282"/>
         <location filename="../../src/views/Main.qml" line="+238"/>
         <source>The document was changed after signing, but can be restored</source>
@@ -850,6 +945,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+5"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+5"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+5"/>
         <location filename="../../src/views/Main.qml" line="+5"/>
         <source>The document can&apos;t be trusted because none of signatures covers the whole document.﻿</source>
@@ -857,6 +953,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+5"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+5"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+5"/>
         <location filename="../../src/views/Main.qml" line="+5"/>
         <source>The document was changed after signing.Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿</source>
@@ -864,20 +961,68 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+5"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+5"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+5"/>
         <location filename="../../src/views/Main.qml" line="+5"/>
         <source>Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿</source>
         <translation>Некоторые из подписей не защищают весь документ целиком, следует считать подозрительным</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+10"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+10"/>
+        <location filename="../../src/views/Main.qml" line="+10"/>
+        <source>Invalid parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+5"/>
+        <location filename="../../src/views/Main.qml" line="+5"/>
+        <source>Invalid destination path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+5"/>
+        <location filename="../../src/views/Main.qml" line="+5"/>
+        <source>Failed to sign all files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+5"/>
+        <location filename="../../src/views/Main.qml" line="+5"/>
+        <source>Failed to create archive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location line="+6"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+5"/>
+        <location line="+6"/>
+        <location filename="../../src/views/Main.qml" line="+5"/>
+        <location line="+6"/>
+        <source>You trying to create files which already exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+6"/>
+        <location filename="../../src/views/Main.qml" line="+6"/>
+        <source>Some files were renamed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+13"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+14"/>
-        <location filename="../../src/views/Main.qml" line="+14"/>
+        <location filename="../../src/views/Main.qml" line="+13"/>
         <source>Validation failed for signature number</source>
         <translation>Проверка одной из подписей не удалась, номер сигнатуры</translation>
     </message>
     <message>
         <location line="+19"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+19"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+19"/>
         <location filename="../../src/views/Main.qml" line="+19"/>
         <source>CryptoPro CSP 5.0 R3 not found, please check if installed</source>
@@ -885,6 +1030,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+3"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+3"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+3"/>
         <location filename="../../src/views/Main.qml" line="+3"/>
         <source>Failed getting the user&apos;s certificates list</source>
@@ -892,6 +1038,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+19"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+19"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+19"/>
         <location filename="../../src/views/Main.qml" line="+19"/>
         <source>Errors were found in the document when it was opened. The document may be displayed incorrectly.</source>
@@ -899,6 +1046,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+67"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+67"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+63"/>
         <location filename="../../src/views/Main.qml" line="+67"/>
         <source>Error</source>
@@ -929,6 +1077,7 @@ Drag&amp;Drop</source>
     <name>MrpaInfo</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/MrpaInfo.qml" line="+33"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/MrpaInfo.qml" line="+33"/>
         <location filename="../../src/views/info_panel_components/MrpaInfo.qml" line="+33"/>
         <source>About MRPA</source>
         <translation>Сведения об МЧД</translation>
@@ -947,8 +1096,9 @@ Drag&amp;Drop</source>
 <context>
     <name>MrpaList</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/MrpaList.qml" line="+44"/>
-        <location filename="../../src/views/info_panel_components/MrpaList.qml" line="+44"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/MrpaList.qml" line="+60"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/MrpaList.qml" line="+44"/>
+        <location filename="../../src/views/info_panel_components/MrpaList.qml" line="+60"/>
         <source>Undefined grantor</source>
         <translation>Неизвестный доверитель</translation>
     </message>
@@ -976,6 +1126,7 @@ Drag&amp;Drop</source>
     <name>PdfListView</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/PdfListView.qml" line="+901"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/PdfListView.qml" line="+901"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+901"/>
         <location filename="../../src/views/PdfListView.qml" line="+901"/>
         <source>Stamp position</source>
@@ -983,6 +1134,8 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+1"/>
+        <location line="+159"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/PdfListView.qml" line="+1"/>
         <location line="+159"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="+1"/>
         <location line="+159"/>
@@ -993,6 +1146,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="-1"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/PdfListView.qml" line="-1"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/PdfListView.qml" line="-1"/>
         <location filename="../../src/views/PdfListView.qml" line="-1"/>
         <source>Mark position</source>
@@ -1071,14 +1225,17 @@ Drag&amp;Drop</source>
 <context>
     <name>RSBSigInfo</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+50"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+41"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+55"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+31"/>
-        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+50"/>
+        <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+41"/>
         <source>Signature</source>
         <translation>Электронная подпись</translation>
     </message>
     <message>
         <location line="+12"/>
+        <location line="+74"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+12"/>
         <location line="+74"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+9"/>
         <location line="+73"/>
@@ -1089,6 +1246,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="-65"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="-65"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="-64"/>
         <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="-65"/>
         <source>Document integrity</source>
@@ -1096,6 +1254,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+4"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+4"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+4"/>
         <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+4"/>
         <source>Mathematical correctness</source>
@@ -1103,6 +1262,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+4"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+4"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+4"/>
         <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+4"/>
         <source>Certificate</source>
@@ -1110,6 +1270,8 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+4"/>
+        <location line="+44"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+4"/>
         <location line="+44"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+4"/>
         <location line="+44"/>
@@ -1121,6 +1283,8 @@ Drag&amp;Drop</source>
     <message>
         <location line="-40"/>
         <location line="+99"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="-40"/>
+        <location line="+99"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="-40"/>
         <location line="+98"/>
         <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="-40"/>
@@ -1130,6 +1294,8 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="-91"/>
+        <location line="+49"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="-91"/>
         <location line="+49"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="-90"/>
         <location line="+48"/>
@@ -1144,6 +1310,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="-42"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="-42"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="-41"/>
         <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="-42"/>
         <source>CADES standard</source>
@@ -1151,6 +1318,8 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+9"/>
+        <location line="+113"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+9"/>
         <location line="+113"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+9"/>
         <location line="+111"/>
@@ -1161,6 +1330,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="-73"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="-73"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="-72"/>
         <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="-73"/>
         <source>Serial number</source>
@@ -1168,6 +1338,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+7"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+7"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+7"/>
         <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+7"/>
         <source>Policy id</source>
@@ -1175,6 +1346,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+12"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+12"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+12"/>
         <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+12"/>
         <source>TSP Certificate chain</source>
@@ -1182,6 +1354,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+30"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+30"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+29"/>
         <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+30"/>
         <source>Certificate status</source>
@@ -1189,6 +1362,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+7"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+7"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+7"/>
         <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+7"/>
         <source>Issue date</source>
@@ -1196,6 +1370,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+8"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+8"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+8"/>
         <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+8"/>
         <source>Certificate serial number</source>
@@ -1203,6 +1378,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+20"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+20"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+20"/>
         <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+20"/>
         <source>The signature covers the entire document</source>
@@ -1210,6 +1386,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+8"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+8"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+7"/>
         <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+8"/>
         <source>It is possible to open a signed version</source>
@@ -1217,6 +1394,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+11"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+11"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBSigInfo.qml" line="+11"/>
         <location filename="../../src/views/info_panel_components/RSBSigInfo.qml" line="+11"/>
         <source>Recover the document</source>
@@ -1227,6 +1405,7 @@ Drag&amp;Drop</source>
     <name>RSBTextArea</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/RSBTextArea.qml" line="+14"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBTextArea.qml" line="+14"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBTextArea.qml" line="+14"/>
         <location filename="../../src/views/info_panel_components/RSBTextArea.qml" line="+14"/>
         <source>Placeholder text</source>
@@ -1237,6 +1416,7 @@ Drag&amp;Drop</source>
     <name>RightSideBarCertChain</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/RightSideBarCertChain.qml" line="+16"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RightSideBarCertChain.qml" line="+16"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RightSideBarCertChain.qml" line="+16"/>
         <location filename="../../src/views/info_panel_components/RightSideBarCertChain.qml" line="+16"/>
         <source>Certificate chain</source>
@@ -1247,6 +1427,7 @@ Drag&amp;Drop</source>
     <name>RubberPreviewLeftPanel</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+75"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+75"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+75"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+75"/>
         <source>Mark name</source>
@@ -1254,6 +1435,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+1"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+1"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+1"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+1"/>
         <source>Enter mark name</source>
@@ -1261,6 +1443,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+7"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+7"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+7"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+7"/>
         <source>Preview</source>
@@ -1268,6 +1451,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+20"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+20"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+20"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+20"/>
         <source>Link</source>
@@ -1275,6 +1459,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+10"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+10"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+10"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+10"/>
         <source>Enter link here</source>
@@ -1282,6 +1467,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+18"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+18"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+18"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+18"/>
         <source>Default mark width, % from A4 </source>
@@ -1289,6 +1475,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+31"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+31"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+31"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+31"/>
         <source>Save</source>
@@ -1296,6 +1483,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+15"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+15"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+15"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+15"/>
         <source>Delete</source>
@@ -1306,6 +1494,7 @@ Drag&amp;Drop</source>
     <name>RubberPreviewRightPanel</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+43"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+43"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+43"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+43"/>
         <source>Surguch</source>
@@ -1313,6 +1502,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+57"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+57"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+57"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+57"/>
         <source>Create from text</source>
@@ -1320,6 +1510,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+28"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+28"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+28"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+28"/>
         <source>Generate from file (*.png *.jpg *.jpeg *.bmp)</source>
@@ -1327,6 +1518,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+10"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+10"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+10"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+10"/>
         <source>Select a file</source>
@@ -1334,6 +1526,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+28"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+28"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+28"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+28"/>
         <source>Text</source>
@@ -1341,6 +1534,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+18"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+18"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+18"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+18"/>
         <source>Enter text here</source>
@@ -1348,6 +1542,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+42"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+42"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+42"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+42"/>
         <source>Font</source>
@@ -1355,6 +1550,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+48"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+48"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+48"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+48"/>
         <source>Transparency</source>
@@ -1362,6 +1558,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+12"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+12"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+12"/>
         <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+12"/>
         <source>Color</source>
@@ -1400,6 +1597,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+124"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+124"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+124"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+124"/>
         <source>Mark settings</source>
@@ -1423,6 +1621,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+30"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+30"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/RubberStampEditor.qml" line="+30"/>
         <location filename="../../src/views/RubberStampEditor.qml" line="+30"/>
         <source>Stamp with this name already exists</source>
@@ -1492,7 +1691,7 @@ Drag&amp;Drop</source>
 <context>
     <name>RubberStampModel</name>
     <message>
-        <location filename="../../src/models/rubber_stamp_model.cpp" line="+13"/>
+        <location filename="../../src/models/rubber_stamp_model.cpp" line="+30"/>
         <source>Approve</source>
         <translation>Одобрено</translation>
     </message>
@@ -1557,6 +1756,7 @@ Drag&amp;Drop</source>
     <name>SigCreatorWrapper</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+53"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+53"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+53"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+53"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
@@ -1564,6 +1764,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+33"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+33"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+33"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+33"/>
         <source>Certificate: </source>
@@ -1571,6 +1772,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+2"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+2"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+2"/>
         <source>Subject: </source>
@@ -1582,6 +1784,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+1"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+1"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+1"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+1"/>
         <source>Validity: </source>
@@ -1589,6 +1792,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+1"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+1"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+1"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+1"/>
         <source> till </source>
@@ -1596,6 +1800,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+2"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+2"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+2"/>
         <source>THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE</source>
@@ -1603,6 +1808,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+71"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+71"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+71"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+71"/>
         <source>Your certificate is expired.</source>
@@ -1610,6 +1816,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+3"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+3"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+3"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+3"/>
         <source>Common error. It looks like the TSP URL is not valid.</source>
@@ -1617,6 +1824,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+3"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+3"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+3"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+3"/>
         <source>Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.</source>
@@ -1624,6 +1832,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+3"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+3"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+3"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+3"/>
         <source>Error.Timeout exceeded.</source>
@@ -1631,6 +1840,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+2"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+2"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+2"/>
         <source>Common error</source>
@@ -1641,6 +1851,7 @@ Drag&amp;Drop</source>
     <name>SignaturesList</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/SignaturesList.qml" line="+65"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/SignaturesList.qml" line="+65"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/SignaturesList.qml" line="+50"/>
         <location filename="../../src/views/info_panel_components/SignaturesList.qml" line="+65"/>
         <source>Unsigned (empty)</source>
@@ -1651,6 +1862,7 @@ Drag&amp;Drop</source>
     <name>StampEditor</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/StampEditor.qml" line="+129"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/StampEditor.qml" line="+129"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+129"/>
         <location filename="../../src/views/StampEditor.qml" line="+129"/>
         <source>Stamp editor</source>
@@ -1658,6 +1870,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+12"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/StampEditor.qml" line="+12"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+12"/>
         <location filename="../../src/views/StampEditor.qml" line="+12"/>
         <source>Stamp name</source>
@@ -1665,6 +1878,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+1"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/StampEditor.qml" line="+1"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+1"/>
         <location filename="../../src/views/StampEditor.qml" line="+1"/>
         <source>Enter stamp name</source>
@@ -1672,6 +1886,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+5"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/StampEditor.qml" line="+5"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+5"/>
         <location filename="../../src/views/StampEditor.qml" line="+5"/>
         <source>Preview</source>
@@ -1679,6 +1894,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+50"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/StampEditor.qml" line="+50"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+50"/>
         <location filename="../../src/views/StampEditor.qml" line="+50"/>
         <source>Transparency</source>
@@ -1694,6 +1910,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="-24"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/StampEditor.qml" line="-24"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="-24"/>
         <location filename="../../src/views/StampEditor.qml" line="-24"/>
         <source>Stamp&apos;s color</source>
@@ -1701,6 +1918,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+81"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/StampEditor.qml" line="+81"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="+81"/>
         <location filename="../../src/views/StampEditor.qml" line="+81"/>
         <source>Delete</source>
@@ -1708,6 +1926,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="-27"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/StampEditor.qml" line="-27"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="-27"/>
         <location filename="../../src/views/StampEditor.qml" line="-27"/>
         <source>Stamp with this name already exists</source>
@@ -1715,6 +1934,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="-15"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/StampEditor.qml" line="-15"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/StampEditor.qml" line="-15"/>
         <location filename="../../src/views/StampEditor.qml" line="-15"/>
         <source>Save</source>
@@ -1775,6 +1995,7 @@ Drag&amp;Drop</source>
     <name>TextPairBool</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/TextPairBool.qml" line="+24"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/TextPairBool.qml" line="+24"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/TextPairBool.qml" line="+23"/>
         <location filename="../../src/views/info_panel_components/TextPairBool.qml" line="+24"/>
         <source>Valid</source>
@@ -1782,6 +2003,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+0"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/TextPairBool.qml" line="+0"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/TextPairBool.qml" line="+0"/>
         <location filename="../../src/views/info_panel_components/TextPairBool.qml" line="+0"/>
         <source>Invalid</source>
@@ -1792,6 +2014,7 @@ Drag&amp;Drop</source>
     <name>TextPairStatus</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/TextPairStatus.qml" line="+22"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/TextPairStatus.qml" line="+22"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/TextPairStatus.qml" line="+20"/>
         <location filename="../../src/views/info_panel_components/TextPairStatus.qml" line="+22"/>
         <source>Field is absent</source>
@@ -1799,6 +2022,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+3"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/TextPairStatus.qml" line="+3"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/TextPairStatus.qml" line="+3"/>
         <location filename="../../src/views/info_panel_components/TextPairStatus.qml" line="+3"/>
         <source>Not checked</source>
@@ -1806,6 +2030,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+3"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/TextPairStatus.qml" line="+3"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/TextPairStatus.qml" line="+3"/>
         <location filename="../../src/views/info_panel_components/TextPairStatus.qml" line="+3"/>
         <source>Failed to check</source>
@@ -1813,6 +2038,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+3"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/TextPairStatus.qml" line="+3"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/TextPairStatus.qml" line="+3"/>
         <location filename="../../src/views/info_panel_components/TextPairStatus.qml" line="+3"/>
         <source>Valid</source>
@@ -1820,6 +2046,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+3"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/TextPairStatus.qml" line="+3"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/TextPairStatus.qml" line="+3"/>
         <location filename="../../src/views/info_panel_components/TextPairStatus.qml" line="+3"/>
         <source>Invalid</source>
@@ -1830,36 +2057,42 @@ Drag&amp;Drop</source>
     <name>TreeSignResultDialog</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/TreeSignResultDialog.qml" line="+12"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/TreeSignResultDialog.qml" line="+12"/>
         <location filename="../../src/views/TreeSignResultDialog.qml" line="+12"/>
         <source>Signing result</source>
         <translation>Результат</translation>
     </message>
     <message>
-        <location line="+52"/>
-        <location filename="../../src/views/TreeSignResultDialog.qml" line="+52"/>
+        <location line="+55"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/TreeSignResultDialog.qml" line="+55"/>
+        <location filename="../../src/views/TreeSignResultDialog.qml" line="+55"/>
         <source>Files</source>
         <translation>Файлы</translation>
     </message>
     <message>
         <location line="+20"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/TreeSignResultDialog.qml" line="+20"/>
         <location filename="../../src/views/TreeSignResultDialog.qml" line="+20"/>
         <source>No files</source>
         <translation>Нет файлов</translation>
     </message>
     <message>
         <location line="-51"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/TreeSignResultDialog.qml" line="-51"/>
         <location filename="../../src/views/TreeSignResultDialog.qml" line="-51"/>
         <source>Final directory</source>
         <translation>Итоговая директория</translation>
     </message>
     <message>
         <location line="+15"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/TreeSignResultDialog.qml" line="+15"/>
         <location filename="../../src/views/TreeSignResultDialog.qml" line="+15"/>
         <source>No directory</source>
         <translation>Нет директории</translation>
     </message>
     <message>
         <location line="+7"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/TreeSignResultDialog.qml" line="+7"/>
         <location filename="../../src/views/TreeSignResultDialog.qml" line="+7"/>
         <source>Open</source>
         <translation>Открыть</translation>
@@ -1869,6 +2102,7 @@ Drag&amp;Drop</source>
     <name>UnsavedChangesDialog</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+46"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+46"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+46"/>
         <location filename="../../src/views/UnsavedChangesDialog.qml" line="+46"/>
         <source>Unsaved Changes</source>
@@ -1876,6 +2110,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+9"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+9"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+9"/>
         <location filename="../../src/views/UnsavedChangesDialog.qml" line="+9"/>
         <source>Do you want to save your changes?</source>
@@ -1883,6 +2118,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+11"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+11"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+11"/>
         <location filename="../../src/views/UnsavedChangesDialog.qml" line="+11"/>
         <source>Save</source>
@@ -1890,6 +2126,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+9"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+9"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+9"/>
         <location filename="../../src/views/UnsavedChangesDialog.qml" line="+9"/>
         <source>Discard</source>
@@ -1897,6 +2134,7 @@ Drag&amp;Drop</source>
     </message>
     <message>
         <location line="+9"/>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+9"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/UnsavedChangesDialog.qml" line="+9"/>
         <location filename="../../src/views/UnsavedChangesDialog.qml" line="+9"/>
         <source>Cancel</source>
