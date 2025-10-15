@@ -165,76 +165,60 @@ void FileTreeModel::getCertList(int file_id) {
         return;
     }
 
-    std::vector<std::shared_ptr<core::ValidationResult>> res;
     const auto &item_data = item_map[file_id].lock()->data();
     switch (item_data.type) {
         case TreeItem::File:
-            emit updateSigCount(item_data.ref_id_size);
-            for (const int ind : item_data.ref_ids) {
-                if (!item_map.at(ind).expired()) {
-                    pdfcsp::c_bridge::CPodResult const *pod =
-                        tree_.GetCheckResultForNode(ind, file_id);
-                    core::ValidationResult val_res;
-                    if (pod == nullptr) {
-                        continue;
-                    }
-                    core::createCSPResponse(val_res, pod);
-                    res.emplace_back(std::move(
-                        std::make_shared<core::ValidationResult>(val_res)));
-                }
-            }
-            emit signatureReady(res);
+            getFileCertList(item_data, file_id);
             break;
         case TreeItem::Zip:
-            emit updateSigCount(item_data.ref_id_size);
-            for (const int ind : item_data.ref_ids) {
-                if (!item_map.at(ind).expired()) {
-                    pdfcsp::c_bridge::CPodResult const *pod =
-                        tree_.GetCheckResultForNode(ind, file_id);
-                    core::ValidationResult val_res;
-                    if (pod == nullptr) {
-                        continue;
-                    }
-                    core::createCSPResponse(val_res, pod);
-                    res.emplace_back(std::move(
-                        std::make_shared<core::ValidationResult>(val_res)));
-                }
-            }
-            emit signatureReady(res);
-            break;
-        case TreeItem::Sig:
-            emit updateSigCount(item_data.ref_id_size);
-            for (const int ind : item_data.ref_ids) {
-                pdfcsp::c_bridge::CPodResult const *pod =
-                    tree_.GetCheckResultForNode(file_id, ind);
-                core::ValidationResult val_res;
-                if (pod == nullptr) {
-                    continue;
-                }
-                core::createCSPResponse(val_res, pod);
-                res.emplace_back(std::move(
-                    std::make_shared<core::ValidationResult>(val_res)));
-            }
-            emit signatureReady(res);
+            getFileCertList(item_data, file_id);
+        case TreeItem::Sig:  // NOLINT(bugprone-branch-clone)
+            getSignatureCertList(item_data, file_id);
             break;
         case TreeItem::Asig:
-            emit updateSigCount(item_data.ref_id_size);
-            for (const int ind : item_data.ref_ids) {
-                pdfcsp::c_bridge::CPodResult const *pod =
-                    tree_.GetCheckResultForNode(file_id, ind);
-                core::ValidationResult val_res;
-                if (pod == nullptr) {
-                    continue;
-                }
-                core::createCSPResponse(val_res, pod);
-                res.emplace_back(std::move(
-                    std::make_shared<core::ValidationResult>(val_res)));
-            }
-            emit signatureReady(res);
+            getSignatureCertList(item_data, file_id);
             break;
         default:
             break;
     }
+}
+
+void FileTreeModel::getFileCertList(const TreeItem::FileData &item_data,
+                                    int file_id) {
+    emit updateSigCount(item_data.ref_id_size);
+    std::vector<std::shared_ptr<core::ValidationResult>> res;
+    for (const int ind : item_data.ref_ids) {
+        if (!item_map.at(ind).expired()) {
+            pdfcsp::c_bridge::CPodResult const *pod =
+                tree_.GetCheckResultForNode(ind, file_id);
+            core::ValidationResult val_res;
+            if (pod == nullptr) {
+                continue;
+            }
+            core::createCSPResponse(val_res, pod);
+            res.emplace_back(
+                std::move(std::make_shared<core::ValidationResult>(val_res)));
+        }
+    }
+    emit signatureReady(res);
+}
+
+void FileTreeModel::getSignatureCertList(const TreeItem::FileData &item_data,
+                                         int file_id) {
+    emit updateSigCount(item_data.ref_id_size);
+    std::vector<std::shared_ptr<core::ValidationResult>> res;
+    for (const int ind : item_data.ref_ids) {
+        pdfcsp::c_bridge::CPodResult const *pod = tree_.GetCheckResultForNode(
+            file_id, ind);  // NOLINT(readability-suspicious-call-argument)
+        core::ValidationResult val_res;
+        if (pod == nullptr) {
+            continue;
+        }
+        core::createCSPResponse(val_res, pod);
+        res.emplace_back(
+            std::move(std::make_shared<core::ValidationResult>(val_res)));
+    }
+    emit signatureReady(res);
 }
 
 QJsonArray FileTreeModel::getMrpaData(int node_id) {
@@ -252,54 +236,50 @@ QJsonArray FileTreeModel::getMrpaData(int node_id) {
             return arr;
             break;
         case TreeItem::Zip:
-            if (item_data.mrpa_id_size > 0) {
-                for (const int ind : item_data.mrpa_ids) {
-                    if (item_map.at(ind).lock()->data().mrpa_data.has_value()) {
-                        arr.append(
-                            item_map.at(ind).lock()->data().mrpa_data.value());
-                    }
-                }
-                return arr;
-            }
+            std::for_each(item_data.mrpa_ids.cbegin(),
+                          item_data.mrpa_ids.cend(), [this, &arr](int ind) {
+                              const auto mrpa_val =
+                                  item_map.at(ind).lock()->data().mrpa_data;
+                              if (mrpa_val.has_value()) {
+                                  arr.append(mrpa_val.value());
+                              }
+                          });
             break;
         case TreeItem::File:
-            if (item_data.mrpa_id_size > 0) {
-                for (const int ind : item_data.mrpa_ids) {
-                    if (item_map.at(ind).lock()->data().mrpa_data.has_value()) {
-                        arr.append(
-                            item_map.at(ind).lock()->data().mrpa_data.value());
-                    }
-                }
-                return arr;
-            }
+            std::for_each(item_data.mrpa_ids.cbegin(),
+                          item_data.mrpa_ids.cend(), [this, &arr](int ind) {
+                              const auto mrpa_val =
+                                  item_map.at(ind).lock()->data().mrpa_data;
+                              if (mrpa_val.has_value()) {
+                                  arr.append(mrpa_val.value());
+                              }
+                          });
             break;
         case TreeItem::Sig:
-            if (item_data.mrpa_id_size > 0) {
-                for (const int ind : item_data.mrpa_ids) {
-                    if (item_map.at(ind).lock()->data().mrpa_data.has_value()) {
-                        arr.append(
-                            item_map.at(ind).lock()->data().mrpa_data.value());
-                    }
-                }
-                return arr;
-            }
+            std::for_each(item_data.mrpa_ids.cbegin(),
+                          item_data.mrpa_ids.cend(), [this, &arr](int ind) {
+                              const auto mrpa_val =
+                                  item_map.at(ind).lock()->data().mrpa_data;
+                              if (mrpa_val.has_value()) {
+                                  arr.append(mrpa_val.value());
+                              }
+                          });
             break;
         case TreeItem::Asig:
-            if (item_data.mrpa_id_size > 0) {
-                for (const int ind : item_data.mrpa_ids) {
-                    if (item_map.at(ind).lock()->data().mrpa_data.has_value()) {
-                        arr.append(
-                            item_map.at(ind).lock()->data().mrpa_data.value());
-                    }
-                }
-                return arr;
-            }
+            std::for_each(item_data.mrpa_ids.cbegin(),
+                          item_data.mrpa_ids.cend(), [this, &arr](int ind) {
+                              const auto mrpa_val =
+                                  item_map.at(ind).lock()->data().mrpa_data;
+                              if (mrpa_val.has_value()) {
+                                  arr.append(mrpa_val.value());
+                              }
+                          });
             break;
         default:
             return {};
             break;
     }
-    return {};
+    return arr;
 }
 
 bool FileTreeModel::addNode(const QVariantList &list) {
@@ -652,43 +632,9 @@ void FileTreeModel::processDraftTree() {
             tree_watcher_->setFuture(*tree_future_);
             return;
         }
-        state_ = Done;
-        QJsonArray add_array;
-        std::for_each(operation_data_.begin(), operation_data_.end(),
-                      [this, &add_array](const auto &pair) {
-                          if (pair.second.operation == Add) {
-                              add_array.append(pair.first);
-                          }
-                      });
-        std::for_each(add_array.begin(), add_array.end(),
-                      [this](const auto &item) {
-                          if (item.isString()) {
-                              operation_data_.erase(item.toString());
-                          }
-                      });
-        if (!add_array.empty()) {
-            processAdd(add_array);
-        }
 
-        QJsonArray delete_array;
-        QJsonArray delete_array_helper;
-        std::for_each(
-            operation_data_.begin(), operation_data_.end(),
-            [this, &delete_array, &delete_array_helper](const auto &pair) {
-                if (pair.second.operation == Delete) {
-                    delete_array.append(pair.second.file_id.value());
-                    delete_array_helper.append(pair.first);
-                }
-            });
-        std::for_each(delete_array_helper.begin(), delete_array_helper.end(),
-                      [this](const auto &item) {
-                          if (item.isString()) {
-                              operation_data_.erase(item.toString());
-                          }
-                      });
-        if (!delete_array.empty()) {
-            processDelete(delete_array);
-        }
+        state_ = Done;
+        processOperationData();
     }
 }
 
@@ -726,13 +672,16 @@ void FileTreeModel::processSignedTree() {
         }
     }
 
+    processOperationData();
+}
+
+void FileTreeModel::processOperationData() {
     /// add files we need to process from operation_data_ map and erase them
-    /// from there first for Add, after for Delete operations
     QJsonArray add_array;
     std::for_each(operation_data_.begin(), operation_data_.end(),
                   [this, &add_array](const auto &pair) {
                       if (pair.second.operation == Add) {
-                          add_array.append(QUrl(pair.first).toLocalFile());
+                          add_array.append(pair.first);
                       }
                   });
     std::for_each(add_array.begin(), add_array.end(), [this](const auto &item) {
@@ -744,17 +693,19 @@ void FileTreeModel::processSignedTree() {
         processAdd(add_array);
     }
 
+    /* delete_array holds id of nodes as we delete from tree by id
+     delete_paths_array hold node full_path string so opeation_data_ can be
+     cleared*/
     QJsonArray delete_array;
-    QJsonArray delete_array_helper;
-    std::for_each(
-        operation_data_.begin(), operation_data_.end(),
-        [this, &delete_array, &delete_array_helper](const auto &pair) {
-            if (pair.second.operation == Delete) {
-                delete_array.append(pair.second.file_id.value());
-                delete_array_helper.append(pair.first);
-            }
-        });
-    std::for_each(delete_array_helper.begin(), delete_array_helper.end(),
+    QJsonArray delete_paths_array;
+    std::for_each(operation_data_.begin(), operation_data_.end(),
+                  [this, &delete_array, &delete_paths_array](const auto &pair) {
+                      if (pair.second.operation == Delete) {
+                          delete_array.append(pair.second.file_id.value());
+                          delete_paths_array.append(pair.first);
+                      }
+                  });
+    std::for_each(delete_paths_array.begin(), delete_paths_array.end(),
                   [this](const auto &item) {
                       if (item.isString()) {
                           operation_data_.erase(item.toString());
@@ -802,7 +753,7 @@ void FileTreeModel::parseChecksResults(int node_id) {
             item->setSigStats("", "empty");
             item->setMrpaStats("", "empty");
             return;
-        case TreeItem::Sig:
+        case TreeItem::Sig:  // NOLINT(bugprone-branch-clone)
             parseSignatureCheckResults(item);
             return;
         case TreeItem::Asig:
@@ -871,8 +822,8 @@ void FileTreeModel::parseMrpaCheckResults(std::shared_ptr<TreeItem> &item) {
     item->setSigStats("", "empty");
     item->setMrpaStats(tr("MRPA"), "invalid");
     if (item->data().ref_id_size > 0) {
-        if (item->data().time_valid.has_value() &&
-            !item->data().time_valid.value()) {
+        const auto time_val = item->data().time_valid;
+        if (time_val.has_value() && !time_val.value()) {
             item->setMrpaStats(tr("MRPA outdated"), "old");
             return;
         }
@@ -885,8 +836,7 @@ void FileTreeModel::parseSignatureCheckResults(
     std::shared_ptr<TreeItem> &item) {
     item->setSigStats("", "empty");
     item->setMrpaStats("", "empty");
-    if (item->data().has_check_result.has_value() &&
-        item->data().has_check_result.value()) {
+    if (item->data().has_check_result) {
         if (!item->data().check_results.empty()) {
             int valid = 0;
             int invalid = 0;
@@ -916,6 +866,7 @@ void FileTreeModel::parseSignatureCheckResults(
                 item->setMrpaStats("", "empty");
             }
         }
+    } else {
+        item->setSigStats(tr("File not found"), "sig_mixed");
     }
-    item->setSigStats(tr("File not found"), "sig_mixed");
 }

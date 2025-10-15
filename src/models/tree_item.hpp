@@ -55,7 +55,7 @@ class TreeItem {
         QString full_path;
 
         // most of nodes could have relations with MRPA or Signs
-        std::optional<bool> has_check_result = false;
+        bool has_check_result = false;
         std::vector<CheckResult> check_results;
         QString sig_text;
         QString sig_color;
@@ -63,7 +63,7 @@ class TreeItem {
         QString mrpa_color;
 
         // MRPA specific fields
-        std::optional<bool> time_valid = false;
+        std::optional<bool> time_valid;
         std::optional<QJsonObject> mrpa_data;
     };
 

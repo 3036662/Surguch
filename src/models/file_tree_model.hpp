@@ -39,11 +39,11 @@ class FileTreeModel : public QAbstractItemModel {
     Q_OBJECT
     Q_PROPERTY(bool isDraft READ isDraft NOTIFY isDraftChanged)
 
-    enum Operation { Add, Delete, Wasted };
+    enum Operation { Add, Delete, Wasted };  // NOLINT(performance-enum-size)
 
     enum State { Done, RunningDraft, RunningSigns };
 
-    enum Roles {
+    enum Roles {  // NOLINT(performance-enum-size)
         FileNameRole = Qt::UserRole + 1,
         SizeRole,
         LastEditRole,
@@ -136,6 +136,8 @@ class FileTreeModel : public QAbstractItemModel {
     void processDraftTree();
     /// @brief process data of checked tree
     void processSignedTree();
+    /// @brief process files that were added/deleted while context was busy
+    void processOperationData();
     /// @brief process singature check result
     void processSignResult();
     /// @brief add files into UI while context busy
@@ -146,9 +148,17 @@ class FileTreeModel : public QAbstractItemModel {
     /// @brief parse data to select icons/tooltips in UI for items
     void parseChecksResults(int node_id);
 
+    /// @brief parse results data of Mrpa node
     static void parseMrpaCheckResults(std::shared_ptr<TreeItem> &item);
+    /// @brief parse results data of Sig/Asig node
     static void parseSignatureCheckResults(std::shared_ptr<TreeItem> &item);
+    /// @brief parse results data of File/Zip node
     void parseFileCheckResults(std::shared_ptr<TreeItem> &item);
+
+    /// @brief send list of certificates for Sig/Asig node
+    void getSignatureCertList(const TreeItem::FileData &item_data, int file_id);
+    /// @brief send list of certificates for File/Zip node
+    void getFileCertList(const TreeItem::FileData &item_data, int file_id);
 
 #ifndef MOC_TREE_FOR_TESTS
     pdfcsp::DocTree tree_;
