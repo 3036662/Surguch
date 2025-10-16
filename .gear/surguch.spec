@@ -38,7 +38,7 @@ A gui application for verification and creation of digitally signed pdf document
 
 
 %changelog
-* Tue Oct 14 2025 Daniil-Viktor Ratkin <krf10@altlinux.org> 0.4.0-alt1
+* Tue Oct 14 2025 Oleg Proskurin <proskur@altlinux.org> 0.4.0-alt1
 - New features:
     + Add machine-readable power of attorney (MRPA) support.
     + Work with document packages.
