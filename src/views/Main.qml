@@ -145,7 +145,8 @@ ApplicationWindow {
                     radius: 6
                     color: "transparent"
                     border.width: pdfDropArea.containsDrag ? 2 : 1
-                    border.color: pdfDropArea.containsDrag ? StyleSheet.slider_border_color : "#c7c7c7"
+                    border.color: pdfDropArea.containsDrag
+                                  || pdfRectangle.containsMouse ? StyleSheet.slider_border_color : "#c7c7c7"
 
                     Column {
                         anchors.centerIn: parent
@@ -168,6 +169,17 @@ ApplicationWindow {
                             color: StyleSheet.font_color_extra
                         }
                     }
+
+                    MouseArea {
+                        id: pdfRectangle
+                        anchors.fill: parent
+                        enabled: showType === Main.ShowType.Empty
+                        hoverEnabled: true
+
+                        onClicked: {
+                            header.openPdfDialog()
+                        }
+                    }
                 }
 
                 Rectangle {
@@ -178,7 +190,8 @@ ApplicationWindow {
                     radius: 6
                     color: "transparent"
                     border.width: fileDropArea.containsDrag ? 2 : 1
-                    border.color: fileDropArea.containsDrag ? StyleSheet.slider_border_color : "#c7c7c7"
+                    border.color: fileDropArea.containsDrag
+                                  || fileRectangle.containsMouse ? StyleSheet.slider_border_color : "#c7c7c7"
 
                     Column {
                         anchors.centerIn: parent
@@ -199,6 +212,17 @@ ApplicationWindow {
                             horizontalAlignment: Text.AlignHCenter
                             wrapMode: Text.WordWrap
                             color: StyleSheet.font_color_extra
+                        }
+                    }
+
+                    MouseArea {
+                        id: fileRectangle
+                        anchors.fill: parent
+                        enabled: showType === Main.ShowType.Empty
+                        hoverEnabled: true
+
+                        onClicked: {
+                            header.openTreeDialog()
                         }
                     }
                 }

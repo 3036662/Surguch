@@ -384,7 +384,7 @@
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+9"/>
         <location filename="../../src/views/EditProfile.qml" line="+9"/>
         <source>Don&apos;t use</source>
-        <translation>Не использовать </translation>
+        <translation>Не использовать</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -451,9 +451,9 @@
         <translation>Название</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+27"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileModeHeaderSubBar.qml" line="+26"/>
-        <location filename="../../src/views/FileModeHeaderSubBar.qml" line="+26"/>
+        <location filename="../../src/views/FileModeHeaderSubBar.qml" line="+27"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
@@ -558,21 +558,21 @@
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileTreeView.qml" line="+61"/>
         <location filename="../../src/views/FileTreeView.qml" line="+57"/>
         <source> B</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileTreeView.qml" line="+2"/>
         <location filename="../../src/views/FileTreeView.qml" line="+2"/>
         <source> KB</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileTreeView.qml" line="+2"/>
         <location filename="../../src/views/FileTreeView.qml" line="+2"/>
         <source> MB</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location line="+252"/>
@@ -586,7 +586,7 @@
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileTreeView.qml" line="+0"/>
         <location filename="../../src/views/FileTreeView.qml" line="+0"/>
         <source>Open file</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть файл</translation>
     </message>
 </context>
 <context>
@@ -596,10 +596,10 @@
         <translation type="vanished">Открыть</translation>
     </message>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+75"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Header.qml" line="+88"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+75"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+77"/>
-        <location filename="../../src/views/Header.qml" line="+75"/>
+        <location filename="../../src/views/Header.qml" line="+88"/>
         <source>Show in folder</source>
         <translation>Показать в папке</translation>
     </message>
@@ -666,12 +666,12 @@
         <translation>Настройка профиля</translation>
     </message>
     <message>
-        <location line="-39"/>
+        <location line="-44"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="-39"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="-42"/>
-        <location filename="../../src/views/Header.qml" line="-39"/>
+        <location filename="../../src/views/Header.qml" line="-44"/>
         <source>PDF</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location line="+7"/>
@@ -679,13 +679,13 @@
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+8"/>
         <location filename="../../src/views/Header.qml" line="+7"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл</translation>
     </message>
     <message>
-        <location line="+211"/>
+        <location line="+216"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+211"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+207"/>
-        <location filename="../../src/views/Header.qml" line="+211"/>
+        <location filename="../../src/views/Header.qml" line="+216"/>
         <source>About program</source>
         <translation>О программе</translation>
     </message>
@@ -918,28 +918,28 @@
         <translation type="vanished">Общая ошибка</translation>
     </message>
     <message>
-        <location line="+126"/>
+        <location line="+127"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+126"/>
-        <location filename="../../src/views/Main.qml" line="+126"/>
+        <location filename="../../src/views/Main.qml" line="+127"/>
         <source>PDF
 Drag&amp;Drop</source>
         <translation>PDF
 Drag&amp;Drop</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+45"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+33"/>
-        <location filename="../../src/views/Main.qml" line="+33"/>
+        <location filename="../../src/views/Main.qml" line="+45"/>
         <source>File
 Drag&amp;Drop</source>
         <translation>Файл
 Drag&amp;Drop</translation>
     </message>
     <message>
-        <location line="+238"/>
+        <location line="+249"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+238"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+282"/>
-        <location filename="../../src/views/Main.qml" line="+238"/>
+        <location filename="../../src/views/Main.qml" line="+249"/>
         <source>The document was changed after signing, but can be restored</source>
         <translation>Документ был изменен после подписания! Присутствует возможность восстановить подписанную версию</translation>
     </message>
@@ -972,28 +972,28 @@ Drag&amp;Drop</translation>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+10"/>
         <location filename="../../src/views/Main.qml" line="+10"/>
         <source>Invalid parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Неверный параметры</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+5"/>
         <location filename="../../src/views/Main.qml" line="+5"/>
         <source>Invalid destination path</source>
-        <translation type="unfinished"></translation>
+        <translation>Неверный пункт назначения</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+5"/>
         <location filename="../../src/views/Main.qml" line="+5"/>
         <source>Failed to sign all files</source>
-        <translation type="unfinished"></translation>
+        <translation>Подписать все файлы не удалось</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+5"/>
         <location filename="../../src/views/Main.qml" line="+5"/>
         <source>Failed to create archive</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать архив не удалось</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1003,14 +1003,14 @@ Drag&amp;Drop</translation>
         <location filename="../../src/views/Main.qml" line="+5"/>
         <location line="+6"/>
         <source>You trying to create files which already exist</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы пытаетесь создать файлы которые уже существуют</translation>
     </message>
     <message>
         <location line="+6"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+6"/>
         <location filename="../../src/views/Main.qml" line="+6"/>
         <source>Some files were renamed</source>
-        <translation type="unfinished"></translation>
+        <translation>Некоторые файлы были переименованы</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1085,7 +1085,7 @@ Drag&amp;Drop</translation>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/MrpaInfo.qml" line="+34"/>
         <source>Доверенность</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location line="+60"/>

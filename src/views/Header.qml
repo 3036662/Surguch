@@ -50,6 +50,14 @@ RowLayout {
         dlg.open()
     }
 
+    function openPdfDialog() {
+        fileDialog.open()
+    }
+
+    function openTreeDialog() {
+        fileTreeDialog.open()
+    }
+
     spacing: 5
 
     Row {
@@ -67,7 +75,12 @@ RowLayout {
             icon.source: StyleSheet.plus_circle_icon
             //text: qsTr("Open")
             text: qsTr("File")
-            onClicked: fileTreeDialog.open()
+            onClicked: {
+                if (pdfListView.sourceIsTmp) {
+                    unsavedFileDialog.open()
+                }
+                fileTreeDialog.open()
+            }
         }
 
         HeaderBarComponents.TopBarButton {

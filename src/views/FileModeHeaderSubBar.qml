@@ -30,6 +30,7 @@ ColumnLayout {
             anchors.right: sepName.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
+            leftPadding: 15
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignLeft
             elide: Text.ElideRight
