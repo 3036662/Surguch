@@ -41,7 +41,7 @@ class FileTreeModel : public QAbstractItemModel {
 
     enum Operation { Add, Delete, Wasted };  // NOLINT(performance-enum-size)
 
-    enum State { Done, RunningDraft, RunningSigns };
+    enum State { Done, RunningDraft, RunningSigns, NeedReset };
 
     enum Roles {  // NOLINT(performance-enum-size)
         FileNameRole = Qt::UserRole + 1,
