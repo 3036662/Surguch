@@ -19,6 +19,7 @@ TreeView {
     signal showMrpaList(var data)
     signal cleanWindow
     signal enableSignButton
+    signal disableSignButton
     signal errorOnSign(var err)
 
     property var state: []
@@ -697,6 +698,10 @@ TreeView {
         function onDropState() {
             state = []
             state_val = []
+        }
+
+        function onTreeIsEmpty() {
+            disableSignButton()
         }
     }
 }

@@ -527,6 +527,7 @@ void FileTreeModel::deleteTree() {
     operation_data_.clear();
     emit dropState();
     root_item->deleteChildren();
+    emit treeIsEmpty();
     if (ctx_available_) {
         tree_.ResetContext();
     } else {
@@ -768,6 +769,9 @@ void FileTreeModel::processSignedTree() {
                     endResetModel();
                 }
             }
+            if (root_item->childCount() == 0) {
+                emit treeIsEmpty();
+            }
             return;
         }
     }
@@ -840,6 +844,9 @@ void FileTreeModel::addFilesUI(const QStringList &file_list) {
 void FileTreeModel::deleteFilesUI(int row, QUuid uid) {
     beginRemoveRows(QModelIndex(), row, row);
     root_item->deleteItem(uid);
+    if (root_item->childCount() == 0) {
+        emit treeIsEmpty();
+    }
     endRemoveRows();
 }
 

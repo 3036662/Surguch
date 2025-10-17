@@ -125,6 +125,9 @@ class FileTreeModel : public QAbstractItemModel {
     /// tree
     void dropState();
 
+    /// @brief emitted if after delete tree is empty
+    void treeIsEmpty();
+
    private:
     /// @brief recurisve parse all data from libmrpa to build tree
     void setupModelData(const QJsonArray &doc, TreeItem *parent);

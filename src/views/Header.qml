@@ -395,6 +395,7 @@ RowLayout {
 
     CommonDialogs.FolderDialog {
         id: saveFolderDialog
+        title: qsTr("Choose a folder to save the signed files")
         currentFolder: StandardPaths.writableLocation(
                            StandardPaths.HomeLocation)
 

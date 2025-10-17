@@ -56,6 +56,7 @@ ApplicationWindow {
                                           fileDropArea.enabled = false
                                           pdfDropArea.width = parent.width
                                           fileTreeModel.deleteTree()
+                                          header.enableSignMode()
                                       }
                                       if (showType === Main.ShowType.Files) {
                                           pdfDropArea.enabled = false
@@ -362,6 +363,8 @@ ApplicationWindow {
     Component.onCompleted: {
         // enable sign button
         fileTreeView.enableSignButton.connect(header.enableSignMode)
+        // disable sign button
+        fileTreeView.disableSignButton.connect(header.disableSignMode)
         // clean windows after signing tree
         fileTreeView.cleanWindow.connect(function () {
             root_window.showType = Main.ShowType.Empty
