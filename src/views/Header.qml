@@ -38,12 +38,7 @@ RowLayout {
     }
 
     function launchSaveFileWithQuit(quit_after_save) {
-        let dlg
-        if (kdeVersion === "5") {
-            dlg = labsSaveFileDialog
-        } else {
-            dlg = saveFileDialog
-        }
+        let dlg = saveFileDialog
         if (quit_after_save) {
             dlg.quitAfterSave = true
         }
@@ -77,9 +72,11 @@ RowLayout {
             text: qsTr("File")
             onClicked: {
                 if (pdfListView.sourceIsTmp) {
+                    unsavedFileDialog.quit_after = false
                     unsavedFileDialog.open()
+                } else {
+                    fileTreeDialog.open()
                 }
-                fileTreeDialog.open()
             }
         }
 
@@ -275,7 +272,6 @@ RowLayout {
                     }
                 }
                 if (showType === Main.ShowType.Files) {
-                    console.warn("SignTree")
                     saveFolderDialog.open()
                 }
             }
@@ -334,7 +330,6 @@ RowLayout {
     CommonDialogs.FileDialog {
         id: fileDialog
         fileMode: CommonDialogs.FileDialog.OpenFile
-        //nameFilters: ["PDF files (*.pdf)","Any file (* *.*)"];
         nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
         currentFolder: StandardPaths.writableLocation(
                            StandardPaths.DocumentsLocation)
@@ -351,14 +346,13 @@ RowLayout {
     CommonDialogs.FileDialog {
         id: fileTreeDialog
         fileMode: CommonDialogs.FileDialog.OpenFiles
-        //nameFilters: ["PDF files (*.pdf)","Any file (* *.*)"];
-        //nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
         currentFolder: StandardPaths.writableLocation(
                            StandardPaths.DocumentsLocation)
         onAccepted: {
             fileTreeModel.addNode(currentFiles)
             rightSideBar.showState = RightSideBar.ShowState.Invisible
             changeShowType(2)
+            root_window.title = qsTr("Surguch")
         }
     }
 
@@ -393,6 +387,8 @@ RowLayout {
             headerSubBar.updateHistory()
             if (quitAfterSave) {
                 Qt.quit()
+            } else {
+                openTreeDialog()
             }
         }
     }

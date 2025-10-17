@@ -55,6 +55,7 @@ ApplicationWindow {
                                           pdfDropArea.enabled = true
                                           fileDropArea.enabled = false
                                           pdfDropArea.width = parent.width
+                                          fileTreeModel.deleteTree()
                                       }
                                       if (showType === Main.ShowType.Files) {
                                           pdfDropArea.enabled = false
@@ -560,10 +561,13 @@ ApplicationWindow {
         root_window.closing.connect(function (close_event) {
             if (pdfListView.sourceIsTmp) {
                 close_event.accepted = false
+                unsavedFileDialog.quit_after = true
                 unsavedFileDialog.open()
             }
         })
         unsavedFileDialog.saveWithQuit.connect(header.launchSaveFileWithQuit)
+        // go into file mode after pdf
+        unsavedFileDialog.openTreeDialog.connect(header.openTreeDialog)
         // invalid pdf
         pdfModel.docWasRepaired.connect(function () {
             errorMessageDialog.text = qsTr(

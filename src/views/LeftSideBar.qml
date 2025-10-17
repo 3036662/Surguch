@@ -27,12 +27,10 @@ Item {
     }
 
     function showPreviews() {
-        console.warn("show Previews func")
         showState = LeftSideBar.ShowState.Preview
     }
 
     function showCerts() {
-        console.warn("showCerts function")
         showState = LeftSideBar.ShowState.Certs
     }
 
