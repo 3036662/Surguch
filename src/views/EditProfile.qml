@@ -284,6 +284,12 @@ Flickable {
             }
         }
 
+        InfoPanelComponents.RightSBHorizontalDelimiter {
+            width: parent.width
+            topPadding: 10
+            bottomPadding: 10
+        }
+
         Text {
             text: qsTr("Stamp")
             font.weight: Font.DemiBold
