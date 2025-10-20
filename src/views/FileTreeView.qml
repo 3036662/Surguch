@@ -36,7 +36,11 @@ TreeView {
         if (cert_index === -1) {
             errorMessageDialog.text = qsTr(
                         "Certificate not found, looks like it was deleted.﻿")
-            errorMessageDialog.open()
+            Qt.callLater(function () {
+                enableSignButton()
+                treeSignResultDialog.close()
+                errorMessageDialog.open()
+            })
             throw new Error('Certificate data not found')
         }
 
