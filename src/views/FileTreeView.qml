@@ -172,7 +172,7 @@ TreeView {
         }
 
         implicitHeight: nameField.implicitHeight * 1.6
-        implicitWidth: treeView.width - padding * 2
+        implicitWidth: treeView.width
 
         Item {
             property int id_model: model.id

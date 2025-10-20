@@ -251,14 +251,17 @@ ApplicationWindow {
             property int mrpaColumn: fileModeHeaderSubBar.mrpaColumn
             property int deleteColumn: fileModeHeaderSubBar.deleteColumn
 
-            Layout.preferredWidth: root_window.width - 300
-            Layout.maximumWidth: root_window.width - 300
-            Layout.minimumWidth: root_window.width - 300
+            Layout.preferredWidth: root_window.width - 310
+            Layout.maximumWidth: root_window.width - 310
+            Layout.minimumWidth: root_window.width - 310
             visible: showType === Main.ShowType.Files
+            Layout.rightMargin: 0
         }
 
         RightSideBar {
             id: rightSideBar
+            Layout.alignment: Qt.AlignLeft
+            Layout.leftMargin: 0
         }
     }
 
