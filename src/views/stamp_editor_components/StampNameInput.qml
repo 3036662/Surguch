@@ -7,9 +7,9 @@ ColumnLayout {
 
     property string labelText
     property alias text: stampNameTextArea.text
-    property alias placeholderText : stampNameTextArea.placeholderText
+    property alias placeholderText: stampNameTextArea.placeholderText
 
-    function forceActiveFocus(){
+    function forceActiveFocus() {
         stampNameTextArea.forceActiveFocus()
     }
 
@@ -36,12 +36,14 @@ ColumnLayout {
         background: Rectangle {
             border.color: StyleSheet.slider_border_color
             color: StyleSheet.text_area_background
+            radius: 4
         }
 
         onTextChanged: {
             let validInput = stampNameTextArea.text.match(/^S+$/)
             if (!validInput) {
-                stampNameTextArea.text = stampNameTextArea.text.replace(/\s/g, '')
+                stampNameTextArea.text = stampNameTextArea.text.replace(/\s/g,
+                                                                        '')
                 stampNameTextArea.cursorPosition = stampNameTextArea.text.length
             }
             if (stampNameTextArea.text.length > 50) {
