@@ -686,7 +686,6 @@ TreeView {
     Connections {
         target: treeView.model
         function onSignDone(sign_result, sign_done) {
-            console.warn("from treeView model:", JSON.stringify(sign_result))
             enableSignButton()
             let res = JSON.parse(sign_result)
             const hasWarnings = (Array.isArray(res.warnings)
