@@ -55,6 +55,8 @@ ApplicationWindow {
                                           pdfDropArea.enabled = true
                                           fileDropArea.enabled = false
                                           pdfDropArea.width = parent.width
+                                          fileTreeModel.deleteTree()
+                                          header.enableSignMode()
                                       }
                                       if (showType === Main.ShowType.Files) {
                                           pdfDropArea.enabled = false
@@ -145,7 +147,8 @@ ApplicationWindow {
                     radius: 6
                     color: "transparent"
                     border.width: pdfDropArea.containsDrag ? 2 : 1
-                    border.color: pdfDropArea.containsDrag ? StyleSheet.slider_border_color : "#c7c7c7"
+                    border.color: pdfDropArea.containsDrag
+                                  || pdfRectangle.containsMouse ? StyleSheet.slider_border_color : "#c7c7c7"
 
                     Column {
                         anchors.centerIn: parent
@@ -168,6 +171,17 @@ ApplicationWindow {
                             color: StyleSheet.font_color_extra
                         }
                     }
+
+                    MouseArea {
+                        id: pdfRectangle
+                        anchors.fill: parent
+                        enabled: showType === Main.ShowType.Empty
+                        hoverEnabled: true
+
+                        onClicked: {
+                            header.openPdfDialog()
+                        }
+                    }
                 }
 
                 Rectangle {
@@ -178,7 +192,8 @@ ApplicationWindow {
                     radius: 6
                     color: "transparent"
                     border.width: fileDropArea.containsDrag ? 2 : 1
-                    border.color: fileDropArea.containsDrag ? StyleSheet.slider_border_color : "#c7c7c7"
+                    border.color: fileDropArea.containsDrag
+                                  || fileRectangle.containsMouse ? StyleSheet.slider_border_color : "#c7c7c7"
 
                     Column {
                         anchors.centerIn: parent
@@ -199,6 +214,17 @@ ApplicationWindow {
                             horizontalAlignment: Text.AlignHCenter
                             wrapMode: Text.WordWrap
                             color: StyleSheet.font_color_extra
+                        }
+                    }
+
+                    MouseArea {
+                        id: fileRectangle
+                        anchors.fill: parent
+                        enabled: showType === Main.ShowType.Empty
+                        hoverEnabled: true
+
+                        onClicked: {
+                            header.openTreeDialog()
                         }
                     }
                 }
@@ -225,14 +251,17 @@ ApplicationWindow {
             property int mrpaColumn: fileModeHeaderSubBar.mrpaColumn
             property int deleteColumn: fileModeHeaderSubBar.deleteColumn
 
-            Layout.preferredWidth: root_window.width - 300
-            Layout.maximumWidth: root_window.width - 300
-            Layout.minimumWidth: root_window.width - 300
+            Layout.preferredWidth: root_window.width - 310
+            Layout.maximumWidth: root_window.width - 310
+            Layout.minimumWidth: root_window.width - 310
             visible: showType === Main.ShowType.Files
+            Layout.rightMargin: 0
         }
 
         RightSideBar {
             id: rightSideBar
+            Layout.alignment: Qt.AlignLeft
+            Layout.leftMargin: 0
         }
     }
 
@@ -337,6 +366,8 @@ ApplicationWindow {
     Component.onCompleted: {
         // enable sign button
         fileTreeView.enableSignButton.connect(header.enableSignMode)
+        // disable sign button
+        fileTreeView.disableSignButton.connect(header.disableSignMode)
         // clean windows after signing tree
         fileTreeView.cleanWindow.connect(function () {
             root_window.showType = Main.ShowType.Empty
@@ -466,7 +497,8 @@ ApplicationWindow {
                 treeSignResultDialog.close()
                 break
             case "SIGN_ALL_FILES_FAILED":
-                errorMessageDialog.text = qsTr("Failed to sign all files")
+                errorMessageDialog.text = qsTr(
+                            "Failed to sign files: check the certificate in the profile and CryptoPro (availability and expiration date).")
                 errorMessageDialog.open()
                 treeSignResultDialog.close()
                 break
@@ -536,10 +568,13 @@ ApplicationWindow {
         root_window.closing.connect(function (close_event) {
             if (pdfListView.sourceIsTmp) {
                 close_event.accepted = false
+                unsavedFileDialog.quit_after = true
                 unsavedFileDialog.open()
             }
         })
         unsavedFileDialog.saveWithQuit.connect(header.launchSaveFileWithQuit)
+        // go into file mode after pdf
+        unsavedFileDialog.openTreeDialog.connect(header.openTreeDialog)
         // invalid pdf
         pdfModel.docWasRepaired.connect(function () {
             errorMessageDialog.text = qsTr(

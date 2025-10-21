@@ -18,7 +18,7 @@ ListView {
 
     header: Item {
         width: root.width
-        height: 30
+        height: visible ? 30 : 0
         visible: siglistModel.sigSource === 2
 
         RSBCloseButton {

@@ -41,7 +41,7 @@ class FileTreeModel : public QAbstractItemModel {
 
     enum Operation { Add, Delete, Wasted };  // NOLINT(performance-enum-size)
 
-    enum State { Done, RunningDraft, RunningSigns };
+    enum State { Done, RunningDraft, RunningSigns, NeedReset };
 
     enum Roles {  // NOLINT(performance-enum-size)
         FileNameRole = Qt::UserRole + 1,
@@ -124,6 +124,9 @@ class FileTreeModel : public QAbstractItemModel {
     /// @brief emitted after tree cleared to drop expanded states of items in
     /// tree
     void dropState();
+
+    /// @brief emitted if after delete tree is empty
+    void treeIsEmpty();
 
    private:
     /// @brief recurisve parse all data from libmrpa to build tree

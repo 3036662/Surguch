@@ -9,74 +9,68 @@ import "../" as Surguch
 ColumnLayout {
     id: previewColumn
 
-    readonly property alias stampNameText: stampName.text;
-    readonly property alias linkNameText:linkName.text
-    readonly property alias tagWidth: tagWidth.value;
+    readonly property alias stampNameText: stampName.text
+    readonly property alias linkNameText: linkName.text
+    readonly property alias tagWidth: tagWidth.value
 
     // if true createPreview() call will not be triggered
     // prevents multiple triggers when many settings are changed simultaneously in one step.
     property bool ignore_changes: false
 
-    signal saveClicked();
-    signal deleteClicked();
+    signal saveClicked
+    signal deleteClicked
 
-    function createPreview(){
-         rubberStampPreview.createPreview();
+    function createPreview() {
+        rubberStampPreview.createPreview()
     }
 
     // update stamp settings  for render
-    function setRenderData(params){
-         rubberStampPreview.stamp_json=params;
+    function setRenderData(params) {
+        rubberStampPreview.stamp_json = params
     }
 
-
-    function focusOnName(){
-         stampName.forceActiveFocus()
+    function focusOnName() {
+        stampName.forceActiveFocus()
     }
 
     // ---------------------
     // setter functions prevent from triggering the createPreview() function
     // on each change, allow making many changes in one stamp
-    function setStampName(val){
-        ignore_changes=true;
-        stampName.text=val;
-        ignore_changes=false;
+    function setStampName(val) {
+        ignore_changes = true
+        stampName.text = val
+        ignore_changes = false
     }
 
-    function setLink(val){
-        ignore_changes=true;
-        linkName.text=val;
-        ignore_changes=false;
+    function setLink(val) {
+        ignore_changes = true
+        linkName.text = val
+        ignore_changes = false
     }
 
-    function setTagWidth(val){
-        ignore_changes=true;
-        tagWidth.value=val;
-        ignore_changes=false;
+    function setTagWidth(val) {
+        ignore_changes = true
+        tagWidth.value = val
+        ignore_changes = false
     }
 
-    function reset(){
-        ignore_changes=true;
-        stampName.text="";
-        linkName.text="";
-        tagWidth.value=30;
-        ignore_changes=false;
+    function reset() {
+        ignore_changes = true
+        stampName.text = ""
+        linkName.text = ""
+        tagWidth.value = 30
+        ignore_changes = false
     }
 
-
-
-
-    spacing:7
+    spacing: 7
 
     // stamp name
-    StampNameInput{
+    StampNameInput {
         id: stampName
 
         labelText: qsTr("Mark name")
         placeholderText: qsTr("Enter mark name")
-
     }
-
 
     // preview label
     Text {
@@ -88,14 +82,13 @@ ColumnLayout {
 
     // preview item
     RubberPreview {
-            id: rubberStampPreview
+        id: rubberStampPreview
 
-            Layout.preferredHeight:  280
-            Layout.fillWidth: true
+        Layout.preferredHeight: 280
+        Layout.fillWidth: true
 
-            imageWidth: 340
-            imageHeight: 280
-
+        imageWidth: 340
+        imageHeight: 280
     }
 
     // link edit label
@@ -107,7 +100,7 @@ ColumnLayout {
     }
 
     // link edit field
-    TextField{
+    TextField {
         id: linkName
         Layout.fillWidth: true
         placeholderText: qsTr("Enter link here")
@@ -116,11 +109,10 @@ ColumnLayout {
         color: StyleSheet.font_color_extra
 
         onTextChanged: {
-            if(!ignore_changes){
+            if (!ignore_changes) {
                 updatePreview()
             }
         }
-
     }
 
     // stamp width slider label
@@ -165,8 +157,8 @@ ColumnLayout {
         icon.source: StyleSheet.save_icon
         icon.width: 20
         icon.height: 20
-        onClicked: {            
-          saveClicked();
+        onClicked: {
+            saveClicked()
         }
     }
 
@@ -183,7 +175,7 @@ ColumnLayout {
         enabled: edit_state
 
         onClicked: {
-            deleteClicked();
+            deleteClicked()
         }
     }
     Item {
