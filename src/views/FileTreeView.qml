@@ -686,13 +686,20 @@ TreeView {
     Connections {
         target: treeView.model
         function onSignDone(sign_result, sign_done) {
-            //console.warn("from treeView model:", JSON.stringify(sign_result))
-            if (JSON.parse(sign_result).warnings !== "") {
-                errorOnSign(String(JSON.parse(sign_result).warnings))
-            }
-            treeSignResultDialog.sign_result = JSON.parse(sign_result)
-            treeSignResultDialog.sign_done = true
+            console.warn("from treeView model:", JSON.stringify(sign_result))
             enableSignButton()
+            let res = JSON.parse(sign_result)
+            const hasWarnings = (Array.isArray(res.warnings)
+                                 && res.warnings.length > 0)
+
+            if (hasWarnings) {
+                const msg = Array.isArray(res.warnings) ? res.warnings.join(
+                                                              "\n") : String(
+                                                              res.warnings)
+                errorOnSign(msg)
+            }
+            treeSignResultDialog.sign_result = res
+            treeSignResultDialog.sign_done = true
             if (sign_done) {
                 fileTreeModel.deleteTree()
                 cleanWindow()

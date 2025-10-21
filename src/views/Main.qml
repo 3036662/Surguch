@@ -497,7 +497,8 @@ ApplicationWindow {
                 treeSignResultDialog.close()
                 break
             case "SIGN_ALL_FILES_FAILED":
-                errorMessageDialog.text = qsTr("Failed to sign all files")
+                errorMessageDialog.text = qsTr(
+                            "Failed to sign files: check the certificate in the profile and CryptoPro (availability and expiration date).")
                 errorMessageDialog.open()
                 treeSignResultDialog.close()
                 break

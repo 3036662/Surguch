@@ -403,6 +403,7 @@ RowLayout {
             signTree(selectedFolder)
             signModeButton.down = true
             signModeButton.enabled = false
+            treeSignResultDialog.sign_done = false
             treeSignResultDialog.open()
         }
     }

@@ -246,10 +246,10 @@
         <translation>Выберите формат CADES</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+47"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+41"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+41"/>
-        <location filename="../../src/views/EditProfile.qml" line="+41"/>
+        <location filename="../../src/views/EditProfile.qml" line="+47"/>
         <source>Stamp</source>
         <translation>Штамп в PDF</translation>
     </message>
@@ -286,10 +286,10 @@
         <translation>Выберите логотип</translation>
     </message>
     <message>
-        <location line="-176"/>
+        <location line="-182"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="-176"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="-176"/>
-        <location filename="../../src/views/EditProfile.qml" line="-176"/>
+        <location filename="../../src/views/EditProfile.qml" line="-182"/>
         <source>TSP server URL</source>
         <translation>Адрес службы TSP</translation>
     </message>
@@ -302,10 +302,10 @@
         <translation>Введите URL службы TSP</translation>
     </message>
     <message>
-        <location line="+188"/>
+        <location line="+194"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+188"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+187"/>
-        <location filename="../../src/views/EditProfile.qml" line="+188"/>
+        <location filename="../../src/views/EditProfile.qml" line="+194"/>
         <source>File signing</source>
         <translation>Подпись файла</translation>
     </message>
@@ -554,9 +554,9 @@
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+61"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/FileTreeView.qml" line="+61"/>
-        <location filename="../../src/views/FileTreeView.qml" line="+57"/>
+        <location filename="../../src/views/FileTreeView.qml" line="+61"/>
         <source> B</source>
         <translation></translation>
     </message>
@@ -930,9 +930,9 @@
         <translation type="vanished">Общая ошибка</translation>
     </message>
     <message>
-        <location line="+128"/>
+        <location line="+129"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+126"/>
-        <location filename="../../src/views/Main.qml" line="+128"/>
+        <location filename="../../src/views/Main.qml" line="+129"/>
         <source>PDF
 Drag&amp;Drop</source>
         <translation>PDF
@@ -948,10 +948,10 @@ Drag&amp;Drop</source>
 Drag&amp;Drop</translation>
     </message>
     <message>
-        <location line="+251"/>
+        <location line="+254"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+238"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+282"/>
-        <location filename="../../src/views/Main.qml" line="+251"/>
+        <location filename="../../src/views/Main.qml" line="+254"/>
         <source>The document was changed after signing, but can be restored</source>
         <translation>Документ был изменен после подписания! Присутствует возможность восстановить подписанную версию</translation>
     </message>
@@ -995,15 +995,19 @@ Drag&amp;Drop</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+5"/>
         <location filename="../../src/views/Main.qml" line="+5"/>
+        <source>Failed to sign files: check the certificate in the profile and CryptoPro (availability and expiration date).</source>
+        <translation>Не удалось подписать файлы: проверьте сертификат в профиле и КриптоПро (наличие и срок действия).</translation>
+    </message>
+    <message>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+5"/>
         <source>Failed to sign all files</source>
         <translation>Подписать все файлы не удалось</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="+6"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+5"/>
-        <location filename="../../src/views/Main.qml" line="+5"/>
+        <location filename="../../src/views/Main.qml" line="+6"/>
         <source>Failed to create archive</source>
         <translation>Создать архив не удалось</translation>
     </message>
@@ -1438,10 +1442,10 @@ Drag&amp;Drop</translation>
 <context>
     <name>RubberPreviewLeftPanel</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+75"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+71"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+75"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+75"/>
-        <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+75"/>
+        <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+71"/>
         <source>Mark name</source>
         <translation>Название</translation>
     </message>
@@ -1454,18 +1458,18 @@ Drag&amp;Drop</translation>
         <translation>Моя метка</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+5"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+7"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+7"/>
-        <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+7"/>
+        <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+5"/>
         <source>Preview</source>
         <translation>Предпросмотр</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+19"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+20"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+20"/>
-        <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+20"/>
+        <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+19"/>
         <source>Link</source>
         <translation>Ссылка</translation>
     </message>
@@ -1478,10 +1482,10 @@ Drag&amp;Drop</translation>
         <translation>Моя ссылка</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+17"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+18"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+18"/>
-        <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+18"/>
+        <location filename="../../src/views/stamp_editor_components/RubberPreviewLeftPanel.qml" line="+17"/>
         <source>Default mark width, % from A4 </source>
         <translation>Ширина метки по умолчанию, % от А4 </translation>
     </message>
@@ -1537,10 +1541,10 @@ Drag&amp;Drop</translation>
         <translation>Выбрать файл</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+29"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+28"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+28"/>
-        <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+28"/>
+        <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+29"/>
         <source>Text</source>
         <translation>Текст</translation>
     </message>
@@ -1553,10 +1557,10 @@ Drag&amp;Drop</translation>
         <translation>Введите текст</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+43"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+42"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+42"/>
-        <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+42"/>
+        <location filename="../../src/views/stamp_editor_components/RubberPreviewRightPanel.qml" line="+43"/>
         <source>Font</source>
         <translation>Шрифт</translation>
     </message>
