@@ -144,6 +144,7 @@ ColumnLayout {
         background: Rectangle {
             border.color: StyleSheet.slider_border_color
             color: "transparent"
+            radius: 4
         }
 
         onTextChanged: {
@@ -191,6 +192,7 @@ ColumnLayout {
             background: Rectangle {
                 border.color: StyleSheet.slider_border_color
                 color: StyleSheet.text_area_background
+                radius: 4
             }
 
             onTextChanged: {

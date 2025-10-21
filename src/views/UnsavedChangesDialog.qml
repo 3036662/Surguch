@@ -10,7 +10,10 @@ import StyleSheet
 Dialog {
     id: unsavedFileDialog
 
+    property bool quit_after
+
     signal saveWithQuit(bool need_quit)
+    signal openTreeDialog
 
     width: 300
     height: unsavedFileDialogContent.height + 10
@@ -67,7 +70,7 @@ Dialog {
                 width: 100
                 onClicked: {
                     unsavedFileDialog.close()
-                    saveWithQuit(true)
+                    saveWithQuit(quit_after)
                 }
             }
 
@@ -76,7 +79,12 @@ Dialog {
                 width: 100
                 onClicked: {
                     unsavedFileDialog.close()
-                    Qt.quit()
+                    pdfListView.sourceIsTmp = false
+                    if (quit_after) {
+                        Qt.quit()
+                    } else {
+                        openTreeDialog()
+                    }
                 }
             }
 

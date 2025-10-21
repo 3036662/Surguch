@@ -524,9 +524,15 @@ bool FileTreeModel::deleteNode(const QString &full_path, int row, QUuid uid,
 
 void FileTreeModel::deleteTree() {
     beginResetModel();
+    operation_data_.clear();
     emit dropState();
     root_item->deleteChildren();
-    tree_.ResetContext();
+    emit treeIsEmpty();
+    if (ctx_available_) {
+        tree_.ResetContext();
+    } else {
+        state_ = NeedReset;
+    }
     endResetModel();
 }
 
@@ -620,18 +626,10 @@ void FileTreeModel::processAdd(const QJsonArray &arr) {
             tree_watcher_->setFuture(*tree_future_);
             return;
         }
-        case RunningDraft: {
-            QStringList file_list;
-            for (const auto &item : arr) {
-                if (item.isString()) {
-                    file_list.append(item.toString());
-                }
-            }
-            addFilesUI(file_list);
-            qDebug() << "[DEBUG] " << "FileTreeModel::addNode()"
-                     << ": updated UI, queue changes";
-            return;
-        }
+        case NeedReset:
+            [[fallthrough]];
+        case RunningDraft:
+            [[fallthrough]];
         case RunningSigns: {
             QStringList file_list;
             for (const auto &item : arr) {
@@ -674,17 +672,10 @@ void FileTreeModel::processDelete(const QJsonArray &arr) {
             tree_watcher_->setFuture(*tree_future_);
             return;
         }
-        case RunningDraft: {
-            for (const auto &item : arr) {
-                if (item.isObject()) {
-                    QJsonObject obj = item.toObject();
-                    const int row = obj["row"].toInt(-1);
-                    const QString uid_str = obj["uid"].toString();
-                    deleteFilesUI(row, QUuid(uid_str));
-                }
-            }
-            return;
-        }
+        case NeedReset:
+            [[fallthrough]];
+        case RunningDraft:
+            [[fallthrough]];
         case RunningSigns: {
             for (const auto &item : arr) {
                 if (item.isObject()) {
@@ -703,6 +694,11 @@ void FileTreeModel::processDraftTree() {
     if (tree_future_ && tree_future_->isValid()) {
         std::optional<std::string> res = tree_future_->takeResult();
         ctx_available_ = true;
+        if (state_ == NeedReset) {
+            tree_.ResetContext();
+            res = std::nullopt;
+            state_ = RunningDraft;
+        }
         if (operation_data_.empty()) {
             qDebug() << "[DEBUG]" << " FileTreeModel::processDraftTree(): "
                      << "starting check signs";
@@ -742,6 +738,11 @@ void FileTreeModel::processSignedTree() {
     if (tree_future_ && tree_future_->isValid()) {
         std::optional<std::string> res = tree_future_->takeResult();
         ctx_available_ = true;
+        if (state_ == NeedReset) {
+            tree_.ResetContext();
+            res = std::nullopt;
+            state_ = RunningSigns;
+        }
         state_ = Done;
         if (operation_data_.empty()) {
             if (res.has_value()) {
@@ -767,6 +768,9 @@ void FileTreeModel::processSignedTree() {
                                   });
                     endResetModel();
                 }
+            }
+            if (root_item->childCount() == 0) {
+                emit treeIsEmpty();
             }
             return;
         }
@@ -840,6 +844,9 @@ void FileTreeModel::addFilesUI(const QStringList &file_list) {
 void FileTreeModel::deleteFilesUI(int row, QUuid uid) {
     beginRemoveRows(QModelIndex(), row, row);
     root_item->deleteItem(uid);
+    if (root_item->childCount() == 0) {
+        emit treeIsEmpty();
+    }
     endRemoveRows();
 }
 

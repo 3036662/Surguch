@@ -38,16 +38,19 @@ RowLayout {
     }
 
     function launchSaveFileWithQuit(quit_after_save) {
-        let dlg
-        if (kdeVersion === "5") {
-            dlg = labsSaveFileDialog
-        } else {
-            dlg = saveFileDialog
-        }
+        let dlg = saveFileDialog
         if (quit_after_save) {
             dlg.quitAfterSave = true
         }
         dlg.open()
+    }
+
+    function openPdfDialog() {
+        fileDialog.open()
+    }
+
+    function openTreeDialog() {
+        fileTreeDialog.open()
     }
 
     spacing: 5
@@ -67,7 +70,14 @@ RowLayout {
             icon.source: StyleSheet.plus_circle_icon
             //text: qsTr("Open")
             text: qsTr("File")
-            onClicked: fileTreeDialog.open()
+            onClicked: {
+                if (pdfListView.sourceIsTmp) {
+                    unsavedFileDialog.quit_after = false
+                    unsavedFileDialog.open()
+                } else {
+                    fileTreeDialog.open()
+                }
+            }
         }
 
         HeaderBarComponents.TopBarButton {
@@ -262,7 +272,6 @@ RowLayout {
                     }
                 }
                 if (showType === Main.ShowType.Files) {
-                    console.warn("SignTree")
                     saveFolderDialog.open()
                 }
             }
@@ -321,7 +330,6 @@ RowLayout {
     CommonDialogs.FileDialog {
         id: fileDialog
         fileMode: CommonDialogs.FileDialog.OpenFile
-        //nameFilters: ["PDF files (*.pdf)","Any file (* *.*)"];
         nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
         currentFolder: StandardPaths.writableLocation(
                            StandardPaths.DocumentsLocation)
@@ -338,14 +346,13 @@ RowLayout {
     CommonDialogs.FileDialog {
         id: fileTreeDialog
         fileMode: CommonDialogs.FileDialog.OpenFiles
-        //nameFilters: ["PDF files (*.pdf)","Any file (* *.*)"];
-        //nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
         currentFolder: StandardPaths.writableLocation(
                            StandardPaths.DocumentsLocation)
         onAccepted: {
             fileTreeModel.addNode(currentFiles)
             rightSideBar.showState = RightSideBar.ShowState.Invisible
             changeShowType(2)
+            root_window.title = qsTr("Surguch")
         }
     }
 
@@ -380,12 +387,15 @@ RowLayout {
             headerSubBar.updateHistory()
             if (quitAfterSave) {
                 Qt.quit()
+            } else {
+                openTreeDialog()
             }
         }
     }
 
     CommonDialogs.FolderDialog {
         id: saveFolderDialog
+        title: qsTr("Choose a folder to save the signed files")
         currentFolder: StandardPaths.writableLocation(
                            StandardPaths.HomeLocation)
 
@@ -393,6 +403,7 @@ RowLayout {
             signTree(selectedFolder)
             signModeButton.down = true
             signModeButton.enabled = false
+            treeSignResultDialog.sign_done = false
             treeSignResultDialog.open()
         }
     }

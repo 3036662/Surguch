@@ -31,8 +31,8 @@ void TreeSignHelper::createSigSettings(const QVariantMap &qvparams) {
     if (qvparams.contains("cades_type")) {
         settings_.cades_type = qvparams.value("cades_type").toString();
     }
-    if (qvparams.contains("tsp_link")) {
-        settings_.tsp_link = qvparams.value("tsp_link").toString();
+    if (qvparams.contains("tsp_url")) {
+        settings_.tsp_link = qvparams.value("tsp_url").toString();
     }
     if (qvparams.contains("sig_ext")) {
         settings_.sig_extension = qvparams.value("sig_ext").toString();
