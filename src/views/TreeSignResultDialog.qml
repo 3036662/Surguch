@@ -12,7 +12,7 @@ Dialog {
     title: qsTr("Signing result")
     modal: true
     width: 520
-    height: 400
+    height: 430
     padding: 12
     closePolicy: Popup.CloseOnEscape
 
@@ -73,7 +73,7 @@ Dialog {
 
         ScrollView {
             Layout.fillWidth: true
-            Layout.maximumHeight: 220
+            Layout.maximumHeight: 200
             TextArea {
                 id: filesArea
                 Layout.fillWidth: true
