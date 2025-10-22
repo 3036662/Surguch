@@ -7,12 +7,12 @@ Dialog {
     id: root
 
     property var sign_result
-    property bool sign_done: false
+    property bool sign_done: true
 
     title: qsTr("Signing result")
     modal: true
     width: 520
-    height: 400
+    height: 430
     padding: 12
     closePolicy: Popup.CloseOnEscape
 
@@ -21,7 +21,7 @@ Dialog {
 
     BusyIndicator {
         visible: !root.sign_done
-        running: !root.sign_done
+        running: visible
         anchors.centerIn: parent
         width: 64
         height: 64
@@ -33,7 +33,7 @@ Dialog {
         visible: root.sign_done
 
         Label {
-            text: qsTr("Final directory")
+            text: qsTr("Final folder")
             font.bold: true
             font.family: "Noto Sans"
             font.pixelSize: 12
@@ -48,7 +48,7 @@ Dialog {
                 id: dirField
                 readOnly: true
                 text: sign_result?.final_dir ?? ""
-                placeholderText: qsTr("No directory")
+                placeholderText: qsTr("No folder")
                 font.family: "Noto Sans"
                 font.pixelSize: 12
                 Layout.fillWidth: true
@@ -73,7 +73,7 @@ Dialog {
 
         ScrollView {
             Layout.fillWidth: true
-            Layout.maximumHeight: 220
+            Layout.maximumHeight: 200
             TextArea {
                 id: filesArea
                 Layout.fillWidth: true

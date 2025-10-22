@@ -604,10 +604,10 @@
         <translation>Показать в папке</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+7"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+7"/>
-        <location filename="../../src/views/Header.qml" line="+7"/>
+        <location filename="../../src/views/Header.qml" line="+8"/>
         <source>Save as ...</source>
         <translation>Сохранить как ...</translation>
     </message>
@@ -616,10 +616,10 @@
         <translation type="vanished">Печать</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+54"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+53"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+54"/>
-        <location filename="../../src/views/Header.qml" line="+53"/>
+        <location filename="../../src/views/Header.qml" line="+54"/>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>
@@ -636,11 +636,11 @@
         <translation type="vanished">Pdf файлы (*.pdf)</translation>
     </message>
     <message>
-        <location line="+79"/>
+        <location line="+84"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+81"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+75"/>
         <location line="+55"/>
-        <location filename="../../src/views/Header.qml" line="+79"/>
+        <location filename="../../src/views/Header.qml" line="+84"/>
         <source>Any file (* *.*)</source>
         <translation>Любой файл (* *.*)</translation>
     </message>
@@ -658,18 +658,18 @@
         <translation>PDF файлы (*.pdf)</translation>
     </message>
     <message>
-        <location line="-255"/>
+        <location line="-260"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="-258"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="-273"/>
-        <location filename="../../src/views/Header.qml" line="-255"/>
+        <location filename="../../src/views/Header.qml" line="-260"/>
         <source>Profile settings</source>
         <translation>Настройка профиля</translation>
     </message>
     <message>
-        <location line="-46"/>
+        <location line="-48"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="-39"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="-42"/>
-        <location filename="../../src/views/Header.qml" line="-46"/>
+        <location filename="../../src/views/Header.qml" line="-48"/>
         <source>PDF</source>
         <translation></translation>
     </message>
@@ -682,10 +682,10 @@
         <translation>Файл</translation>
     </message>
     <message>
-        <location line="+217"/>
+        <location line="+224"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Header.qml" line="+211"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+207"/>
-        <location filename="../../src/views/Header.qml" line="+217"/>
+        <location filename="../../src/views/Header.qml" line="+224"/>
         <source>About program</source>
         <translation>О программе</translation>
     </message>
@@ -1420,10 +1420,10 @@ Drag&amp;Drop</translation>
 <context>
     <name>RSBTextArea</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/RSBTextArea.qml" line="+14"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/RSBTextArea.qml" line="+15"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/info_panel_components/RSBTextArea.qml" line="+14"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/RSBTextArea.qml" line="+14"/>
-        <location filename="../../src/views/info_panel_components/RSBTextArea.qml" line="+14"/>
+        <location filename="../../src/views/info_panel_components/RSBTextArea.qml" line="+15"/>
         <source>Placeholder text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2079,9 +2079,21 @@ Drag&amp;Drop</translation>
         <translation>Результат</translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+24"/>
+        <location filename="../../src/views/TreeSignResultDialog.qml" line="+24"/>
+        <source>Final folder</source>
+        <translation>Итоговая папка</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <location filename="../../src/views/TreeSignResultDialog.qml" line="+15"/>
+        <source>No folder</source>
+        <translation>Нет папки</translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/TreeSignResultDialog.qml" line="+55"/>
-        <location filename="../../src/views/TreeSignResultDialog.qml" line="+55"/>
+        <location filename="../../src/views/TreeSignResultDialog.qml" line="+16"/>
         <source>Files</source>
         <translation>Файлы</translation>
     </message>
@@ -2093,23 +2105,19 @@ Drag&amp;Drop</translation>
         <translation>Нет файлов</translation>
     </message>
     <message>
-        <location line="-51"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/TreeSignResultDialog.qml" line="-51"/>
-        <location filename="../../src/views/TreeSignResultDialog.qml" line="-51"/>
         <source>Final directory</source>
         <translation>Итоговая директория</translation>
     </message>
     <message>
         <location line="+15"/>
-        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/TreeSignResultDialog.qml" line="+15"/>
-        <location filename="../../src/views/TreeSignResultDialog.qml" line="+15"/>
         <source>No directory</source>
         <translation>Нет директории</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/TreeSignResultDialog.qml" line="-29"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/TreeSignResultDialog.qml" line="+7"/>
-        <location filename="../../src/views/TreeSignResultDialog.qml" line="+7"/>
+        <location filename="../../src/views/TreeSignResultDialog.qml" line="-29"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>

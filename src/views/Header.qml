@@ -60,14 +60,14 @@ RowLayout {
         Layout.fillWidth: true
 
         HeaderBarComponents.TopBarButton {
-            icon.source: StyleSheet.file_plus_icon
+            icon.source: StyleSheet.file_text_icon
             //text: qsTr("Open")
             text: qsTr("PDF")
             onClicked: fileDialog.open()
         }
 
         HeaderBarComponents.TopBarButton {
-            icon.source: StyleSheet.plus_circle_icon
+            icon.source: StyleSheet.file_simple_icon
             //text: qsTr("Open")
             text: qsTr("File")
             onClicked: {
@@ -81,16 +81,18 @@ RowLayout {
         }
 
         HeaderBarComponents.TopBarButton {
-            icon.source: StyleSheet.file_simple_icon
+            icon.source: StyleSheet.folder_simple_icon
             text: qsTr("Show in folder")
             enabled: pdfListView.source.length > 0 && !pdfListView.sourceIsTmp
+                     && showType === Main.ShowType.Pdf
             onClicked: pdfListView.showInFolder()
         }
 
         HeaderBarComponents.TopBarButton {
-            icon.source: StyleSheet.folder_plus_icon
+            icon.source: StyleSheet.save_icon
             text: qsTr("Save as ...")
             enabled: pdfListView.source.length > 0
+                     && showType === Main.ShowType.Pdf
             onClicked: saveFileDialog.open()
         }
 
@@ -272,7 +274,12 @@ RowLayout {
                     }
                 }
                 if (showType === Main.ShowType.Files) {
-                    saveFolderDialog.open()
+                    if (profileComboBox.currentValue === "new"
+                            || profileComboBox.currentIndex === -1) {
+                        profileComboBox.popup.open()
+                    } else {
+                        saveFolderDialog.open()
+                    }
                 }
             }
         }
