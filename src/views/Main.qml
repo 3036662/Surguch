@@ -451,11 +451,13 @@ ApplicationWindow {
             errorMessageDialog.open()
             pdfListView.source = ""
             leftSideBar.source = ""
-            root_window.showType = Main.ShowType.Empty
-            fileDropArea.width = width / 2
-            fileDropArea.enabled = true
-            pdfDropArea.width = width / 2
-            pdfDropArea.enabled = true
+            Qt.callLater(function () {
+                root_window.showType = Main.ShowType.Empty
+                fileDropArea.width = width / 2
+                fileDropArea.enabled = true
+                pdfDropArea.width = width / 2
+                pdfDropArea.enabled = true
+            })
         })
         // file common status alerts
         siglistModel.commonDocStatus.connect(function (status) {
