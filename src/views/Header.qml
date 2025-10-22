@@ -84,6 +84,7 @@ RowLayout {
             icon.source: StyleSheet.folder_simple_icon
             text: qsTr("Show in folder")
             enabled: pdfListView.source.length > 0 && !pdfListView.sourceIsTmp
+                     && showType === Main.ShowType.Pdf
             onClicked: pdfListView.showInFolder()
         }
 
@@ -91,6 +92,7 @@ RowLayout {
             icon.source: StyleSheet.save_icon
             text: qsTr("Save as ...")
             enabled: pdfListView.source.length > 0
+                     && showType === Main.ShowType.Pdf
             onClicked: saveFileDialog.open()
         }
 
@@ -272,7 +274,12 @@ RowLayout {
                     }
                 }
                 if (showType === Main.ShowType.Files) {
-                    saveFolderDialog.open()
+                    if (profileComboBox.currentValue === "new"
+                            || profileComboBox.currentIndex === -1) {
+                        profileComboBox.popup.open()
+                    } else {
+                        saveFolderDialog.open()
+                    }
                 }
             }
         }

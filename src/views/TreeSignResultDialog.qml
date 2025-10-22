@@ -7,7 +7,7 @@ Dialog {
     id: root
 
     property var sign_result
-    property bool sign_done: false
+    property bool sign_done: true
 
     title: qsTr("Signing result")
     modal: true
@@ -21,7 +21,7 @@ Dialog {
 
     BusyIndicator {
         visible: !root.sign_done
-        running: !root.sign_done
+        running: visible
         anchors.centerIn: parent
         width: 64
         height: 64

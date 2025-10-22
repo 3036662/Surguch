@@ -411,6 +411,7 @@ TreeView {
                     anchors.centerIn: parent
                     width: sizeColumn
                     visible: model.type === "temp"
+                    running: visible
                 }
             }
 
@@ -461,6 +462,7 @@ TreeView {
                     anchors.centerIn: parent
                     width: editColumn
                     visible: model.type === "temp"
+                    running: visible
                 }
             }
 
@@ -529,6 +531,7 @@ TreeView {
                     anchors.fill: parent
                     width: signColumn
                     visible: fileTreeModel.isDraft
+                    running: visible
                 }
             }
 
@@ -598,6 +601,7 @@ TreeView {
                     anchors.fill: parent
                     width: mrpaColumn
                     visible: fileTreeModel.isDraft
+                    running: visible
                 }
             }
 
