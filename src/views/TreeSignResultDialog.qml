@@ -33,7 +33,7 @@ Dialog {
         visible: root.sign_done
 
         Label {
-            text: qsTr("Final directory")
+            text: qsTr("Final folder")
             font.bold: true
             font.family: "Noto Sans"
             font.pixelSize: 12
@@ -48,7 +48,7 @@ Dialog {
                 id: dirField
                 readOnly: true
                 text: sign_result?.final_dir ?? ""
-                placeholderText: qsTr("No directory")
+                placeholderText: qsTr("No folder")
                 font.family: "Noto Sans"
                 font.pixelSize: 12
                 Layout.fillWidth: true
