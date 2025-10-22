@@ -7,6 +7,7 @@ TextArea {
     background: Rectangle {
         border.color: StyleSheet.slider_border_color
         color: StyleSheet.text_area_background
+        radius: 4
     }
     width: parent.width
     selectByMouse: true

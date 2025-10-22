@@ -18,8 +18,8 @@ Switch {
         x: parent.width - width
         y: parent.height / 2 - height / 2
         radius: width / 2
-        color: control.checked ? "#17a81a" : "#ffffff"
-        border.color: control.checked ? "#17a81a" : "#cccccc"
+        color: control.checked ? "green" : "#ffffff"
+        border.color: control.checked ? "green" : "#cccccc"
 
         Rectangle {
             x: control.checked ? parent.width - width : 0
@@ -28,7 +28,7 @@ Switch {
             radius: width / 2
             color: control.down ? "#ffffff" : StyleSheet.slider_handle_color
             border.width: control.visualFocus ? 4 : 2
-            border.color: control.checked ? (control.down ? "#17a81a" : StyleSheet.slider_border_color) : StyleSheet.slider_border_color
+            border.color: control.checked ? (control.down ? "green" : StyleSheet.slider_border_color) : StyleSheet.slider_border_color
         }
     }
 
@@ -36,7 +36,7 @@ Switch {
         text: control.text
         font: control.font
         opacity: enabled ? 1.0 : 0.3
-        color: control.checked ? "#21be2b" : "grey"
+        color: control.checked ? "green" : "grey"
         verticalAlignment: Text.AlignVCenter
     }
 }

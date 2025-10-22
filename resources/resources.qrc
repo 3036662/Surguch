@@ -86,5 +86,7 @@
         <file>icons/light/file_text_big.svg</file>
         <file>icons/dark/file_simple_big.svg</file>
         <file>icons/light/file_simple_big.svg</file>
+        <file>icons/light/folder_simple.svg</file>
+        <file>icons/dark/folder_simple.svg</file>
     </qresource>
 </RCC>

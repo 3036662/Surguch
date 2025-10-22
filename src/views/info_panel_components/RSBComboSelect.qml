@@ -82,7 +82,7 @@ ComboBox {
         implicitHeight: 29
         border.color: StyleSheet.slider_border_color
         border.width: control.visualFocus ? 2 : 1
-        radius: 2
+        radius: 4
         color: StyleSheet.combo_box_background
     }
 }
