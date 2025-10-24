@@ -218,7 +218,7 @@ QVariant FileTreeModel::data(const QModelIndex &index, int role) const {
         case LastEditRole:
             return QLocale().toString(
                 QDateTime::fromSecsSinceEpoch(item->data().last_modified),
-                "yyyy.MM.dd hh:mm");
+                "dd.MM.yyyy hh:mm");
         case TypeRole:
             return item->data().type;
         case SigStatusRole:
