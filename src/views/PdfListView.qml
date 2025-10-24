@@ -1153,12 +1153,6 @@ ListView {
                         if (event.key === Qt.Key_Down) {
                             flick(0, -300)
                         }
-                        if (event.key === Qt.Key_P
-                            && event.modifiers === Qt.ControlModifier) {
-                            printer.print(pdfListView.source,
-                                          pdfListView.count,
-                                          pdfListView.landscape)
-                        }
                         let currentIndexAtTop = currentPageIndex() + 1
                         if (!currentIndexAtTop) {
                             return

@@ -575,6 +575,9 @@ ApplicationWindow {
             }
         })
         unsavedFileDialog.saveWithQuit.connect(header.launchSaveFileWithQuit)
+        headerSubBar.quitApp.connect(function () {
+            close()
+        })
         // go into file mode after pdf
         unsavedFileDialog.openTreeDialog.connect(header.openTreeDialog)
         // invalid pdf
