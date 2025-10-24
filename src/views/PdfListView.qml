@@ -520,7 +520,7 @@ ListView {
 
     // this function will trigger a call to PDFPage.onAimResizeStatusChanged,
     // which will cause updateCrossSize to be called.
-    function forceAimResize() {    
+    function forceAimResize() {
         aimIsAlreadyResized = false
         needCrossUpdate()
     }
@@ -685,7 +685,7 @@ ListView {
                 // if not resized yet
                 if (!pdfListViewRoot.aimIsAlreadyResized) {
                     cross.width = basic_width
-                    cross.height = basic_height            
+                    cross.height = basic_height
                     // run background estimate of stamp size
                     if (!aimResizeInProgress) {
                         let location_data = getLocation()
@@ -1011,7 +1011,7 @@ ListView {
                                     mouse.accepted = true
                                 } else if (pdfListViewRoot.tagMode
                                            && tagCross.valid_position) {
-                                    
+
                                     let t_data = JSON.parse(tagData)
                                     let rubber_stamp_data = {
                                         "page_index": index,
@@ -1130,8 +1130,10 @@ ListView {
                     event.accepted = true
                     return
                 }
-                ;
-                event.accepted = false
+                const speed = 2
+                pdfListViewRoot.contentY -= event.angleDelta.y * speed
+                pdfListViewRoot.contentX -= event.angleDelta.x * speed
+                event.accepted = true
             }
         }
     }
@@ -1150,12 +1152,6 @@ ListView {
                         }
                         if (event.key === Qt.Key_Down) {
                             flick(0, -300)
-                        }
-                        if (event.key === Qt.Key_P
-                            && event.modifiers === Qt.ControlModifier) {
-                            printer.print(pdfListView.source,
-                                          pdfListView.count,
-                                          pdfListView.landscape)
                         }
                         let currentIndexAtTop = currentPageIndex() + 1
                         if (!currentIndexAtTop) {

@@ -53,6 +53,10 @@ RowLayout {
         fileTreeDialog.open()
     }
 
+    function openSavePdfDialog() {
+        saveFileDialog.open()
+    }
+
     spacing: 5
 
     Row {

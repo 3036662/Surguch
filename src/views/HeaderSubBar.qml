@@ -26,6 +26,7 @@ ColumnLayout {
     signal showCerts
     signal undoAction
     signal redoAction
+    signal quitApp
 
     function changePageCount(newCount) {
         page_number.pageCount = newCount
@@ -394,6 +395,7 @@ ColumnLayout {
 
     Shortcut {
         sequence: "Ctrl+F"
+        enabled: showType === Main.ShowType.Pdf
         onActivated: {
             searchDialog.open()
             searchDialog.focus = true
@@ -403,10 +405,9 @@ ColumnLayout {
     Shortcut {
         id: undoShortcut
 
-        enabled: undoCount > 0
+        enabled: undoCount > 0 && showType === Main.ShowType.Pdf
         sequence: "Ctrl+Z"
         onActivated: {
-            //console.warn("undo")
             undoAction()
             updateHistory()
         }
@@ -415,11 +416,51 @@ ColumnLayout {
     Shortcut {
         id: redoShortcut
 
-        enabled: redoCount > 0
+        enabled: redoCount > 0 && showType === Main.ShowType.Pdf
         sequence: "Ctrl+Y"
         onActivated: {
-            //console.warn("redo")
             redoAction()
+        }
+    }
+
+    Shortcut {
+        id: quitShortcut
+
+        enabled: showType === Main.ShowType.Pdf
+        sequence: "Ctrl+Q"
+        onActivated: {
+            quitApp()
+        }
+    }
+
+    Shortcut {
+        id: saveShortcut
+
+        enabled: showType === Main.ShowType.Pdf
+        sequence: "Ctrl+S"
+        onActivated: {
+            header.openSavePdfDialog()
+        }
+    }
+
+    Shortcut {
+        id: openShortcut
+
+        enabled: showType === Main.ShowType.Pdf
+        sequence: "Ctrl+O"
+        onActivated: {
+            header.openPdfDialog()
+        }
+    }
+
+    Shortcut {
+        id: printShortcut
+
+        enabled: showType === Main.ShowType.Pdf
+        sequence: "Ctrl+P"
+        onActivated: {
+            printer.print(pdfListView.source, pdfListView.count,
+                          pdfListView.landscape)
         }
     }
 }

@@ -553,9 +553,9 @@ Flickable {
             model: [{
                     "title": qsTr("Don't use")
                 }, {
-                    "title": qsTr("Common ZIP file")
+                    "title": qsTr("Common ZIP-file")
                 }, {
-                    "title": qsTr("Separate ZIP file")
+                    "title": qsTr("Separate ZIP-file")
                 }]
             textRole: "title"
             valueRole: "title"

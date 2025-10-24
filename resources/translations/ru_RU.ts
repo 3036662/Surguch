@@ -388,20 +388,28 @@
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+2"/>
         <location filename="../../src/views/EditProfile.qml" line="+2"/>
+        <source>Common ZIP-file</source>
+        <translation>Общий ZIP-файл</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../../src/views/EditProfile.qml" line="+2"/>
+        <source>Separate ZIP-file</source>
+        <translation>Отдельный ZIP-файл</translation>
+    </message>
+    <message>
+        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+2"/>
         <source>Common ZIP file</source>
         <translation>Общий ZIP файл</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+2"/>
-        <location filename="../../src/views/EditProfile.qml" line="+2"/>
         <source>Separate ZIP file</source>
         <translation>Отдельный ZIP файл</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/EditProfile.qml" line="+6"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/EditProfile.qml" line="+6"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EditProfile.qml" line="+18"/>
         <location filename="../../src/views/EditProfile.qml" line="+6"/>
@@ -948,10 +956,10 @@ Drag&amp;Drop</source>
 Drag&amp;Drop</translation>
     </message>
     <message>
-        <location line="+254"/>
+        <location line="+256"/>
         <location filename="../../build/Desktop-Release/src/gui_pdf_csp/views/Main.qml" line="+238"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+282"/>
-        <location filename="../../src/views/Main.qml" line="+254"/>
+        <location filename="../../src/views/Main.qml" line="+256"/>
         <source>The document was changed after signing, but can be restored</source>
         <translation>Документ был изменен после подписания! Присутствует возможность восстановить подписанную версию</translation>
     </message>
