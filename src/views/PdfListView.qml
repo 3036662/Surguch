@@ -1133,6 +1133,7 @@ ListView {
                 const speed = 2
                 pdfListViewRoot.contentY -= event.angleDelta.y * speed
                 pdfListViewRoot.contentX -= event.angleDelta.x * speed
+                returnToBounds()
                 event.accepted = true
             }
         }
