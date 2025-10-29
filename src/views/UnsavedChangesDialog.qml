@@ -11,8 +11,9 @@ Dialog {
     id: unsavedFileDialog
 
     property bool quit_after
+    property bool switch_mode
 
-    signal saveWithQuit(bool need_quit)
+    signal saveWithQuit(bool need_quit, bool need_switch_mode)
     signal openTreeDialog
 
     width: 300
@@ -70,7 +71,7 @@ Dialog {
                 width: 100
                 onClicked: {
                     unsavedFileDialog.close()
-                    saveWithQuit(quit_after)
+                    saveWithQuit(quit_after, switch_mode)
                 }
             }
 
@@ -82,7 +83,8 @@ Dialog {
                     pdfListView.sourceIsTmp = false
                     if (quit_after) {
                         Qt.quit()
-                    } else {
+                    }
+                    if (switch_mode) {
                         openTreeDialog()
                     }
                 }

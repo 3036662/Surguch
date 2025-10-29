@@ -37,8 +37,11 @@ RowLayout {
         signModeButton.down = false
     }
 
-    function launchSaveFileWithQuit(quit_after_save) {
+    function launchSaveFileWithQuit(quit_after_save, switch_to_tree) {
         let dlg = saveFileDialog
+        if (switch_to_tree) {
+            dlg.switchMode = true
+        }
         if (quit_after_save) {
             dlg.quitAfterSave = true
         }
@@ -77,6 +80,7 @@ RowLayout {
             onClicked: {
                 if (pdfListView.sourceIsTmp) {
                     unsavedFileDialog.quit_after = false
+                    unsavedFileDialog.switch_mode = true
                     unsavedFileDialog.open()
                 } else {
                     fileTreeDialog.open()
@@ -371,6 +375,7 @@ RowLayout {
         id: saveFileDialog
 
         property bool quitAfterSave: false
+        property bool switchMode: false
 
         fileMode: CommonDialogs.FileDialog.SaveFile
         defaultSuffix: "pdf"
@@ -398,9 +403,17 @@ RowLayout {
             headerSubBar.updateHistory()
             if (quitAfterSave) {
                 Qt.quit()
-            } else {
-                openTreeDialog()
             }
+            if (switchMode) {
+                openTreeDialog()
+                unsavedFileDialog.switch_mode = false
+                switchMode = false
+            }
+        }
+
+        onRejected: {
+            switchMode = false
+            unsavedFileDialog.switch_mode = false
         }
     }
 
