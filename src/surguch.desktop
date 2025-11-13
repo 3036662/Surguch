@@ -2,9 +2,9 @@
 Type=Application
 Name=Surguch
 Name[ru]=Сургуч
-GenericName=PDF Reader with electroinc signatures support
+GenericName=PDF Reader with electronic signatures support
 GenericName[ru]=Приложение для проверки и подписи PDF
-Comment=Reader with electroinc signatures support
+Comment=Reader with electronic signatures support
 Comment[ru]=Проверка и подпись PDF-документов
 MimeType=application/pdf;
 Exec=surguch %f
