@@ -162,7 +162,7 @@ due to its template nature.
  * Don't use a pointer to a [bool implicit cast](https://clang.llvm.org/extra/clang-tidy/checks/readability/implicit-bool-conversion.html) `if (ptr){...}`.
  * Leave a comment if you need to use `reinterpret_cast`.
   
-# Preincrement and Preincrement
+# Pre-Increment and Pre-Decrement
 
 * Use the prefix form (++i) of the increment and decrement operators unless you need postfix semantics.
 
