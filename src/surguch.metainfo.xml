@@ -10,7 +10,7 @@
     Surguch is an application for working with electronic documents that allows you to view, sign and verify electronic signatures in accordance with the requirements of Russian legislation.
   </p>
   </description>
-  <developer_name>Your Name</developer_name>
+  <developer_name>ALT Linux</developer_name>
   <url type="homepage">https://gitlab.basealt.space/proskurinov/surguch</url>
   <licenses><license>GPL-3.0-or-later</license></licenses>
   <metadata_license>CC0-1.0</metadata_license>

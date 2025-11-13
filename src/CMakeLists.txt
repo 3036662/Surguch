@@ -232,6 +232,7 @@ endif ()
 
 install(TARGETS surguch RUNTIME)
 install(FILES surguch.desktop DESTINATION ${SHARE_INSTALL_PREFIX}/applications PERMISSIONS WORLD_READ WORLD_EXECUTE)
+install(FILES surguch.metainfo.xml DESTINATION ${SHARE_INSTALL_PREFIX}/metainfo PERMISSIONS WORLD_READ)
 
 IF (NOT DEFINED APP_ICON_DIR)
     SET(APP_ICON_DIR /usr/share/icons/hicolor/scalable/apps/)
