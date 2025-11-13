@@ -6,12 +6,19 @@ import StyleSheet
 Dialog {
     id: root
 
-    property string version: "0.3-alt1"
+    property string version: "0.4.2"
 
-    width: 380
+    width: 410
     height: 130
-    leftMargin: 10
-    rightMargin: 10
+    topPadding: StyleSheet.defaultPaddingV
+    bottomPadding: StyleSheet.defaultPaddingV
+    leftPadding: StyleSheet.defaultPaddingH
+    rightPadding: StyleSheet.defaultPaddingH
+    topMargin: StyleSheet.defaultMarginV
+    bottomMargin: StyleSheet.defaultMarginV
+    leftMargin: StyleSheet.defaultMarginH
+    rightMargin: StyleSheet.defaultMarginH
+
     modal: true
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2
@@ -22,12 +29,14 @@ Dialog {
         Text {
             text: qsTr("Surguch - application for work with digital signature")
             font.family: "Noto Sans"
+            font.pointSize: 10
             color: StyleSheet.font_color_extra
         }
 
         Text {
             text: qsTr("Version ") + root.version
             font.family: "Noto Sans"
+            font.pointSize: 10
             color: StyleSheet.font_color_extra
         }
 
@@ -36,6 +45,7 @@ Dialog {
                                        "https://www.altlinux.org/Сургуч"))
             textFormat: Text.RichText
             font.family: "Noto Sans"
+            font.pointSize: 10
             color: StyleSheet.font_color_extra
 
             linkColor: "#1a73e8"

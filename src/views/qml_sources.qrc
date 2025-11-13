@@ -1,39 +1,55 @@
-<?xml version="1.0"?>
 <RCC>
     <qresource prefix="/gui_pdf_csp">
-        <file>CertInfo.qml</file>
         <file>EditProfile.qml</file>
         <file>Header.qml</file>
         <file>HeaderSubBar.qml</file>
-        <file>HeaderToolSeparator.qml</file>
         <file>LeftSideBar.qml</file>
         <file>Main.qml</file>
         <file>PdfListView.qml</file>
         <file>PreviewListView.qml</file>
-        <file>RightSBHorizontalDelimiter.qml</file>
         <file>RightSideBar.qml</file>
-        <file>RightSideBarCertChain.qml</file>
-        <file>RSBCloseButton.qml</file>
-        <file>RSBComboSelect.qml</file>
-        <file>RSBSigInfo.qml</file>
-        <file>RSBSwitch.qml</file>
-        <file>RSBTextArea.qml</file>
-        <file>RSideBarStatusMedal.qml</file>
-        <file>SignaturesList.qml</file>
-        <file>TextPair.qml</file>
-        <file>TextPairBool.qml</file>
-        <file>TextPairStatus.qml</file>
-        <file>TopBarButton.qml</file>
         <file>UnsavedChangesDialog.qml</file>
-        <file>StampPreview.qml</file>
         <file>StampEditor.qml</file>
-        <file>SettingSlider.qml</file>
         <file>SearchDialog.qml</file>
         <file>RubberStampDialog.qml</file>
-        <file>RubberStampItem.qml</file>
         <file>RubberStampEditor.qml</file>
-        <file>RubberPreview.qml</file>
         <file>InfoDialog.qml</file>
-        <file>SettingSwitch.qml</file>
+        <file>stamp_editor_components/RubberPreviewLeftPanel.qml</file>
+        <file>stamp_editor_components/RubberPreview.qml</file>
+        <file>stamp_editor_components/SettingSlider.qml</file>
+        <file>stamp_editor_components/SettingSwitch.qml</file>
+        <file>stamp_editor_components/ColorSlider.qml</file>
+        <file>stamp_editor_components/RGBColorPicker.qml</file>
+        <file>stamp_editor_components/BorderSettings.qml</file>
+        <file>stamp_editor_components/TopLabelWithCloseButton.qml</file>
+        <file>stamp_editor_components/StampNameInput.qml</file>
+        <file>stamp_editor_components/TransparencySwitch.qml</file>
+        <file>stamp_editor_components/RubberPreviewRightPanel.qml</file>
+        <file>stamp_editor_components/StampPreview.qml</file>
+        <file>info_panel_components/RSBCloseButton.qml</file>
+        <file>info_panel_components/RSBSwitch.qml</file>
+        <file>info_panel_components/RSBTextArea.qml</file>
+        <file>info_panel_components/RSBComboSelect.qml</file>
+        <file>info_panel_components/TextPair.qml</file>
+        <file>info_panel_components/TextPairBool.qml</file>
+        <file>info_panel_components/TextPairStatus.qml</file>
+        <file>info_panel_components/RightSBHorizontalDelimiter.qml</file>
+        <file>info_panel_components/RSideBarStatusMedal.qml</file>
+        <file>info_panel_components/RightSideBarCertChain.qml</file>
+        <file>CertInfo.qml</file>
+        <file>info_panel_components/SignaturesList.qml</file>
+        <file>info_panel_components/RSBSigInfo.qml</file>
+        <file>header_bar_components/HeaderToolSeparator.qml</file>
+        <file>header_bar_components/TopBarButton.qml</file>
+        <file>header_bar_components/SubBarButton.qml</file>
+        <file>RubberStampListEntry.qml</file>
+        <file>SigCreatorWrapper.qml</file>
+        <file>DisappearingHint.qml</file>
+        <file>FileTreeView.qml</file>
+        <file>FileModeHeaderSubBar.qml</file>
+        <file>info_panel_components/MrpaList.qml</file>
+        <file>info_panel_components/MrpaInfo.qml</file>
+        <file>TreeSignResultDialog.qml</file>
+        <file>info_panel_components/RSBBackButton.qml</file>
     </qresource>
 </RCC>

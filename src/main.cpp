@@ -1,5 +1,5 @@
 /* File: main.cpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2024-2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -34,14 +34,17 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "cpp_views/pdf_page_render.hpp"
 #include "cpp_views/preview_render.hpp"
 #include "cpp_views/rubber_preview_render.hpp"
+#include "models/file_tree_model.hpp"
 #include "models/pdf_doc_model.hpp"
 #include "models/profiles_model.hpp"
 #include "models/rubber_stamp_model.hpp"
 #include "models/signatures_list_model.hpp"
 #include "printer_launcher.hpp"
+#include "surguch_launcher.hpp"
+#include "surguch_translator.hpp"
 
 int main(int argc, char* argv[]) {
-    // tranlsation
+    // translation
     QTranslator translator;
     const QString locale = QLocale::system().name();
     QApplication app(argc, argv);
@@ -74,6 +77,10 @@ int main(int argc, char* argv[]) {
                                       "TagCreator");
     qmlRegisterType<core::PrinterLauncher>("alt.pdfcsp.printerLauncher", 0, 1,
                                            "PrinterLauncher");
+    qmlRegisterType<core::SurguchLauncher>("alt.pdfcsp.surguchLauncher", 0, 1,
+                                           "SurguchLauncher");
+    qmlRegisterType<FileTreeModel>("alt.pdfcsp.fileTreeModel", 0, 1,
+                                   "FileTreeModel");
     qmlRegisterSingletonType(QUrl("qrc:/StyleSheet.qml"), "StyleSheet", 0, 1,
                              "StyleSheet");
 
@@ -82,6 +89,8 @@ int main(int argc, char* argv[]) {
 
     qmlRegisterType<core::gui::WheelEventFilter>("alt.pdfcsp.wheelFilter", 1, 0,
                                                  "WheelFilter");
+    qmlRegisterType<core::SurguchTranslator>("alt.pdfcsp.surguchTranslator", 1,
+                                             0, "SurguchTranslator");
     // the eventFilterInstaller singleton is utilized to fix the Qt6.4 bug
     // when the wheel event is not propagated to the popup nested within a
     // combobox

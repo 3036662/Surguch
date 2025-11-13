@@ -63,13 +63,15 @@ struct ValidationResult {
     time_t cert_not_before = 0;
     time_t cert_not_after = 0;
 
-    // byterange analasys results
+    // byterange analysis results
     bool full_coverage = false;
     bool can_be_casted_to_full_coverage = false;
     std::optional<size_t> sig_curr_index;
     RangesVector byteranges;
     QString file_path;
 };
+
+void createCSPResponse(ValidationResult &res, pdfcsp::c_bridge::CPodResult const* pod);
 
 }  // namespace core
 

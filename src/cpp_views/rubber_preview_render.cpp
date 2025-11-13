@@ -1,3 +1,20 @@
+/* File: rubber_preview_render.cpp
+Copyright (C) Basealt LLC,  2025
+Author: Daniil-Viktor Ratkin, <ratkinda@basealt.ru>
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include "rubber_preview_render.hpp"
 
 #include <QFuture>
@@ -28,9 +45,11 @@ QSGNode *RubberPreviewRender::updatePaintNode(
     if (node != nullptr) {
         rectNode = dynamic_cast<QSGSimpleTextureNode *>(node);
         if (!isVisible()) {
-            // qWarning()<<"return same node, not visible";
             return node;
         }
+    }
+    if (width() == 0 || height() == 0) {
+        return node;
     }
     if (rectNode == nullptr) {
         if (!size().isValid()) {
@@ -42,67 +61,76 @@ QSGNode *RubberPreviewRender::updatePaintNode(
         rectNode->setOwnsTexture(true);
     }
 
+    // Fill the image with white color
     if (result_ == nullptr || result_->image_ == nullptr) {
-        auto img =
-            std::make_unique<QImage>(size().toSize(), QImage::Format_RGB888);
-        img->fill(Qt::white);  // Fill the image with white color
-        QSGTexture *texture = window()->createTextureFromImage(*img);
+        qWarning()
+            << "RubberPreviewRender: updateNode() call with an empty result";
+        // Create an empty image if it does not exist.
+        if (!blank_image_ ||
+            blank_image_->width() != static_cast<int>(requested_width_) ||
+            blank_image_->height() != static_cast<int>(requested_height_)) {
+            blank_image_ = std::make_unique<QImage>(
+                requested_width_, requested_height_, QImage::Format_RGB888);
+            blank_image_->fill(Qt::white);
+        }
+        QSGTexture *texture = nullptr;
+        if (blank_image_) {
+            texture = window()->createTextureFromImage(*blank_image_);
+        }
+        setWidth(requested_width_);
+        setHeight(requested_height_);
         if (texture != nullptr) {
             rectNode->setTexture(texture);
-            rectNode->setRect(QRectF(0, 0, 340, 280));
+            rectNode->setRect(
+                QRectF(0, 0, requested_width_, requested_height_));
         }
+
         return rectNode;
     }
+
     QSGTexture *texture = nullptr;
-    if (result_->data_->resolution_x > 340 &&
-        result_->data_->resolution_x >= result_->data_->resolution_y) {
-        QSGTexture *texture = window()->createTextureFromImage(
-            (*result_->image_)
-                .scaled(340,
-                        static_cast<int>(
-                            280 * (static_cast<double>(
-                                      result_->data_->resolution_y /
-                                      static_cast<double>(
-                                          result_->data_->resolution_x)))),
-                        Qt::KeepAspectRatio));
-        setHeight(280 *
-                  (static_cast<double>(
-                      result_->data_->resolution_y /
-                      static_cast<double>(result_->data_->resolution_x))));
-        setWidth(340);
+
+    // horizontal img or rectangle
+    if (result_->data_->resolution_x >= result_->data_->resolution_y) {
+        const auto yx_ratio_result =
+            static_cast<double>(result_->data_->resolution_y) /
+            result_->data_->resolution_x;
+        const auto target_height = yx_ratio_result * requested_width_;
+        double scale_fact = 1.0;
+        if (target_height > requested_height_) {
+            scale_fact = requested_height_ / target_height;
+        }
+        const auto img_tmp = result_->image_->scaled(
+            static_cast<int>(result_->image_->width() * scale_fact),
+            static_cast<int>(result_->image_->height() * scale_fact),
+            Qt::KeepAspectRatio);
+        QSGTexture *texture = window()->createTextureFromImage(img_tmp);
+        setWidth(requested_width_ * scale_fact);
+        setHeight(target_height * scale_fact);
         if (texture != nullptr) {
             rectNode->setTexture(texture);
             rectNode->setRect(QRectF(0, 0, width(), height()));
         }
         return rectNode;
     }
-    if (result_->data_->resolution_y > 280 &&
-        result_->data_->resolution_y > result_->data_->resolution_x) {
-        texture = window()->createTextureFromImage(
-            (*result_->image_)
-                .scaled(
-                    static_cast<int>(
-                        340 *
-                        (static_cast<double>(result_->data_->resolution_x) /
-                         static_cast<double>(result_->data_->resolution_y))),
-                    280, Qt::KeepAspectRatio));
-        setHeight(280);
-        setWidth(340 * (static_cast<double>(result_->data_->resolution_x) /
-                        static_cast<double>(result_->data_->resolution_y)));
-        if (texture != nullptr) {
-            rectNode->setTexture(texture);
-            rectNode->setRect(QRectF(0, 0, width(), height()));
-        }
-        return rectNode;
+
+    // vertical img
+    const auto xy_ratio_result =
+        static_cast<double>(result_->data_->resolution_x) /
+        result_->data_->resolution_y;
+    const auto target_width = xy_ratio_result * requested_height_;
+    double scale_fact = 1.0;
+    if (target_width > requested_width_) {
+        scale_fact = requested_width_ / target_width;
     }
-    texture = window()->createTextureFromImage((*result_->image_));
-    setWidth(result_->data_->resolution_x);
-    setHeight(result_->data_->resolution_y);
-    if (texture != nullptr) {
-        rectNode->setTexture(texture);
-        rectNode->setRect(QRectF(0, 0, width(), height()));
-    }
-    return rectNode;
+    texture = window()->createTextureFromImage(
+        (*result_->image_)
+            .scaled(static_cast<int>(result_->image_->width() * scale_fact),
+                    static_cast<int>(result_->image_->height() * scale_fact),
+                    Qt::KeepAspectRatio));
+
+    setHeight(requested_height_ * scale_fact);
+    setWidth(target_width * scale_fact);
     if (texture != nullptr) {
         rectNode->setTexture(texture);
         rectNode->setRect(QRectF(0, 0, width(), height()));
@@ -115,11 +143,7 @@ void RubberPreviewRender::createImage(const QVariantMap &qvparams) {
     auto params_wrapper = createParams();
     image_watcher_ = std::make_unique<ImageFutureWatcher>();
     QObject::connect(image_watcher_.get(), &ImageFutureWatcher::finished,
-                     [this]() {
-                         // qWarning() << "finished";
-                         saveImage();
-                     });
-    // start_time_ = std::chrono::high_resolution_clock::now();
+                     [this]() { saveImage(); });
     image_future_ = std::make_unique<ImageFuture>(
         QtConcurrent::run(core::gui::prepareImage, params_wrapper));
     image_watcher_->setFuture(*image_future_);
@@ -129,23 +153,12 @@ void RubberPreviewRender::saveImage() {
     if (image_future_ && image_future_->isValid()) {
         result_ = image_future_->takeResult();
     }
-    // end_time_ = std::chrono::high_resolution_clock::now();
-    // std::chrono::duration<double, std::milli> duration =end_time_ -
-    // start_time_; qWarning() << "RubberPreviewRender::saveImage(): " <<
-    // duration.count();
     if (result_ && result_->image_ && result_->image_->width() != 0) {
-        // qWarning() << "width " << width();
-        // qWarning() << "result->resolution_y " << result_->image_->height();
-        // qWarning() << "result->resolution_x " << result_->image_->width();
-        // setHeight(static_cast<double>(result_->image_->height()) /
-        //           result_->image_->width() * width());
-        // setWidth(static_cast<double>(params_.annotation_text.size() * 30));
-        setHeight(result_->data_->resolution_y);
-        setWidth(result_->data_->resolution_x);
-        // qWarning() << static_cast<double>(result_->image_->height()) /
-        //                   result_->image_->width() * width();
+        emit rubberImageReady();
+        return;
     }
-    emit imageReady();
+    qWarning() << "RubberPreviewRender: render failed";
+    emit rubberBadResult();
 }
 
 /// @brief prepare rubber preview params for later use
@@ -156,7 +169,7 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
     }
     if (qvparams.contains("stamp_height")) {
         // params_.stamp_height = qvparams.value("height").toUInt();
-        params_.stamp_height = 280;
+        params_.stamp_height = requested_height_;
     }
     if (qvparams.contains("border_width")) {
         params_.border_width = qvparams.value("border_width").toUInt();
@@ -194,7 +207,7 @@ void RubberPreviewRender::preparePreviewParams(const QVariantMap &qvparams) {
     }
     if (qvparams.contains("font_family")) {
         params_.font_family = qvparams.value("font_family").toString();
-        int default_weight = 340;
+        int default_weight = static_cast<int>(requested_width_);
         int tmp_weight = 0;
         const QStringList styles = QFontDatabase::styles(params_.font_family);
         qsizetype index_regular =
@@ -274,7 +287,6 @@ core::gui::SharedRubberParamWrapper RubberPreviewRender::createParams() const {
     pod_params.font_weight = params_.font_weight;
     pod_params.bg_transparent = params_.bg_transparent;
     pod_params.bg_opacity = params_.bg_opacity;
-    pod_params.annotation_width = 340;  // params_.annotation_text.size() *
-                                        // 100;
+    pod_params.annotation_width = static_cast<uint64_t>(requested_width_);
     return params_wrapper;
 }

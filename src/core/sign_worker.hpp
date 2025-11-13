@@ -1,5 +1,5 @@
 /* File: sign_worker.hpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2024-2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -117,7 +117,7 @@ class SignWorker : public QObject {
 
    signals:
 
-    /// @brief signinig process(launchSign) is completed
+    /// @brief signing process(launchSign) is completed
     void signCompleted(SignResult res);
     /// @brief estimateStampSize is completed
     void resizeStampCompleted(AimResizeFactor res);

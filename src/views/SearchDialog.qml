@@ -3,7 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import StyleSheet
 
-Dialog {
+Popup {
     id: searchDialog
 
     property bool needNewSearch: false
@@ -17,24 +17,29 @@ Dialog {
     signal jumpToNeedle(int needle_index)
 
     function searchCompleted(first_needle_page, total_needles) {
-        console.warn("QML search completed")
         searchInProgress = false
         needlesCount = total_needles
         currentIndex = needlesCount > 0 ? 1 : 0
         if (needNewSearch) {
-            console.warn("QML need new search")
             searchInProgress = true
             needNewSearch = false
             searchRequired(searchInput.text)
         }
     }
 
-    width: 350
+    width: 355
     height: 50
-    x: searchButton.x - width
-    y: parent.y
+
     modal: false
     closePolicy: Popup.CloseOnEscape
+    topPadding: StyleSheet.defaultPaddingV
+    bottomPadding: StyleSheet.defaultPaddingV
+    leftPadding: StyleSheet.defaultPaddingH
+    rightPadding: StyleSheet.defaultPaddingH
+    topMargin: StyleSheet.defaultMarginV
+    bottomMargin: StyleSheet.defaultMarginV
+    leftMargin: StyleSheet.defaultMarginH
+    rightMargin: StyleSheet.defaultMarginH
 
     background: Rectangle {
         color: StyleSheet.text_area_background
@@ -90,8 +95,6 @@ Dialog {
                         return
                     }
                     prev_needle = text
-                    console.warn("QML edited")
-                    console.warn("searchInProgress:" + searchDialog.searchInProgress)
                     if (!searchDialog.searchInProgress) {
                         searchDialog.searchInProgress = true
                         searchDialog.searchRequired(text)

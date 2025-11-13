@@ -1,3 +1,20 @@
+/* File: t_stamp.cpp
+Copyright (C) Basealt LLC,  2025
+Author: Daniil-Viktor Ratkin, <ratkinda@basealt.ru>
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include "t_stamp.hpp"
 
 #include <QFile>
@@ -145,10 +162,10 @@ void TStamp::createImage() {
     qWarning() << "section 1";
     const QString json =
         QString(
-            R"( {"page_index":0,"page_width":0,"page_height":0,"stamp_x":0,"stamp_y":0,"stamp_width":0,"stamp_height":0,"logo_path":"})") +
-        TEST_FILES_DIR + R"({profile_3_logo.jpg","config_path":"})" +
-        config_dir_ +
-        R"({","cert_serial":"7c001e316d0c3296185e9c6902000d001e316d","cert_serial_prefix":"Сертификат: ","cert_subject":"Test Certificate","cert_subject_prefix":"Субъект: ","cert_time_validity":"Действителен: 2025-04-21 08:33:16 UTC по 2025-06-21 08:43:16 UTC","stamp_title":"ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ","stamp_type":"321","text_color_red":228,"text_color_green":92,"text_color_blue":123,"border_color_red":228,"border_color_green":92,"border_color_blue":123,"border_width":19,"border_radius":64,"bg_transparent":0,"bg_opacity":1,"cades_type":"CADES_BES","tsp_url":"","file_to_sign_path":""})";
+            R"( {"page_index":0,"page_width":0,"page_height":0,"stamp_x":0,"stamp_y":0,"stamp_width":0,"stamp_height":0,"logo_path":")") +
+        TEST_FILES_DIR + R"(profile_1_logo.jpg","config_path":")" +
+        TEST_FILES_DIR +
+        R"(","cert_serial":"7c001e316d0c3296185e9c6902000d001e316d","cert_serial_prefix":"Сертификат: ","cert_subject":"Test Certificate","cert_subject_prefix":"Субъект: ","cert_time_validity":"Действителен: 2025-04-21 08:33:16 UTC по 2025-06-21 08:43:16 UTC","stamp_title":"ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ","stamp_type":"321","text_color_red":228,"text_color_green":92,"text_color_blue":123,"border_color_red":228,"border_color_green":92,"border_color_blue":123,"border_width":19,"border_radius":64,"bg_transparent":0,"bg_opacity":1,"cades_type":"CADES_BES","tsp_url":"","file_to_sign_path":""})";
     QJsonParseError parse_error;
     QJsonDocument json_doc =
         QJsonDocument::fromJson(json.toUtf8(), &parse_error);
@@ -161,7 +178,7 @@ void TStamp::createImage() {
     QSignalSpy spy(&renderer, &PreviewRender::imageReady);
 
     renderer.createImage(varmap);
-    QTest::qWait(500);
+    QTest::qWait(1000);
     QCOMPARE(spy.count(), 1);
 }
 
@@ -169,9 +186,9 @@ void TStamp::createImage2() {
     qWarning() << "section 2";
     const QString json =
         QString(
-            R"( {"page_index":0,"page_width":0,"page_height":0,"stamp_x":0,"stamp_y":0,"stamp_width":0,"stamp_height":0,"logo_path":"})") +
-        TEST_FILES_DIR + R"({profile_1_logo.jpg","config_path":"})" +
-        config_dir_ +
+            R"( {"page_index":0,"page_width":0,"page_height":0,"stamp_x":0,"stamp_y":0,"stamp_width":0,"stamp_height":0,"logo_path":")") +
+        TEST_FILES_DIR + R"(profile_1_logo.jpg","config_path":")" +
+        TEST_FILES_DIR +
         R"({","cert_serial":"7c001e316d0c3296185e9c6902000d001e316d","cert_serial_prefix":"Сертификат: ","cert_subject":"Test Certificate","cert_subject_prefix":"Субъект: ","cert_time_validity":"Действителен: 2025-04-21 08:33:16 UTC по 2025-06-21 08:43:16 UTC","stamp_title":"ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ","stamp_type":"321","text_color_red":228,"text_color_green":92,"text_color_blue":123,"border_color_red":228,"border_color_green":92,"border_color_blue":123,"border_width":19,"border_radius":64,"bg_transparent":0,"bg_opacity":1,"cades_type":"CADES_BES","tsp_url":"","file_to_sign_path":""})";
     QJsonParseError parse_error;
     QJsonDocument json_doc =
@@ -185,7 +202,7 @@ void TStamp::createImage2() {
     QSignalSpy spy(&renderer, &PreviewRender::imageReady);
 
     renderer.createImage(varmap);
-    QTest::qWait(500);
+    QTest::qWait(1000);
     QCOMPARE(spy.count(), 1);
 }
 
@@ -193,9 +210,9 @@ void TStamp::createImage3() {
     qWarning() << "section 3";
     const QString json =
         QString(
-            R"( {"page_index":0,"page_width":0,"page_height":0,"stamp_x":0,"stamp_y":0,"stamp_width":0,"stamp_height":0,"logo_path":"})") +
-        TEST_FILES_DIR + R"({profile_3_logo.jpg","config_path":"})" +
-        config_dir_ +
+            R"( {"page_index":0,"page_width":0,"page_height":0,"stamp_x":0,"stamp_y":0,"stamp_width":0,"stamp_height":0,"logo_path":")") +
+        TEST_FILES_DIR + R"(profile_3_logo.jpg","config_path":")" +
+        TEST_FILES_DIR +
         R"({","cert_serial":"7c001e316d0c3296185e9c6902000d001e316d","cert_serial_prefix":"Сертификат: ","cert_subject":"Test Certificate","cert_subject_prefix":"Субъект: ","cert_time_validity":"Действителен: 2025-04-21 08:33:16 UTC по 2025-06-21 08:43:16 UTC","stamp_title":"ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ","stamp_type":"321","text_color_red":228,"text_color_green":92,"text_color_blue":123,"border_color_red":228,"border_color_green":92,"border_color_blue":123,"border_width":19,"border_radius":64,"bg_transparent":0,"bg_opacity":1,"cades_type":"CADES_BES","tsp_url":"","file_to_sign_path":""})";
     QJsonParseError parse_error;
     QJsonDocument json_doc =
@@ -206,7 +223,7 @@ void TStamp::createImage3() {
     QJsonObject json_obj = json_doc.object();
     QVariantMap varmap = json_obj.toVariantMap();
     PreviewRender renderer;
-    QSignalSpy spy(&renderer, &PreviewRender::imageReady);
+    QSignalSpy spy(&renderer, &PreviewRender::stampPreviewBadResult);
 
     renderer.createImage(varmap);
     QTest::qWait(500);

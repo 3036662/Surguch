@@ -1,14 +1,18 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import Qt.labs.platform as LabsDialogs
 
-import QtQuick.Dialogs as CommonDialods
+import QtQuick.Dialogs as CommonDialogs
 import QtCore
 import StyleSheet
 
+import "header_bar_components" as HeaderBarComponents
+
 RowLayout {
     id: toolbar_layout
+
+    signal changeShowType(int newType)
+    signal signTree(string path)
 
     function getCurrentProfileValue() {
         return profileComboBox.currentValue
@@ -33,17 +37,27 @@ RowLayout {
         signModeButton.down = false
     }
 
-    function launchSaveFileWithQuit(quit_after_save) {
-        let dlg
-        if (kdeVersion === "5") {
-            dlg = labsSaveFileDialog
-        } else {
-            dlg = saveFileDialog
+    function launchSaveFileWithQuit(quit_after_save, switch_to_tree) {
+        let dlg = saveFileDialog
+        if (switch_to_tree) {
+            dlg.switchMode = true
         }
         if (quit_after_save) {
             dlg.quitAfterSave = true
         }
         dlg.open()
+    }
+
+    function openPdfDialog() {
+        fileDialog.open()
+    }
+
+    function openTreeDialog() {
+        fileTreeDialog.open()
+    }
+
+    function openSavePdfDialog() {
+        saveFileDialog.open()
     }
 
     spacing: 5
@@ -52,26 +66,42 @@ RowLayout {
         Layout.minimumWidth: 600
         Layout.fillWidth: true
 
-        TopBarButton {
-            icon.source: StyleSheet.file_plus_icon
-            text: qsTr("Open")
-            onClicked: kdeVersion === "5" ? labsFileDialog.open(
-                                                ) : fileDialog.open()
+        HeaderBarComponents.TopBarButton {
+            icon.source: StyleSheet.file_text_icon
+            //text: qsTr("Open")
+            text: qsTr("PDF")
+            onClicked: fileDialog.open()
         }
 
-        TopBarButton {
+        HeaderBarComponents.TopBarButton {
             icon.source: StyleSheet.file_simple_icon
+            //text: qsTr("Open")
+            text: qsTr("File")
+            onClicked: {
+                if (pdfListView.sourceIsTmp) {
+                    unsavedFileDialog.quit_after = false
+                    unsavedFileDialog.switch_mode = true
+                    unsavedFileDialog.open()
+                } else {
+                    fileTreeDialog.open()
+                }
+            }
+        }
+
+        HeaderBarComponents.TopBarButton {
+            icon.source: StyleSheet.folder_simple_icon
             text: qsTr("Show in folder")
             enabled: pdfListView.source.length > 0 && !pdfListView.sourceIsTmp
+                     && showType === Main.ShowType.Pdf
             onClicked: pdfListView.showInFolder()
         }
 
-        TopBarButton {
-            icon.source: StyleSheet.folder_plus_icon
+        HeaderBarComponents.TopBarButton {
+            icon.source: StyleSheet.save_icon
             text: qsTr("Save as ...")
             enabled: pdfListView.source.length > 0
-            onClicked: kdeVersion === "5" ? labsSaveFileDialog.open(
-                                                ) : saveFileDialog.open()
+                     && showType === Main.ShowType.Pdf
+            onClicked: saveFileDialog.open()
         }
 
         Row {
@@ -84,10 +114,17 @@ RowLayout {
                 height: parent.height
                 color: "transparent"
             }
-            TopBarButton {
+            HeaderBarComponents.TopBarButton {
                 icon.source: StyleSheet.wrench_icon
                 enabled: profileComboBox.currentValue !== "new"
-                text: ""
+                display: AbstractButton.IconOnly
+                text: qsTr("Profile settings")
+
+                ToolTip {
+                    text: parent.text
+                    visible: parent.hovered
+                    delay: 500
+                }
 
                 onClicked: {
                     //open profile info panel
@@ -100,7 +137,8 @@ RowLayout {
                             = profileComboBox.model.getUserStampsJSON()
                     // set a reference to this model
                     rightSideBar.edit_profile.profiles_model = profileComboBox.model
-                    rightSideBar.edit_profile.profile_data = profileComboBox.currentValue
+                    rightSideBar.edit_profile.profile_data
+                            = profileComboBox.currentValue ? profileComboBox.currentValue : null
                     rightSideBar.edit_profile.updateProfileForm()
                 }
             }
@@ -129,6 +167,12 @@ RowLayout {
                 anchors.verticalCenter: parent.verticalCenter
                 Layout.alignment: Qt.AlignVCenter
 
+                function isActiveProfile() {
+                    return profileComboBox.currentValue
+                            && profileComboBox.currentValue !== "new"
+                            && profileComboBox.currentIndex !== -1
+                }
+
                 onActivated: {
                     profileComboBox.displayText = profileComboBox.textAt(
                                 currentIndex)
@@ -150,6 +194,13 @@ RowLayout {
                     } else {
                         rightSideBar.edit_profile.profile_data = currentValue
                     }
+                    // update stamp aim rectangles
+                    if (profileComboBox.isActiveProfile()) {
+                        pdfListView.profileIsActivated = true
+                        pdfListView.forceAimResize()
+                    } else {
+                        pdfListView.profileIsActivated = false
+                    }
                 }
 
                 Component.onCompleted: {
@@ -162,6 +213,10 @@ RowLayout {
                         profileComboBox.currentIndex = indx
                     } else {
                         profileComboBox.currentIndex = -1
+                    }
+                    if (profileComboBox.isActiveProfile()) {
+                        pdfListView.profileIsActivated = true
+                        pdfListView.forceAimResize()
                     }
                 }
             }
@@ -201,10 +256,10 @@ RowLayout {
                 color: "transparent"
             }
         }
-        TopBarButton {
+        HeaderBarComponents.TopBarButton {
             id: signModeButton
 
-            //enabled: false
+            enabled: showType !== Main.ShowType.Empty
             icon.source: StyleSheet.pencil_line_icon
             text: qsTr("Sign")
             icon.height: 25
@@ -213,16 +268,26 @@ RowLayout {
             anchors.bottom: parent.bottom
 
             onClicked: {
-                if (profileComboBox.currentValue === "new"
-                        || profileComboBox.currentIndex === -1) {
-                    profileComboBox.popup.open()
-                } else {
-                    headerSubBar.disableTagMode()
-                    pdfListView.signMode = !pdfListView.signMode
-                    if (!down) {
-                        pdfListView.reserRotation()
+                if (showType === Main.ShowType.Pdf) {
+                    if (profileComboBox.currentValue === "new"
+                            || profileComboBox.currentIndex === -1) {
+                        profileComboBox.popup.open()
+                    } else {
+                        headerSubBar.disableTagMode()
+                        pdfListView.signMode = !pdfListView.signMode
+                        if (!down) {
+                            pdfListView.resetRotation()
+                        }
+                        down = !down
                     }
-                    down = !down
+                }
+                if (showType === Main.ShowType.Files) {
+                    if (profileComboBox.currentValue === "new"
+                            || profileComboBox.currentIndex === -1) {
+                        profileComboBox.popup.open()
+                    } else {
+                        saveFolderDialog.open()
+                    }
                 }
             }
         }
@@ -232,15 +297,23 @@ RowLayout {
         Layout.fillWidth: true
     }
 
-    ToolButton {
+    HeaderBarComponents.TopBarButton {
         id: info_button
 
-        flat: true
+        display: AbstractButton.IconOnly
+        text: qsTr("About program")
         icon.source: StyleSheet.info_icon
         icon.width: 20
         icon.height: 20
         leftPadding: 5
         rightPadding: 5
+
+        ToolTip {
+            text: parent.text
+            visible: parent.hovered
+            delay: 500
+        }
+
         onClicked: appInfoDialog.open()
     }
 
@@ -269,10 +342,9 @@ RowLayout {
                         event.accepted = false
                     }
 
-    CommonDialods.FileDialog {
+    CommonDialogs.FileDialog {
         id: fileDialog
-        fileMode: CommonDialods.FileDialog.OpenFile
-        //nameFilters: ["PDF files (*.pdf)","Any file (* *.*)"];
+        fileMode: CommonDialogs.FileDialog.OpenFile
         nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
         currentFolder: StandardPaths.writableLocation(
                            StandardPaths.DocumentsLocation)
@@ -282,15 +354,30 @@ RowLayout {
             pdfListView.openFile(currentFile)
             leftSideBar.source = currentFile
             rightSideBar.showState = RightSideBar.ShowState.Invisible
+            changeShowType(1)
         }
     }
 
-    CommonDialods.FileDialog {
+    CommonDialogs.FileDialog {
+        id: fileTreeDialog
+        fileMode: CommonDialogs.FileDialog.OpenFiles
+        currentFolder: StandardPaths.writableLocation(
+                           StandardPaths.DocumentsLocation)
+        onAccepted: {
+            fileTreeModel.addNode(currentFiles)
+            rightSideBar.showState = RightSideBar.ShowState.Invisible
+            changeShowType(2)
+            root_window.title = qsTr("Surguch")
+        }
+    }
+
+    CommonDialogs.FileDialog {
         id: saveFileDialog
 
         property bool quitAfterSave: false
+        property bool switchMode: false
 
-        fileMode: CommonDialods.FileDialog.SaveFile
+        fileMode: CommonDialogs.FileDialog.SaveFile
         defaultSuffix: "pdf"
         nameFilters: [qsTr("PDF files (*.pdf)")]
         currentFolder: StandardPaths.writableLocation(
@@ -301,7 +388,11 @@ RowLayout {
             if (pdfListView.tagInProgress) {
                 let tmp_file = tagCreator.embedAnnot(pdfModel.getAnnotParams(),
                                                      pdfModel.getSource())
+                pdfModel.mustProcessSignatures = false
+                pdfModel.mustExtractText = false
                 pdfListView.openTmpFile(tmp_file)
+                pdfModel.mustProcessSignatures = true
+                pdfModel.mustExtractText = true
                 pdfListView.saveTo(tmp_file, currentFile)
             } else {
                 let tmp_file = pdfModel.getSource()
@@ -313,54 +404,31 @@ RowLayout {
             if (quitAfterSave) {
                 Qt.quit()
             }
+            if (switchMode) {
+                openTreeDialog()
+                unsavedFileDialog.switch_mode = false
+                switchMode = false
+            }
+        }
+
+        onRejected: {
+            switchMode = false
+            unsavedFileDialog.switch_mode = false
         }
     }
 
-    // KDE5 - use lab LabsDialogs
-    LabsDialogs.FileDialog {
-        id: labsFileDialog
-
-        currentFile: ""
-        fileMode: LabsDialogs.FileDialog.OpenFile
-        nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
-        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
-        onAccepted: {
-            enableSignMode()
-            // source is chosen by user, not a temporary file
-            pdfListView.openFile(currentFile)
-            leftSideBar.source = currentFile
-            rightSideBar.showState = RightSideBar.ShowState.Invisible
-        }
-    }
-    // KDE5 - use lab LabsDialogs
-    LabsDialogs.FileDialog {
-        id: labsSaveFileDialog
-
-        property bool quitAfterSave: false
-
-        fileMode: LabsDialogs.FileDialog.SaveFile
-        defaultSuffix: "pdf"
-        currentFile: pdfListView.source
-        nameFilters: ["PDF files (*.pdf)"]
-        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+    CommonDialogs.FolderDialog {
+        id: saveFolderDialog
+        title: qsTr("Choose a folder to save the signed files")
+        currentFolder: StandardPaths.writableLocation(
+                           StandardPaths.HomeLocation)
 
         onAccepted: {
-            pdfModel.mustExtractText = false
-            if (pdfListView.tagInProgress) {
-                let tmp_file = tagCreator.embedAnnot(pdfModel.getAnnotParams(),
-                                                     pdfModel.getSource())
-                pdfListView.openTmpFile(tmp_file)
-                pdfListView.saveTo(tmp_file, currentFile)
-            } else {
-                let tmp_file = pdfModel.getSource()
-                pdfListView.saveTo(tmp_file, currentFile)
-            }
-            pdfModel.clearHistory()
-            pdfModel.mustExtractText = true
-            headerSubBar.updateHistory()
-            if (quitAfterSave) {
-                Qt.quit()
-            }
+            signTree(selectedFolder)
+            signModeButton.down = true
+            signModeButton.enabled = false
+            treeSignResultDialog.sign_done = false
+            treeSignResultDialog.open()
         }
     }
 }

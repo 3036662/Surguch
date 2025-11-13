@@ -1,5 +1,5 @@
 /* File: signature_processor.cpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2024-2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -50,9 +50,9 @@ SignatureProcessor::SignatureProcessor(fz_context *fzctx, pdf_document *pdfdoc)
     }
 }
 
-///@brief find signature objects, place them in signarures_ptrs_
+///@brief find signature objects, place them in signatures_ptrs_
 bool SignatureProcessor::findSignatures() noexcept {
-    signarures_ptrs_.clear();
+    signatures_ptrs_.clear();
     // pdf_debug_obj(fzctx_, trailer_);
     // pdf_debug_obj(fzctx_, pdf_root_);
     pdf_acro_ = findAcroForm();
@@ -77,7 +77,7 @@ bool SignatureProcessor::findSignatures() noexcept {
                     pdf_obj *ft_val = pdf_dict_getp(fzctx_, curr, "FT");
                     if (ft_val != nullptr && pdf_is_name(fzctx_, ft_val) &&
                         QString(pdf_to_name(fzctx_, ft_val)) == "Sig") {
-                        signarures_ptrs_.emplace_back(fzctx_, curr);
+                        signatures_ptrs_.emplace_back(fzctx_, curr);
                         // pdf_debug_obj(fzctx_, curr);
                     }
                 }
@@ -154,7 +154,7 @@ std::bitset<32> SignatureProcessor::getFormSigFlags() const noexcept {
 ///@brief parses signature object
 ///@return returns array of RawSignature objects
 std::vector<RawSignature> SignatureProcessor::ParseSignatures() noexcept {
-    if (signarures_ptrs_.empty()) {
+    if (signatures_ptrs_.empty()) {
         return {};
     }
     if (fzctx_ == nullptr) {
@@ -162,7 +162,7 @@ std::vector<RawSignature> SignatureProcessor::ParseSignatures() noexcept {
         return {};
     }
     std::vector<RawSignature> res;
-    for (const auto &sig : signarures_ptrs_) {
+    for (const auto &sig : signatures_ptrs_) {
         try {
             res.emplace_back(fzctx_, sig);
         } catch (const std::exception &ex) {

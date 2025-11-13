@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <RCC>
     <qresource prefix="/">
         <file>translations/ru_RU.qm</file>
@@ -53,11 +52,41 @@
         <file>icons/dark/save.svg</file>
         <file>icons/dark/chevron_down.svg</file>
         <file>icons/dark/chevron_up.svg</file>
+        <file>icons/dark/chevron_right.svg</file>
         <file>icons/light/chevron_up.svg</file>
         <file>icons/light/chevron_down.svg</file>
+        <file>icons/light/chevron_right.svg</file>
         <file>icons/light/tag_icon.svg</file>
         <file>icons/dark/tag_icon.svg</file>
         <file>icons/light/info_icon.svg</file>
         <file>icons/dark/info_icon.svg</file>
+        <file>icons/light/box.svg</file>
+        <file>icons/dark/box.svg</file>
+        <file>icons/dark/file_text.svg</file>
+        <file>icons/light/file_text.svg</file>
+        <file>icons/dark/cell.svg</file>
+        <file>icons/dark/cell-green.svg</file>
+        <file>icons/dark/cell-red.svg</file>
+        <file>icons/light/cell.svg</file>
+        <file>icons/light/cell-green.svg</file>
+        <file>icons/light/cell-red.svg</file>
+        <file>icons/light/back.svg</file>
+        <file>icons/dark/back.svg</file>
+        <file>icons/dark/warning.svg</file>
+        <file>icons/light/warning.svg</file>
+        <file>icons/light/file_text_red.svg</file>
+        <file>icons/light/file_text_green.svg</file>
+        <file>icons/dark/file_text_green.svg</file>
+        <file>icons/dark/file_text_red.svg</file>
+        <file>icons/light/green_sign.svg</file>
+        <file>icons/light/red_sign.svg</file>
+        <file>icons/dark/green_sign.svg</file>
+        <file>icons/dark/red_sign.svg</file>
+        <file>icons/dark/file_text_big.svg</file>
+        <file>icons/light/file_text_big.svg</file>
+        <file>icons/dark/file_simple_big.svg</file>
+        <file>icons/light/file_simple_big.svg</file>
+        <file>icons/light/folder_simple.svg</file>
+        <file>icons/dark/folder_simple.svg</file>
     </qresource>
 </RCC>

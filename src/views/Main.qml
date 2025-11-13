@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
+import Qt.labs.platform as Labs
 import alt.pdfcsp.pdfModel
 import alt.pdfcsp.signatureCreator
 import alt.pdfcsp.tagCreator
@@ -9,12 +10,23 @@ import alt.pdfcsp.profilesModel
 import alt.pdfcsp.rubberStampModel
 import alt.pdfcsp.signaturesListModel
 import alt.pdfcsp.printerLauncher
+import alt.pdfcsp.surguchLauncher
+import alt.pdfcsp.fileTreeModel
 import StyleSheet
 import alt.pdfcsp.eventFilterInstaller
 import alt.pdfcsp.wheelFilter
+import alt.pdfcsp.surguchTranslator
 
 ApplicationWindow {
     id: root_window
+
+    enum ShowType {
+        Empty,
+        Pdf,
+        Files
+    }
+
+    property int showType: Main.ShowType.Empty
 
     width: 1000
     height: 480
@@ -36,35 +48,220 @@ ApplicationWindow {
             spacing: 2
             Header {
                 id: header
+
+                onChangeShowType: newType => {
+                                      showType = newType
+                                      if (showType === Main.ShowType.Pdf) {
+                                          pdfDropArea.enabled = true
+                                          fileDropArea.enabled = false
+                                          pdfDropArea.width = parent.width
+                                          fileTreeModel.deleteTree()
+                                          header.enableSignMode()
+                                      }
+                                      if (showType === Main.ShowType.Files) {
+                                          pdfDropArea.enabled = false
+                                          fileDropArea.enabled = true
+                                          fileDropArea.width = parent.width
+                                      }
+                                  }
             }
             HeaderSubBar {
                 id: headerSubBar
                 visible: pdfListView.source != ""
+                         && showType === Main.ShowType.Pdf
+            }
 
-                function placeTagStamp(rubber_stamp_data) {//let tag_data = rubber_stamp_data
-                    //console.warn("mainqml" + JSON.stringify(tag_data))
-                    //pdfModel.placeRubberStamp(tag_data)
-                }
+            FileModeHeaderSubBar {
+                id: fileModeHeaderSubBar
+                visible: showType === Main.ShowType.Files
             }
         }
     }
 
     // --------------------------------------
     // body
+    DropArea {
+        id: pdfDropArea
+        width: parent.width / 2
+        height: parent.height
+        anchors {
+            left: parent.left
+            top: parent.top
+            bottom: parent.bottom
+        }
+
+        onDropped: drop => {
+                       fileDropArea.enabled = false
+                       width = parent.width
+                       let currentFile = Qt.resolvedUrl(drop.urls[0])
+                       showType = Main.ShowType.Pdf
+                       pdfListView.openFile(currentFile)
+                       leftSideBar.source = currentFile
+                       rightSideBar.showState = RightSideBar.ShowState.Invisible
+                       if (drop.urls.length > 1) {
+                           for (var i = 1; i < drop.urls.length; i++) {
+                               let fileUrl = Qt.resolvedUrl(drop.urls[i])
+                               launcher.launchSurguch(fileUrl)
+                           }
+                       }
+                   }
+    }
+
+    DropArea {
+        id: fileDropArea
+
+        width: parent.width / 2
+        height: parent.height
+        anchors {
+            right: parent.right
+            top: parent.top
+            bottom: parent.bottom
+        }
+
+        onDropped: drop => {
+                       fileTreeModel.addNode(drop.urls)
+                       pdfDropArea.enabled = false
+                       width = parent.width
+                       showType = Main.ShowType.Files
+                   }
+    }
+
     RowLayout {
         anchors.fill: parent
         spacing: 0
 
+        Item {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            visible: showType === Main.ShowType.Empty
+
+            Row {
+                anchors.centerIn: parent
+                spacing: parent.width * 0.05
+
+                Rectangle {
+                    id: pdfZone
+
+                    width: root_window.width / 6
+                    height: width
+                    radius: 6
+                    color: "transparent"
+                    border.width: pdfDropArea.containsDrag ? 2 : 1
+                    border.color: pdfDropArea.containsDrag
+                                  || pdfRectangle.containsMouse ? StyleSheet.slider_border_color : "#c7c7c7"
+
+                    Column {
+                        anchors.centerIn: parent
+                        spacing: 8
+
+                        Image {
+                            source: StyleSheet.file_text_big_icon
+                            width: pdfZone.width * 0.25
+                            height: width
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            fillMode: Image.PreserveAspectFit
+                        }
+
+                        Text {
+                            text: qsTr("PDF\nDrag&Drop")
+                            font.pixelSize: 14
+                            font.family: "Noto Sans"
+                            horizontalAlignment: Text.AlignHCenter
+                            wrapMode: Text.WordWrap
+                            color: StyleSheet.font_color_extra
+                        }
+                    }
+
+                    MouseArea {
+                        id: pdfRectangle
+                        anchors.fill: parent
+                        enabled: showType === Main.ShowType.Empty
+                        hoverEnabled: true
+
+                        onClicked: {
+                            header.openPdfDialog()
+                        }
+                    }
+                }
+
+                Rectangle {
+                    id: fileZone
+
+                    width: root_window.width / 6
+                    height: width
+                    radius: 6
+                    color: "transparent"
+                    border.width: fileDropArea.containsDrag ? 2 : 1
+                    border.color: fileDropArea.containsDrag
+                                  || fileRectangle.containsMouse ? StyleSheet.slider_border_color : "#c7c7c7"
+
+                    Column {
+                        anchors.centerIn: parent
+                        spacing: 8
+
+                        Image {
+                            source: StyleSheet.file_simple_big_icon
+                            width: fileZone.width * 0.25
+                            height: width
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            fillMode: Image.PreserveAspectFit
+                        }
+
+                        Text {
+                            text: qsTr("File\nDrag&Drop")
+                            font.pixelSize: 14
+                            font.family: "Noto Sans"
+                            horizontalAlignment: Text.AlignHCenter
+                            wrapMode: Text.WordWrap
+                            color: StyleSheet.font_color_extra
+                        }
+                    }
+
+                    MouseArea {
+                        id: fileRectangle
+                        anchors.fill: parent
+                        enabled: showType === Main.ShowType.Empty
+                        hoverEnabled: true
+
+                        onClicked: {
+                            header.openTreeDialog()
+                        }
+                    }
+                }
+            }
+        }
+
         LeftSideBar {
             id: leftSideBar
+            visible: showType === Main.ShowType.Pdf
+            Layout.alignment: Qt.AlignRight
         }
         PdfListView {
             id: pdfListView
             Layout.preferredWidth: root_window.width - 500
+            visible: showType === Main.ShowType.Pdf
+        }
+
+        FileTreeView {
+            id: fileTreeView
+
+            property int sizeColumn: fileModeHeaderSubBar.sizeColumn
+            property int editColumn: fileModeHeaderSubBar.editColumn
+            property int signColumn: fileModeHeaderSubBar.signColumn
+            property int mrpaColumn: fileModeHeaderSubBar.mrpaColumn
+            property int deleteColumn: fileModeHeaderSubBar.deleteColumn
+
+            Layout.preferredWidth: root_window.width - 310
+            Layout.maximumWidth: root_window.width - 310
+            Layout.minimumWidth: root_window.width - 310
+            visible: showType === Main.ShowType.Files
+            Layout.rightMargin: 0
         }
 
         RightSideBar {
             id: rightSideBar
+            Layout.alignment: Qt.AlignLeft
+            Layout.leftMargin: 0
         }
     }
 
@@ -109,26 +306,23 @@ ApplicationWindow {
     }
 
     // --------------------------------------
-    // modal
-    StampEditor {
-        id: stampEditor
-    }
-
-    RubberStampEditor {
-        id: rubberStampEditor
-    }
-
-    InfoDialog {
-        id: appInfoDialog
-    }
-
-    // --------------------------------------
-    // instantinate cpp models
+    // instantiate cpp models
     MuPdfModel {
         id: pdfModel
         mustProcessSignatures: true
         mustDeleteTmpFiles: true
         mustExtractText: true
+    }
+
+    FileTreeModel {
+        id: fileTreeModel
+
+        onIsDraftChanged: {
+            if (fileTreeModel.isDraft)
+                header.disableSignMode()
+            else
+                header.enableSignMode()
+        }
     }
 
     ProfilesModel {
@@ -151,131 +345,41 @@ ApplicationWindow {
         id: tagCreator
     }
 
-    SignatureCreator {
-        id: sigCreator
+    SurguchLauncher {
+        id: launcher
+    }
 
-        // common function to gather parameters used in resizeAim and signDoc
-        function gatherParams(location_data, path) {
-            let curr_profile = JSON.parse(header.getCurrentProfileValue())
-            let cert_array = JSON.parse(profilesModel.getUserCertsJSON())
-            // console.warn(JSON.stringify(rightSideBar.edit_profile.cert_array));
-            let cert_index = cert_array.findIndex(cert => {
-                                                      return curr_profile.cert_serial
-                                                      === cert.serial
-                                                  })
-            if (cert_index === -1) {
-                errorMessageDialog.text = qsTr(
-                            "Certificate not found, looks like it was deleted.﻿")
-                errorMessageDialog.open()
-                throw new Error('Certificate data not found')
-            }
-            let stamps_json = JSON.parse(profilesModel.getUserStampsJSON())
-            let user_stamp = stamps_json.find(stamp => {
-                                                  return curr_profile.stamp_type === stamp.title
-                                              })
-            // gather all information needed to create a signature visual representation
-            let params = {
-                "page_index": location_data.page_index,
-                "page_width": location_data.page_width,
-                "page_height": location_data.page_height,
-                "stamp_x": location_data.stamp_x,
-                "stamp_y": location_data.stamp_y,
-                "stamp_width": location_data.stamp_width,
-                "stamp_height": location_data.stamp_height,
-                "logo_path": curr_profile.logo_path,
-                "config_path": profilesModel.getConfigPath(),
-                "cert_serial": curr_profile.cert_serial,
-                "cert_serial_prefix": qsTr("Certificate: "),
-                "cert_subject": cert_array[cert_index].subject_common_name,
-                "cert_subject_prefix": qsTr("Subject: "),
-                "cert_time_validity": qsTr("Vaildity: ")
-                                      + cert_array[cert_index].not_before_readable + qsTr(
-                    " till ") + cert_array[cert_index].not_after_readable,
-                "stamp_title": qsTr("THE DOCUMENT IS SIGNED WITH AN ELECTRONIC SIGNATURE"),
-                "stamp_type": curr_profile.stamp_type,
-                "text_color_red": user_stamp.R,
-                "text_color_green": user_stamp.G,
-                "text_color_blue": user_stamp.B,
-                "border_color_red": user_stamp.R,
-                "border_color_green": user_stamp.G,
-                "border_color_blue": user_stamp.B,
-                "border_width": user_stamp.border_width,
-                "border_radius": user_stamp.border_radius,
-                "bg_transparent": user_stamp.transparent,
-                "bg_opacity": 1,
-                "cades_type": curr_profile.CADES_format,
-                "tsp_url": curr_profile.tsp_url,
-                "file_to_sign_path": path
-            }
-            //console.warn(JSON.stringify(params))
-            return params
-        }
-
-        // estimate the resulting stamp size
-        function resizeAim(location_data) {
-            try {
-                if (typeof (location_data) == "undefined") {
-                    return
-                }
-                let params = gatherParams(location_data)
-                sigCreator.estimateStampResizeFactor(params)
-            } catch (e) {
-                console.warn("resizeAim" + e)
-            }
-        }
-
-        // sign the document
-        function signDoc(location_data, path) {
-            try {
-                if (typeof (location_data) == "undefined") {
-                    return
-                }
-                let params = gatherParams(location_data, path)
-                sigCreator.createSignature(params)
-            } catch (e) {
-                console.warn("signDoc" + e)
-            }
-        }
-
-        // handle the result of signDoc function
-        function handleSigResult(result) {
-            console.warn(result.status)
-            if (!result.status) {
-                if (result.err_string === "CERT_EXPIRED") {
-                    errorMessageDialog.text = qsTr(
-                                "Your certificate is expired.")
-                } else if (result.err_string === "MAYBE_TSP_URL_INVALID") {
-                    errorMessageDialog.text = qsTr(
-                                "Common error. It looks like the TSP URL is not valid.")
-                } else if (result.err_string === "CERT_CHAINING_ERR") {
-                    errorMessageDialog.text = qsTr(
-                                "Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.")
-                } else if (result.err_string === "TIMEOUT") {
-                    errorMessageDialog.text = qsTr("Error.Timeout exceeded.")
-                } else {
-                    errorMessageDialog.text = qsTr("Common error")
-                }
-                errorMessageDialog.open()
-            } // if successfully signed
-            else {
-                if (result.tmp_file_path !== undefined) {
-                    // open with openTmpFile, to be deleted later
-                    pdfListView.openTmpFile(result.tmp_file_path)
-                    leftSideBar.source = result.tmp_file_path
-                    rightSideBar.showState = RightSideBar.ShowState.Invisible
-                }
-            }
-            header.enableSignMode()
-        }
+    SigCreatorWrapper {
+        id: sigCreatorWrapper
     }
 
     WheelFilter {
         id: main_window_wheel_filter
     }
 
+    SurguchTranslator {
+        id: surguchTranslator
+    }
+
     // --------------------------------------
     //  connect the events
     Component.onCompleted: {
+        // enable sign button
+        fileTreeView.enableSignButton.connect(header.enableSignMode)
+        // disable sign button
+        fileTreeView.disableSignButton.connect(header.disableSignMode)
+        // clean windows after signing tree
+        fileTreeView.cleanWindow.connect(function () {
+            root_window.showType = Main.ShowType.Empty
+            fileDropArea.width = width / 2
+            fileDropArea.enabled = true
+            pdfDropArea.width = width / 2
+            pdfDropArea.enabled = true
+        })
+        // attmept to sign files in tree
+        header.signTree.connect(fileTreeView.gatherParamsTree)
+        // show data about MrpaList
+        fileTreeView.showMrpaList.connect(rightSideBar.showMrpaList)
         // update page count in header
         pdfListView.pagesCountChanged.connect(headerSubBar.changePageCount)
         // update curr page in header
@@ -287,6 +391,8 @@ ApplicationWindow {
         leftSideBar.pageClick.connect(pdfListView.scrollToPage)
         // show signature info
         leftSideBar.showSigData.connect(rightSideBar.showData)
+        rightSideBar.showSigData.connect(rightSideBar.showData)
+        rightSideBar.showMrpaData.connect(rightSideBar.showMrpa)
         // update zoom value in header
         pdfListView.zoomFactorUpdate.connect(headerSubBar.updateZoomValue)
         // update horizontal scroll position after flick
@@ -310,11 +416,11 @@ ApplicationWindow {
         headerSubBar.undoAction.connect(pdfListView.undo)
         headerSubBar.redoAction.connect(pdfListView.redo)
         pdfListView.updateHistory.connect(headerSubBar.updateHistory)
-        // toggle from preview to certs in left sidebat
+        // toggle from preview to certs in left sidebar
         headerSubBar.showPreviews.connect(leftSideBar.showPreviews)
         headerSubBar.showCerts.connect(leftSideBar.showCerts)
         // screen DPI changed
-        pdfModel.screenDpiChanged.connect(pdfListView.redrawAndPreservePosion)
+        pdfModel.screenDpiChanged.connect(pdfListView.redrawAndPreservePosition)
         //enable buttons for stamps
         pdfListView.quitSignMode.connect(header.quitSignMode)
         pdfListView.disableTagMode.connect(headerSubBar.disableTagMode)
@@ -327,16 +433,14 @@ ApplicationWindow {
         pdfModel.jumpToNeedleCompleted.connect(pdfListView.jumpToNeedle)
         // sign the document
         pdfListView.stampLocationSelected.connect(header.disableSignMode)
-        pdfListView.stampLocationSelected.connect(sigCreator.signDoc)
-        // stamp size estimated
-        sigCreator.stampSizeEstimated.connect(
-                    pdfListView.updateStampResizeFactor)
-        // sign creation finished
-        sigCreator.signCompleted.connect(sigCreator.handleSigResult)
         //  save signatures count in left sidebar
         pdfModel.signaturesCounted.connect(leftSideBar.setSigCount)
+        //  save signatures count in right sidebar
+        fileTreeModel.updateSigCount.connect(rightSideBar.setSigCount)
         // call SignaturesListModel to update the signatures list and validate all signatures
         pdfModel.signaturesFound.connect(siglistModel.updateSigList)
+        fileTreeModel.signatureReady.connect(
+                    siglistModel.saveValidationResultBatch)
         // add rubber stamp to document
         pdfListView.tagPlaced.connect(headerSubBar.enableTagButton)
         // sync pdflistpreview with changed source of pdflistview
@@ -347,6 +451,13 @@ ApplicationWindow {
             errorMessageDialog.open()
             pdfListView.source = ""
             leftSideBar.source = ""
+            Qt.callLater(function () {
+                root_window.showType = Main.ShowType.Empty
+                fileDropArea.width = width / 2
+                fileDropArea.enabled = true
+                pdfDropArea.width = width / 2
+                pdfDropArea.enabled = true
+            })
         })
         // file common status alerts
         siglistModel.commonDocStatus.connect(function (status) {
@@ -374,6 +485,48 @@ ApplicationWindow {
                 break
             }
         })
+        // open error window if file singing went wrong
+        fileTreeView.errorOnSign.connect(function (err) {
+            switch (err) {
+            case "INVALID_PARAMETERS":
+                errorMessageDialog.text = qsTr("Invalid parameters")
+                errorMessageDialog.open()
+                treeSignResultDialog.close()
+                break
+            case "INVALID_DESTINATION":
+                errorMessageDialog.text = qsTr("Invalid destination path")
+                errorMessageDialog.open()
+                treeSignResultDialog.close()
+                break
+            case "SIGN_ALL_FILES_FAILED":
+                errorMessageDialog.text = qsTr(
+                            "Failed to sign files: check the certificate in the profile and CryptoPro (availability and expiration date).")
+                errorMessageDialog.open()
+                treeSignResultDialog.close()
+                break
+            case "CREATE_ZIP_FAILED":
+                errorMessageDialog.text = qsTr("Failed to create archive")
+                errorMessageDialog.open()
+                treeSignResultDialog.close()
+                break
+            case "COPY_SRC_FILES_FAILED":
+                errorMessageDialog.text = qsTr(
+                            "You trying to create files which already exist")
+                errorMessageDialog.open()
+                treeSignResultDialog.close()
+                break
+            case "COPY_SRC_MRPA_FILES_FAILED":
+                errorMessageDialog.text = qsTr(
+                            "You trying to create files which already exist")
+                errorMessageDialog.open()
+                treeSignResultDialog.close()
+                break
+            case "SOME_FILES_WHERE_RENAMED":
+                errorMessageDialog.text = qsTr("Some files were renamed")
+                errorMessageDialog.open()
+                break
+            }
+        })
         // open the recovered file
         siglistModel.fileRecovered.connect(function (dest) {
             rightSideBar.showState = RightSideBar.ShowState.Invisible
@@ -386,36 +539,47 @@ ApplicationWindow {
                         "Validation failed for signature number") + " " + index
             errorMessageDialog.open()
         })
-        // open document on strart
+        // open document on start
         if (openOnStart !== "") {
             pdfListView.openFile(openOnStart)
             header.enableSignMode()
             leftSideBar.source = openOnStart
             rightSideBar.showState = RightSideBar.ShowState.Invisible
+            showType = Main.ShowType.Pdf
         }
 
         // no cryptoPro error
         if (profilesModel.errStatus) {
             if (profilesModel.errString === "ERR_NO_CSP_LIB") {
-                errorMessageDialog.text = qsTr(
-                            "CryptoPro CSP 5.0 R3 not found, please check if installed")
+                // errorMessageDialog.text = qsTr(
+                //             "CryptoPro CSP 5.0 R3 not found, please check if installed")
+                disappearingHint.showHint(
+                            qsTr("CryptoPro CSP 5.0 R3 not found, please check if installed"),
+                            1500)
             } else if (profilesModel.errString === "ERR_GET_CERTS") {
                 errorMessageDialog.text = qsTr(
                             "Failed getting the user's certificates list")
+                errorMessageDialog.open()
             } else {
                 errorMessageDialog.text = "err: " + profilesModel.errString
+                errorMessageDialog.open()
             }
-            errorMessageDialog.open()
         }
         ;
         // close window
         root_window.closing.connect(function (close_event) {
             if (pdfListView.sourceIsTmp) {
                 close_event.accepted = false
-                undsavedFileDialog.open()
+                unsavedFileDialog.quit_after = true
+                unsavedFileDialog.open()
             }
         })
-        undsavedFileDialog.saveWithQuit.connect(header.launchSaveFileWithQuit)
+        unsavedFileDialog.saveWithQuit.connect(header.launchSaveFileWithQuit)
+        headerSubBar.quitApp.connect(function () {
+            close()
+        })
+        // go into file mode after pdf
+        unsavedFileDialog.openTreeDialog.connect(header.openTreeDialog)
         // invalid pdf
         pdfModel.docWasRepaired.connect(function () {
             errorMessageDialog.text = qsTr(
@@ -424,14 +588,31 @@ ApplicationWindow {
             // disable signing for damaged document
             header.disableSignMode()
         })
+        // update AimSize when profile was edited
+        rightSideBar.profileSaved.connect(pdfListView.forceAimResize)
+        // update AimSize when stamp was edited
+        stampEditor.stampSaved.connect(pdfListView.forceAimResize)
+
         // set themes
         StyleSheet.state = themeStyle
-
         EventFilterInstaller.installEventFilter(this, main_window_wheel_filter)
     }
 
     // ---------------------------------------------
     // helper dialogs
+    StampEditor {
+        id: stampEditor
+    }
+    RubberStampEditor {
+        id: rubberStampEditor
+    }
+    InfoDialog {
+        id: appInfoDialog
+    }
+
+    TreeSignResultDialog {
+        id: treeSignResultDialog
+    }
 
     // Info dialog in center of window
     Dialog {
@@ -443,6 +624,14 @@ ApplicationWindow {
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
         x: (parent.width - width) / 2
         y: (parent.height - height) / 2
+        topPadding: StyleSheet.defaultPaddingV
+        bottomPadding: StyleSheet.defaultPaddingV
+        leftPadding: StyleSheet.defaultPaddingH
+        rightPadding: StyleSheet.defaultPaddingH
+        topMargin: StyleSheet.defaultMarginV
+        bottomMargin: StyleSheet.defaultMarginV
+        leftMargin: StyleSheet.defaultMarginH
+        rightMargin: StyleSheet.defaultMarginH
 
         Loader {
             id: infoDialogContentContainer
@@ -461,6 +650,7 @@ ApplicationWindow {
         id: errorMessageDialog
         buttons: MessageDialog.Ok
         title: qsTr("Error")
+
         onAccepted: {
 
             //console.log("Error message dialog closed.")
@@ -468,7 +658,20 @@ ApplicationWindow {
     }
 
     UnsavedChangesDialog {
-        id: undsavedFileDialog
+        id: unsavedFileDialog
+    }
+
+    DisappearingHint {
+        id: disappearingHint
+
+        anchors.horizontalCenter: parent.horizontalCenter
+        y: 20
+    }
+
+    onShowTypeChanged: {
+        if (showType === Main.ShowType.Empty) {
+            header.disableSignMode()
+        }
     }
 
     onWidthChanged: {
@@ -480,7 +683,7 @@ ApplicationWindow {
     }
 
     onHeightChanged: {
-        if (height <= 600) {
+        if (height <= 770) {
             StyleSheet.window_size_y = "small_height"
         } else {
             StyleSheet.window_size_y = "normal"

@@ -1,5 +1,5 @@
 /* File: mu_page_render.cpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2024-2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -36,7 +36,7 @@ MuPageRender::MuPageRender(fz_context *fzctx, fz_document *fzdoc)
     : fzctx_(fzctx), fzdoc_(fzdoc) {
     if (fzctx_ == nullptr || fzdoc_ == nullptr) {
         throw std::runtime_error(
-            "[MuPageRender] nullptr recieved on construct");
+            "[MuPageRender] nullptr received on construct");
     }
 }
 
@@ -75,7 +75,7 @@ RenderRes MuPageRender::RenderPage(int page_number, float custom_rot_value,
         // a dpi multiplier to render the pdf page with good quality
         float zoom_dpi = 1;  // 72 dpi x multiplier
         float pdf_page_width = page_rect.x1 - page_rect.x0;
-        // if no wixed width - use the goal zoom value
+        // if no fixed width - use the goal zoom value
         if (goal_width == 0) {
             if (goal_zoom <= 0) {
                 goal_zoom = 1;

@@ -1,3 +1,20 @@
+/* File: gui_utils.cpp
+Copyright (C) Basealt LLC,  2025
+Author: Daniil-Viktor Ratkin, <ratkinda@basealt.ru>
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include "gui_utils.hpp"
 
 #include <QDebug>
@@ -7,6 +24,7 @@
 
 namespace core::gui {
 
+namespace {
 /// @brief function to glue image with its mask for transparency
 inline std::vector<unsigned char> *glueImageWithMask(
     const unsigned char *const img, size_t img_size,
@@ -30,6 +48,7 @@ inline std::vector<unsigned char> *glueImageWithMask(
     }
     return result.release();
 }
+}  // namespace
 
 /// @brief concurrent function to make QImage for sign stamp
 std::unique_ptr<BakeResult> prepareStampImage(
@@ -91,15 +110,17 @@ SignParams preparePreviewParams(const QVariantMap &qvparams) {
     if (qvparams.contains("stamp_y")) {
         params_.stamp_y = qvparams.value("stamp_y").toReal();
     }
-    if (qvparams.contains("stamp_width")) {
-        // params_.stamp_width = qvparams.value("stamp_width").toReal();
-        // we only need height/width ration so hardcode params
-        params_.stamp_width = 900;
+
+    /*
+     These parameters can be ignored by the CSP library. They are used only for
+     stamp embedding. Image generation will be performed with the default
+     resolution of 900x344.Though the resulting height may or will differ.
+    */
+    if (qvparams.contains("stamp_height") && qvparams.contains("stamp_width")) {
+        params_.stamp_width = qvparams.value("stamp_width").toReal();
+        params_.stamp_height = qvparams.value("stamp_height").toReal();
     }
-    if (qvparams.contains("stamp_height")) {
-        // params_.stamp_height = qvparams.value("stamp_height").toReal();
-        params_.stamp_height = 300;
-    }
+
     if (qvparams.contains("logo_path")) {
         params_.logo_path = qvparams.value("logo_path").toUrl().toLocalFile();
         if (params_.logo_path.isEmpty()) {
@@ -231,8 +252,8 @@ SharedSignParamWrapper createParams(const SignParams &params_) {
 std::unique_ptr<BakeRubberResult> prepareImage(
     const SharedRubberParamWrapper &params) {
     auto result = std::make_unique<BakeRubberResult>(BakeRubberResult{
-        std::unique_ptr<pdfcsp::pdf::BakeRubberStamResult,
-                        void (*)(pdfcsp::pdf::BakeRubberStamResult *)>(
+        std::unique_ptr<pdfcsp::pdf::BakeRubberStampResult,
+                        void (*)(pdfcsp::pdf::BakeRubberStampResult *)>(
             pdfcsp::pdf::BakeRubberStamp(params->pod_params),
             pdfcsp::pdf::FreeRubberStampResult),
         std::unique_ptr<QImage>()});
@@ -388,19 +409,19 @@ RubberParams prepareParams(const QVariantMap &qvparams) {
 
 /// @brief Gather all rubber stamp parameters (pdfcsp::pdf::CAnnotParam)
 SharedRubberParamWrapper createParams(const RubberParams &params) {
-    auto paramswrapper = std::make_shared<CRubberParamsWrapper>();
-    pdfcsp::pdf::RubberStampParams &pod_params = paramswrapper->pod_params;
-    paramswrapper->qb_img_path = params.img_path.toUtf8();
-    if (!paramswrapper->qb_img_path.isEmpty()) {
-        pod_params.src_img_path = paramswrapper->qb_img_path.data();
+    auto params_wrapper = std::make_shared<CRubberParamsWrapper>();
+    pdfcsp::pdf::RubberStampParams &pod_params = params_wrapper->pod_params;
+    params_wrapper->qb_img_path = params.img_path.toUtf8();
+    if (!params_wrapper->qb_img_path.isEmpty()) {
+        pod_params.src_img_path = params_wrapper->qb_img_path.data();
     }
     pod_params.target_x = static_cast<uint64_t>(params.stamp_width);
     pod_params.target_y = static_cast<uint64_t>(params.stamp_height);
     pod_params.stamp_preserve_ratio = params.stamp_preserve_ratio;
     pod_params.create_from_image = params.create_from_image;
-    paramswrapper->qb_annotation_text = params.annotation_text.toUtf8();
-    if (!paramswrapper->qb_annotation_text.isEmpty()) {
-        pod_params.annotation_text = paramswrapper->qb_annotation_text.data();
+    params_wrapper->qb_annotation_text = params.annotation_text.toUtf8();
+    if (!params_wrapper->qb_annotation_text.isEmpty()) {
+        pod_params.annotation_text = params_wrapper->qb_annotation_text.data();
     }
     pod_params.bg_color.red = params.bg_color.R;
     pod_params.bg_color.green = params.bg_color.G;
@@ -411,9 +432,9 @@ SharedRubberParamWrapper createParams(const RubberParams &params) {
     pod_params.border_color.red = params.border_color.R;
     pod_params.border_color.green = params.border_color.G;
     pod_params.border_color.blue = params.border_color.B;
-    paramswrapper->qb_font_family = params.font_family.toUtf8();
-    if (!paramswrapper->qb_font_family.isEmpty()) {
-        pod_params.font_family = paramswrapper->qb_font_family.data();
+    params_wrapper->qb_font_family = params.font_family.toUtf8();
+    if (!params_wrapper->qb_font_family.isEmpty()) {
+        pod_params.font_family = params_wrapper->qb_font_family.data();
     }
     pod_params.border_radius =
         std::ceil(static_cast<double>(params.border_radius) / 900.0 *
@@ -426,7 +447,7 @@ SharedRubberParamWrapper createParams(const RubberParams &params) {
     pod_params.bg_transparent = params.bg_transparent;
     pod_params.bg_opacity = params.bg_opacity;
     pod_params.annotation_width = params.annotation_width;
-    return paramswrapper;
+    return params_wrapper;
 }
 
 /// @brief create rubber stamps params for embedding into pdf
@@ -438,10 +459,10 @@ std::vector<pdfcsp::pdf::CAnnotParams> createAnnotParams(
         [&cparams](const std::shared_ptr<RubberStamp> &param) {
             cparams.emplace_back(pdfcsp::pdf::CAnnotParams{
                 param->page_index, param->qml_width, param->qml_height,
-                param->position_x, param->position_y, param->real_stamp_qml_width,
-                param->stamp_height, param->res->data_->img,
-                param->res->data_->img_size, param->res->data_->img_mask,
-                param->res->data_->img_mask_size,
+                param->position_x, param->position_y,
+                param->real_stamp_qml_width, param->stamp_height,
+                param->res->data_->img, param->res->data_->img_size,
+                param->res->data_->img_mask, param->res->data_->img_mask_size,
                 param->res->data_->resolution_x,
                 param->res->data_->resolution_y,
                 param->link.empty() ? nullptr : param->link.data()});

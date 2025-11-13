@@ -8,28 +8,59 @@ import StyleSheet
 // MessageDialog with standard buttons is not utilized because
 // button size is invalid for Russian button text.
 Dialog {
-    id: undsavedFileDialog
+    id: unsavedFileDialog
 
-    signal saveWithQuit(bool need_quit)
+    property bool quit_after
+    property bool switch_mode
+
+    signal saveWithQuit(bool need_quit, bool need_switch_mode)
+    signal openTreeDialog
 
     width: 300
-    height: unsavedFileDialogContent.height + 50
-    title: qsTr("Unsaved Changes")
+    height: unsavedFileDialogContent.height + 10
     modal: true
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2
+    topPadding: StyleSheet.defaultPaddingV
+    bottomPadding: StyleSheet.defaultPaddingV
+    leftPadding: StyleSheet.defaultPaddingH
+    rightPadding: StyleSheet.defaultPaddingH
+    topMargin: StyleSheet.defaultMarginV
+    bottomMargin: StyleSheet.defaultMarginV
+    leftMargin: StyleSheet.defaultMarginH
+    rightMargin: StyleSheet.defaultMarginH
 
     Column {
+
         id: unsavedFileDialogContent
 
         width: parent.width
         spacing: 10
         anchors.verticalCenter: parent.verticalCenter
+        topPadding: StyleSheet.defaultPaddingV
+        bottomPadding: StyleSheet.defaultPaddingV
+        leftPadding: StyleSheet.defaultPaddingH
+        rightPadding: StyleSheet.defaultPaddingH
+        anchors.topMargin: StyleSheet.defaultMarginV
+        anchors.bottomMargin: StyleSheet.defaultMarginV
+        anchors.leftMargin: StyleSheet.defaultMarginH
+        anchors.rightMargin: StyleSheet.defaultMarginH
+
+        Text {
+            text: qsTr("Unsaved Changes")
+            wrapMode: Text.Wrap
+            color: StyleSheet.font_color_extra
+            horizontalAlignment: Text.AlignHCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            font.bold: true
+        }
 
         Text {
             text: qsTr("Do you want to save your changes?")
             wrapMode: Text.Wrap
             color: StyleSheet.font_color_extra
+            horizontalAlignment: Text.AlignHCenter
+            anchors.horizontalCenter: parent.horizontalCenter
         }
         RowLayout {
             spacing: 10
@@ -39,9 +70,8 @@ Dialog {
                 text: qsTr("Save")
                 width: 100
                 onClicked: {
-                    undsavedFileDialog.close()
-                    saveWithQuit(true)
-                    //header.launchSaveFileWithQuit(true);
+                    unsavedFileDialog.close()
+                    saveWithQuit(quit_after, switch_mode)
                 }
             }
 
@@ -49,8 +79,14 @@ Dialog {
                 text: qsTr("Discard")
                 width: 100
                 onClicked: {
-                    undsavedFileDialog.close()
-                    Qt.quit()
+                    unsavedFileDialog.close()
+                    pdfListView.sourceIsTmp = false
+                    if (quit_after) {
+                        Qt.quit()
+                    }
+                    if (switch_mode) {
+                        openTreeDialog()
+                    }
                 }
             }
 
@@ -58,7 +94,7 @@ Dialog {
                 text: qsTr("Cancel")
                 width: 100
                 onClicked: {
-                    undsavedFileDialog.close() // Just close the dialog
+                    unsavedFileDialog.close() // Just close the dialog
                 }
             }
         }

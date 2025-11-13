@@ -1,3 +1,20 @@
+/* File: text_extractor.hpp
+Copyright (C) Basealt LLC,  2025
+Author: Oleg Proskurin, <proskurinov@basealt.ru>
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #ifndef TEXT_EXTRACTOR_HPP
 #define TEXT_EXTRACTOR_HPP
 #include <QFuture>
@@ -26,7 +43,7 @@ class TextExtractor : public QObject {
         std::unique_ptr<std::map<size_t, utils::NeedleRectsOnPage>>;
     using SearchContextWatcher = QFutureWatcher<SearchContext>;
     using SearchFuture = QFuture<SearchContext>;
-    using RectToHiglightCurrent = std::pair<size_t, fz_rect>;
+    using RectToHighlightCurrent = std::pair<size_t, fz_rect>;
 
     TextExtractor(fz_context* fzctx, fz_document* fzdoc,
                   QObject* parent = nullptr);
@@ -62,15 +79,28 @@ class TextExtractor : public QObject {
     [[nodiscard]] SearchContext getSearchContext();
 
     /**
-     * @brief returns a copy of needls for page
+     * @brief returns a copy of needles for page
      * @details Creates a copy to make sure the access is thread-safe.
      */
     [[nodiscard]] core::utils::NeedleRectsOnPage getNeedlesForPage(
         size_t page_index);
 
     /// @brief get a copy of current rect to highlight
-    [[nodiscard]] std::shared_ptr<RectToHiglightCurrent> getCurrentNeedleRect(
+    [[nodiscard]] std::shared_ptr<RectToHighlightCurrent> getCurrentNeedleRect(
         size_t page_index);
+
+    // @brief retrieve all URIs on the given page using provided mouse cursor
+    // positions
+    [[nodiscard]] std::shared_ptr<utils::PageUriList> getTargetAllUriPage(
+        size_t page_index, core::utils::MousePos const& mouse_pos);
+
+    /**
+     * @brief check if there is an URI at the given mouse positions
+     * @param mouse_pos mouse cursor position
+     * @return true if the URI is found, otherwise false
+     */
+    [[nodiscard]] bool checkMouseOverUri(size_t page_index,
+                                         utils::MousePos const& mouse_pos);
 
    signals:
 
@@ -90,7 +120,7 @@ class TextExtractor : public QObject {
     std::unique_ptr<CacheFutureWatcher> cache_watcher_;
     std::unique_ptr<CacheFuture> cache_future_;
     TextCache cache_;
-    std::shared_mutex cach_mtx_;
+    std::shared_mutex cache_mtx_;
 
     SearchContext search_context_;
     size_t needles_count_ = 0;
@@ -100,7 +130,7 @@ class TextExtractor : public QObject {
     QString needle_;
     bool case_sensitive_ = false;
 
-    std::unique_ptr<RectToHiglightCurrent> current_rect_to_gighlight_;
+    std::unique_ptr<RectToHighlightCurrent> current_rect_to_highlight_;
 };
 
 }  // namespace core

@@ -1,5 +1,5 @@
 /* File: signatures_list_model.cpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2024-2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -40,11 +40,22 @@ int SignaturesListModel::rowCount(const QModelIndex &parent) const {
     if (parent.isValid()) {
         return 0;
     }
-    return static_cast<int>(raw_signatures_.size());
+    switch (sig_source_) {
+        case Pdf:
+            return static_cast<int>(raw_signatures_.size());
+            break;
+        case FileTree:
+            return static_cast<int>(validation_results_.size());
+            break;
+        default:
+            return 0;
+            break;
+    }
 }
 
 QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
-    if (!index.isValid() || index.row() > raw_signatures_.size() - 1) {
+    if (!index.isValid() || index.row() > raw_signatures_.size() - 1 ||
+        index.row() > validation_results_.size() - 1) {
         return {};
     }
     switch (role) {
@@ -67,7 +78,13 @@ QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
             return false;
             break;
         case EmptyRole:
-            return raw_signatures_.at(index.row()).getSigData().empty();
+            switch (sig_source_) {
+                case Pdf:
+                    return raw_signatures_.at(index.row()).getSigData().empty();
+                case FileTree:
+                default:
+                    return false;
+            }
             break;
         case SigData:
             if (validation_results_.count(index.row()) > 0) {
@@ -82,6 +99,8 @@ QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
 
 void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
                                         const QString &file_source) {
+    sig_source_ = Pdf;
+    emit sigSourceChanged();
     beginResetModel();
     validation_results_.clear();
     raw_signatures_ = std::move(sigs);
@@ -101,8 +120,8 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
         worker_thread->requestInterruption();
     }
     // qThreads and validator objects are stored in array, so it possible not to
-    // wait for results if the document changed, just create a new thred and run
-    // the verification
+    // wait for results if the document changed, just create a new thread and
+    // run the verification
     worker_threads_.emplace_back(std::make_unique<QThread>());
     ++curr_worker_index_ = worker_threads_.size() - 1;
     worker_thread = worker_threads_[curr_worker_index_].get();
@@ -146,7 +165,7 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
 
     // one signature validation finished
     QObject::connect(
-        validator, &core::SignaturesValidator::validatationResult,
+        validator, &core::SignaturesValidator::validationResult,
         [this, worker_thread](
             std::shared_ptr<core::ValidationResult> validation_result,
             size_t ind) {
@@ -194,11 +213,28 @@ QHash<int, QByteArray> SignaturesListModel::roleNames() const {
     return role_names_;
 }
 
+SignaturesListModel::SigSource SignaturesListModel::sigSource() const {
+    return sig_source_;
+}
+
 void SignaturesListModel::saveValidationResult(
     std::shared_ptr<core::ValidationResult> validation_result, size_t ind) {
     validation_results_[ind] = std::move(validation_result);
     const QModelIndex qInd = index(static_cast<int>(ind), 0);
     emit dataChanged(qInd, qInd);
+}
+
+void SignaturesListModel::saveValidationResultBatch(
+    std::vector<std::shared_ptr<core::ValidationResult>> validation_results) {
+    sig_source_ = FileTree;
+    emit sigSourceChanged();
+    beginResetModel();
+    raw_signatures_.clear();
+    validation_results_.clear();
+    for (size_t i = 0; i < validation_results.size(); ++i) {
+        validation_results_[i] = std::move(validation_results[i]);
+    }
+    endResetModel();
 }
 
 /// @brief recover the document to state when it signed by signature
@@ -217,7 +253,7 @@ void SignaturesListModel::recoverDoc(qint64 sig_index) {
         return;
     }
     if (recover_worker_ != nullptr || recover_thread_ != nullptr) {
-        qWarning() << "recoverDoc is alreary running";
+        qWarning() << "recoverDoc is already running";
         return;
     }
     // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)

@@ -1,5 +1,5 @@
 /* File: pdf_page_render.cpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2024-2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -88,7 +88,7 @@ void PdfPageRender::geometryChange(const QRectF &newGeometry,
     QQuickItem::geometryChange(newGeometry, oldGeometry);
 }
 
-/// @brief perfom the render
+/// @brief perform the render
 // NOLINTBEGIN(cppcoreguidelines-owning-memory)
 QSGNode *PdfPageRender::updatePaintNode(
     QSGNode *node,

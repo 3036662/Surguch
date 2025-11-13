@@ -5,6 +5,8 @@ import Qt.labs.platform
 import QtCore
 import StyleSheet
 
+import "info_panel_components" as InfoPanelComponents
+
 Flickable {
     id: root
 
@@ -18,6 +20,9 @@ Flickable {
     property var stamps_combo_model
     property var profiles_model
     property int profile_id: -1
+
+    signal profileSaved
+    signal closeClicked
 
     // fill the form from profile_data JSON string
     function updateProfileForm() {
@@ -53,6 +58,32 @@ Flickable {
                 }
                 logoPath.text = profile_json.logo_path
                 tspUrlEdit.text = profile_json.tsp_url
+                const sign_type_indx = profile_json.create_attached
+                selectFileSignType.currentIndex = sign_type_indx
+                selectFileSignType.item_selected = true
+                if (sign_type_indx !== -1) {
+                    selectFileSignType.displayText = selectFileSignType.model[sign_type_indx].title
+                }
+                const encode_type_indx = profile_json.create_base_64_encoded
+                selectFileEncodingType.currentIndex = encode_type_indx
+                selectFileEncodingType.item_selected = true
+                if (encode_type_indx !== -1) {
+                    selectFileEncodingType.displayText
+                            = selectFileEncodingType.model[encode_type_indx].title
+                }
+                const sig_ext_indx = selectFileExtension.indexOfValue(
+                                       profile_json.sig_ext)
+                selectFileExtension.currentIndex = sig_ext_indx
+                selectFileExtension.item_selected = true
+                if (sig_ext_indx !== -1) {
+                    selectFileExtension.displayText = selectFileExtension.model[sig_ext_indx].title
+                }
+                const archive_type_indx = profile_json.pack_to_zip + profile_json.pack_separate_zips
+                selectArchive.currentIndex = archive_type_indx
+                selectArchive.item_selected = true
+                if (archive_type_indx !== -1) {
+                    selectArchive.displayText = selectArchive.model[archive_type_indx].title
+                }
                 root.contentY = 10
             } catch (e) {
                 console.error("Error parsing JSON" + e.message)
@@ -74,6 +105,18 @@ Flickable {
             selectStampTypeCombo.item_selected = true
             logoPath.text = ""
             tspUrlEdit.text = ""
+            selectFileSignType.currentIndex = 0
+            selectFileSignType.item_selected = true
+            selectFileSignType.displayText = selectFileSignType.model[0].title
+            selectFileEncodingType.currentIndex = 0
+            selectFileEncodingType.item_selected = true
+            selectFileEncodingType.displayText = selectFileEncodingType.model[0].title
+            selectFileExtension.currentIndex = 0
+            selectFileExtension.item_selected = true
+            selectFileExtension.displayText = selectFileExtension.model[0].title
+            selectArchive.currentIndex = 0
+            selectArchive.item_selected = true
+            selectArchive.displayText = selectArchive.model[0].title
         }
     }
 
@@ -84,7 +127,11 @@ Flickable {
     rightMargin: 10
     topMargin: 10
 
-    RSBCloseButton {}
+    InfoPanelComponents.RSBCloseButton {
+        onClicked: {
+            closeClicked()
+        }
+    }
 
     Column {
         id: profileColumn
@@ -99,7 +146,7 @@ Flickable {
             color: StyleSheet.font_color_extra
         }
 
-        TextPair {
+        InfoPanelComponents.TextPair {
             visible: false
             id: profileIdTextPair
             keyText: qsTr("Profile id")
@@ -113,19 +160,17 @@ Flickable {
             color: StyleSheet.font_color_extra
         }
 
-        RSBTextArea {
+        InfoPanelComponents.RSBTextArea {
             id: profileName
             placeholderText: qsTr("Enter profile name")
             color: StyleSheet.font_color_extra
 
             onTextChanged: {
-                let validInput = profileName.text.match(/^S+$/)
-                if (!validInput) {
-                    profileName.text = profileName.text.replace(/\s/g, '')
-                    profileName.cursorPosition = profileName.text.length
-                }
-                if (profileName.text.length > 50) {
-                    profileName.text = profileName.text.slice(0, 50)
+                var cursorPos = cursorPosition
+                var cleanedText = profileName.text.replace(/\s/g, '')
+                if (cleanedText !== text) {
+                    text = cleanedText
+                    cursorPosition = Math.min(cursorPos - 1, text.length)
                 }
             }
         }
@@ -139,7 +184,7 @@ Flickable {
             color: StyleSheet.font_color_extra
         }
 
-        RSBComboSelect {
+        InfoPanelComponents.RSBComboSelect {
             id: selectCertificateCombo
 
             property string displayTextDefault: qsTr("Select the certificate")
@@ -150,21 +195,21 @@ Flickable {
             displayText: displayTextDefault
         }
 
-        RightSBHorizontalDelimiter {
+        InfoPanelComponents.RightSBHorizontalDelimiter {
             width: parent.width
             topPadding: 7
             bottomPadding: 7
         }
 
         // use by default switch
-        RSBSwitch {
+        InfoPanelComponents.RSBSwitch {
             id: useAsDefaultProfileSwitch
             topPadding: 5
             bottomPadding: 5
             text: qsTr("Use this profile by default")
         }
 
-        RightSBHorizontalDelimiter {
+        InfoPanelComponents.RightSBHorizontalDelimiter {
             width: parent.width
             topPadding: 10
             bottomPadding: 10
@@ -188,7 +233,7 @@ Flickable {
             color: StyleSheet.font_color_extra
         }
 
-        RSBComboSelect {
+        InfoPanelComponents.RSBComboSelect {
             id: selectCadesFormatCombo
             model: [{
                     "title": "CADES_BES"
@@ -219,7 +264,7 @@ Flickable {
                 color: StyleSheet.font_color_extra
             }
 
-            RSBTextArea {
+            InfoPanelComponents.RSBTextArea {
                 id: tspUrlEdit
                 placeholderText: qsTr("Enter TSP service url")
                 color: StyleSheet.font_color_extra
@@ -237,6 +282,12 @@ Flickable {
                     }
                 }
             }
+        }
+
+        InfoPanelComponents.RightSBHorizontalDelimiter {
+            width: parent.width
+            topPadding: 10
+            bottomPadding: 10
         }
 
         Text {
@@ -279,7 +330,7 @@ Flickable {
                 enabled: selectStampTypeCombo.currentText !== "ГОСТ"
 
                 onClicked: {
-                    stampEditor.stamp_data = selectStampTypeCombo.currentValue
+                    stampEditor.stamp_json = selectStampTypeCombo.currentValue
                     stampEditor.profiles_model = profiles_model
                     let data = {
                         "CADES_format": selectCadesFormatCombo.currentValue,
@@ -299,7 +350,7 @@ Flickable {
         RowLayout {
             width: parent.width
 
-            RSBComboSelect {
+            InfoPanelComponents.RSBComboSelect {
                 id: selectStampTypeCombo
                 Layout.fillWidth: true
                 model: root.stamps_combo_model
@@ -322,7 +373,7 @@ Flickable {
                         }
                         //console.warn(JSON.stringify(data))
                         stampEditor.profile_data = JSON.stringify(data)
-                        stampEditor.stamp_data = null
+                        stampEditor.stamp_json = null
                         stampEditor.updateStampForm()
                         stampEditor.visible = true
                     }
@@ -387,7 +438,7 @@ Flickable {
             }
         }
 
-        RSBTextArea {
+        InfoPanelComponents.RSBTextArea {
             id: logoPath
             placeholderText: qsTr("Select a logo")
             color: StyleSheet.font_color_extra
@@ -399,6 +450,118 @@ Flickable {
                     imgFileDialog.open()
                 }
             }
+        }
+
+        // files signing settings
+        InfoPanelComponents.RightSBHorizontalDelimiter {
+            width: parent.width
+            topPadding: 10
+            bottomPadding: 10
+        }
+
+        Text {
+            text: qsTr("File signing")
+            font.weight: Font.DemiBold
+            topPadding: 10
+            bottomPadding: 10
+            font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
+        }
+
+        Text {
+            topPadding: 5
+            text: qsTr("Sign type")
+            bottomPadding: 5
+            font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
+        }
+
+        InfoPanelComponents.RSBComboSelect {
+            id: selectFileSignType
+            model: [{
+                    "title": qsTr("Detached")
+                }, {
+                    "title": qsTr("Attached")
+                }]
+            textRole: "title"
+            valueRole: "title"
+            currentIndex: 0
+            item_selected: true
+            property string displayTextDefault: qsTr("Select sign format")
+        }
+
+        Text {
+            topPadding: 5
+            text: qsTr("Certificate file encoding")
+            bottomPadding: 5
+            font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
+        }
+
+        InfoPanelComponents.RSBComboSelect {
+            id: selectFileEncodingType
+            model: [{
+                    "title": "DER"
+                }, {
+                    "title": "PEM"
+                }]
+            textRole: "title"
+            valueRole: "title"
+            currentIndex: 0
+            item_selected: true
+            property string displayTextDefault: qsTr("Select encoding type")
+        }
+
+        Text {
+            topPadding: 5
+            text: qsTr("Signature file extension")
+            bottomPadding: 5
+            font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
+        }
+
+        InfoPanelComponents.RSBComboSelect {
+            id: selectFileExtension
+            model: [{
+                    "title": ".sig"
+                }, {
+                    "title": ".sign"
+                }, {
+                    "title": ".sgn"
+                }, {
+                    "title": ".p7s"
+                }, {
+                    "title": ".bin"
+                }]
+            textRole: "title"
+            valueRole: "title"
+            currentIndex: 0
+            item_selected: true
+            property string displayTextDefault: qsTr("Select signature file extension")
+        }
+
+        Text {
+            topPadding: 5
+            text: qsTr("Create an archive after signing")
+            bottomPadding: 5
+            font.family: "Noto Sans"
+            color: StyleSheet.font_color_extra
+        }
+
+        InfoPanelComponents.RSBComboSelect {
+            id: selectArchive
+            model: [{
+                    "title": qsTr("Don't use")
+                }, {
+                    "title": qsTr("Common ZIP-file")
+                }, {
+                    "title": qsTr("Separate ZIP-file")
+                }]
+            textRole: "title"
+            valueRole: "title"
+            currentIndex: 1
+            item_selected: true
+            property string displayTextDefault: qsTr("Select archive after signing")
         }
 
         // Save button
@@ -467,8 +630,16 @@ Flickable {
                     profile_json["stamp_type"] = selectStampTypeCombo.currentText
                     profile_json["logo_path"] = logoPath.text
                     profile_json["tsp_url"] = tspUrlEdit.text
+                    profile_json["create_attached"] = selectFileSignType.currentIndex
+                    profile_json["create_base_64_encoded"] = selectFileEncodingType.currentIndex
+                    profile_json["sig_ext"] = selectFileExtension.currentValue
+                    profile_json["pack_to_zip"] = selectArchive.currentIndex > 0 ? 1 : 0
+                    profile_json["pack_separate_zips"] = selectArchive.currentIndex === 2 ? 1 : 0
+
                     const new_profile_data = JSON.stringify(profile_json)
-                    console.warn(profiles_model.saveProfile(new_profile_data))
+                    if (profiles_model.saveProfile(new_profile_data)) {
+                        root.profileSaved()
+                    }
                 }
             }
         } // save profile end

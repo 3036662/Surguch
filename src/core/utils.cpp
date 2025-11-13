@@ -1,5 +1,5 @@
 /* File: utils.cpp
-Copyright (C) Basealt LLC,  2024
+Copyright (C) Basealt LLC,  2025
 Author: Oleg Proskurin, <proskurinov@basealt.ru>
 
 This program is free software: you can redistribute it and/or modify it under
@@ -79,7 +79,7 @@ QString pageToQString(fz_context *fzctx, fz_document *fzdoc, int page_index) {
     }
     QString extracted_string;
     extracted_string.reserve(256);
-    bool mu_exception_catched = false;
+    bool mu_exception_caught = false;
 
     fz_stext_page *stpage = nullptr;
     fz_device *stext_dev = nullptr;
@@ -128,15 +128,117 @@ QString pageToQString(fz_context *fzctx, fz_document *fzdoc, int page_index) {
         fz_drop_device(fzctx, stext_dev);
     }
     fz_catch(fzctx) {
-        mu_exception_catched = true;
+        mu_exception_caught = true;
         qWarning() << fz_caught_message(fzctx);
     }
 
-    if (mu_exception_catched) {
+    if (mu_exception_caught) {
         throw std::runtime_error("[core::utils::pageToQString] MuPdf error");
     }
 
     return extracted_string;
+}
+
+/**
+ * @brief Clear the list of URIs in the document from overlapping ones.
+ * @param uri_list list of @see PageUriData, URIs extracted from the document
+ * @return @see PageUriList, list of PageUriData sorted by bounding box area
+ */
+PageUriList removeAllCoveredUri(PageUriList const &uri_list) {
+    const auto area = [](auto const &rect) {
+        auto [x0, y0, x1, y1] = rect.uri_rect;
+        return std::fabs(x1 - x0) * std::fabs(y1 - y0);
+    };
+
+    auto isCoveredBy = [](auto const &lhs, auto const &rhs) {
+        auto const rect1 = lhs.uri_rect;
+        auto const rect2 = rhs.uri_rect;
+
+        return rect1.x0 >= rect2.x0 && rect1.y0 >= rect2.y0 &&
+               rect1.x1 <= rect2.x1 && rect1.y1 <= rect2.y1;
+    };
+
+    auto sorted_uri_list = uri_list;
+    std::sort(sorted_uri_list.begin(), sorted_uri_list.end(),
+              [&area](auto const &lhs, auto const &rhs) {
+                  return area(lhs) > area(rhs);
+              });
+
+    std::vector<PageUriData> result;
+    std::vector<bool> isCovered(sorted_uri_list.size(), false);
+
+    for (size_t i = 0; i < sorted_uri_list.size(); ++i) {
+        if (isCovered[i]) {
+            continue;
+        }
+
+        result.emplace_back(sorted_uri_list[i]);
+
+        for (size_t j = i + 1; j < sorted_uri_list.size(); ++j) {
+            if (!isCovered[j] &&
+                isCoveredBy(sorted_uri_list[j], sorted_uri_list[i])) {
+                isCovered[j] = true;
+            }
+        }
+    }
+
+    return result;
+}
+
+/**
+ * @brief Extract URIs and their bounding box coordinates from the given page.
+ * @param fzctx the MuPDF context
+ * @param fzdoc the MuPdf document context
+ * @param page_index
+ * @param filter applied to the @see PageUriList
+ * @return @see PageUriList, list of PageUriData
+ */
+PageUriList extractAllUriPage(fz_context *fzctx, fz_document *fzdoc,
+                              int page_index, std::optional<filterUri> filter) {
+    bool mu_exception_caught = false;
+
+    fz_page *page = nullptr;
+    fz_link *link = nullptr;
+
+    PageUriList extracted_uris;
+    fz_var(page);
+    fz_var(link);
+    fz_try(fzctx) {
+        page = fz_load_page(fzctx, fzdoc, page_index);
+        link = fz_load_links(fzctx, page);
+
+        for (auto *page_uri = link; page_uri != nullptr;
+             page_uri = page_uri->next) {
+            auto *extracted_uri = page_uri->uri;
+            if (extracted_uri != nullptr && extracted_uri[0] != 0x00) {
+                auto link_dest_info =
+                    fz_resolve_link_dest(fzctx, fzdoc, extracted_uri);
+                PageUriData page_uri_data{page_uri->rect,           //.uri_rect
+                                          link_dest_info.loc.page,  //.dest_page
+                                          extracted_uri};           //.uri
+                extracted_uris.emplace_back(std::move(page_uri_data));
+            }
+        }
+    }
+    fz_always(fzctx) {
+        fz_drop_page(fzctx, page);
+        fz_drop_link(fzctx, link);
+    }
+    fz_catch(fzctx) {
+        mu_exception_caught = true;
+        qWarning() << fz_caught_message(fzctx);
+    }
+
+    if (mu_exception_caught) {
+        throw std::runtime_error(
+            "[core::utils::extractAllUriPage] MuPdf error");
+    }
+
+    if (filter) {
+        return (*filter)(extracted_uris);
+    }
+
+    return extracted_uris;
 }
 
 /**
@@ -153,26 +255,29 @@ PagesTextCache extractTextAllPages(fz_context *fzctx,
         qWarning() << "[extractTextAllPages] nullptr recieved\n";
         return nullptr;
     }
-    bool exception_catched = false;
+    bool exception_caught = false;
     PagesTextCache result =
         std::make_unique<std::vector<PagesTextCacheSinglePage>>();
     int page_count = 0;
     fz_var(page_count);
     fz_try(fzctx) { page_count = fz_count_pages(fzctx, fzdoc); }
     fz_catch(fzctx) {
-        exception_catched = true;
+        exception_caught = true;
         fz_report_error(fzctx);
     }
     for (int i = 0; i < page_count; ++i) {
         try {
-            result->emplace_back(i, pageToQString(fzctx, fzdoc, i));
+            PagesTextCacheSinglePage page_cache{
+                static_cast<size_t>(i), pageToQString(fzctx, fzdoc, i),
+                extractAllUriPage(fzctx, fzdoc, i, removeAllCoveredUri)};
+            result->emplace_back(page_cache);
         } catch (const std::exception &ex) {
             qWarning() << ex.what();
-            exception_catched = true;
+            exception_caught = true;
         }
     }
-    if (exception_catched) {
-        qWarning() << "[extractTextAllPages] error occured";
+    if (exception_caught) {
+        qWarning() << "[extractTextAllPages] error occurred";
         return nullptr;
     }
     return result;
@@ -196,8 +301,8 @@ std::vector<size_t> findPagesWithText(const QString &needle,
     std::for_each(haystack->cbegin(), haystack->cend(),
                   [&res, &needle,
                    &case_sens](const PagesTextCacheSinglePage &page_cached) {
-                      if (page_cached.second.contains(needle, case_sens)) {
-                          res.push_back(page_cached.first);
+                      if (page_cached.page_text.contains(needle, case_sens)) {
+                          res.push_back(page_cached.page_index);
                       }
                   });
     return res;
@@ -216,7 +321,7 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
                                         size_t page_index, bool case_sensitive,
                                         fz_context *fzctx,
                                         fz_document *fzdoc) noexcept {
-    bool mu_exception_catched = false;
+    bool mu_exception_caught = false;
     if (needle.isEmpty() || fzctx == nullptr || fzdoc == nullptr) {
         qWarning() << "[findNeedleRectsOnPage] invalid args";
         return nullptr;
@@ -225,7 +330,7 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
     fz_var(page_count);
     fz_try(fzctx) { page_count = fz_count_pages(fzctx, fzdoc); }
     fz_catch(fzctx) {
-        mu_exception_catched = true;
+        mu_exception_caught = true;
         fz_report_error(fzctx);
     }
     if (page_index >= page_count ||
@@ -286,7 +391,7 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
                 qsizetype pos = 0;
                 while ((pos = extracted_string.indexOf(needle, pos,
                                                        case_sens)) != -1) {
-                    // rects for the signle needle
+                    // rects for the single needle
                     std::vector<fz_rect> tmp_res;
                     std::transform(
                         extracted_quads.cbegin() + pos,
@@ -319,14 +424,50 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
         fz_drop_device(fzctx, stext_dev);
     }
     fz_catch(fzctx) {
-        mu_exception_catched = true;
+        mu_exception_caught = true;
         fz_report_error(fzctx);
     }
-    if (mu_exception_catched) {
-        qWarning() << "[findNeedleRectsOnPage] error occured";
+    if (mu_exception_caught) {
+        qWarning() << "[findNeedleRectsOnPage] error occurred";
         return nullptr;
     }
     return res;
+}
+
+/**
+ * @brief Find all URIs at given position on a given page.
+ * @param page_index
+ * @param mouse_pos mouse cursor position in the document in points
+ * @param haystack
+ * @return list of URIs @see PageUriData or nullptr
+ */
+PageUriList findAllUriPage(size_t page_index, MousePos mouse_pos,
+                           PagesTextCache const &haystack) {
+    if (!haystack || page_index >= haystack->size()) {
+        return {};
+    }
+
+    auto searched_page_it = std::find_if(
+        haystack->cbegin(), haystack->cend(), [&page_index](auto const &page) {
+            return page.page_index == page_index;
+        });
+    if (searched_page_it == haystack->cend()) {
+        return {};
+    }
+
+    const auto &page_uri_list = searched_page_it->page_uri_list;
+
+    PageUriList uri_data_list;
+    for (auto const &uri_info_data : page_uri_list) {
+        auto [mouse_x, mouse_y] = mouse_pos;
+        auto [x0, y0, x1, y1] = uri_info_data.uri_rect;
+
+        if (mouse_x >= x0 && mouse_x <= x1 && mouse_y >= y0 && mouse_y <= y1) {
+            uri_data_list.emplace_back(uri_info_data);
+        }
+    }
+
+    return uri_data_list;
 }
 
 }  // namespace core::utils

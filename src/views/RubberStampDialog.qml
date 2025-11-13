@@ -3,14 +3,15 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import StyleSheet
 
-Dialog {
+Popup {
     id: root
 
     width: 300
     height: Math.min(300, itemView.contentHeight + 20)
-    x: rubberStampDialogButton.x - width
-    y: parent.y
     clip: true
+
+    x: headerSubBar.rubberStampDialogButtonX - width
+    y: StyleSheet.defaultPaddingV
 
     ButtonGroup {
         id: rubberStampGroup
@@ -35,7 +36,7 @@ Dialog {
         delegate: ItemDelegate {
             height: 35
             width: itemView.width - itemView.rightMargin
-            RubberStampItem {
+            RubberStampListEntry {
                 anchors.fill: parent
                 anchors.margins: 1
                 rubber_model: itemView.model

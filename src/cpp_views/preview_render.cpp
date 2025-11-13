@@ -1,3 +1,20 @@
+/* File: preview_render.cpp
+Copyright (C) Basealt LLC,  2025
+Author: Daniil-Viktor Ratkin, <ratkinda@basealt.ru>
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include "preview_render.hpp"
 
 #include <QFuture>
@@ -27,9 +44,11 @@ QSGNode *PreviewRender::updatePaintNode(
     if (node != nullptr) {
         rectNode = dynamic_cast<QSGSimpleTextureNode *>(node);
         if (!isVisible()) {
-            // qWarning()<<"return same node, not visible";
             return node;
         }
+    }
+    if (width() == 0 || height() == 0) {
+        return node;
     }
     if (rectNode == nullptr) {
         if (!size().isValid()) {
@@ -42,21 +61,48 @@ QSGNode *PreviewRender::updatePaintNode(
     }
 
     if (result_ == nullptr || result_->image_ == nullptr) {
-        auto img =
-            std::make_unique<QImage>(size().toSize(), QImage::Format_RGB888);
-        img->fill(Qt::white);  // Fill the image with white color
-        QSGTexture *texture = window()->createTextureFromImage(*img);
+        // Create an empty image if it does not exist.
+        if (!blank_image_ || blank_image_->width() != width() ||
+            blank_image_->height() != height()) {
+            blank_image_ = std::make_unique<QImage>(width(), height(),
+                                                    QImage::Format_RGB888);
+            blank_image_->fill(Qt::white);
+        }
+        QSGTexture *texture = nullptr;
+        if (blank_image_) {
+            texture = window()->createTextureFromImage(*blank_image_);
+        }
         if (texture != nullptr) {
             rectNode->setTexture(texture);
             rectNode->setRect(QRectF(0, 0, width(), height()));
         }
         return rectNode;
     }
-    QSGTexture *texture = window()->createTextureFromImage(*result_->image_);
+    double scale_fact = 1.0;
+
+    const auto yx_ratio_result =
+        static_cast<double>(result_->data_->resolution_y) /
+        result_->data_->resolution_x;
+    auto target_height_qml = yx_ratio_result * max_width_;
+
+    if (target_height_qml > max_height_) {
+        scale_fact = max_height_ / target_height_qml;
+    }
+    target_height_qml *= scale_fact;
+    const auto target_width_qml = target_height_qml / yx_ratio_result;
+
+    const auto img_tmp = result_->image_->scaled(
+        static_cast<int>(result_->image_->width() * scale_fact),
+        static_cast<int>(result_->image_->height() * scale_fact),
+        Qt::KeepAspectRatio);
+    QSGTexture *texture = window()->createTextureFromImage(img_tmp);
+    setWidth(target_width_qml);
+    setHeight(target_height_qml);
     if (texture != nullptr) {
         rectNode->setTexture(texture);
         rectNode->setRect(QRectF(0, 0, width(), height()));
     }
+
     return rectNode;
 }
 
@@ -79,13 +125,11 @@ void PreviewRender::saveImage() {
         result_ = image_future_->takeResult();
     }
     if (result_ && result_->image_ && result_->image_->width() != 0) {
-        // qWarning() << "width " << width();
-        // qWarning() << "result->resolution_y " << result_->image_->height();
-        // qWarning() << "result->resolution_x " << result_->image_->width();
-        setHeight(static_cast<double>(result_->image_->height()) /
-                  result_->image_->width() * width());
-        // qWarning() << static_cast<double>(result_->image_->height()) /
-        //                   result_->image_->width() * width();
+        const auto yx_ratio = static_cast<double>(result_->image_->height()) /
+                              result_->image_->width();
+        setHeight(yx_ratio * width());
+        emit imageReady();
+        return;
     }
-    emit imageReady();
+    emit stampPreviewBadResult();
 }
