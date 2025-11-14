@@ -1,4 +1,4 @@
-# Contributing to Project Name
+# Contributing to project
 
 ## How to Contribute
 1. Report bugs
