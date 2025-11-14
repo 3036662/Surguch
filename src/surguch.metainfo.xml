@@ -17,7 +17,7 @@
   <pkgname>surguch</pkgname>
   <icon type="cached">SealWax-1_32</icon>
   <releases>
-    <release version="0.4.2" date="2025-11-12"/>
+    <release version="0.4.3" date="2025-11-14"/>
   </releases>
   <launchable type="desktop-id">surguch.desktop</launchable>
   <screenshots>
