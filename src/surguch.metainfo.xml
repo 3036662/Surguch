@@ -14,9 +14,17 @@
   <url type="homepage">https://gitlab.basealt.space/proskurinov/surguch</url>
   <licenses><license>GPL-3.0-or-later</license></licenses>
   <metadata_license>CC0-1.0</metadata_license>
+  <pkgname>surguch</pkgname>
+  <icon type="cached">SealWax-1_32</icon>
   <releases>
     <release version="0.4.2" date="2025-11-12"/>
   </releases>
+  <launchable type="desktop-id">surguch.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://gitlab.basealt.space/proskurinov/surguch/-/raw/main/images/surguch.png</image>
+    </screenshot>
+  </screenshots>
 <content_rating type="oars-1.1">
     <content_attribute id="violence-cartoon">none</content_attribute>
     <content_attribute id="violence-fantasy">none</content_attribute>
