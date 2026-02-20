@@ -1,5 +1,5 @@
 Name: surguch
-Version: 0.4.4
+Version: 0.4.5
 Release: alt1
 Summary: Verification and creation of digitally signed pdf documents
 
@@ -44,14 +44,19 @@ of digitally signed pdf documents.
 %files
 %_bindir/surguch
 %_desktopdir/surguch.desktop
+%_datadir/kio/servicemenus/surguch.desktop
+%_datadir/file-manager/actions/surguch.desktop
 %_iconsdir/hicolor/scalable/apps/SealWax-1_32.svg
 %_pixmapsdir/SealWax-1_32.png
 %_datadir/metainfo/surguch.metainfo.xml
 
 
 %changelog
+* Fri Feb 20 2026 Daniil-Viktor Ratkin <krf10@altlinux.org> 0.4.5-alt1
+- add new launch options, add file manager actions.
+
 * Tue Feb 10 2026 Daniil-Viktor Ratkin <krf10@altlinux.org> 0.4.4-alt1
-- update icons
+- update icons.
 
 * Tue Dec 30 2025 Oleg Proskurin <proskur@altlinux.org> 0.4.3-alt2
 - Fix major mistakes in the .spec file (closes #57232).

@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Action
+Name=Sign document
+Name[ru]=Подписать документ
+MimeType=application/octet-stream;
+Profiles=gostSign;
+
+Icon=SealWax-1_32
+
+[X-Action-Profile gostSign]
+Exec=surguch -f %F
+
+Name=Sign documents
+Name[ru]=Подписать документы
