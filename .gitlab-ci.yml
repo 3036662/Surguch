@@ -35,7 +35,7 @@ build:edu11:
   tags:
     - edu11runner
   parallel: 1
-build:gnome11:
+build:gnome_p11:
   stage: build
   script:
     - export QT_PLUGIN_PATH=/usr/lib/qt6/plugins/platforms/
@@ -49,7 +49,7 @@ build:gnome11:
     - echo "Compile complete."
   needs: [ ]
   tags:
-    - gnome11
+    - gnome_p11
   parallel: 1
 build:kde11:
   stage: build
