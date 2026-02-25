@@ -27,6 +27,16 @@ Requires: libcsppdf >= 0.4.0-alt1
 A gui application for verification and creation 
 of digitally signed pdf documents.
 
+%package gnome-extension
+Summary: Nautilus extension for surguch
+Group: Other
+Requires: surguch
+Requires: nautilus-python
+
+%description gnome-extension
+An extension that allows you to add files for signing from file manager.
+
+
 %prep
 %setup
 
@@ -40,19 +50,22 @@ of digitally signed pdf documents.
 
 %install
 %cmake_install
+%find_lang --with-gnome %name-gnome-extension
 
 %files
 %_bindir/surguch
 %_desktopdir/surguch.desktop
-%_datadir/kio/servicemenus/surguch.desktop
-%_datadir/file-manager/actions/surguch.desktop
 %_iconsdir/hicolor/scalable/apps/SealWax-1_32.svg
 %_pixmapsdir/SealWax-1_32.png
 %_datadir/metainfo/surguch.metainfo.xml
+%_datadir/kio/servicemenus/surguch.desktop
+%_datadir/file-manager/actions/surguch.desktop
 
+%files gnome-extension -f %name-gnome-extension.lang
+%_datadir/nautilus-python/extensions/surguch-gnome-extension.py
 
 %changelog
-* Fri Feb 20 2026 Daniil-Viktor Ratkin <krf10@altlinux.org> 0.4.5-alt1
+* Fri Feb 26 2026 Daniil-Viktor Ratkin <krf10@altlinux.org> 0.4.5-alt1
 - add new launch options, add file manager actions.
 
 * Tue Feb 10 2026 Daniil-Viktor Ratkin <krf10@altlinux.org> 0.4.4-alt1
