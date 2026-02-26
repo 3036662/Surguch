@@ -470,7 +470,9 @@ bool FileTreeModel::addNode(const QVariantList &list) {
         std::transform(file_list.begin(), file_list.end(),
                        std::back_inserter(file_array),
                        [](const QString &file_name) {
-                           return (QUrl(file_name).toLocalFile());
+                           return (QUrl(file_name).toLocalFile().isEmpty()
+                                       ? file_name
+                                       : QUrl(file_name).toLocalFile());
                        });
         if (!ctx_available_) {
             std::for_each(

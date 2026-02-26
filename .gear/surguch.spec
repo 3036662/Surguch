@@ -1,44 +1,79 @@
 Name: surguch
-Version: 0.4.3
+Version: 0.4.5
 Release: alt1
-License: GPL-3.0-or-later
-
-Summary: Verification and creation of digitally signed pdf documents.
+Summary: Verification and creation of digitally signed pdf documents
 
 Source:  %name-%version.tar
 
+License: GPL-3.0-or-later
+Url: https://gitlab.basealt.space/proskurinov/surguch
+VCS: https://gitlab.basealt.space/proskurinov/surguch.git
+
+
 Group: Office
 
+BuildRequires(pre): rpm-macros-qt6 
 BuildRequires: gcc-c++ cmake ninja-build
 BuildRequires: libaltcsp-devel libcsppdf-devel >= 0.4.0-alt1
 BuildRequires: libmupdf-devel
-BuildRequires:  qt6-base-devel qt6-declarative-devel rpm-macros-qt6 qt6-declarative qt6-svg-devel qt6-svg qt6-tools
+BuildRequires: qt6-base-devel qt6-declarative-devel 
+BuildRequires: qt6-declarative qt6-svg-devel qt6-svg qt6-tools
 
-Requires: qt6-svg qt6-declarative fonts-ttf-google-noto-sans qt6-wayland qt6-translations
+Requires: qt6-svg qt6-declarative fonts-ttf-google-noto-sans 
+Requires: qt6-wayland qt6-translations
 Requires: libcsppdf >= 0.4.0-alt1
 
 %description
-A gui application for verification and creation of digitally signed pdf documents.
+A gui application for verification and creation 
+of digitally signed pdf documents.
+
+%package gnome-extension
+Summary: Nautilus extension for surguch
+Group: Other
+Requires: surguch
+Requires: nautilus-python
+
+%description gnome-extension
+An extension that allows you to add files for signing from file manager.
+
 
 %prep
 %setup
 
 %build
-%cmake -DCMAKE_BUILD_TYPE=Release -G Ninja
+%cmake -DCMAKE_BUILD_TYPE=Release \
+       -DDESKTOP_DIR=%_desktopdir \
+       -DAPP_ICON_DIR=%_iconsdir/hicolor/scalable/apps/ \
+       -DAPP_ICON_PNG_DIR=%_pixmapsdir \
+       -G Ninja
 %cmake_build
 
 %install
 %cmake_install
+%find_lang --with-gnome %name-gnome-extension
 
 %files
 %_bindir/surguch
-%_datadir/applications/surguch.desktop
-%_datadir/icons/hicolor/scalable/apps/SealWax-1_32.svg
-%_datadir/pixmaps/SealWax-1_32.png
+%_desktopdir/surguch.desktop
+%_iconsdir/hicolor/scalable/apps/SealWax-1_32.svg
+%_pixmapsdir/SealWax-1_32.png
 %_datadir/metainfo/surguch.metainfo.xml
+%_datadir/kio/servicemenus/surguch.desktop
+%_datadir/file-manager/actions/surguch.desktop
 
+%files gnome-extension -f %name-gnome-extension.lang
+%_datadir/nautilus-python/extensions/surguch-gnome-extension.py
 
 %changelog
+* Fri Feb 26 2026 Daniil-Viktor Ratkin <krf10@altlinux.org> 0.4.5-alt1
+- add new launch options, add file manager actions.
+
+* Tue Feb 10 2026 Daniil-Viktor Ratkin <krf10@altlinux.org> 0.4.4-alt1
+- update icons.
+
+* Tue Dec 30 2025 Oleg Proskurin <proskur@altlinux.org> 0.4.3-alt2
+- Fix major mistakes in the .spec file (closes #57232).
+
 * Fri Nov 14 2025 Oleg Proskurin <proskur@altlinux.org> 0.4.3-alt1
 - Update application metadata (thanks to @sirius)
 

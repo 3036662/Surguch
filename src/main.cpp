@@ -16,6 +16,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include <QApplication>
+#include <QCommandLineParser>
 #include <QDebug>
 #include <QDirIterator>
 #include <QGuiApplication>
@@ -48,6 +49,10 @@ int main(int argc, char* argv[]) {
     QTranslator translator;
     const QString locale = QLocale::system().name();
     QApplication app(argc, argv);
+
+    QCommandLineParser parser;
+    QCommandLineOption fileOption("f");
+    parser.addOption(fileOption);
 
     QGuiApplication::setWindowIcon(QIcon(":/app_icons/SealWax-1_32.png"));
     const QString translation_path = ":/translations/" + locale + ".qm";
@@ -102,10 +107,14 @@ int main(int argc, char* argv[]) {
 
     // run the app
     QQmlApplicationEngine engine;
-    const QStringList args = QApplication::arguments();
-    // file to open on start
+    parser.process(app);
+    const QStringList args = parser.positionalArguments();
+    // tree files to open on start
     engine.rootContext()->setContextProperty(
-        "openOnStart", (args.size() > 1 ? args.at(1) : ""));
+        "openFiles", parser.isSet(fileOption) ? args : QStringList());
+    // pdf file to open on start
+    engine.rootContext()->setContextProperty("openOnStart",
+                                             (!args.empty() ? args.at(0) : ""));
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
         []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);

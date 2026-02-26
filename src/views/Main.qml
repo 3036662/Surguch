@@ -364,6 +364,8 @@ ApplicationWindow {
     // --------------------------------------
     //  connect the events
     Component.onCompleted: {
+        // set themes
+        StyleSheet.state = themeStyle
         // enable sign button
         fileTreeView.enableSignButton.connect(header.enableSignMode)
         // disable sign button
@@ -539,15 +541,6 @@ ApplicationWindow {
                         "Validation failed for signature number") + " " + index
             errorMessageDialog.open()
         })
-        // open document on start
-        if (openOnStart !== "") {
-            pdfListView.openFile(openOnStart)
-            header.enableSignMode()
-            leftSideBar.source = openOnStart
-            rightSideBar.showState = RightSideBar.ShowState.Invisible
-            showType = Main.ShowType.Pdf
-        }
-
         // no cryptoPro error
         if (profilesModel.errStatus) {
             if (profilesModel.errString === "ERR_NO_CSP_LIB") {
@@ -592,10 +585,21 @@ ApplicationWindow {
         rightSideBar.profileSaved.connect(pdfListView.forceAimResize)
         // update AimSize when stamp was edited
         stampEditor.stampSaved.connect(pdfListView.forceAimResize)
-
-        // set themes
-        StyleSheet.state = themeStyle
         EventFilterInstaller.installEventFilter(this, main_window_wheel_filter)
+        // open file tree on start
+        if (openFiles.length !== 0) {
+            pdfDropArea.enabled = false
+            fileDropArea.width = width
+            showType = Main.ShowType.Files
+            fileTreeModel.addNode(openFiles)
+        } else // open document on start
+            if (openOnStart !== "") {
+                pdfListView.openFile(openOnStart)
+                header.enableSignMode()
+                leftSideBar.source = openOnStart
+                rightSideBar.showState = RightSideBar.ShowState.Invisible
+                showType = Main.ShowType.Pdf
+            }
     }
 
     // ---------------------------------------------

@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Service
+X-KDE-ServiceTypes=KonqPopupMenu/Plugin
+MimeType=application/octet-stream;
+Actions=gostSign
+
+[Desktop Action gostSign]
+TryExec=surguch -f
+Exec=surguch -f %F
+Icon=SealWax-1_32
+
+Name=Sign documents
+Name[ru]=Подписать документы
+Comment=Sign documents with CryptoPro
+Comment[ru]=Подписать документы с помощью КриптоПро
+

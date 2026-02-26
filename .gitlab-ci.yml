@@ -13,7 +13,7 @@ build:c10f2:
     - mkdir -p build
     - git status
     - parent_dir="$(dirname "$PWD")"
-    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DPDFCSP_MRPA_INCLUDE_DIR=$parent_dir/csp_pdf/mrpa -DPDFCSP_MRPA_LINK_PATH=$parent_dir/csp_pdf/build/mrpa/libmrpa.so -DCMAKE_BUILD_TYPE=Debug -G Ninja
+    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DPDFCSP_MRPA_INCLUDE_DIR=$parent_dir/csp_pdf/mrpa -DPDFCSP_MRPA_LINK_PATH=$parent_dir/csp_pdf/build/mrpa/libmrpa.so -DCMAKE_BUILD_TYPE=Debug -DDESKTOP_DIR=/usr/share/applications -DAPP_ICON_DIR=/usr/share/icons/hicolor/scalable/apps/ -DAPP_ICON_PNG_DIR=/usr/share/pixmaps -G Ninja
     - cmake --build build
     - echo "Compile complete."
   needs: [ ]
@@ -28,14 +28,14 @@ build:edu11:
     - mkdir -p build
     - git status
     - parent_dir="$(dirname "$PWD")"
-    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DPDFCSP_MRPA_INCLUDE_DIR=$parent_dir/csp_pdf/mrpa -DPDFCSP_MRPA_LINK_PATH=$parent_dir/csp_pdf/build/mrpa/libmrpa.so -DCMAKE_BUILD_TYPE=Debug -G Ninja
+    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DPDFCSP_MRPA_INCLUDE_DIR=$parent_dir/csp_pdf/mrpa -DPDFCSP_MRPA_LINK_PATH=$parent_dir/csp_pdf/build/mrpa/libmrpa.so -DCMAKE_BUILD_TYPE=Debug -DDESKTOP_DIR=/usr/share/applications -DAPP_ICON_DIR=/usr/share/icons/hicolor/scalable/apps/ -DAPP_ICON_PNG_DIR=/usr/share/pixmaps -G Ninja
     - cmake --build build
     - echo "Compile complete."
   needs: [ ]
   tags:
     - edu11runner
   parallel: 1
-build:gnome11:
+build:gnome_p11:
   stage: build
   script:
     - export QT_PLUGIN_PATH=/usr/lib/qt6/plugins/platforms/
@@ -44,12 +44,12 @@ build:gnome11:
     - mkdir -p build
     - git status
     - parent_dir="$(dirname "$PWD")"
-    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DPDFCSP_MRPA_INCLUDE_DIR=$parent_dir/csp_pdf/mrpa -DPDFCSP_MRPA_LINK_PATH=$parent_dir/csp_pdf/build/mrpa/libmrpa.so -DCMAKE_BUILD_TYPE=Debug -G Ninja
+    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DPDFCSP_MRPA_INCLUDE_DIR=$parent_dir/csp_pdf/mrpa -DPDFCSP_MRPA_LINK_PATH=$parent_dir/csp_pdf/build/mrpa/libmrpa.so -DCMAKE_BUILD_TYPE=Debug -DDESKTOP_DIR=/usr/share/applications -DAPP_ICON_DIR=/usr/share/icons/hicolor/scalable/apps/ -DAPP_ICON_PNG_DIR=/usr/share/pixmaps -G Ninja
     - cmake --build build
     - echo "Compile complete."
   needs: [ ]
   tags:
-    - gnome11
+    - gnome_p11
   parallel: 1
 build:kde11:
   stage: build
@@ -60,7 +60,7 @@ build:kde11:
     - mkdir -p build
     - git status
     - parent_dir="$(dirname "$PWD")"
-    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DPDFCSP_MRPA_INCLUDE_DIR=$parent_dir/csp_pdf/mrpa -DPDFCSP_MRPA_LINK_PATH=$parent_dir/csp_pdf/build/mrpa/libmrpa.so -DCMAKE_BUILD_TYPE=Debug -G Ninja
+    - cmake -S . -B build -DPDFCSP_INCLUDE_DIR=$parent_dir/csp_pdf/ -DPDFCSP_LINK_PATH=$parent_dir/csp_pdf/build/c_bridge/libcsp_c_bridge.so -DPDFCSP_PDF_INCLUDE_DIR=$parent_dir/csp_pdf/pdf -DPDFCSP_PDF_LINK_PATH=$parent_dir/csp_pdf/build/pdf/libcsppdf.so -DPDFCSP_MRPA_INCLUDE_DIR=$parent_dir/csp_pdf/mrpa -DPDFCSP_MRPA_LINK_PATH=$parent_dir/csp_pdf/build/mrpa/libmrpa.so -DCMAKE_BUILD_TYPE=Debug -DDESKTOP_DIR=/usr/share/applications -DAPP_ICON_DIR=/usr/share/icons/hicolor/scalable/apps/ -DAPP_ICON_PNG_DIR=/usr/share/pixmaps -G Ninja
     - cmake --build build
     - echo "Compile complete."
   needs: [ ]
