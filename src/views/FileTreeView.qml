@@ -81,13 +81,13 @@ TreeView {
             case 1:
                 return StyleSheet.folder_plus_icon
             case 2:
-                return StyleSheet.file_simple_icon
+                return StyleSheet.file_simple_tree
             case 3:
                 return StyleSheet.medal_icon
             case 4:
                 return StyleSheet.box_icon
             case 5:
-                return StyleSheet.file_simple_icon
+                return StyleSheet.file_simple_tree
             default:
                 return ""
             }
