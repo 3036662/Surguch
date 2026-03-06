@@ -182,7 +182,7 @@ class FileTreeModel : public QAbstractItemModel {
     std::unordered_map<QString, OperationData> operation_data_;
 
     std::map<int, std::weak_ptr<TreeItem>> item_map;
-    std::shared_ptr<TreeItem> root_item;
+    std::shared_ptr<TreeItem> root_item_;
     QHash<int, QByteArray> role_names_;
 
     State state_ = Done;

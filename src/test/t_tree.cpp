@@ -35,7 +35,7 @@ void TTree::testEmpty() {
     }
 
     {
-        tree_.setupModelData({""}, tree_.root_item.get());
+        tree_.setupModelData({""}, tree_.root_item_.get());
         tree_.getCertList(-1);
         tree_.getMrpaData(-10);
         tree_.signTree({});
@@ -54,7 +54,7 @@ void TTree::testEmpty() {
         QVERIFY(parse_error.error == QJsonParseError::NoError);
         QJsonObject root = json_doc.object();
         QJsonArray data_ = root["children"].toArray();
-        tree_.setupModelData(data_, tree_.root_item.get());
+        tree_.setupModelData(data_, tree_.root_item_.get());
         tree_.getCertList(10);
         tree_.getMrpaData(10);
         tree_.signTree({});
@@ -73,7 +73,7 @@ void TTree::testEmpty() {
         QVERIFY(parse_error.error != QJsonParseError::NoError);
         QJsonObject root = json_doc.object();
         QJsonArray data_ = root["children"].toArray();
-        tree_.setupModelData(data_, tree_.root_item.get());
+        tree_.setupModelData(data_, tree_.root_item_.get());
         tree_.getCertList(10);
         tree_.getMrpaData(10);
         tree_.signTree({});
@@ -81,7 +81,7 @@ void TTree::testEmpty() {
 
     {
         tree_.deleteTree();
-        tree_.setupModelData({"blablabla"}, tree_.root_item.get());
+        tree_.setupModelData({"blablabla"}, tree_.root_item_.get());
         tree_.getCertList(-1);
         tree_.getMrpaData(-10);
         tree_.signTree({});

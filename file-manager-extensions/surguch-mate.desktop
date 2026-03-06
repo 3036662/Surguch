@@ -8,7 +8,7 @@ Profiles=gostSign;
 Icon=SealWax-1_32
 
 [X-Action-Profile gostSign]
-Exec=surguch -f %F
+Exec=surguch -f %U
 
 Name=Sign documents
 Name[ru]=Подписать документы

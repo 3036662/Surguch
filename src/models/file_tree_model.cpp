@@ -194,7 +194,7 @@ class TreeJsonParser {
 
 FileTreeModel::FileTreeModel(QObject *parent)
     : QAbstractItemModel(parent),
-      root_item(std::make_unique<TreeItem>(TreeItem::FileData(), QUuid())) {}
+      root_item_(std::make_unique<TreeItem>(TreeItem::FileData(), QUuid())) {}
 
 int FileTreeModel::columnCount(const QModelIndex &parent) const {
     if (parent.isValid()) {
@@ -265,7 +265,7 @@ QModelIndex FileTreeModel::index(int row, int column,
 
     TreeItem *parentItem =
         parent.isValid() ? static_cast<TreeItem *>(parent.internalPointer())
-                         : root_item.get();
+                         : root_item_.get();
 
     if (auto *childItem = parentItem->child(row)) {
         return createIndex(row, column, childItem);
@@ -281,7 +281,7 @@ QModelIndex FileTreeModel::parent(const QModelIndex &index) const {
     auto *childItem = static_cast<TreeItem *>(index.internalPointer());
     TreeItem *parentItem = childItem->parentItem();
 
-    return parentItem != root_item.get()
+    return parentItem != root_item_.get()
                ? createIndex(parentItem->row(), 0, parentItem)
                : QModelIndex{};
 }
@@ -294,7 +294,7 @@ int FileTreeModel::rowCount(const QModelIndex &parent) const {
     const TreeItem *parentItem =
         parent.isValid()
             ? static_cast<const TreeItem *>(parent.internalPointer())
-            : root_item.get();
+            : root_item_.get();
 
     return parentItem->childCount();
 }
@@ -453,7 +453,8 @@ bool FileTreeModel::addNode(const QVariantList &list) {
         std::transform(
             list.cbegin(), list.cend(), std::back_inserter(file_list),
             [](const QVariant &item) {
-                return qvariant_cast<QUrl>(item.value<QVariant>()).toString();
+                //return qvariant_cast<QUrl>(item.value<QVariant>()).toString();
+                return qvariant_cast<QUrl>(item.value<QVariant>()).path();
             });
 
         /// filter from dirs or files that are already in the tree
@@ -462,7 +463,7 @@ bool FileTreeModel::addNode(const QVariantList &list) {
                 file_list.begin(), file_list.end(),
                 [this](const QString &file_name) {
                     return QFileInfo(QUrl(file_name).toLocalFile()).isDir() ||
-                           root_item->contains(QUrl(file_name).toLocalFile());
+                           root_item_->contains(QUrl(file_name).path());
                 }),
             file_list.end());
         QJsonArray file_array;
@@ -470,9 +471,9 @@ bool FileTreeModel::addNode(const QVariantList &list) {
         std::transform(file_list.begin(), file_list.end(),
                        std::back_inserter(file_array),
                        [](const QString &file_name) {
-                           return (QUrl(file_name).toLocalFile().isEmpty()
-                                       ? file_name
-                                       : QUrl(file_name).toLocalFile());
+                           return QUrl(file_name).toLocalFile().isEmpty()
+                                      ? file_name
+                                      : QUrl(file_name).toLocalFile();
                        });
         if (!ctx_available_) {
             std::for_each(
@@ -528,7 +529,7 @@ void FileTreeModel::deleteTree() {
     beginResetModel();
     operation_data_.clear();
     emit dropState();
-    root_item->deleteChildren();
+    root_item_->deleteChildren();
     emit treeIsEmpty();
     if (ctx_available_) {
         tree_.ResetContext();
@@ -712,8 +713,8 @@ void FileTreeModel::processDraftTree() {
                     beginResetModel();
                     is_draft_ = true;
                     emit isDraftChanged();
-                    root_item->deleteChildren();
-                    setupModelData(data_, root_item.get());
+                    root_item_->deleteChildren();
+                    setupModelData(data_, root_item_.get());
                     qDebug() << "[DEBUG]"
                              << " FileTreeModel::processDraftTree(): "
                              << "completed and ready";
@@ -755,13 +756,13 @@ void FileTreeModel::processSignedTree() {
                     beginResetModel();
                     is_draft_ = false;
                     emit isDraftChanged();
-                    root_item->deleteChildren();
-                    setupModelData(data_, root_item.get());
+                    root_item_->deleteChildren();
+                    setupModelData(data_, root_item_.get());
                     qDebug() << "[DEBUG]"
                              << " FileTreeModel::processSignedTree(): "
                              << "completed and ready";
                     qDebug() << "[DEBUG]"
-                             << "root child count: " << root_item->childCount();
+                             << "root child count: " << root_item_->childCount();
                     std::for_each(item_map.begin(), item_map.end(),
                                   [this](auto &item) {
                                       if (!item.second.expired()) {
@@ -771,7 +772,7 @@ void FileTreeModel::processSignedTree() {
                     endResetModel();
                 }
             }
-            if (root_item->childCount() == 0) {
+            if (root_item_->childCount() == 0) {
                 emit treeIsEmpty();
             }
             return;
@@ -837,16 +838,16 @@ void FileTreeModel::addFilesUI(const QStringList &file_list) {
                       data_.append(obj);
                   });
     beginInsertRows(
-        QModelIndex(), root_item->childCount(),
-        root_item->childCount() + static_cast<int>(file_list.size()) - 1);
-    setupModelData(data_, root_item.get());
+        QModelIndex(), root_item_->childCount(),
+        root_item_->childCount() + static_cast<int>(file_list.size()) - 1);
+    setupModelData(data_, root_item_.get());
     endInsertRows();
 }
 
 void FileTreeModel::deleteFilesUI(int row, QUuid uid) {
     beginRemoveRows(QModelIndex(), row, row);
-    root_item->deleteItem(uid);
-    if (root_item->childCount() == 0) {
+    root_item_->deleteItem(uid);
+    if (root_item_->childCount() == 0) {
         emit treeIsEmpty();
     }
     endRemoveRows();

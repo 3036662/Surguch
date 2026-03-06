@@ -135,11 +135,11 @@ void PdfDocModel::setSource(const QString &path) {
     }
     fz_catch(fzctx_) { fz_report_error(fzctx_); }
 
-    const QString file_path = QUrl(path).toString(QUrl::PreferLocalFile);
-    const QFile finfo(file_path);
+    QString file_path = QUrl{path}.path();
+    const QFile finfo(QUrl{path}.path());
     const QMimeDatabase mime_database;
     const QMimeType mime_type = mime_database.mimeTypeForFile(file_path);
-    const std::string local_path_std = file_path.toStdString();
+    const std::string local_path_std = finfo.filesystemFileName().string();
     if (!finfo.exists()) {
         qWarning() << "[PdfDocModel::setSource] file does not exist"
                    << file_path;

@@ -109,12 +109,22 @@ int main(int argc, char* argv[]) {
     QQmlApplicationEngine engine;
     parser.process(app);
     const QStringList args = parser.positionalArguments();
+
     // tree files to open on start
-    engine.rootContext()->setContextProperty(
-        "openFiles", parser.isSet(fileOption) ? args : QStringList());
-    // pdf file to open on start
-    engine.rootContext()->setContextProperty("openOnStart",
-                                             (!args.empty() ? args.at(0) : ""));
+    {
+        QStringList paths_transformed;
+        if (parser.isSet(fileOption)) {
+            std::transform(args.cbegin(),args.cend(),std::back_inserter(paths_transformed),[](auto&& one_arg) {
+               return  QUrl(one_arg).path();
+            });
+        }
+        engine.rootContext()->setContextProperty("openFiles", paths_transformed);
+    }
+
+    // PDF file to open on start
+    if(!parser.isSet(fileOption) && !args.isEmpty()) {
+        engine.rootContext()->setContextProperty("openOnStart",QUrl{args.at(0)}.path());
+    }
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
         []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
