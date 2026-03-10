@@ -20,6 +20,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QDesktopServices>
 #include <QFuture>
 #include <QFutureWatcher>
+#include <QGuiApplication>
 #include <QScreen>
 #include <QUrl>
 #include <QWindow>

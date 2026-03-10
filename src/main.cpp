@@ -110,6 +110,7 @@ int main(int argc, char* argv[]) {
     parser.process(app);
     const QStringList args = parser.positionalArguments();
 
+    engine.rootContext()->setContextProperty("openFiles", "");
     // tree files to open on start
     {
         QStringList paths_transformed;
@@ -122,6 +123,7 @@ int main(int argc, char* argv[]) {
     }
 
     // PDF file to open on start
+    engine.rootContext()->setContextProperty("openOnStart", "");
     if(!parser.isSet(fileOption) && !args.isEmpty()) {
         engine.rootContext()->setContextProperty("openOnStart",QUrl{args.at(0)}.path());
     }
