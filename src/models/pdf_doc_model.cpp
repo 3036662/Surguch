@@ -18,22 +18,14 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "pdf_doc_model.hpp"
 
 #include <QDesktopServices>
-#include <QDir>
-#include <QFile>
-#include <QFileInfo>
 #include <QFuture>
 #include <QFutureWatcher>
-#include <QGuiApplication>
-#include <QImage>
-#include <QMimeDatabase>
 #include <QScreen>
-#include <QThread>
 #include <QUrl>
 #include <QWindow>
 #include <QtConcurrent>
 
 #include "core/signature_processor.hpp"
-#include "core/utils.hpp"
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
 
@@ -60,7 +52,7 @@ PdfDocModel::PdfDocModel(QObject *parent)
         physical_screen_dpi_ = p_screen->physicalDotsPerInch();
         screenDpiChanged();
         // catch change dpi event
-        connect(p_window, &QWindow::screenChanged, [this](QScreen *screen) {
+        connect(p_window, &QWindow::screenChanged, [this](const QScreen *screen) {
             if (screen != nullptr && process_signatures_) {  // if main view
                 physical_screen_dpi_ = screen->physicalDotsPerInch();
                 screenDpiChanged();
@@ -118,24 +110,23 @@ QVariant PdfDocModel::data(const QModelIndex &index, int role) const {
     return {};
 }
 
-/// @brief setSource open new pdf file
+/// @brief setSource open new PDF file
 void PdfDocModel::setSource(const QString &path) {
     fz_drop_document(fzctx_, fzdoc_);
     fz_drop_context(fzctx_);
+    fzctx_=nullptr;
+    fzdoc_=nullptr;
     file_source_.clear();
     if (history_manager_ != nullptr) {
         history_manager_->clearHistory();
     }
     // qWarning() << "path = " << path;
     processFileDelete();
-    fzctx_ = fz_new_context(nullptr, nullptr, 500000000);
-    fz_try(fzctx_) {
-        fz_set_aa_level(fzctx_, 8);
-        fz_register_document_handlers(fzctx_);
+    if (path.isEmpty()) {
+        return;
     }
-    fz_catch(fzctx_) { fz_report_error(fzctx_); }
 
-    QString file_path = QUrl{path}.path();
+    const QString file_path = QUrl{path}.path();
     const QFile finfo(QUrl{path}.path());
     const QMimeDatabase mime_database;
     const QMimeType mime_type = mime_database.mimeTypeForFile(file_path);
@@ -151,10 +142,17 @@ void PdfDocModel::setSource(const QString &path) {
         return;
     }
 
+    fzctx_ = fz_new_context(nullptr, nullptr, 500000000);
+    fz_try(fzctx_) {
+        fz_set_aa_level(fzctx_, 8);
+        fz_register_document_handlers(fzctx_);
+    }
+    fz_catch(fzctx_) { fz_report_error(fzctx_); }
+
     bool mu_exception_caught = false;
     bool was_repaired = false;
     fz_try(fzctx_) {
-        // open the pdf file
+        // open the PDF file
         fzdoc_ = fz_open_document(fzctx_, local_path_std.c_str());
         if (fzdoc_ == nullptr) {
             qWarning("Can't open file");
@@ -168,7 +166,7 @@ void PdfDocModel::setSource(const QString &path) {
         }
         emit beginResetModel();
         page_count_ = fz_count_pages(fzctx_, fzdoc_);
-        // if not a valid pdf
+        // if not a valid PDF
         if (fzdoc_ == nullptr || pdfdoc_ == nullptr || page_count_ <= 0) {
             file_source_ = "";
             emit errorOpenFile(tr("Can not open file"));
@@ -332,7 +330,7 @@ Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(const QString &curr_path,
 }
 
 /// @brief Open a folder that contains the current file in the file browser.
-void PdfDocModel::showInFolder() {
+void PdfDocModel::showInFolder() const {
     const QUrl folder_url = QUrl::fromLocalFile(
         QFileInfo(file_source_).absoluteDir().absolutePath());
     QDesktopServices::openUrl(folder_url);
@@ -340,7 +338,7 @@ void PdfDocModel::showInFolder() {
 
 /// @brief returns a vector of rectangles to highlight
 PdfDocModel::NeedleRectsOnPage PdfDocModel::getNeedlesForPage(
-    size_t page_index) {
+    size_t page_index) const {
     // qWarning() << "getNeedlesForPage" << page_index;
     if (!text_extractor_) {
         return nullptr;
@@ -349,7 +347,7 @@ PdfDocModel::NeedleRectsOnPage PdfDocModel::getNeedlesForPage(
 }
 
 /// @brief search for text
-void PdfDocModel::performSearch(const QString &needle) {
+void PdfDocModel::performSearch(const QString &needle) const {
     qWarning() << "search for " << needle;
     if (text_extractor_) {
         text_extractor_->performSearch(needle, false);
@@ -390,7 +388,7 @@ void PdfDocModel::jumpToNeedle(int needle_index) {
 }
 
 std::shared_ptr<core::TextExtractor::RectToHighlightCurrent>
-PdfDocModel::getCurrentNeedleRect(size_t page_index) {
+PdfDocModel::getCurrentNeedleRect(size_t page_index) const {
     if (!text_extractor_) {
         return nullptr;
     }

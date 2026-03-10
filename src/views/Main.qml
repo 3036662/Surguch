@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Dialogs
+//import QtQuick.Dialogs
 import QtQuick.Layouts
 import Qt.labs.platform as Labs
 import alt.pdfcsp.pdfModel
@@ -449,8 +449,9 @@ ApplicationWindow {
         pdfListView.updateLSB.connect(leftSideBar.updateSource)
         // open file error
         pdfModel.errorOpenFile.connect(function (err_string) {
-            errorMessageDialog.text = err_string
-            errorMessageDialog.open()
+            console.warn("ERROR OPEN:" + err_string)
+            errorMessageDialog.addError(err_string)
+            errorMessageDialog.show()
             pdfListView.source = ""
             leftSideBar.source = ""
             Qt.callLater(function () {
@@ -463,69 +464,66 @@ ApplicationWindow {
         })
         // file common status alerts
         siglistModel.commonDocStatus.connect(function (status) {
-            //console.warn("status:"+status)
+            console.warn("status:" + status)
             switch (status) {
             case "kDocCanBeRecovered":
-                errorMessageDialog.text = qsTr(
-                            "The document was changed after signing, but can be restored")
-                errorMessageDialog.open()
+                errorMessageDialog.addError(
+                            qsTr("The document was changed after signing, but can be restored"))
                 break
             case "kDocCantBeTrusted":
-                errorMessageDialog.text = qsTr(
-                            "The document can't be trusted because none of signatures covers the whole document.﻿")
-                errorMessageDialog.open()
+                errorMessageDialog.addError(
+                            qsTr("The document can't be trusted because none of signatures covers the whole document.﻿"))
                 break
             case "kDocCanBeRecoveredButSuspicious":
-                errorMessageDialog.text = qsTr(
-                            "The document was changed after signing.Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿")
-                errorMessageDialog.open()
+                errorMessageDialog.addError(
+                            qsTr("The document was changed after signing.Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿"))
                 break
             case "kDocSuspiciousPrevious":
-                errorMessageDialog.text = qsTr(
-                            "Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿")
-                errorMessageDialog.open()
+                errorMessageDialog.addError(
+                            qsTr("Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿"))
                 break
             }
+            errorMessageDialog.show()
         })
         // open error window if file singing went wrong
         fileTreeView.errorOnSign.connect(function (err) {
             switch (err) {
             case "INVALID_PARAMETERS":
                 errorMessageDialog.text = qsTr("Invalid parameters")
-                errorMessageDialog.open()
+                errorMessageDialog.show()
                 treeSignResultDialog.close()
                 break
             case "INVALID_DESTINATION":
                 errorMessageDialog.text = qsTr("Invalid destination path")
-                errorMessageDialog.open()
+                errorMessageDialog.show()
                 treeSignResultDialog.close()
                 break
             case "SIGN_ALL_FILES_FAILED":
                 errorMessageDialog.text = qsTr(
                             "Failed to sign files: check the certificate in the profile and CryptoPro (availability and expiration date).")
-                errorMessageDialog.open()
+                errorMessageDialog.show()
                 treeSignResultDialog.close()
                 break
             case "CREATE_ZIP_FAILED":
                 errorMessageDialog.text = qsTr("Failed to create archive")
-                errorMessageDialog.open()
+                errorMessageDialog.show()
                 treeSignResultDialog.close()
                 break
             case "COPY_SRC_FILES_FAILED":
                 errorMessageDialog.text = qsTr(
                             "You trying to create files which already exist")
-                errorMessageDialog.open()
+                errorMessageDialog.show()
                 treeSignResultDialog.close()
                 break
             case "COPY_SRC_MRPA_FILES_FAILED":
                 errorMessageDialog.text = qsTr(
                             "You trying to create files which already exist")
-                errorMessageDialog.open()
+                errorMessageDialog.show()
                 treeSignResultDialog.close()
                 break
             case "SOME_FILES_WHERE_RENAMED":
                 errorMessageDialog.text = qsTr("Some files were renamed")
-                errorMessageDialog.open()
+                errorMessageDialog.show()
                 break
             }
         })
@@ -537,25 +535,24 @@ ApplicationWindow {
         })
         // validation failed
         siglistModel.validationFailedForSignature.connect(function (index) {
-            errorMessageDialog.text = qsTr(
-                        "Validation failed for signature number") + " " + index
-            errorMessageDialog.open()
+
+            errorMessageDialog.addError(
+                        qsTr("Validation failed for signature number") + " " + index)
+            errorMessageDialog.show()
         })
         // no cryptoPro error
         if (profilesModel.errStatus) {
             if (profilesModel.errString === "ERR_NO_CSP_LIB") {
-                // errorMessageDialog.text = qsTr(
-                //             "CryptoPro CSP 5.0 R3 not found, please check if installed")
                 disappearingHint.showHint(
                             qsTr("CryptoPro CSP 5.0 R3 not found, please check if installed"),
                             1500)
             } else if (profilesModel.errString === "ERR_GET_CERTS") {
-                errorMessageDialog.text = qsTr(
-                            "Failed getting the user's certificates list")
-                errorMessageDialog.open()
+                errorMessageDialog.addError(
+                            qsTr("Failed getting the user's certificates list"))
+                errorMessageDialog.show()
             } else {
-                errorMessageDialog.text = "err: " + profilesModel.errString
-                errorMessageDialog.open()
+                errorMessageDialog.addError("err: " + profilesModel.errString)
+                errorMessageDialog.show()
             }
         }
         ;
@@ -575,11 +572,13 @@ ApplicationWindow {
         unsavedFileDialog.openTreeDialog.connect(header.openTreeDialog)
         // invalid pdf
         pdfModel.docWasRepaired.connect(function () {
-            errorMessageDialog.text = qsTr(
-                        "Errors were found in the document when it was opened. The document may be displayed incorrectly.")
-            errorMessageDialog.open()
-            // disable signing for damaged document
+             // disable signing for damaged document
             header.disableSignMode()
+            errorMessageDialog.addError(
+                        qsTr("Errors were found in the document when it was opened. The document may be displayed incorrectly."))
+            errorMessageDialog.show()
+
+
         })
         // update AimSize when profile was edited
         rightSideBar.profileSaved.connect(pdfListView.forceAimResize)
@@ -594,8 +593,8 @@ ApplicationWindow {
             fileTreeModel.addNode(openFiles)
         } else // open document on start
             if (openOnStart !== "") {
-                pdfListView.openFile(openOnStart)
                 header.enableSignMode()
+                pdfListView.openFile(openOnStart )
                 leftSideBar.source = openOnStart
                 rightSideBar.showState = RightSideBar.ShowState.Invisible
                 showType = Main.ShowType.Pdf
@@ -621,6 +620,7 @@ ApplicationWindow {
     // Info dialog in center of window
     Dialog {
         id: infoDialog
+
         width: root_window.width - 200
         height: root_window.height - 100
         modal: true
@@ -642,22 +642,59 @@ ApplicationWindow {
             width: parent.width
             height: parent.height
         }
-
-        // Handle dialog closing
-        onAccepted: {
-
-            //   console.log("Dialog closed")
-        }
     }
 
-    MessageDialog {
+    Dialog {
         id: errorMessageDialog
-        buttons: MessageDialog.Ok
+
+        function addError(err_str) {
+            if (text != "") {
+                errorMessageDialog.text += "\n"
+            }
+            text += err_str
+        }
+
+        function show() {
+            if (!opened && text != "") {
+                open()
+            }
+        }
+
+        modal: true
         title: qsTr("Error")
+        standardButtons: Dialog.Ok
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
+        topPadding: StyleSheet.defaultPaddingV
+        bottomPadding: StyleSheet.defaultPaddingV
+        leftPadding: StyleSheet.defaultPaddingH
+        rightPadding: StyleSheet.defaultPaddingH
+        topMargin: StyleSheet.defaultMarginV
+        bottomMargin: StyleSheet.defaultMarginV
+        leftMargin: StyleSheet.defaultMarginH
+        rightMargin: StyleSheet.defaultMarginH
+        readonly property int maxWidth: root_window.width - leftMargin - rightMargin
 
-        onAccepted: {
+        Component.onCompleted: {
+            if (width > maxWidth)
+                width = maxWidth
+        }
 
-            //console.log("Error message dialog closed.")
+        property string text: ""
+
+        contentItem: Text {
+            id: message_text
+            color: StyleSheet.font_color_extra
+
+            text: errorMessageDialog.text
+            font.family: "Noto Sans"
+            wrapMode: Text.WordWrap
+            maximumLineCount: 10
+        }
+
+        onClosed: {
+            text = ""
         }
     }
 

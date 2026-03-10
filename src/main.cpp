@@ -18,7 +18,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDebug>
-#include <QDirIterator>
+//#include <QDirIterator>
 #include <QGuiApplication>
 #include <QIcon>
 #include <QLocale>
