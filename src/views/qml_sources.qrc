@@ -51,5 +51,8 @@
         <file>info_panel_components/MrpaInfo.qml</file>
         <file>TreeSignResultDialog.qml</file>
         <file>info_panel_components/RSBBackButton.qml</file>
+        <file>ErrorMessage.qml</file>
+        <file>AboutDialog.qml</file>
+        <file>EventsConnect.js</file>
     </qresource>
 </RCC>

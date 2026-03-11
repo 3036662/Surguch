@@ -314,22 +314,13 @@ RowLayout {
             delay: 500
         }
 
-        onClicked: appInfoDialog.open()
+        onClicked: aboutDialog.open()
     }
 
     Rectangle {
         width: 10
     }
 
-    // ToolButton {
-    //     flat: true
-    //     display: AbstractButton.IconOnly
-    //     icon.source: "qrc:/icons/bell.svg"
-    //     icon.width: 30
-    //     icon.height: 30
-    //     leftPadding: 10
-    //     rightPadding: 10
-    // }
     Keys.onPressed: event => {
                         if (event.key === Qt.Key_Escape
                             && pdfListView.signMode) {
