@@ -166,8 +166,8 @@ Flickable {
             color: StyleSheet.font_color_extra
 
             onTextChanged: {
-                var cursorPos = cursorPosition
-                var cleanedText = profileName.text.replace(/\s/g, '')
+                const cursorPos = cursorPosition
+                const cleanedText = profileName.text.replace(/\s/g, '')
                 if (cleanedText !== text) {
                     text = cleanedText
                     cursorPosition = Math.min(cursorPos - 1, text.length)

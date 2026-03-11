@@ -17,9 +17,11 @@ TreeView {
     model: fileTreeModel
 
     signal showMrpaList(var data)
+
     signal cleanWindow
     signal enableSignButton
     signal disableSignButton
+
     signal errorOnSign(var err)
 
     property var state: []
@@ -210,7 +212,7 @@ TreeView {
                 width: indentation * depth
             }
 
-            /// chevrone icon for expand/collapse action
+            /// chevron icon for expand/collapse action
             Item {
                 id: indicatorItem
                 anchors.left: indent.right
@@ -599,7 +601,7 @@ TreeView {
         onClicked: mouse => {
                        let cell = treeView.cellAtPosition(Qt.point(mouse.x,
                                                                    mouse.y))
-                       var ind
+                       let ind
                        try {
                            ind = treeView.index(cell.y, cell.x)
                        } catch (e) {
@@ -617,7 +619,7 @@ TreeView {
         onDoubleClicked: mouse => {
                              let cell = treeView.cellAtPosition(
                                  Qt.point(mouse.x, mouse.y))
-                             var ind
+                             let ind
                              try {
                                  ind = treeView.index(cell.y, cell.x)
                              } catch (e) {
@@ -636,6 +638,7 @@ TreeView {
 
     Connections {
         target: treeView.model
+
         function onSignDone(sign_result, sign_done) {
             enableSignButton()
             let res = JSON.parse(sign_result)

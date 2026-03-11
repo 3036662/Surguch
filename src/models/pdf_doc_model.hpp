@@ -23,7 +23,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "core/raw_signature.hpp"
 #include "core/text_extractor.hpp"
-#include "gui_core/gui_utils.hpp"
 #include "gui_core/history_manager.hpp"
 #include "mupdf/fitz.h"
 #include "mupdf/pdf.h"
@@ -65,7 +64,7 @@ class PdfDocModel : public QAbstractListModel {
     Q_INVOKABLE void redrawAll();
 
     /// @brief the 'save file as' implementation
-    Q_INVOKABLE bool saveCurrSourceTo(const QString &curr_source,
+    Q_INVOKABLE bool saveCurrSourceTo(const QString &curr_path,
                                       const QString &path,
                                       bool delete_curr_source);
 
@@ -135,7 +134,8 @@ class PdfDocModel : public QAbstractListModel {
 
     Q_INVOKABLE void jumpToNeedle(int needle_index);
 
-    Q_INVOKABLE std::shared_ptr<core::TextExtractor::RectToHighlightCurrent>
+    Q_INVOKABLE [[nodiscard]] std::shared_ptr<
+        core::TextExtractor::RectToHighlightCurrent>
     getCurrentNeedleRect(size_t page_index) const;
 
     /// @brief returns the uri under the cursor

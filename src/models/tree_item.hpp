@@ -67,12 +67,12 @@ class TreeItem {
         std::optional<QJsonObject> mrpa_data;
     };
 
-    explicit TreeItem(FileData data, QUuid uid, TreeItem *parentItem = nullptr);
+    explicit TreeItem(FileData data, QUuid uid, TreeItem *parent = nullptr);
 
     /// @brief add child to current item
     void appendChild(std::shared_ptr<TreeItem> &&child);
 
-    TreeItem *child(int row);
+    [[nodiscard]] TreeItem *child(int row) const;
     [[nodiscard]] int childCount() const;
     [[nodiscard]] static constexpr int columnCount() { return 1; };
     [[nodiscard]] int row() const;

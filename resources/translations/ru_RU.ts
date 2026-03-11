@@ -5,18 +5,21 @@
     <name>AboutDialog</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/AboutDialog.qml" line="+41"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/AboutDialog.qml" line="+41"/>
         <location filename="../../src/views/AboutDialog.qml" line="+41"/>
         <source>Surguch - application for work with digital signature</source>
         <translation>Сургуч - Программа для работы с электронной подписью</translation>
     </message>
     <message>
         <location line="+7"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/AboutDialog.qml" line="+7"/>
         <location filename="../../src/views/AboutDialog.qml" line="+7"/>
         <source>Version </source>
         <translation>Версия </translation>
     </message>
     <message>
         <location line="+7"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/AboutDialog.qml" line="+7"/>
         <location filename="../../src/views/AboutDialog.qml" line="+7"/>
         <source>Help </source>
         <translation>Справка </translation>
@@ -478,8 +481,9 @@
 <context>
     <name>ErrorMessage</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/ErrorMessage.qml" line="+24"/>
-        <location filename="../../src/views/ErrorMessage.qml" line="+24"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/ErrorMessage.qml" line="+29"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/ErrorMessage.qml" line="+28"/>
+        <location filename="../../src/views/ErrorMessage.qml" line="+28"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -488,89 +492,104 @@
     <name>EventsConnect</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/EventsConnect.js" line="+135"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EventsConnect.js" line="+135"/>
         <location filename="../../src/views/EventsConnect.js" line="+135"/>
         <source>The document was changed after signing, but can be restored</source>
-        <translation type="unfinished">Документ был изменен после подписания! Присутствует возможность восстановить подписанную версию</translation>
+        <translation>Документ был изменен после подписания! Присутствует возможность восстановить подписанную версию</translation>
     </message>
     <message>
         <location line="+4"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EventsConnect.js" line="+4"/>
         <location filename="../../src/views/EventsConnect.js" line="+4"/>
         <source>The document can&apos;t be trusted because none of signatures covers the whole document.﻿</source>
-        <translation type="unfinished">Этому документу нельзя доверять, поскольку ни одна из подписей не защищает весь документ целиком</translation>
+        <translation>Этому документу нельзя доверять, поскольку ни одна из подписей не защищает весь документ целиком</translation>
     </message>
     <message>
         <location line="+4"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EventsConnect.js" line="+4"/>
         <location filename="../../src/views/EventsConnect.js" line="+4"/>
         <source>The document was changed after signing.Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿</source>
-        <translation type="unfinished">Документ был изменен после подписания.Некоторые подписи не защищают весь документ целиком, следует считать подозрительным</translation>
+        <translation>Документ был изменен после подписания.Некоторые подписи не защищают весь документ целиком, следует считать подозрительным</translation>
     </message>
     <message>
         <location line="+4"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EventsConnect.js" line="+4"/>
         <location filename="../../src/views/EventsConnect.js" line="+4"/>
         <source>Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿</source>
-        <translation type="unfinished">Некоторые из подписей не защищают весь документ целиком, следует считать подозрительным</translation>
+        <translation>Некоторые из подписей не защищают весь документ целиком, следует считать подозрительным</translation>
     </message>
     <message>
         <location line="+10"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EventsConnect.js" line="+10"/>
         <location filename="../../src/views/EventsConnect.js" line="+10"/>
         <source>Invalid parameters</source>
-        <translation type="unfinished">Неверные параметры</translation>
+        <translation>Неверные параметры</translation>
     </message>
     <message>
         <location line="+5"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EventsConnect.js" line="+5"/>
         <location filename="../../src/views/EventsConnect.js" line="+5"/>
         <source>Invalid destination path</source>
-        <translation type="unfinished">Неверный пункт назначения</translation>
+        <translation>Неверный пункт назначения</translation>
     </message>
     <message>
         <location line="+5"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EventsConnect.js" line="+5"/>
         <location filename="../../src/views/EventsConnect.js" line="+5"/>
         <source>Failed to sign files: check the certificate in the profile and CryptoPro (availability and expiration date).</source>
-        <translation type="unfinished">Не удалось подписать файлы: проверьте сертификат в профиле и КриптоПро (наличие и срок действия).</translation>
+        <translation>Не удалось подписать файлы: проверьте сертификат в профиле и КриптоПро (наличие и срок действия).</translation>
     </message>
     <message>
         <location line="+6"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EventsConnect.js" line="+6"/>
         <location filename="../../src/views/EventsConnect.js" line="+6"/>
         <source>Failed to create archive</source>
-        <translation type="unfinished">Создать архив не удалось</translation>
+        <translation>Создать архив не удалось</translation>
     </message>
     <message>
         <location line="+5"/>
+        <location line="+6"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EventsConnect.js" line="+5"/>
         <location line="+6"/>
         <location filename="../../src/views/EventsConnect.js" line="+5"/>
         <location line="+6"/>
         <source>You trying to create files which already exist</source>
-        <translation type="unfinished">Вы пытаетесь создать файлы которые уже существуют</translation>
+        <translation>Вы пытаетесь создать файлы которые уже существуют</translation>
     </message>
     <message>
         <location line="+6"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EventsConnect.js" line="+6"/>
         <location filename="../../src/views/EventsConnect.js" line="+6"/>
         <source>Some files were renamed</source>
-        <translation type="unfinished">Некоторые файлы были переименованы</translation>
+        <translation>Некоторые файлы были переименованы</translation>
     </message>
     <message>
         <location line="+17"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EventsConnect.js" line="+17"/>
         <location filename="../../src/views/EventsConnect.js" line="+17"/>
         <source>Validation failed for signature number</source>
-        <translation type="unfinished">Проверка одной из подписей не удалась, номер сигнатуры</translation>
+        <translation>Проверка одной из подписей не удалась, номер сигнатуры</translation>
     </message>
     <message>
         <location line="+8"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EventsConnect.js" line="+8"/>
         <location filename="../../src/views/EventsConnect.js" line="+8"/>
         <source>CryptoPro CSP 5.0 R3 not found, please check if installed</source>
-        <translation type="unfinished">CryptoPro CSP 5.0 не найден, убедитесь, что в системе установлен КриптоПро 5.0 версии не ниже R3</translation>
+        <translation>CryptoPro CSP 5.0 не найден, убедитесь, что в системе установлен КриптоПро 5.0 версии не ниже R3</translation>
     </message>
     <message>
         <location line="+4"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EventsConnect.js" line="+4"/>
         <location filename="../../src/views/EventsConnect.js" line="+4"/>
         <source>Failed getting the user&apos;s certificates list</source>
-        <translation type="unfinished">Не удалось получить список сертификатов пользователя</translation>
+        <translation>Не удалось получить список сертификатов пользователя</translation>
     </message>
     <message>
         <location line="+30"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/EventsConnect.js" line="+30"/>
         <location filename="../../src/views/EventsConnect.js" line="+30"/>
         <source>Errors were found in the document when it was opened. The document may be displayed incorrectly.</source>
-        <translation type="unfinished">При открытии в документе были обнаружены ошибки. Возможно, документ будет отображён неверно.</translation>
+        <translation>При открытии в документе были обнаружены ошибки. Возможно, документ будет отображён неверно.</translation>
     </message>
 </context>
 <context>
@@ -627,36 +646,36 @@
 <context>
     <name>FileTreeModel</name>
     <message>
-        <location filename="../../src/models/file_tree_model.cpp" line="+890"/>
+        <location filename="../../src/models/file_tree_model.cpp" line="+885"/>
         <source>Encrypted</source>
         <translation>Зашифровано</translation>
     </message>
     <message>
         <location line="+20"/>
-        <location line="+53"/>
+        <location line="+52"/>
         <source>Signature valid</source>
         <translation>Подпись верна</translation>
     </message>
     <message>
-        <location line="-50"/>
-        <source>Ambigious</source>
+        <location line="-49"/>
+        <source>Ambiguous</source>
         <translation>Неоднозначно</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location line="+51"/>
+        <location line="+50"/>
         <source>Signature invalid</source>
         <translation>Подпись неверна</translation>
     </message>
     <message>
-        <location line="-47"/>
-        <location line="+51"/>
+        <location line="-46"/>
+        <location line="+50"/>
         <source>MRPA signed</source>
         <translation>МЧД подписана</translation>
     </message>
     <message>
-        <location line="-48"/>
-        <location line="+51"/>
+        <location line="-47"/>
+        <location line="+50"/>
         <source>The quantity does not match</source>
         <translation>Не совпадает количество</translation>
     </message>
@@ -667,7 +686,7 @@
         <translation>Файл не найден</translation>
     </message>
     <message>
-        <location line="-47"/>
+        <location line="-46"/>
         <source>MRPA</source>
         <translation>МЧД</translation>
     </message>
@@ -687,8 +706,8 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/FileTreeView.qml" line="+37"/>
         <location filename="../../build_p11/src/gui_pdf_csp/views/FileTreeView.qml" line="+37"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/FileTreeView.qml" line="+37"/>
-        <location filename="../../src/views/FileTreeView.qml" line="+37"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/FileTreeView.qml" line="+42"/>
+        <location filename="../../src/views/FileTreeView.qml" line="+42"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
@@ -782,7 +801,7 @@
     <message>
         <location line="+75"/>
         <location filename="../../build_p11/src/gui_pdf_csp/views/Header.qml" line="+84"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+84"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+75"/>
         <location filename="../../src/views/Header.qml" line="+75"/>
         <source>Any file (* *.*)</source>
         <translation>Любой файл (* *.*)</translation>
@@ -802,7 +821,7 @@
     <message>
         <location line="-252"/>
         <location filename="../../build_p11/src/gui_pdf_csp/views/Header.qml" line="-261"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="-261"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="-252"/>
         <location filename="../../src/views/Header.qml" line="-252"/>
         <source>Profile settings</source>
         <translation>Настройка профиля</translation>
@@ -834,7 +853,7 @@
     <message>
         <location line="+109"/>
         <location filename="../../build_p11/src/gui_pdf_csp/views/Header.qml" line="+118"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+118"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Header.qml" line="+109"/>
         <location filename="../../src/views/Header.qml" line="+109"/>
         <source>Choose a folder to save the signed files</source>
         <translation>Выберите место для сохранения подписанных файлов</translation>
@@ -975,19 +994,16 @@
     <name>InfoDialog</name>
     <message>
         <location filename="../../build_p11/src/gui_pdf_csp/views/InfoDialog.qml" line="+41"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/InfoDialog.qml" line="+30"/>
         <source>Surguch - application for work with digital signature</source>
         <translation>Сургуч - Программа для работы с электронной подписью</translation>
     </message>
     <message>
         <location line="+7"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/InfoDialog.qml" line="+7"/>
         <source>Version </source>
         <translation>Версия </translation>
     </message>
     <message>
         <location line="+7"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/InfoDialog.qml" line="+7"/>
         <source>Help </source>
         <translation>Справка </translation>
     </message>
@@ -1020,7 +1036,7 @@
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/Main.qml" line="+38"/>
         <location filename="../../build_p11/src/gui_pdf_csp/views/Main.qml" line="+37"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+37"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+38"/>
         <location filename="../../src/views/Main.qml" line="+38"/>
         <source>Surguch</source>
         <translation>Сургуч</translation>
@@ -1091,43 +1107,36 @@ Drag&amp;Drop</translation>
     </message>
     <message>
         <location filename="../../build_p11/src/gui_pdf_csp/views/Main.qml" line="+260"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+260"/>
         <source>The document was changed after signing, but can be restored</source>
         <translation>Документ был изменен после подписания! Присутствует возможность восстановить подписанную версию</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+4"/>
         <source>The document can&apos;t be trusted because none of signatures covers the whole document.﻿</source>
         <translation>Этому документу нельзя доверять, поскольку ни одна из подписей не защищает весь документ целиком</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+4"/>
         <source>The document was changed after signing.Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿</source>
         <translation>Документ был изменен после подписания.Некоторые подписи не защищают весь документ целиком, следует считать подозрительным</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+4"/>
         <source>Some of signatures does not cover the whole document, should be considered it suspicious.﻿﻿</source>
         <translation>Некоторые из подписей не защищают весь документ целиком, следует считать подозрительным</translation>
     </message>
     <message>
         <location line="+9"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+9"/>
         <source>Invalid parameters</source>
         <translation>Неверные параметры</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+5"/>
         <source>Invalid destination path</source>
         <translation>Неверный пункт назначения</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+5"/>
         <source>Failed to sign files: check the certificate in the profile and CryptoPro (availability and expiration date).</source>
         <translation>Не удалось подписать файлы: проверьте сертификат в профиле и КриптоПро (наличие и срок действия).</translation>
     </message>
@@ -1137,51 +1146,42 @@ Drag&amp;Drop</translation>
     </message>
     <message>
         <location line="+6"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+6"/>
         <source>Failed to create archive</source>
         <translation>Создать архив не удалось</translation>
     </message>
     <message>
         <location line="+5"/>
         <location line="+6"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+5"/>
-        <location line="+6"/>
         <source>You trying to create files which already exist</source>
         <translation>Вы пытаетесь создать файлы которые уже существуют</translation>
     </message>
     <message>
         <location line="+6"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+6"/>
         <source>Some files were renamed</source>
         <translation>Некоторые файлы были переименованы</translation>
     </message>
     <message>
         <location line="+15"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+15"/>
         <source>Validation failed for signature number</source>
         <translation>Проверка одной из подписей не удалась, номер сигнатуры</translation>
     </message>
     <message>
         <location line="+7"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+7"/>
         <source>CryptoPro CSP 5.0 R3 not found, please check if installed</source>
         <translation>CryptoPro CSP 5.0 не найден, убедитесь, что в системе установлен КриптоПро 5.0 версии не ниже R3</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+4"/>
         <source>Failed getting the user&apos;s certificates list</source>
         <translation>Не удалось получить список сертификатов пользователя</translation>
     </message>
     <message>
         <location line="+27"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+27"/>
         <source>Errors were found in the document when it was opened. The document may be displayed incorrectly.</source>
         <translation>При открытии в документе были обнаружены ошибки. Возможно, документ будет отображён неверно.</translation>
     </message>
     <message>
         <location line="+86"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/Main.qml" line="+86"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -1211,8 +1211,8 @@ Drag&amp;Drop</translation>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/info_panel_components/MrpaInfo.qml" line="+33"/>
         <location filename="../../build_p11/src/gui_pdf_csp/views/info_panel_components/MrpaInfo.qml" line="+33"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/MrpaInfo.qml" line="+33"/>
-        <location filename="../../src/views/info_panel_components/MrpaInfo.qml" line="+33"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/info_panel_components/MrpaInfo.qml" line="+40"/>
+        <location filename="../../src/views/info_panel_components/MrpaInfo.qml" line="+40"/>
         <source>About MRPA</source>
         <translation>Сведения об МЧД</translation>
     </message>
@@ -1235,7 +1235,7 @@ Drag&amp;Drop</translation>
 <context>
     <name>PdfDocModel</name>
     <message>
-        <location filename="../../src/models/pdf_doc_model.cpp" line="+138"/>
+        <location filename="../../src/models/pdf_doc_model.cpp" line="+139"/>
         <source>File does not exist</source>
         <translation>Файл не существует</translation>
     </message>
@@ -1299,49 +1299,49 @@ Drag&amp;Drop</translation>
         <translation type="vanished">Не удалось определить расположение конфигурационных файлов пользователя, будет использована домашняя директория</translation>
     </message>
     <message>
-        <location line="+62"/>
-        <location line="+90"/>
+        <location line="+60"/>
+        <location line="+89"/>
         <source>Standard config location cannot be determined, using home</source>
         <translation>Не удалось определить расположение конфигурационных файлов пользователя, будет использована домашняя директория</translation>
     </message>
     <message>
-        <location line="-83"/>
-        <location line="+90"/>
+        <location line="-82"/>
+        <location line="+89"/>
         <source>Cannot determine the user&apos;s home folder</source>
         <translation>Не удалось определить домашнюю директорию пользователя</translation>
     </message>
     <message>
-        <location line="-87"/>
-        <location line="+90"/>
+        <location line="-86"/>
+        <location line="+89"/>
         <source>using the path </source>
         <translation>использован путь </translation>
     </message>
     <message>
         <location line="-82"/>
-        <location line="+90"/>
+        <location line="+89"/>
         <source>Can not create folder </source>
         <translation>Не удалось создать директорию </translation>
     </message>
     <message>
-        <location line="-76"/>
-        <location line="+90"/>
+        <location line="-75"/>
+        <location line="+89"/>
         <source>Can not create file </source>
         <translation>Не удалось создать файл </translation>
     </message>
     <message>
-        <location line="-78"/>
-        <location line="+90"/>
+        <location line="-77"/>
+        <location line="+89"/>
         <source>Can not open file </source>
         <translation>Не удалось открыть файл </translation>
     </message>
     <message>
-        <location line="-83"/>
-        <location line="+90"/>
+        <location line="-82"/>
+        <location line="+89"/>
         <source>Error parsing JSON from file </source>
         <translation>Ошибка чтения файла профиля </translation>
     </message>
     <message>
-        <location line="-77"/>
+        <location line="-76"/>
         <source>Failed getting the user&apos;s certificates list</source>
         <translation>Не удалось получить список сертификатов пользователя</translation>
     </message>
@@ -1839,7 +1839,7 @@ Drag&amp;Drop</translation>
         <translation>Создать метку</translation>
     </message>
     <message>
-        <location line="+64"/>
+        <location line="+63"/>
         <source>Standard config location cannot be determined, using home</source>
         <translation>Не удалось определить расположение конфигурационных файлов пользователя, будет использована домашняя директория</translation>
     </message>
@@ -1854,7 +1854,7 @@ Drag&amp;Drop</translation>
         <translation>использован путь </translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+7"/>
         <source>Can not create folder </source>
         <translation>Не удалось создать директорию </translation>
     </message>

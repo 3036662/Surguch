@@ -20,13 +20,12 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "c_bridge.hpp"
 // #include "pod_structs.hpp"
 #include <QDateTime>
-#include <QJsonDocument>
 #include <QJsonObject>
 #include <QTimeZone>
 
 namespace core::bridge_utils {
 
-QString timeToString(time_t val) noexcept {
+QString timeToString(const time_t val) noexcept {
     const QDateTime date_time =
         QDateTime::fromSecsSinceEpoch(val, QTimeZone(0));
     return date_time.toString("dd.MM.yyyy hh:mm:ss UTC");
@@ -34,7 +33,7 @@ QString timeToString(time_t val) noexcept {
 
 /// @brief get list of certificates from CSP
 QString getCertListJSON() noexcept {
-    const pdfcsp::c_bridge::CPodParam params{};
+    constexpr pdfcsp::c_bridge::CPodParam params{};
     pdfcsp::c_bridge::CPodResult *const pod =
         pdfcsp::c_bridge::CGetCertList(params);
     QString res;

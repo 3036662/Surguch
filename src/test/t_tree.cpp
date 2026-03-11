@@ -44,7 +44,7 @@ void TTree::testEmpty() {
     {
         QFile file(test_json_file);
         QVERIFY(file.exists());
-        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        QVERIFY(file.open(QIODevice::ReadOnly | QIODevice::Text));
         QVERIFY(file.isOpen());
         QByteArray file_data = file.readAll();
         file.close();
@@ -63,7 +63,7 @@ void TTree::testEmpty() {
     {
         QFile file(test_broken_json_file);
         QVERIFY(file.exists());
-        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        QVERIFY(file.open(QIODevice::ReadOnly | QIODevice::Text));
         QVERIFY(file.isOpen());
         QByteArray file_data = file.readAll();
         file.close();

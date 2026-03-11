@@ -15,7 +15,8 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#ifndef FONT_HELPER_CPP
+#define FONT_HELPER_CPP
 
 #include <QFontDatabase>
 #include <QObject>
@@ -35,3 +36,5 @@ class FontHelper : public QObject {
 };
 
 }  // namespace core
+
+#endif

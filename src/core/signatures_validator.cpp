@@ -20,14 +20,12 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QDebug>
 #include <QFileInfo>
 #include <QThread>
-#include <cstdint>
 
 namespace core {
 
 /// @brief validate all non-empty signatures by creating CspResponse objects
 void SignaturesValidator::validateSignatures(
-    std::vector<core::RawSignature> raw_signatures,
-    const QString &file_source) {
+    std::vector<RawSignature> raw_signatures, const QString &file_source) {
     bool aborted = false;
     std::map<size_t, CoverageInfo> coverage_infos;
     size_t index_curr_sig = 0;
@@ -87,11 +85,11 @@ void SignaturesValidator::validateSignatures(
  * @return CoverageInfo
  */
 SignaturesValidator::CoverageInfo SignaturesValidator::analyzeOneSigCoverage(
-    const core::RawSignature &sig, size_t file_size) noexcept {
+    const RawSignature &sig, size_t file_size) noexcept {
     CoverageInfo res{};
     res.file_size = file_size;
     // convert to HEX string x2 + 2 bytes for brackets
-    res.sig_data_size = sig.getSigData().size() * 2 + 2;
+    res.sig_data_size = (sig.getSigData().size() * 2) + 2;
     res.byteranges = sig.getByteRanges();
     std::sort(res.byteranges.begin(), res.byteranges.end(),
               [](const std::pair<uint64_t, uint64_t> &lhs,
@@ -120,7 +118,7 @@ SignaturesValidator::CoverageInfo SignaturesValidator::analyzeOneSigCoverage(
     // total gap size
     res.gaps_size = std::accumulate(
         res.gaps.cbegin(), res.gaps.cend(), static_cast<uint64_t>(0),
-        [](uint64_t val, const std::pair<uint64_t, uint64_t> &gap) {
+        [](const uint64_t val, const std::pair<uint64_t, uint64_t> &gap) {
             return val + (gap.second - gap.first);
         });
     // total coverage
@@ -154,7 +152,7 @@ SignaturesValidator::CoverageInfo SignaturesValidator::analyzeOneSigCoverage(
  */
 DocStatusEnum::CommonDocCoverageStatus SignaturesValidator::coverageStatus(
     const std::map<size_t, CoverageInfo> &coverage_infos,
-    bool raw_signatures_empty) {
+    const bool raw_signatures_empty) {
     const bool at_least_one_full_coverage =
         std::any_of(coverage_infos.cbegin(), coverage_infos.cend(),
                     [](const std::pair<size_t, CoverageInfo> &val) {
@@ -193,8 +191,7 @@ DocStatusEnum::CommonDocCoverageStatus SignaturesValidator::coverageStatus(
     const bool doc_can_be_recovered_but_suspicious =
         at_least_one_recoverable && at_lest_one_suspicious;
     // can't be trusted by default
-    DocStatusEnum::CommonDocCoverageStatus status =
-        DocStatusEnum::CommonDocCoverageStatus::kDocCantBeTrusted;
+    auto status = DocStatusEnum::CommonDocCoverageStatus::kDocCantBeTrusted;
     if (everything_is_fine || raw_signatures_empty) {
         status = DocStatusEnum::CommonDocCoverageStatus::kEverythingIsFine;
     }

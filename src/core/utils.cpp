@@ -29,7 +29,7 @@ namespace core::utils {
  * @return std::vector<unsigned char>
  */
 std::vector<unsigned char> hexStringToByteArray(const char *str,
-                                                size_t size) noexcept {
+                                                const size_t size) noexcept {
     std::vector<unsigned char> res;
     if (size == 0 || str == nullptr) {
         return res;
@@ -51,7 +51,7 @@ std::vector<unsigned char> hexStringToByteArray(const char *str,
         const std::string tmp = copy.substr(i, 2);
         size_t pos = 0;
         try {
-            int val = std::stoi(tmp, &pos, 16);
+            const int val = std::stoi(tmp, &pos, 16);
             if (pos != tmp.size()) {
                 throw std::runtime_error("parse error");
             }
@@ -72,7 +72,8 @@ std::vector<unsigned char> hexStringToByteArray(const char *str,
  * @param page_index
  * @return QString text
  */
-QString pageToQString(fz_context *fzctx, fz_document *fzdoc, int page_index) {
+QString pageToQString(fz_context *fzctx, fz_document *fzdoc,
+                      const int page_index) {
     if (fzctx == nullptr || fzdoc == nullptr) {
         throw std::invalid_argument(
             "[core::utils::pageToQString] nullptr recieved");
@@ -91,30 +92,29 @@ QString pageToQString(fz_context *fzctx, fz_document *fzdoc, int page_index) {
     fz_try(fzctx) {
         page = fz_load_page(fzctx, fzdoc, page_index);
         stpage = fz_new_stext_page(fzctx, fz_bound_page(fzctx, page));
-        const fz_stext_options opts = {FZ_STEXT_DEHYPHENATE, 1.0F};
+        constexpr fz_stext_options opts = {FZ_STEXT_DEHYPHENATE, 1.0F};
         stext_dev = fz_new_stext_device(fzctx, stpage, &opts);
         fz_run_page_contents(fzctx, page, stext_dev, fz_identity, nullptr);
         fz_close_device(fzctx, stext_dev);
         // for each block
-        for (fz_stext_block *block = stpage->first_block; block != nullptr;
-             block = block->next) {
+        for (const fz_stext_block *block = stpage->first_block;
+             block != nullptr; block = block->next) {
             if (block->type != FZ_STEXT_BLOCK_TEXT) {
                 continue;
             }
             // for each line
-            for (fz_stext_line *line = block->u.t.first_line; line != nullptr;
-                 line = line->next) {
-                for (fz_stext_char *symbol = line->first_char;
+            for (const fz_stext_line *line = block->u.t.first_line;
+                 line != nullptr; line = line->next) {
+                for (const fz_stext_char *symbol = line->first_char;
                      symbol != nullptr; symbol = symbol->next) {
                     if (symbol->c <= 0xFFFF) {
                         extracted_string.append(QChar(symbol->c));
                     } else {
                         auto arr = QChar::fromUcs4(symbol->c);
-                        std::for_each(
-                            arr.begin(), arr.end(),
-                            [&extracted_string](char16_t symbol) {
-                                extracted_string.append(QChar(symbol));
-                            });
+                        std::for_each(arr.begin(), arr.end(),
+                                      [&extracted_string](const char16_t symb) {
+                                          extracted_string.append(QChar(symb));
+                                      });
                     }
                 }
                 extracted_string.append(QChar('\n'));
@@ -165,7 +165,7 @@ PageUriList removeAllCoveredUri(PageUriList const &uri_list) {
               });
 
     std::vector<PageUriData> result;
-    std::vector<bool> isCovered(sorted_uri_list.size(), false);
+    std::vector isCovered(sorted_uri_list.size(), false);
 
     for (size_t i = 0; i < sorted_uri_list.size(); ++i) {
         if (isCovered[i]) {
@@ -194,7 +194,8 @@ PageUriList removeAllCoveredUri(PageUriList const &uri_list) {
  * @return @see PageUriList, list of PageUriData
  */
 PageUriList extractAllUriPage(fz_context *fzctx, fz_document *fzdoc,
-                              int page_index, std::optional<filterUri> filter) {
+                              const int page_index,
+                              std::optional<filterUri> filter) {
     bool mu_exception_caught = false;
 
     fz_page *page = nullptr;
@@ -207,11 +208,11 @@ PageUriList extractAllUriPage(fz_context *fzctx, fz_document *fzdoc,
         page = fz_load_page(fzctx, fzdoc, page_index);
         link = fz_load_links(fzctx, page);
 
-        for (auto *page_uri = link; page_uri != nullptr;
+        for (const auto *page_uri = link; page_uri != nullptr;
              page_uri = page_uri->next) {
-            auto *extracted_uri = page_uri->uri;
-            if (extracted_uri != nullptr && extracted_uri[0] != 0x00) {
-                auto link_dest_info =
+            if (auto *extracted_uri = page_uri->uri;
+                extracted_uri != nullptr && extracted_uri[0] != 0x00) {
+                const auto link_dest_info =
                     fz_resolve_link_dest(fzctx, fzdoc, extracted_uri);
                 PageUriData page_uri_data{page_uri->rect,           //.uri_rect
                                           link_dest_info.loc.page,  //.dest_page
@@ -256,8 +257,7 @@ PagesTextCache extractTextAllPages(fz_context *fzctx,
         return nullptr;
     }
     bool exception_caught = false;
-    PagesTextCache result =
-        std::make_unique<std::vector<PagesTextCacheSinglePage>>();
+    auto result = std::make_unique<std::vector<PagesTextCacheSinglePage>>();
     int page_count = 0;
     fz_var(page_count);
     fz_try(fzctx) { page_count = fz_count_pages(fzctx, fzdoc); }
@@ -318,7 +318,8 @@ std::vector<size_t> findPagesWithText(const QString &needle,
  * @details This function is supposed to be run as an async function.
  */
 NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
-                                        size_t page_index, bool case_sensitive,
+                                        const size_t page_index,
+                                        const bool case_sensitive,
                                         fz_context *fzctx,
                                         fz_document *fzdoc) noexcept {
     bool mu_exception_caught = false;
@@ -340,7 +341,7 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
     }
     const Qt::CaseSensitivity case_sens =
         case_sensitive ? Qt::CaseSensitive : Qt::CaseInsensitive;
-    NeedleRectsOnPage res = std::make_shared<PageRects>();
+    auto res = std::make_shared<PageRects>();
     fz_stext_page *stpage = nullptr;
     fz_device *stext_dev = nullptr;
     fz_page *page = nullptr;
@@ -354,20 +355,20 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
         const fz_rect page_rect = fz_bound_page(fzctx, page);
         res->page_rect = page_rect;
         stpage = fz_new_stext_page(fzctx, page_rect);
-        const fz_stext_options opts = {FZ_STEXT_DEHYPHENATE, 1.0F};
+        constexpr fz_stext_options opts = {FZ_STEXT_DEHYPHENATE, 1.0F};
         stext_dev = fz_new_stext_device(fzctx, stpage, &opts);
         fz_run_page_contents(fzctx, page, stext_dev, fz_identity, nullptr);
         fz_close_device(fzctx, stext_dev);
 
         // for each block of text
-        for (fz_stext_block *block = stpage->first_block; block != nullptr;
-             block = block->next) {
+        for (const fz_stext_block *block = stpage->first_block;
+             block != nullptr; block = block->next) {
             if (block->type != FZ_STEXT_BLOCK_TEXT) {
                 continue;
             }
             // for each line, extract the line end the rune rects
-            for (fz_stext_line *line = block->u.t.first_line; line != nullptr;
-                 line = line->next) {
+            for (const fz_stext_line *line = block->u.t.first_line;
+                 line != nullptr; line = line->next) {
                 QString extracted_string;
                 std::vector<fz_quad> extracted_quads;
                 for (fz_stext_char *symbol = line->first_char;
@@ -380,7 +381,7 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
                         std::for_each(
                             arr.begin(), arr.end(),
                             [&extracted_string, &extracted_quads,
-                             &symbol](char16_t ch16) {
+                             &symbol](const char16_t ch16) {
                                 extracted_string.append(QChar(ch16));
                                 extracted_quads.push_back(symbol->quad);
                             });
@@ -396,15 +397,14 @@ NeedleRectsOnPage findNeedleRectsOnPage(const QString &needle,
                     std::transform(
                         extracted_quads.cbegin() + pos,
                         extracted_quads.cbegin() + pos + needle.length(),
-                        std::back_inserter(tmp_res),
-                        [&tmp_res](const fz_quad &quad) {
+                        std::back_inserter(tmp_res), [](const fz_quad &quad) {
                             return fz_rect_from_quad(quad);
                         });
                     pos += needle.length();
                     // merge tmp_res rect to one rect
                     fz_rect single_needle_rect = fz_empty_rect;
                     std::for_each(tmp_res.cbegin(), tmp_res.cend(),
-                                  [&single_needle_rect](fz_rect val) {
+                                  [&single_needle_rect](const fz_rect val) {
                                       single_needle_rect = fz_union_rect(
                                           single_needle_rect, val);
                                   });
@@ -447,7 +447,7 @@ PageUriList findAllUriPage(size_t page_index, MousePos mouse_pos,
         return {};
     }
 
-    auto searched_page_it = std::find_if(
+    const auto searched_page_it = std::find_if(
         haystack->cbegin(), haystack->cend(), [&page_index](auto const &page) {
             return page.page_index == page_index;
         });
@@ -460,9 +460,8 @@ PageUriList findAllUriPage(size_t page_index, MousePos mouse_pos,
     PageUriList uri_data_list;
     for (auto const &uri_info_data : page_uri_list) {
         auto [mouse_x, mouse_y] = mouse_pos;
-        auto [x0, y0, x1, y1] = uri_info_data.uri_rect;
-
-        if (mouse_x >= x0 && mouse_x <= x1 && mouse_y >= y0 && mouse_y <= y1) {
+        if (auto [x0, y0, x1, y1] = uri_info_data.uri_rect;
+            mouse_x >= x0 && mouse_x <= x1 && mouse_y >= y0 && mouse_y <= y1) {
             uri_data_list.emplace_back(uri_info_data);
         }
     }

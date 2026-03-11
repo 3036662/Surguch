@@ -45,8 +45,8 @@ void TextExtractor::updateCache() {
     }
     cache_mtx_.lock();
     cache_watcher_ = std::make_unique<CacheFutureWatcher>();
-    QObject::connect(cache_watcher_.get(), &CacheFutureWatcher::finished, this,
-                     &TextExtractor::saveCache);
+    connect(cache_watcher_.get(), &CacheFutureWatcher::finished, this,
+            &TextExtractor::saveCache);
     cache_future_ = std::make_unique<CacheFuture>(
         QtConcurrent::run(utils::extractTextAllPages, fzctx_, fzdoc_));
     cache_watcher_->setFuture(*cache_future_);
@@ -66,7 +66,7 @@ void TextExtractor::saveSearchContext() {
         needles_count_ = std::accumulate(
             search_context_->cbegin(), search_context_->cend(),
             static_cast<size_t>(0),
-            [](size_t acc,
+            [](const size_t acc,
                const std::pair<const size_t, utils::NeedleRectsOnPage> &pair) {
                 return acc + pair.second->needle_rects.size();
             });
@@ -77,20 +77,20 @@ void TextExtractor::saveSearchContext() {
 }
 
 /// @brief blocks until the cache is ready
-void TextExtractor::waitForCacheReady() {
+void TextExtractor::waitForCacheReady() const {
     if (cache_watcher_ && cache_future_ && cache_future_->isValid()) {
         cache_watcher_->waitForFinished();
     }
 }
 
 /// @brief blocks until the cache is finished
-void TextExtractor::waitForSearchReady() {
+void TextExtractor::waitForSearchReady() const {
     if (search_watcher_ && search_future_ && search_future_->isValid()) {
         search_watcher_->waitForFinished();
     }
 }
 
-bool TextExtractor::isReady() {
+bool TextExtractor::isReady() const {
     return search_future_ && search_future_->isFinished() && cache_future_ &&
            cache_future_->isFinished();
 }
@@ -123,8 +123,8 @@ void TextExtractor::performSearch(const QString &needle, bool case_sensitive) {
         waitForCacheReady();
     }
     search_watcher_ = std::make_unique<SearchContextWatcher>();
-    QObject::connect(search_watcher_.get(), &SearchContextWatcher::finished,
-                     this, &TextExtractor::saveSearchContext);
+    connect(search_watcher_.get(), &SearchContextWatcher::finished, this,
+            &TextExtractor::saveSearchContext);
     search_future_ = std::make_unique<SearchFuture>(QtConcurrent::run(
         &TextExtractor::buildSearchContext, this, needle, case_sensitive));
     search_watcher_->setFuture(*search_future_);
@@ -133,15 +133,15 @@ void TextExtractor::performSearch(const QString &needle, bool case_sensitive) {
 TextExtractor::SearchContext TextExtractor::buildSearchContext(
     const QString &needle, bool case_sensitive) {
     std::unique_lock mtx(cache_mtx_);
-    auto pages_with_needle =
+    const auto pages_with_needle =
         core::utils::findPagesWithText(needle, cache_, case_sensitive);
     mtx.unlock();
     auto res = std::make_unique<std::map<size_t, utils::NeedleRectsOnPage>>();
     std::for_each(pages_with_needle.cbegin(), pages_with_needle.cend(),
                   [fzctx = fzctx_, fzdoc = fzdoc_, &needle, &res,
-                   case_sensitive](size_t page_index) {
-                      core::utils::NeedleRectsOnPage needle_rects =
-                          core::utils::findNeedleRectsOnPage(
+                   case_sensitive](const size_t page_index) {
+                      utils::NeedleRectsOnPage needle_rects =
+                          utils::findNeedleRectsOnPage(
                               needle, page_index, case_sensitive, fzctx, fzdoc);
                       if (needle_rects && !needle_rects->needle_rects.empty()) {
                           res->insert_or_assign(page_index,
@@ -160,7 +160,7 @@ size_t TextExtractor::getNeedlesTotal() {
 }
 
 std::pair<size_t, std::pair<float, float>> TextExtractor::getNeedlePageAndXY(
-    size_t needle_index) {
+    const size_t needle_index) {
     std::shared_lock lock{search_mtx_, std::defer_lock};
     if (!lock.try_lock()) {
         return {0, {0, 0}};
@@ -169,7 +169,7 @@ std::pair<size_t, std::pair<float, float>> TextExtractor::getNeedlePageAndXY(
         return {0, {0, 0}};
     }
     size_t local_index = needle_index;
-    auto it_page = std::find_if(
+    const auto it_page = std::find_if(
         search_context_->cbegin(), search_context_->cend(),
         [&local_index](
             const std::pair<size_t, utils::NeedleRectsOnPage> &page_pair) {
@@ -211,8 +211,8 @@ std::pair<size_t, std::pair<float, float>> TextExtractor::getNeedlePageAndXY(
     return {it_page->first, {x_relative, y_relative}};
 }
 
-core::utils::NeedleRectsOnPage TextExtractor::getNeedlesForPage(
-    size_t page_index) {
+utils::NeedleRectsOnPage TextExtractor::getNeedlesForPage(
+    const size_t page_index) {
     std::shared_lock lock{search_mtx_, std::defer_lock};
     if (!lock.try_lock()) {
         return {};
@@ -248,7 +248,7 @@ TextExtractor::SearchContext TextExtractor::getSearchContext() {
 
 /// @brief get a copy of current rect to highlight
 std::shared_ptr<TextExtractor::RectToHighlightCurrent>
-TextExtractor::getCurrentNeedleRect(size_t page_index) {
+TextExtractor::getCurrentNeedleRect(const size_t page_index) const {
     if (!current_rect_to_highlight_ ||
         current_rect_to_highlight_->first != page_index) {
         return nullptr;
@@ -260,7 +260,7 @@ TextExtractor::getCurrentNeedleRect(size_t page_index) {
 // @brief retrieve all URIs on the given page using provided mouse cursor
 // positions
 std::shared_ptr<utils::PageUriList> TextExtractor::getTargetAllUriPage(
-    size_t page_index, core::utils::MousePos const &mouse_pos) {
+    const size_t page_index, utils::MousePos const &mouse_pos) {
     std::shared_lock lock{cache_mtx_, std::defer_lock};
 
     if (!lock.try_lock()) {
@@ -276,7 +276,7 @@ std::shared_ptr<utils::PageUriList> TextExtractor::getTargetAllUriPage(
     return std::make_shared<utils::PageUriList>(std::move(found_uri_data));
 }
 
-bool TextExtractor::checkMouseOverUri(size_t page_index,
+bool TextExtractor::checkMouseOverUri(const size_t page_index,
                                       utils::MousePos const &mouse_pos) {
     std::shared_lock lock{cache_mtx_, std::defer_lock};
     if (!lock.try_lock()) {
@@ -287,7 +287,7 @@ bool TextExtractor::checkMouseOverUri(size_t page_index,
         return {};
     }
 
-    auto result = std::make_unique<utils::PageUriList>(
+    const auto result = std::make_unique<utils::PageUriList>(
         findAllUriPage(page_index, mouse_pos, cache_));
 
     return !result->empty();

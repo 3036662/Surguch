@@ -43,17 +43,15 @@ int SignaturesListModel::rowCount(const QModelIndex &parent) const {
     switch (sig_source_) {
         case Pdf:
             return static_cast<int>(raw_signatures_.size());
-            break;
         case FileTree:
             return static_cast<int>(validation_results_.size());
-            break;
         default:
             return 0;
-            break;
     }
 }
 
-QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
+QVariant SignaturesListModel::data(const QModelIndex &index,
+                                   const int role) const {
     if (!index.isValid() || index.row() > raw_signatures_.size() - 1 ||
         index.row() > validation_results_.size() - 1) {
         return {};
@@ -64,19 +62,16 @@ QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
                 return validation_results_.at(index.row())->subj_common_name;
             }
             return "Signature " + QString::number(index.row());
-            break;
         case CheckStatusRole:
             if (validation_results_.count(index.row()) > 0) {
                 return true;
             }
             return false;
-            break;
         case ValidRole:
             if (validation_results_.count(index.row()) > 0) {
                 return validation_results_.at(index.row())->bres.check_summary;
             }
             return false;
-            break;
         case EmptyRole:
             switch (sig_source_) {
                 case Pdf:
@@ -85,16 +80,13 @@ QVariant SignaturesListModel::data(const QModelIndex &index, int role) const {
                 default:
                     return false;
             }
-            break;
         case SigData:
             if (validation_results_.count(index.row()) > 0) {
                 return validation_results_.at(index.row())->toJson();
             }
-            break;
         default:
             return {};
     }
-    return {};
 }
 
 void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
@@ -130,30 +122,29 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
     validator->moveToThread(worker_thread);
 
     // quit application
-    QObject::connect(
-        QCoreApplication::instance(), &QCoreApplication::aboutToQuit, [this] {
-            for (size_t i = 0; i < worker_threads_.size(); ++i) {
-                if (worker_threads_[i] && worker_threads_[i]->isRunning()) {
-                    worker_threads_[i]->requestInterruption();
-                    worker_threads_[i]->wait();
+    connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit,
+            [this] {
+                for (size_t i = 0; i < worker_threads_.size(); ++i) {
+                    if (worker_threads_[i] && worker_threads_[i]->isRunning()) {
+                        worker_threads_[i]->requestInterruption();
+                        worker_threads_[i]->wait();
+                    }
+                    if (i < validators_.size() && validators_[i]) {
+                        validators_[i]->abort();
+                    }
                 }
-                if (i < validators_.size() && validators_[i]) {
-                    validators_[i]->abort();
-                }
-            }
-        });
+            });
 
     // thread start
-    QObject::connect(
-        worker_thread, &QThread::started, [validator, file_source, this]() {
-            validator->validateSignatures(raw_signatures_, file_source);
-        });
+    connect(worker_thread, &QThread::started, [validator, file_source, this] {
+        validator->validateSignatures(raw_signatures_, file_source);
+    });
 
     // document validation finished
-    QObject::connect(
+    connect(
         validator, &core::SignaturesValidator::validationFinished,
-        [this,
-         worker_thread](core::DocStatusEnum::CommonDocCoverageStatus status) {
+        [this, worker_thread](
+            const core::DocStatusEnum::CommonDocCoverageStatus status) {
             if (curr_worker_index_ < worker_threads_.size() &&
                 worker_thread == worker_threads_[curr_worker_index_].get()) {
                 // qWarning()<<"status"<<status;
@@ -164,23 +155,23 @@ void SignaturesListModel::updateSigList(std::vector<core::RawSignature> sigs,
         });
 
     // one signature validation finished
-    QObject::connect(
+    connect(
         validator, &core::SignaturesValidator::validationResult,
         [this, worker_thread](
             std::shared_ptr<core::ValidationResult> validation_result,
-            size_t ind) {
+            const size_t ind) {
             if (curr_worker_index_ < worker_threads_.size() &&
                 worker_thread == worker_threads_[curr_worker_index_].get()) {
-                qWarning() << "recieved validation result from validator"
+                qWarning() << "received validation result from validator"
                            << validators_[curr_worker_index_].get();
                 saveValidationResult(std::move(validation_result), ind);
             }
         });
 
     // validation failed
-    QObject::connect(
+    connect(
         validator, &core::SignaturesValidator::validationFailedForSignature,
-        [this, worker_thread](size_t ind) {
+        [this, worker_thread](const size_t ind) {
             if (curr_worker_index_ < worker_threads_.size() &&
                 worker_thread == worker_threads_[curr_worker_index_].get()) {
                 qWarning() << "validation failed for signature " << ind
@@ -218,7 +209,8 @@ SignaturesListModel::SigSource SignaturesListModel::sigSource() const {
 }
 
 void SignaturesListModel::saveValidationResult(
-    std::shared_ptr<core::ValidationResult> validation_result, size_t ind) {
+    std::shared_ptr<core::ValidationResult> validation_result,
+    const size_t ind) {
     validation_results_[ind] = std::move(validation_result);
     const QModelIndex qInd = index(static_cast<int>(ind), 0);
     emit dataChanged(qInd, qInd);
@@ -238,8 +230,8 @@ void SignaturesListModel::saveValidationResultBatch(
 }
 
 /// @brief recover the document to state when it signed by signature
-void SignaturesListModel::recoverDoc(qint64 sig_index) {
-    const char *const expl = "[SignaturesListModel] recover doc failed";
+void SignaturesListModel::recoverDoc(const qint64 sig_index) {
+    const auto *expl = "[SignaturesListModel] recover doc failed";
     if (validation_results_.count(sig_index) == 0 ||
         !validation_results_.at(sig_index)->can_be_casted_to_full_coverage) {
         qWarning() << expl;
@@ -263,14 +255,13 @@ void SignaturesListModel::recoverDoc(qint64 sig_index) {
     recover_worker_->moveToThread(recover_thread_);
 
     // start job
-    QObject::connect(
-        recover_thread_, &QThread::started, [file_path, branges, this]() {
-            recover_worker_->recoverFileWithByteRange(file_path, branges);
-        });
+    connect(recover_thread_, &QThread::started, [file_path, branges, this] {
+        recover_worker_->recoverFileWithByteRange(file_path, branges);
+    });
 
     // app closed
-    QObject::connect(
-        QCoreApplication::instance(), &QCoreApplication::aboutToQuit, [this]() {
+    connect(
+        QCoreApplication::instance(), &QCoreApplication::aboutToQuit, [this] {
             if (recover_thread_ != nullptr && recover_thread_->isRunning()) {
                 recover_worker_->abort();
                 recover_thread_->requestInterruption();
@@ -279,17 +270,16 @@ void SignaturesListModel::recoverDoc(qint64 sig_index) {
         });
 
     // job is completed
-    QObject::connect(recover_worker_,
-                     &core::FileRecoverWorker::recoverCompleted,
-                     [this](const QString &res) {
-                         if (!res.isEmpty()) {
-                             emit fileRecovered(res);
-                         }
-                         recover_thread_->quit();
-                     });
+    connect(recover_worker_, &core::FileRecoverWorker::recoverCompleted,
+            [this](const QString &res) {
+                if (!res.isEmpty()) {
+                    emit fileRecovered(res);
+                }
+                recover_thread_->quit();
+            });
 
     // thread is finished
-    QObject::connect(recover_thread_, &QThread::finished, [this]() {
+    connect(recover_thread_, &QThread::finished, [this] {
         recover_worker_->deleteLater();
         recover_thread_->deleteLater();
         recover_worker_ = nullptr;

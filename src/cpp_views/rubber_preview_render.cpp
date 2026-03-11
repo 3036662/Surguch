@@ -30,30 +30,29 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <memory>
 
 RubberPreviewRender::RubberPreviewRender() {
-    setFlag(QQuickItem::ItemHasContents, true);
+    setFlag(ItemHasContents, true);
     setClip(true);
-    const qreal pix_rat = QWindow().devicePixelRatio();
-    if (pix_rat > 2) {
+    if (const qreal pix_rat = QWindow().devicePixelRatio(); pix_rat > 2) {
         dev_pix_ratio_ = static_cast<float>(pix_rat);
     }
 }
 
 QSGNode *RubberPreviewRender::updatePaintNode(
-    QSGNode *node,
-    [[maybe_unused]] QQuickItem::UpdatePaintNodeData *updatePaintNodeData) {
+    QSGNode *oldNode,
+    [[maybe_unused]] UpdatePaintNodeData *updatePaintNodeData) {
     QSGSimpleTextureNode *rectNode = nullptr;
-    if (node != nullptr) {
-        rectNode = dynamic_cast<QSGSimpleTextureNode *>(node);
+    if (oldNode != nullptr) {
+        rectNode = dynamic_cast<QSGSimpleTextureNode *>(oldNode);
         if (!isVisible()) {
-            return node;
+            return oldNode;
         }
     }
     if (width() == 0 || height() == 0) {
-        return node;
+        return oldNode;
     }
     if (rectNode == nullptr) {
         if (!size().isValid()) {
-            return node;
+            return oldNode;
         }
         // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
         rectNode = new QSGSimpleTextureNode();
@@ -104,7 +103,7 @@ QSGNode *RubberPreviewRender::updatePaintNode(
             static_cast<int>(result_->image_->width() * scale_fact),
             static_cast<int>(result_->image_->height() * scale_fact),
             Qt::KeepAspectRatio);
-        QSGTexture *texture = window()->createTextureFromImage(img_tmp);
+        texture = window()->createTextureFromImage(img_tmp);
         setWidth(requested_width_ * scale_fact);
         setHeight(target_height * scale_fact);
         if (texture != nullptr) {
@@ -123,11 +122,10 @@ QSGNode *RubberPreviewRender::updatePaintNode(
     if (target_width > requested_width_) {
         scale_fact = requested_width_ / target_width;
     }
-    texture = window()->createTextureFromImage(
-        (*result_->image_)
-            .scaled(static_cast<int>(result_->image_->width() * scale_fact),
-                    static_cast<int>(result_->image_->height() * scale_fact),
-                    Qt::KeepAspectRatio));
+    texture = window()->createTextureFromImage(result_->image_->scaled(
+        static_cast<int>(result_->image_->width() * scale_fact),
+        static_cast<int>(result_->image_->height() * scale_fact),
+        Qt::KeepAspectRatio));
 
     setHeight(requested_height_ * scale_fact);
     setWidth(target_width * scale_fact);
@@ -142,8 +140,8 @@ void RubberPreviewRender::createImage(const QVariantMap &qvparams) {
     preparePreviewParams(qvparams);
     auto params_wrapper = createParams();
     image_watcher_ = std::make_unique<ImageFutureWatcher>();
-    QObject::connect(image_watcher_.get(), &ImageFutureWatcher::finished,
-                     [this]() { saveImage(); });
+    connect(image_watcher_.get(), &ImageFutureWatcher::finished,
+            [this] { saveImage(); });
     image_future_ = std::make_unique<ImageFuture>(
         QtConcurrent::run(core::gui::prepareImage, params_wrapper));
     image_watcher_->setFuture(*image_future_);

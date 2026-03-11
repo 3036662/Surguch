@@ -61,7 +61,6 @@ class WheelEventFilter : public QObject {
         dispatch_target_ = target;
     }
 
-   protected:
     bool eventFilter(QObject *obj, QEvent *event) override {
         if (event->type() == QEvent::Wheel) {
             // NOLINTNEXTLINE

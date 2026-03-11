@@ -17,7 +17,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #ifndef RAW_SIGNATURE_HPP
 #define RAW_SIGNATURE_HPP
-#include <cstdint>
 #include <vector>
 
 #include "mupdf/pdf.h"

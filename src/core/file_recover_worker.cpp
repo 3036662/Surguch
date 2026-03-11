@@ -17,8 +17,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "file_recover_worker.hpp"
 
-#include <QDebug>
-#include <QFile>
 #include <QFileInfo>
 #include <QStandardPaths>
 
@@ -74,8 +72,7 @@ void FileRecoverWorker::recoverFileWithByteRange(const QString &path,
     }
     dest_file.close();
     src_file.close();
-    const QFileInfo dest_finfo(dest_file);
-    if (dest_finfo.size() != eof_pos) {
+    if (const QFileInfo dest_finfo(dest_file); dest_finfo.size() != eof_pos) {
         qWarning() << "[recoverFileWithByteRange] recover failed";
         emit recoverCompleted("");
         return;

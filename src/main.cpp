@@ -18,7 +18,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDebug>
-//#include <QDirIterator>
+// #include <QDirIterator>
 #include <QGuiApplication>
 #include <QIcon>
 #include <QLocale>
@@ -51,12 +51,12 @@ int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
 
     QCommandLineParser parser;
-    QCommandLineOption fileOption("f");
+    const QCommandLineOption fileOption("f");
     parser.addOption(fileOption);
 
     QGuiApplication::setWindowIcon(QIcon(":/app_icons/SealWax-1_32.png"));
-    const QString translation_path = ":/translations/" + locale + ".qm";
-    if (!translator.load(translation_path)) {
+    if (const QString translation_path = ":/translations/" + locale + ".qm";
+        !translator.load(translation_path)) {
         qWarning("Load translations failed");
     } else {
         QApplication::installTranslator(&translator);
@@ -115,17 +115,19 @@ int main(int argc, char* argv[]) {
     {
         QStringList paths_transformed;
         if (parser.isSet(fileOption)) {
-            std::transform(args.cbegin(),args.cend(),std::back_inserter(paths_transformed),[](auto&& one_arg) {
-               return  QUrl(one_arg).path();
-            });
+            std::transform(args.cbegin(), args.cend(),
+                           std::back_inserter(paths_transformed),
+                           [](auto&& one_arg) { return QUrl(one_arg).path(); });
         }
-        engine.rootContext()->setContextProperty("openFiles", paths_transformed);
+        engine.rootContext()->setContextProperty("openFiles",
+                                                 paths_transformed);
     }
 
     // PDF file to open on start
     engine.rootContext()->setContextProperty("openOnStart", "");
-    if(!parser.isSet(fileOption) && !args.isEmpty()) {
-        engine.rootContext()->setContextProperty("openOnStart",QUrl{args.at(0)}.path());
+    if (!parser.isSet(fileOption) && !args.isEmpty()) {
+        engine.rootContext()->setContextProperty("openOnStart",
+                                                 QUrl{args.at(0)}.path());
     }
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
@@ -140,8 +142,8 @@ int main(int argc, char* argv[]) {
     engine.rootContext()->setContextProperty("kdeVersion", kde_version);
     const QPalette defaultPalette;
     const auto text = defaultPalette.color(QPalette::WindowText);
-    const auto window = defaultPalette.color(QPalette::Window);
-    if (text.lightness() > window.lightness() && kde_version != "5") {
+    if (const auto window = defaultPalette.color(QPalette::Window);
+        text.lightness() > window.lightness() && kde_version != "5") {
         theme_style = "dark";
     } else {
         theme_style = "light";

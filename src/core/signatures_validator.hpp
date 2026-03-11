@@ -42,25 +42,21 @@ class DocStatusEnum : public QObject {
     };
     Q_ENUM(CommonDocCoverageStatus);
 
-    static QString toString(CommonDocCoverageStatus stat) {
+    static QString toString(const CommonDocCoverageStatus stat) {
         switch (stat) {
             case CommonDocCoverageStatus::kEverythingIsFine:
                 return "kEverythingIsFine";
-                break;
             case CommonDocCoverageStatus::kDocCanBeRecovered:
                 return "kDocCanBeRecovered";
-                break;
             case CommonDocCoverageStatus::kDocSuspiciousPrevious:
                 return "kDocSuspiciousPrevious";
-                break;
             case CommonDocCoverageStatus::kDocCanBeRecoveredButSuspicious:
                 return "kDocCanBeRecoveredButSuspicious";
-                break;
             default:
                 return "kDocCantBeTrusted";
-                break;
         }
     }
+
     explicit DocStatusEnum(QObject *parent = nullptr) : QObject(parent) {}
 };
 
@@ -94,7 +90,7 @@ class SignaturesValidator : public QObject {
    public slots:
 
     /// @brief validate all non-empty signatures by creating CspResponse objects
-    void validateSignatures(std::vector<core::RawSignature> raw_signatures,
+    void validateSignatures(std::vector<RawSignature> raw_signatures,
                             const QString &file_source);
 
    signals:
@@ -124,7 +120,7 @@ class SignaturesValidator : public QObject {
      * @param file_size
      * @return CoverageInfo
      */
-    static CoverageInfo analyzeOneSigCoverage(const core::RawSignature &sig,
+    static CoverageInfo analyzeOneSigCoverage(const RawSignature &sig,
                                               size_t file_size) noexcept;
 
     /**

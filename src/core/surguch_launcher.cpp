@@ -23,7 +23,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace core {
 
-constexpr const char *surguch_executable_ = "surguch";
+constexpr auto surguch_executable_ = "surguch";
 
 SurguchLauncher::SurguchLauncher(QObject *parent) : QObject{parent} {}
 

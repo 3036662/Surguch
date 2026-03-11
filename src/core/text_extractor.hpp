@@ -17,7 +17,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #ifndef TEXT_EXTRACTOR_HPP
 #define TEXT_EXTRACTOR_HPP
-#include <QFuture>
 #include <QFutureWatcher>
 #include <shared_mutex>
 
@@ -61,13 +60,13 @@ class TextExtractor : public QObject {
     void performSearch(const QString& needle, bool case_sensitive);
 
     /// @brief blocks until the cache is ready (for testing purposes)
-    void waitForCacheReady();
+    void waitForCacheReady() const;
 
     /// @brief blocks until the search is finished (for testing purposes)
-    void waitForSearchReady();
+    void waitForSearchReady() const;
 
     /// @brief returns true if all operations are completed
-    [[nodiscard]] bool isReady();
+    [[nodiscard]] bool isReady() const;
 
     // [[nodiscard]] const TextCache& getCache() const& { return cache_; };
 
@@ -82,17 +81,16 @@ class TextExtractor : public QObject {
      * @brief returns a copy of needles for page
      * @details Creates a copy to make sure the access is thread-safe.
      */
-    [[nodiscard]] core::utils::NeedleRectsOnPage getNeedlesForPage(
-        size_t page_index);
+    [[nodiscard]] utils::NeedleRectsOnPage getNeedlesForPage(size_t page_index);
 
     /// @brief get a copy of current rect to highlight
     [[nodiscard]] std::shared_ptr<RectToHighlightCurrent> getCurrentNeedleRect(
-        size_t page_index);
+        size_t page_index) const;
 
     // @brief retrieve all URIs on the given page using provided mouse cursor
     // positions
     [[nodiscard]] std::shared_ptr<utils::PageUriList> getTargetAllUriPage(
-        size_t page_index, core::utils::MousePos const& mouse_pos);
+        size_t page_index, utils::MousePos const& mouse_pos);
 
     /**
      * @brief check if there is an URI at the given mouse positions

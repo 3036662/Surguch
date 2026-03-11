@@ -18,7 +18,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef TREE_SIGN_HELPER_HPP
 #define TREE_SIGN_HELPER_HPP
 
-#include <QObject>
 #include <QVariant>
 #include <c_bridge.hpp>
 

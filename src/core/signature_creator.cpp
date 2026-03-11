@@ -133,7 +133,7 @@ SignWorker::SignParams SignatureCreator::createWorkerParams(
 
 /**
  * @brief Create a signature (nonblocking)
- * @param QVariantMap, suitable for filling SignWorker::SignParams
+ * @param qvparams suitable for filling SignWorker::SignParams
  */
 bool SignatureCreator::createSignature(const QVariantMap &qvparams) {
     qWarning() << "[SignatureCreator::CreateSignature]";
@@ -144,26 +144,26 @@ bool SignatureCreator::createSignature(const QVariantMap &qvparams) {
     p_sign_thread_ = new QThread();
     p_worker_->moveToThread(p_sign_thread_);
     // start job
-    QObject::connect(p_sign_thread_, &QThread::started,
-                     [params = std::move(params), this]() mutable {
-                         p_worker_->launchSign(std::move(params));
-                     });
+    connect(p_sign_thread_, &QThread::started,
+            [params = std::move(params), this]() mutable {
+                p_worker_->launchSign(std::move(params));
+            });
     // app closed
-    QObject::connect(
-        QCoreApplication::instance(), &QCoreApplication::aboutToQuit, [this]() {
-            if (p_sign_thread_ != nullptr && p_sign_thread_->isRunning()) {
-                p_sign_thread_->requestInterruption();
-                p_sign_thread_->wait();
-            }
-        });
+    connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit,
+            [this] {
+                if (p_sign_thread_ != nullptr && p_sign_thread_->isRunning()) {
+                    p_sign_thread_->requestInterruption();
+                    p_sign_thread_->wait();
+                }
+            });
     // job is completed
-    QObject::connect(p_worker_, &SignWorker::signCompleted,
-                     [this](const SignWorker::SignResult &res) {
-                         handleResult(res);
-                         p_sign_thread_->quit();
-                     });
+    connect(p_worker_, &SignWorker::signCompleted,
+            [this](const SignWorker::SignResult &res) {
+                handleResult(res);
+                p_sign_thread_->quit();
+            });
     // thread is finished
-    QObject::connect(p_sign_thread_, &QThread::finished, [this]() {
+    connect(p_sign_thread_, &QThread::finished, [this] {
         p_worker_->deleteLater();
         p_sign_thread_->deleteLater();
         p_worker_ = nullptr;
@@ -193,28 +193,27 @@ void SignatureCreator::estimateStampResizeFactor(const QVariantMap &qvparams) {
     p_resize_img_thread_ = new QThread();
     p_worker_resize_img_->moveToThread(p_resize_img_thread_);
     // start job
-    QObject::connect(
-        p_resize_img_thread_, &QThread::started,
-        [params = std::move(params), this]() mutable {
-            p_worker_resize_img_->estimateStampSize(std::move(params));
-        });
+    connect(p_resize_img_thread_, &QThread::started,
+            [params = std::move(params), this]() mutable {
+                p_worker_resize_img_->estimateStampSize(std::move(params));
+            });
     // app closed
-    QObject::connect(QCoreApplication::instance(),
-                     &QCoreApplication::aboutToQuit, [this]() {
-                         if (p_resize_img_thread_ != nullptr &&
-                             p_resize_img_thread_->isRunning()) {
-                             p_resize_img_thread_->requestInterruption();
-                             p_resize_img_thread_->wait();
-                         }
-                     });
+    connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit,
+            [this] {
+                if (p_resize_img_thread_ != nullptr &&
+                    p_resize_img_thread_->isRunning()) {
+                    p_resize_img_thread_->requestInterruption();
+                    p_resize_img_thread_->wait();
+                }
+            });
     // job is completed
-    QObject::connect(p_worker_resize_img_, &SignWorker::resizeStampCompleted,
-                     [this](SignWorker::AimResizeFactor res) {
-                         handleStampResize(res);
-                         p_resize_img_thread_->quit();
-                     });
+    connect(p_worker_resize_img_, &SignWorker::resizeStampCompleted,
+            [this](const SignWorker::AimResizeFactor res) {
+                handleStampResize(res);
+                p_resize_img_thread_->quit();
+            });
     // thread is finished
-    QObject::connect(p_resize_img_thread_, &QThread::finished, [this]() {
+    connect(p_resize_img_thread_, &QThread::finished, [this] {
         p_worker_resize_img_->deleteLater();
         p_resize_img_thread_->deleteLater();
         p_worker_resize_img_ = nullptr;
@@ -233,7 +232,8 @@ void SignatureCreator::handleResult(const SignWorker::SignResult &res) {
 }
 
 /// @brief Receive the estimated stamp size and send it to the frontend
-void SignatureCreator::handleStampResize(SignWorker::AimResizeFactor res) {
+void SignatureCreator::handleStampResize(
+    const SignWorker::AimResizeFactor res) {
     QVariantMap js_result;
     js_result["x_resize"] = res.x;
     js_result["y_resize"] = res.y;

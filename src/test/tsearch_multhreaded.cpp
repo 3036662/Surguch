@@ -38,9 +38,6 @@ int main(int argc, char **argv) {
         fz_register_document_handlers(fzctx);
         // doc
 
-        size_t total_needles = 0;
-
-        total_needles = 0;
         fz_var(fzdoc);
         fz_try(fzctx) {
             fzdoc = fz_open_document(fzctx, src_file.c_str());

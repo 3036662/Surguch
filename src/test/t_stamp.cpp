@@ -53,7 +53,7 @@ void TStamp::checkParams() {
 void TStamp::createPreview() {
     core::gui::SignParams params_;
     params_.bg_opacity = 1;
-    params_.bg_transparent = 1;
+    params_.bg_transparent = true;
     params_.border_color.R = 255;
     params_.border_color.G = 0;
     params_.border_color.B = 0;

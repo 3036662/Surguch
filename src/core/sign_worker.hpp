@@ -124,7 +124,7 @@ class SignWorker : public QObject {
 
    private:
     /// @brief Go to library, execute pdfcsp::pdf::PrepareDoc
-    [[nodiscard]] SignResult preparePdf();
+    [[nodiscard]] SignResult preparePdf() const;
     /// @brief Gather all parameters (pdfcsp::pdf::CSignParam)
     [[nodiscard]] SharedParamWrapper createParams() const;
 

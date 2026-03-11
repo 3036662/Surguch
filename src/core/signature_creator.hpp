@@ -18,7 +18,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef SIGNATURE_CREATOR_HPP
 #define SIGNATURE_CREATOR_HPP
 
-#include <QObject>
 #include <QVariant>
 
 #include "sign_worker.hpp"
@@ -41,7 +40,7 @@ class SignatureCreator : public QObject {
 
     /**
      * @brief Create a signature (nonblocking)
-     * @param QVariantMap, suitable for filling SignWorker::SignParams
+     * @param qvparams suitable for filling SignWorker::SignParams
      */
     Q_INVOKABLE bool createSignature(const QVariantMap &qvparams);
 

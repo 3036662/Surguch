@@ -21,14 +21,16 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <QFontDatabase>
 #include <QImage>
 #include <QStandardPaths>
+#include <QUrl>
 
 namespace core::gui {
 
 namespace {
 /// @brief function to glue image with its mask for transparency
-inline std::vector<unsigned char> *glueImageWithMask(
-    const unsigned char *const img, size_t img_size,
-    const unsigned char *img_mask, size_t mask_size) {
+std::vector<unsigned char> *glueImageWithMask(const unsigned char *const img,
+                                              const size_t img_size,
+                                              const unsigned char *img_mask,
+                                              const size_t mask_size) {
     if (img_size == 0 || img == nullptr) {
         return {};
     }
@@ -37,8 +39,8 @@ inline std::vector<unsigned char> *glueImageWithMask(
     for (size_t i = 0; i < img_size; ++i) {
         result->push_back(img[i]);
         if (i >= 2 && (i - 2) % 3 == 0) {
-            const size_t mask_index = (i - 2) / 3;
-            if (img_mask != nullptr && mask_index < mask_size) {
+            if (const size_t mask_index = (i - 2) / 3;
+                img_mask != nullptr && mask_index < mask_size) {
                 // result.push_back(img_mask[mask_index] > 0 ? 0xff : 0x00);
                 result->push_back(img_mask[mask_index]);
             } else {
@@ -186,46 +188,46 @@ SignParams preparePreviewParams(const QVariantMap &qvparams) {
 }
 
 /// @brief Gather all sign stamp parameters (pdfcsp::pdf::CSignParam)
-SharedSignParamWrapper createParams(const SignParams &params_) {
+SharedSignParamWrapper createParams(const SignParams &params) {
     auto params_wrapper = std::make_shared<CSignParamsWrapper>();
     pdfcsp::pdf::CSignParams &pod_params = params_wrapper->pod_params;
-    pod_params.page_index = params_.page_index;
-    pod_params.page_width = params_.page_width;
-    pod_params.page_height = params_.page_height;
-    pod_params.stamp_x = params_.stamp_x;
-    pod_params.stamp_y = params_.stamp_y;
-    pod_params.stamp_width = params_.stamp_width;
-    pod_params.stamp_height = params_.stamp_height;
-    params_wrapper->qb_logo_path = params_.logo_path.toUtf8();
+    pod_params.page_index = params.page_index;
+    pod_params.page_width = params.page_width;
+    pod_params.page_height = params.page_height;
+    pod_params.stamp_x = params.stamp_x;
+    pod_params.stamp_y = params.stamp_y;
+    pod_params.stamp_width = params.stamp_width;
+    pod_params.stamp_height = params.stamp_height;
+    params_wrapper->qb_logo_path = params.logo_path.toUtf8();
     if (!params_wrapper->qb_logo_path.isEmpty()) {
         pod_params.logo_path = params_wrapper->qb_logo_path.data();
     }
-    params_wrapper->qb_config_path = params_.config_path.toUtf8();
+    params_wrapper->qb_config_path = params.config_path.toUtf8();
     pod_params.config_path = params_wrapper->qb_config_path.data();
-    params_wrapper->qb_cert_serial = params_.cert_serial.toUtf8();
+    params_wrapper->qb_cert_serial = params.cert_serial.toUtf8();
     pod_params.cert_serial = params_wrapper->qb_cert_serial.data();
-    params_wrapper->qb_cert_serial_prefix = params_.cert_serial_prefix.toUtf8();
+    params_wrapper->qb_cert_serial_prefix = params.cert_serial_prefix.toUtf8();
     pod_params.cert_serial_prefix =
         params_wrapper->qb_cert_serial_prefix.data();
-    params_wrapper->qb_cert_subject = params_.cert_subject.toUtf8();
+    params_wrapper->qb_cert_subject = params.cert_subject.toUtf8();
     pod_params.cert_subject = params_wrapper->qb_cert_subject.data();
     params_wrapper->qb_cert_subject_prefix =
-        params_.cert_subject_prefix.toUtf8();
+        params.cert_subject_prefix.toUtf8();
     pod_params.cert_subject_prefix =
         params_wrapper->qb_cert_subject_prefix.data();
-    params_wrapper->qb_cert_time_validity = params_.cert_time_validity.toUtf8();
+    params_wrapper->qb_cert_time_validity = params.cert_time_validity.toUtf8();
     pod_params.cert_time_validity =
         params_wrapper->qb_cert_time_validity.data();
-    params_wrapper->qb_stamp_type = params_.stamp_type.toUtf8();
+    params_wrapper->qb_stamp_type = params.stamp_type.toUtf8();
     pod_params.stamp_type = params_wrapper->qb_stamp_type.data();
-    params_wrapper->qb_cades_type = params_.cades_type.toUtf8();
+    params_wrapper->qb_cades_type = params.cades_type.toUtf8();
     pod_params.cades_type = params_wrapper->qb_cades_type.data();
-    params_wrapper->qb_file_to_sign_path = params_.file_to_sign_path.toUtf8();
+    params_wrapper->qb_file_to_sign_path = params.file_to_sign_path.toUtf8();
     pod_params.file_to_sign_path = params_wrapper->qb_file_to_sign_path.data();
     params_wrapper->temp_dir =
         QStandardPaths::writableLocation(QStandardPaths::TempLocation);
     params_wrapper->qb_temp_dir = params_wrapper->temp_dir.toUtf8();
-    params_wrapper->qb_stamp_title = params_.stamp_title.toUtf8();
+    params_wrapper->qb_stamp_title = params.stamp_title.toUtf8();
     pod_params.stamp_title = params_wrapper->qb_stamp_title.data();
 
     if (!params_wrapper->temp_dir.isEmpty()) {
@@ -233,18 +235,18 @@ SharedSignParamWrapper createParams(const SignParams &params_) {
     } else {
         qWarning("Can not determine the user's temporary location");
     }
-    params_wrapper->qb_tsp_url = params_.tsp_url.toUtf8();
+    params_wrapper->qb_tsp_url = params.tsp_url.toUtf8();
     pod_params.tsp_link = params_wrapper->qb_tsp_url.data();
-    pod_params.text_color.red = params_.text_color.R;
-    pod_params.text_color.green = params_.text_color.G;
-    pod_params.text_color.blue = params_.text_color.B;
-    pod_params.border_color.red = params_.border_color.R;
-    pod_params.border_color.green = params_.border_color.G;
-    pod_params.border_color.blue = params_.border_color.B;
-    pod_params.border_width = params_.border_width;
-    pod_params.border_radius = params_.border_radius;
-    pod_params.bg_transparent = params_.bg_transparent;
-    pod_params.bg_opacity = params_.bg_opacity;
+    pod_params.text_color.red = params.text_color.R;
+    pod_params.text_color.green = params.text_color.G;
+    pod_params.text_color.blue = params.text_color.B;
+    pod_params.border_color.red = params.border_color.R;
+    pod_params.border_color.green = params.border_color.G;
+    pod_params.border_color.blue = params.border_color.B;
+    pod_params.border_width = params.border_width;
+    pod_params.border_radius = params.border_radius;
+    pod_params.bg_transparent = params.bg_transparent;
+    pod_params.bg_opacity = params.bg_opacity;
     return params_wrapper;
 }
 
@@ -450,7 +452,7 @@ SharedRubberParamWrapper createParams(const RubberParams &params) {
     return params_wrapper;
 }
 
-/// @brief create rubber stamps params for embedding into pdf
+/// @brief create rubber stamps params for embedding into PDF
 std::vector<pdfcsp::pdf::CAnnotParams> createAnnotParams(
     const std::vector<std::shared_ptr<RubberStamp>> &params) {
     std::vector<pdfcsp::pdf::CAnnotParams> cparams;

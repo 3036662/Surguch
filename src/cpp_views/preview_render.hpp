@@ -56,11 +56,6 @@ class PreviewRender : public QQuickItem {
     /// @brief Create an image with user settings.
     Q_INVOKABLE void createImage(const QVariantMap &qvparams);
 
-    /// @brief perform the render
-    QSGNode *updatePaintNode(
-        QSGNode *oldNode,
-        QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;
-
     /// @brief size hint to be set from QML
     Q_PROPERTY(float maxWidth MEMBER max_width_);
     /// @brief size hint to be set from QML
@@ -76,6 +71,11 @@ class PreviewRender : public QQuickItem {
 
     /// @brief signal when received nullptr for preview image
     void errorOnImageGenerate(const QString &err_string);
+
+   protected:
+    /// @brief perform the render
+    QSGNode *updatePaintNode(QSGNode *node,
+                             UpdatePaintNodeData *updatePaintNodeData) override;
 
    private:
     /// @brief Save the constructed image to the class and signal to render it.

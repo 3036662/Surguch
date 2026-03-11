@@ -24,7 +24,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace core {
 
-constexpr const char *const kKeyO = "-o";
+constexpr const auto *const kKeyO = "-o";
 
 class PrinterLauncher : public QObject {
     Q_OBJECT
@@ -34,14 +34,12 @@ class PrinterLauncher : public QObject {
 
     /*!
      * \brief Launch a native print dialog,print with cups
-     * \param src_file - pdf file to print
+     * \param src_file - PDF file to print
      * \param page_count - total pages in file
      * \param landscape - true if orientation is landscape
      */
     Q_INVOKABLE void print(const QString &src_file, int page_count,
                            bool landscape);
-
-   signals:
 
    private:
     /// @details: https://www.cups.org/doc/options.html

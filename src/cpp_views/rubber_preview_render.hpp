@@ -49,11 +49,6 @@ class RubberPreviewRender : public QQuickItem {
     /// @brief Create preview with user settings
     Q_INVOKABLE void createImage(const QVariantMap &qvparams);
 
-    /// @brief preform the render
-    QSGNode *updatePaintNode(
-        QSGNode *oldNode,
-        QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;
-
     /// @brief size hint to be set from QML
     Q_PROPERTY(float requestedWidth MEMBER requested_width_);
     /// @brief size hint to be set from QML
@@ -69,6 +64,11 @@ class RubberPreviewRender : public QQuickItem {
 
     /// @brief signal when received nullptr for preview image
     void errorOnImageGenerate(const QString &err_string);
+
+   protected:
+    /// @brief preform the render
+    QSGNode *updatePaintNode(QSGNode *oldNode,
+                             UpdatePaintNodeData *updatePaintNodeData) override;
 
    private:
     /// @brief prepare preview params for later use
