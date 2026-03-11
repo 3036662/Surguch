@@ -193,6 +193,19 @@ Flickable {
             textRole: "title"
             valueRole: "serial"
             displayText: displayTextDefault
+
+            property real shake: 0
+
+            x: Math.sin(shake * Math.PI * 10) * 6
+
+            NumberAnimation {
+                id: shakeAnimation
+                target: selectCertificateCombo
+                property: "shake"
+                from: 0
+                to: 1
+                duration: 200
+            }
         }
 
         InfoPanelComponents.RightSBHorizontalDelimiter {
@@ -350,32 +363,42 @@ Flickable {
         RowLayout {
             width: parent.width
 
-            InfoPanelComponents.RSBComboSelect {
-                id: selectStampTypeCombo
+            MouseArea {
                 Layout.fillWidth: true
-                model: root.stamps_combo_model
-                textRole: "title"
-                valueRole: "value"
-                enabled: selectCertificateCombo.item_selected
-                         && selectCadesFormatCombo.item_selected
-                property string displayTextDefault: qsTr("Select stamp type")
-                currentIndex: 0
-                item_selected: true
+                height: selectStampTypeCombo.height
+                enabled: !selectStampTypeCombo.enabled
+                onClicked: {
+                    shakeAnimation.start()
+                }
 
-                onActivated: {
-                    if (currentValue === "new") {
-                        stampEditor.profiles_model = profiles_model
-                        let data = {
-                            "CADES_format": selectCadesFormatCombo.currentValue,
-                            "cert_serial": selectCertificateCombo.currentValue,
-                            "logo_path": logoPath.text,
-                            "tsp_url": ""
+                InfoPanelComponents.RSBComboSelect {
+                    id: selectStampTypeCombo
+                    Layout.fillWidth: true
+                    model: root.stamps_combo_model
+                    textRole: "title"
+                    valueRole: "value"
+                    enabled: selectCertificateCombo.item_selected
+                             && selectCadesFormatCombo.item_selected
+                    property string displayTextDefault: qsTr(
+                                                            "Select stamp type")
+                    currentIndex: 0
+                    item_selected: true
+
+                    onActivated: {
+                        if (currentValue === "new") {
+                            stampEditor.profiles_model = profiles_model
+                            let data = {
+                                "CADES_format": selectCadesFormatCombo.currentValue,
+                                "cert_serial": selectCertificateCombo.currentValue,
+                                "logo_path": logoPath.text,
+                                "tsp_url": ""
+                            }
+                            //console.warn(JSON.stringify(data))
+                            stampEditor.profile_data = JSON.stringify(data)
+                            stampEditor.stamp_json = null
+                            stampEditor.updateStampForm()
+                            stampEditor.visible = true
                         }
-                        //console.warn(JSON.stringify(data))
-                        stampEditor.profile_data = JSON.stringify(data)
-                        stampEditor.stamp_json = null
-                        stampEditor.updateStampForm()
-                        stampEditor.visible = true
                     }
                 }
             }
