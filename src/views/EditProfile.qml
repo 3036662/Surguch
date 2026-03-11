@@ -368,6 +368,7 @@ Flickable {
                 height: selectStampTypeCombo.height
                 enabled: !selectStampTypeCombo.enabled
                 onClicked: {
+                    root.contentY = 0
                     shakeAnimation.start()
                 }
 
