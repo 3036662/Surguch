@@ -18,14 +18,12 @@ Dialog {
         if (!opened && errorList.length>0) {
             open()
         }
-        if (width > maxWidth){
-            width = maxWidth
-        }
-
     }
 
+
+
     modal: true
-    title: qsTr("Error")
+
     standardButtons: Dialog.Ok
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     x: (parent.width - width) / 2
@@ -42,26 +40,68 @@ Dialog {
 
     property string text: ""
 
+    header:Label{
+        topPadding: StyleSheet.defaultPaddingV
+        leftPadding: StyleSheet.defaultPaddingH
+        id:titleLabel
+        text: qsTr("Error")
+        font.bold: true
+    }
+
     contentItem: Column {
+        id: contentColumn
+
+        signal widthCorrection;
+
+        // the width of the widest text element
+        property int maxErrWidth : 0
+
+        // update the widest element width
+        function textAdded(w){
+            if (w>maxErrWidth){
+                maxErrWidth=w;
+                widthCorrection();
+            }
+            //console.warn("TEXT add , width:"+w," maxErrWidth="+maxErrWidth +" max windows size: "+errorMessageDialog.maxWidth);
+        }
+
         Repeater {
             id: errRepeater
             model: []
 
-            delegate:Text {
-                //id: message_text
-                color: StyleSheet.font_color_extra
+
+            delegate:Text {                
                 required property string modelData
 
+                topPadding:10;
+                color: StyleSheet.font_color_extra
 
                 text: modelData
                 font.family: "Noto Sans"
                 wrapMode: Text.WordWrap
-                maximumLineCount: 10                
+                maximumLineCount: 10
+
+                Component.onCompleted: {
+                    // register the current width, make sure it is not wider then the dialog's maxWidth
+                    width=Math.min(errorMessageDialog.maxWidth-errorMessageDialog.leftPadding-errorMessageDialog.rightPadding,width)
+                    contentColumn.textAdded(width);
+                }
+
+                Connections {
+                    target: contentColumn
+
+                    function onWidthCorrection(){
+                        width=Math.min(errorMessageDialog.maxWidth,contentColumn.maxErrWidth)
+                        contentColumn.textAdded(width);
+                    }
+
+                }
             }
         }
     }
 
     onClosed: {
+      contentColumn.maxErrWidth=0;
       errorList=[];
       errRepeater.model=errorList
     }
