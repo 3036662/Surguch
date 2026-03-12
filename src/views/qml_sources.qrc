@@ -54,5 +54,6 @@
         <file>ErrorMessage.qml</file>
         <file>AboutDialog.qml</file>
         <file>EventsConnect.js</file>
+        <file>EditProfile.js</file>
     </qresource>
 </RCC>

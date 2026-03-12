@@ -56,10 +56,7 @@ Dialog {
                 text: modelData
                 font.family: "Noto Sans"
                 wrapMode: Text.WordWrap
-                maximumLineCount: 10
-                Component.onCompleted: {
-                    console.warn("modeldata:"+modelData);
-                }
+                maximumLineCount: 10                
             }
         }
     }

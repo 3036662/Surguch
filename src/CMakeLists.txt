@@ -107,6 +107,7 @@ ELSE ()
             QML_FILES views/info_panel_components/RightSideBarCertChain.qml
             QML_FILES views/info_panel_components/TextPairStatus.qml
             QML_FILES views/CertInfo.qml
+            QML_FILES views/EditProfile.js
             QML_FILES views/EditProfile.qml
             QML_FILES views/info_panel_components/RSBSigInfo.qml
             QML_FILES views/info_panel_components/RSBCloseButton.qml
