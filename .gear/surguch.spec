@@ -23,6 +23,8 @@ Requires: qt6-svg qt6-declarative fonts-ttf-google-noto-sans
 Requires: qt6-wayland qt6-translations
 Requires: libcsppdf >= 0.4.0-alt1
 
+Obsoletes: alt-csp-cryptopro
+
 %description
 A gui application for verification and creation 
 of digitally signed pdf documents.
