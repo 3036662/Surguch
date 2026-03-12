@@ -50,7 +50,7 @@ ListView {
                         width: parent.width
                         id: sigTitle
                         leftPadding: 15
-                        text: model.sigInfo
+                        text: model?.sigInfo !== undefined ? model.sigInfo :"";
                         anchors.horizontalCenter: parent.horizontalCenter
                         elide: Text.ElideRight
                         wrapMode: Text.WordWrap
@@ -60,7 +60,7 @@ ListView {
                         color: StyleSheet.font_color_extra
                     }
                     Text {
-                        visible: model.empty
+                        visible: model?.emptyv !== undefined ? model.emptyv : false;
                         anchors.horizontalCenter: parent.horizontalCenter
                         text: qsTr("Unsigned (empty)")
                         topPadding: 5

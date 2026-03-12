@@ -107,6 +107,7 @@ ELSE ()
             QML_FILES views/info_panel_components/RightSideBarCertChain.qml
             QML_FILES views/info_panel_components/TextPairStatus.qml
             QML_FILES views/CertInfo.qml
+            QML_FILES views/EditProfile.js
             QML_FILES views/EditProfile.qml
             QML_FILES views/info_panel_components/RSBSigInfo.qml
             QML_FILES views/info_panel_components/RSBCloseButton.qml
@@ -121,7 +122,7 @@ ELSE ()
             QML_FILES views/RubberStampEditor.qml
             QML_FILES views/RubberStampDialog.qml
             QML_FILES views/RubberStampListEntry.qml
-            QML_FILES views/InfoDialog.qml
+            QML_FILES views/AboutDialog.qml
             QML_FILES views/stamp_editor_components/SettingSwitch.qml
             QML_FILES views/stamp_editor_components/ColorSlider.qml
             QML_FILES views/stamp_editor_components/RGBColorPicker.qml
@@ -142,6 +143,9 @@ ELSE ()
             QML_FILES views/info_panel_components/MrpaList.qml
             QML_FILES views/TreeSignResultDialog.qml
             QML_FILES views/info_panel_components/RSBBackButton.qml
+            QML_FILES views/ErrorMessage.qml
+            QML_FILES views/InfoDialog.qml
+            QML_FILES views/EventsConnect.js
     )
 
     qt6_import_qml_plugins(surguch)
@@ -231,6 +235,11 @@ endif ()
 
 
 install(TARGETS surguch RUNTIME)
+
+IF (NOT DEFINED DESKTOP_DIR)
+    SET(DESKTOP_DIR /usr/share/applications)
+ENDIF ()
+
 install(FILES surguch.desktop DESTINATION ${DESKTOP_DIR} PERMISSIONS WORLD_READ WORLD_EXECUTE)
 install(FILES surguch.metainfo.xml DESTINATION ${SHARE_INSTALL_PREFIX}/metainfo PERMISSIONS WORLD_READ)
 

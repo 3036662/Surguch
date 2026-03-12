@@ -55,7 +55,7 @@ int ProfilesModel::rowCount(const QModelIndex &parent) const {
     return static_cast<int>(profiles_.count());
 }
 
-QVariant ProfilesModel::data(const QModelIndex &index, int role) const {
+QVariant ProfilesModel::data(const QModelIndex &index, const int role) const {
     if (!index.isValid() || index.row() > profiles_.size() - 1) {
         return {};
     }
@@ -80,8 +80,6 @@ QVariant ProfilesModel::data(const QModelIndex &index, int role) const {
         default:
             return {};
     }
-
-    return {};
 }
 
 /// @brief readProfiles from JSON file in
@@ -105,8 +103,7 @@ void ProfilesModel::readProfiles() {
     }
     if (!config_path_.isEmpty()) {
         config_path_ += "/csppdf";
-        const QDir config_dir(config_path_);
-        if (!config_dir.exists()) {
+        if (const QDir config_dir(config_path_); !config_dir.exists()) {
             if (!config_dir.mkpath(".")) {
                 qWarning() << tr("Can not create folder ") << config_path_;
             }
@@ -117,7 +114,7 @@ void ProfilesModel::readProfiles() {
     }
     profiles_file_name_ = config_path_ + "/profiles.json";
     QFile profile_file(profiles_file_name_);
-    // create empty json array if not exists
+    // create empty JSON array if not exists
     if (!profile_file.exists()) {
         if (!profile_file.open(
                 QIODeviceBase::WriteOnly,
@@ -149,7 +146,7 @@ void ProfilesModel::readProfiles() {
     profiles_.append(create_profile_field);
 }
 
-/// @brief readUserCerts, read certificates for current uset from CryptoApi
+/// @brief readUserCerts, read certificates for current user from CryptoApi
 void ProfilesModel::readUserCerts() {
     QString certs_json = core::bridge_utils::getCertListJSON();
     if (certs_json == core::bridge_utils::kErrGetCerts ||
@@ -195,8 +192,7 @@ void ProfilesModel::readUserStamps() {
     }
     if (!config_path_.isEmpty()) {
         config_path_ += "/csppdf";
-        const QDir config_dir(config_path_);
-        if (!config_dir.exists()) {
+        if (const QDir config_dir(config_path_); !config_dir.exists()) {
             if (!config_dir.mkpath(".")) {
                 qWarning() << tr("Can not create folder ") << config_path_;
             }
@@ -207,7 +203,7 @@ void ProfilesModel::readUserStamps() {
     }
     stamps_file_name_ = config_path_ + "/stamps.json";
     QFile stamps_file(stamps_file_name_);
-    // create empty json array if not exists
+    // create empty JSON array if not exists
     if (!stamps_file.exists()) {
         if (!stamps_file.open(
                 QIODeviceBase::WriteOnly,
@@ -239,13 +235,13 @@ void ProfilesModel::readUserStamps() {
     user_stamps_.append(create_stamp_field);
 }
 
-///@brief get a json array with user certificates
+///@brief get a JSON array with user certificates
 QString ProfilesModel::getUserCertsJSON() const {
     const QJsonDocument json_doc(user_certs_);
     return json_doc.toJson();
 }
 
-///@brief get a json array with user stamps
+///@brief get a JSON array with user stamps
 QString ProfilesModel::getUserStampsJSON() const {
     const QJsonDocument json_doc(user_stamps_);
     return json_doc.toJson();
@@ -284,7 +280,7 @@ Q_INVOKABLE bool ProfilesModel::saveStamp(const QString &stamp_json) {
             return false;
         }
 
-        auto it_max_current = std::max_element(
+        const auto it_max_current = std::max_element(
             user_stamps_.cbegin(), user_stamps_.cend(),
             [](const QJsonValue &left, const QJsonValue &right) {
                 return left.toObject().value("id").toInt() <
@@ -298,7 +294,7 @@ Q_INVOKABLE bool ProfilesModel::saveStamp(const QString &stamp_json) {
     }
     // existing profile
     else {
-        auto it_old_value = std::find_if(
+        const auto it_old_value = std::find_if(
             user_stamps_.begin(), user_stamps_.end(),
             [&stamp_object](const QJsonValue &val) {
                 return val.toObject().value("id") == stamp_object.value("id");
@@ -367,7 +363,7 @@ Q_INVOKABLE bool ProfilesModel::saveProfile(const QString &profile_json) {
             return false;
         }
 
-        auto it_max_current = std::max_element(
+        const auto it_max_current = std::max_element(
             profiles_.cbegin(), profiles_.cend(),
             [](const QJsonValue &left, const QJsonValue &right) {
                 return left.toObject().value("id").toInt() <
@@ -387,8 +383,8 @@ Q_INVOKABLE bool ProfilesModel::saveProfile(const QString &profile_json) {
                 return val.toObject().value("id") == profile_object.value("id");
             });
         if (it_old_value != profiles_.cend()) {
-            const QJsonObject old_profile = it_old_value->toObject();
-            if (old_profile.contains("logo_path")) {
+            if (const QJsonObject old_profile = it_old_value->toObject();
+                old_profile.contains("logo_path")) {
                 old_logo_path = old_profile.value("logo_path").toString();
             }
             profiles_.erase(it_old_value);
@@ -476,7 +472,7 @@ Q_INVOKABLE void ProfilesModel::updateProfiles(const QString &stamp_name) {
  */
 QString ProfilesModel::saveLogoImage(const QString &path,
                                      const QString &dest_name,
-                                     const QString &old_logo_path) {
+                                     const QString &old_logo_path) const {
     if (path.isEmpty()) {
         return {};
     }
@@ -507,13 +503,11 @@ QString ProfilesModel::saveLogoImage(const QString &path,
         config_path_ + "/" + dest_name + "." + src_file_info.completeSuffix();
     // delete old logo
     if (dest != old_logo_path && old_logo_path != file_path) {
-        QFile old_logo_file(old_logo_path);
-        if (old_logo_file.exists()) {
+        if (QFile old_logo_file(old_logo_path); old_logo_file.exists()) {
             std::ignore = old_logo_file.remove();
         }
     }
-    QFile dest_file(dest);
-    if (dest_file.exists()) {
+    if (QFile dest_file(dest); dest_file.exists()) {
         if (dest != file_path) {
             std::ignore = dest_file.remove();
         } else {
@@ -540,7 +534,7 @@ QString ProfilesModel::getDetDefaultProfileVal() {
 }
 
 /// @brief delete the user's stamp
-bool ProfilesModel::deleteStamp(int id_stamp) {
+bool ProfilesModel::deleteStamp(const int id_stamp) {
     QString stamp_title;
     QJsonArray stamps_new;
     for (qsizetype i = 0; i < user_stamps_.count(); ++i) {
@@ -572,7 +566,7 @@ bool ProfilesModel::deleteStamp(int id_stamp) {
 }
 
 /// @brief delete the user's profile
-bool ProfilesModel::deleteProfile(int id_profile) {
+bool ProfilesModel::deleteProfile(const int id_profile) {
     QString profile_title;
     QJsonArray profiles_new;
     for (qsizetype i = 0; i < profiles_.count(); ++i) {
@@ -581,7 +575,7 @@ bool ProfilesModel::deleteProfile(int id_profile) {
         }
         if (profiles_[i].toObject().value("id").toInt() == id_profile) {
             profile_title = profiles_[i].toObject().value("title").toString();
-            deleteLogoImage(
+            std::ignore = deleteLogoImage(
                 profiles_[i].toObject().value("logo_path").toString());
         } else if (profiles_[i].toObject().value("title").toString() !=
                    create_profile_title_) {
@@ -606,12 +600,12 @@ bool ProfilesModel::deleteProfile(int id_profile) {
 }
 
 /// @brief delete the given file
-bool ProfilesModel::deleteLogoImage(const QString &path) {
+bool ProfilesModel::deleteLogoImage(const QString &path) const {
     const QFileInfo finfo_tmp(path);
     // use only filename and extension
     const QString path_to_delete = config_path_ + "/" + finfo_tmp.fileName();
-    const QFileInfo finfo(path_to_delete);
-    if (finfo.exists() && finfo.isFile() && !QFile(path_to_delete).remove()) {
+    if (const QFileInfo finfo(path_to_delete);
+        finfo.exists() && finfo.isFile() && !QFile(path_to_delete).remove()) {
         qWarning() << "[ProfilesModel] can't delete file: " << path_to_delete;
     }
     return true;

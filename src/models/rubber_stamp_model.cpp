@@ -56,7 +56,8 @@ int RubberStampModel::rowCount(const QModelIndex& parent) const {
     return static_cast<int>(rubber_stamps_.count());
 }
 
-QVariant RubberStampModel::data(const QModelIndex& index, int role) const {
+QVariant RubberStampModel::data(const QModelIndex& index,
+                                const int role) const {
     if (!index.isValid() || index.row() > rubber_stamps_.size() - 1) {
         return {};
     }
@@ -83,8 +84,6 @@ QVariant RubberStampModel::data(const QModelIndex& index, int role) const {
         default:
             return {};
     }
-
-    return {};
 }
 
 /// @brief readRubberStamps from JSON file in
@@ -108,8 +107,7 @@ void RubberStampModel::readRubberStamps() {
     }
     if (!config_path_.isEmpty()) {
         config_path_ += "/csppdf";
-        const QDir config_dir(config_path_);
-        if (!config_dir.exists()) {
+        if (const QDir config_dir(config_path_); !config_dir.exists()) {
             if (!config_dir.mkpath(".")) {
                 qWarning() << tr("Can not create folder ") << config_path_;
             }
@@ -120,7 +118,7 @@ void RubberStampModel::readRubberStamps() {
     }
     rubber_stamps_file_name_ = config_path_ + "/rubber_stamps.json";
     QFile stamps_file(rubber_stamps_file_name_);
-    // create empty json array if not exists
+    // create empty JSON array if not exists
     if (!stamps_file.exists()) {
         if (!stamps_file.open(
                 QIODeviceBase::WriteOnly,
@@ -186,7 +184,7 @@ bool RubberStampModel::saveRubberStamps(const QString& stamp_json) {
             return false;
         }
 
-        auto it_max_current = std::max_element(
+        const auto it_max_current = std::max_element(
             rubber_stamps_.cbegin(), rubber_stamps_.cend(),
             [](const QJsonValue& left, const QJsonValue& right) {
                 return left.toObject().value("id").toInt() <
@@ -206,8 +204,8 @@ bool RubberStampModel::saveRubberStamps(const QString& stamp_json) {
                 return val.toObject().value("id") == stamp_object.value("id");
             });
         if (it_old_value != rubber_stamps_.cend()) {
-            const QJsonObject old_profile = it_old_value->toObject();
-            if (old_profile.contains("img_path")) {
+            if (const QJsonObject old_profile = it_old_value->toObject();
+                old_profile.contains("img_path")) {
                 old_img_path = old_profile.value("img_path").toString();
             }
             rubber_stamps_.erase(it_old_value);
@@ -256,7 +254,7 @@ bool RubberStampModel::saveRubberStamps(const QString& stamp_json) {
  */
 QString RubberStampModel::saveLogoImage(const QString& path,
                                         const QString& dest_name,
-                                        const QString& old_logo_path) {
+                                        const QString& old_logo_path) const {
     if (path.isEmpty()) {
         return {};
     }
@@ -288,13 +286,11 @@ QString RubberStampModel::saveLogoImage(const QString& path,
         config_path_ + "/" + dest_name + "." + src_file_info.completeSuffix();
     // delete old logo
     if (dest != old_logo_path && old_logo_path != file_path) {
-        QFile old_logo_file(old_logo_path);
-        if (old_logo_file.exists()) {
+        if (QFile old_logo_file(old_logo_path); old_logo_file.exists()) {
             std::ignore = old_logo_file.remove();
         }
     }
-    QFile dest_file(dest);
-    if (dest_file.exists()) {
+    if (QFile dest_file(dest); dest_file.exists()) {
         if (dest != file_path) {
             std::ignore = dest_file.remove();
         } else {
@@ -318,7 +314,7 @@ bool RubberStampModel::uniqueStampName(QString stamp_name) {
                         });
 }
 
-bool RubberStampModel::deleteRubberStamps(int id_stamp) {
+bool RubberStampModel::deleteRubberStamps(const int id_stamp) {
     QString stamp_title;
     QJsonArray stamps_new;
     for (qsizetype i = 0; i < rubber_stamps_.count(); ++i) {

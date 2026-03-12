@@ -17,7 +17,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "validation_result.hpp"
 
-#include <QJsonArray>
 #include <QJsonDocument>
 #include <algorithm>
 
@@ -26,7 +25,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace core {
 
-ValidationResult::ValidationResult(const core::RawSignature &raw_signature,
+ValidationResult::ValidationResult(const RawSignature &raw_signature,
                                    const std::string &path) {
     // create CPodParams
     pdfcsp::c_bridge::CPodParam params{};
@@ -59,15 +58,13 @@ ValidationResult::ValidationResult(const core::RawSignature &raw_signature,
 
 QJsonObject ValidationResult::toJson() const {
     // signature
-    const char *all_ok = "ok";
-    const char *bad = "bad";
-    const char *no_field = "no_field";
-    const char *failed = "failed";
+    constexpr auto *all_ok = "ok";
+    constexpr auto *bad = "bad";
 
     QJsonObject signature;
     signature["status"] = bres.check_summary;
     signature["integrity"] =
-        (bres.data_hash_ok && bres.computed_hash_ok && bres.certificate_hash_ok)
+        bres.data_hash_ok && bres.computed_hash_ok && bres.certificate_hash_ok
             ? all_ok
             : bad;
     if (cades_type == pdfcsp::csp::CadesType::kPkcs7) {
@@ -81,9 +78,11 @@ QJsonObject ValidationResult::toJson() const {
         signature["timestamp_ok"] =
             bres.t_all_ok && bres.x_esc_tsp_ok ? all_ok : bad;
     } else {
+        const auto *no_field = "no_field";
         signature["timestamp_ok"] = no_field;
     }
     if (bres.certificate_ocsp_check_failed && !bres.certificate_ocsp_ok) {
+        const auto *failed = "failed";
         signature["ocsp_ok"] = failed;
     } else {
         signature["ocsp_ok"] = bres.certificate_ocsp_ok ? all_ok : bad;
@@ -96,8 +95,8 @@ QJsonObject ValidationResult::toJson() const {
                   std::back_inserter(tmp));
         std::copy(x_times_collection.cbegin(), x_times_collection.cend(),
                   std::back_inserter(tmp));
-        auto max_el = std::max_element(tmp.cbegin(), tmp.cend());
-        if (max_el != tmp.cend()) {
+        if (const auto max_el = std::max_element(tmp.cbegin(), tmp.cend());
+            max_el != tmp.cend()) {
             signing_time = *max_el;
         } else {
             signing_time = signers_time;
@@ -146,7 +145,7 @@ QJsonObject ValidationResult::toJson() const {
         res["current_index"] = static_cast<qint64>(sig_curr_index.value());
     }
 
-    // byterange analyses results
+    // byterange analyzes results
     res["full_coverage"] = full_coverage;
     res["can_be_casted_to_full_coverage"] = can_be_casted_to_full_coverage;
     return res;
@@ -159,20 +158,17 @@ void createCSPResponse(ValidationResult &res,
     res.cades_t_str = QString(pod->cades_t_str);
     res.hashing_oid = QString(pod->hashing_oid);
     if (pod->encrypted_digest != nullptr && pod->encrypted_digest_size > 0) {
-        std::copy(pod->encrypted_digest,
-                  pod->encrypted_digest + pod->encrypted_digest_size,
-                  std::back_inserter(res.encrypted_digest));
+        std::copy_n(pod->encrypted_digest, pod->encrypted_digest_size,
+                    std::back_inserter(res.encrypted_digest));
     }
     if (pod->times_collection != nullptr && pod->times_collection_size > 0) {
-        std::copy(pod->times_collection,
-                  pod->times_collection + pod->times_collection_size,
-                  std::back_inserter(res.times_collection));
+        std::copy_n(pod->times_collection, pod->times_collection_size,
+                    std::back_inserter(res.times_collection));
     }
     if (pod->x_times_collection != nullptr &&
         pod->x_times_collection_size > 0) {
-        std::copy(pod->x_times_collection,
-                  pod->x_times_collection + pod->x_times_collection_size,
-                  std::back_inserter(res.x_times_collection));
+        std::copy_n(pod->x_times_collection, pod->x_times_collection_size,
+                    std::back_inserter(res.x_times_collection));
     }
     if (pod->cert_issuer_dname != nullptr) {
         res.cert_issuer_dname = QString(pod->cert_issuer_dname);
@@ -210,13 +206,12 @@ void createCSPResponse(ValidationResult &res,
     }
 
     if (pod->cert_public_key != nullptr && pod->cert_public_key_size > 0) {
-        std::copy(pod->cert_public_key,
-                  pod->cert_public_key + pod->cert_public_key_size,
-                  std::back_inserter(res.cert_public_key));
+        std::copy_n(pod->cert_public_key, pod->cert_public_key_size,
+                    std::back_inserter(res.cert_public_key));
     }
     if (pod->cert_serial != nullptr && pod->cert_serial_size > 0) {
-        std::copy(pod->cert_serial, pod->cert_serial + pod->cert_serial_size,
-                  std::back_inserter(res.cert_serial));
+        std::copy_n(pod->cert_serial, pod->cert_serial_size,
+                    std::back_inserter(res.cert_serial));
     }
     res.signers_time = pod->signers_time;
     res.cert_not_before = pod->cert_not_before;

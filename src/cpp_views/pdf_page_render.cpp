@@ -18,7 +18,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "pdf_page_render.hpp"
 
 #include <QPainter>
-#include <QSGGeometryNode>
 #include <QSGNode>
 #include <QSGSimpleTextureNode>
 #include <QScreen>
@@ -29,38 +28,10 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "gui_core/gui_utils.hpp"
 
-// internal
-namespace {
-
-inline std::vector<unsigned char> glueImageWithMask(
-    const unsigned char *img, size_t img_size, const unsigned char *img_mask,
-    size_t mask_size) {
-    if (img_size == 0 || img == nullptr) {
-        return {};
-    }
-    std::vector<unsigned char> result;
-    result.reserve(img_size + mask_size);
-    for (size_t i = 0; i < img_size; ++i) {
-        result.push_back(img[i]);
-        if (i >= 2 && (i - 2) % 3 == 0) {
-            const size_t mask_index = (i - 2) / 3;
-            if (img_mask != nullptr && mask_index < mask_size) {
-                // result.push_back(img_mask[mask_index] > 0 ? 0xff : 0x00);
-                result.push_back(img_mask[mask_index]);
-            } else {
-                result.push_back(0xff);
-            }
-        }
-    }
-    return result;
-}
-}  // namespace
-
 PdfPageRender::PdfPageRender() {
-    setFlag(QQuickItem::ItemHasContents, true);
+    setFlag(ItemHasContents, true);
     setClip(true);
-    const qreal pix_rat = QWindow().devicePixelRatio();
-    if (pix_rat > 2) {
+    if (const qreal pix_rat = QWindow().devicePixelRatio(); pix_rat > 2) {
         dev_pix_ratio_ = static_cast<float>(pix_rat);
     }
 }
@@ -91,8 +62,7 @@ void PdfPageRender::geometryChange(const QRectF &newGeometry,
 /// @brief perform the render
 // NOLINTBEGIN(cppcoreguidelines-owning-memory)
 QSGNode *PdfPageRender::updatePaintNode(
-    QSGNode *node,
-    [[maybe_unused]] QQuickItem::UpdatePaintNodeData *updatePaintNodeData) {
+    QSGNode *node, [[maybe_unused]] UpdatePaintNodeData *updatePaintNodeData) {
     QSGSimpleTextureNode *rectNode = nullptr;
     if (node != nullptr) {
         rectNode = dynamic_cast<QSGSimpleTextureNode *>(node);
@@ -140,7 +110,7 @@ QSGNode *PdfPageRender::updatePaintNode(
                 height() * dev_pix_ratio_, render_result.pix_stride,
                 QImage::Format_RGB888,
                 [](void *vbuf) {
-                    auto *buff = static_cast<unsigned char *>(vbuf);
+                    const auto *buff = static_cast<unsigned char *>(vbuf);
                     delete[] buff;
                 },
                 render_result.buf);
@@ -153,8 +123,8 @@ QSGNode *PdfPageRender::updatePaintNode(
         }
     }
     // Create a texture from the image
-    QSGTexture *texture = window()->createTextureFromImage(*image_);
-    if (texture != nullptr) {
+    if (QSGTexture *texture = window()->createTextureFromImage(*image_);
+        texture != nullptr) {
         rectNode->setTexture(texture);
         rectNode->setRect(QRectF(0, 0, width(), height()));
     }
@@ -164,7 +134,7 @@ QSGNode *PdfPageRender::updatePaintNode(
 
 /// @brief render rubber stamps on top of page
 void PdfPageRender::renderRubberStamps() {
-    const std::lock_guard<std::mutex> lock(mutex_);
+    const std::scoped_lock lock(mutex_);
     if (!rubber_stamps_.empty()) {
         for (const auto &stamps_ : rubber_stamps_) {
             if (stamps_->res && stamps_->res->image_ != nullptr) {
@@ -228,7 +198,7 @@ void PdfPageRender::setDoc(fz_document *fzdoc) { fzdoc_ = fzdoc; }
 void PdfPageRender::setCtx(fz_context *fzctx) { fzctx_ = fzctx; }
 
 /// @brief set index of a page to render
-void PdfPageRender::setPageNumber(int page_number) {
+void PdfPageRender::setPageNumber(const int page_number) {
     page_number_ = page_number;
 }
 
@@ -256,7 +226,7 @@ void PdfPageRender::setCurrentNeedleRect(
 
 void PdfPageRender::setRubberStamps(
     std::vector<std::shared_ptr<core::gui::RubberStamp>> rubber_stamps) {
-    const std::lock_guard<std::mutex> lock(mutex_);
+    const std::scoped_lock lock(mutex_);
     std::swap(rubber_stamps_, rubber_stamps);
     image_.reset();
     update();

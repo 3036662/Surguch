@@ -22,8 +22,8 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace core::bridge_utils {
 
-constexpr const char *const kErrNoCSPLib = "ERR_NO_CSP_LIB";
-constexpr const char *const kErrGetCerts = "ERR_GET_CERTS";
+constexpr auto* kErrNoCSPLib = "ERR_NO_CSP_LIB";
+constexpr auto* kErrGetCerts = "ERR_GET_CERTS";
 
 QString timeToString(time_t val) noexcept;
 

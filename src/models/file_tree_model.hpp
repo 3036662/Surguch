@@ -19,7 +19,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #define FILE_TREE_MODEL_HPP
 
 #include <QAbstractItemModel>
-#include <QFuture>
 #include <QFutureWatcher>
 #include <QJsonArray>
 #include <QVariant>
@@ -129,9 +128,9 @@ class FileTreeModel : public QAbstractItemModel {
     void treeIsEmpty();
 
    private:
-    /// @brief recurisve parse all data from libmrpa to build tree
+    /// @brief recursive parse all data from libmrpa to build tree
     void setupModelData(const QJsonArray &doc, TreeItem *parent);
-    /// @brief parse objects CheckResults part of json
+    /// @brief parse objects CheckResults part of JSON
     static std::vector<TreeItem::CheckResult> setupCheckResults(
         const QJsonObject &obj, bool has_check_result);
     /// @brief correctly process added node
@@ -144,7 +143,7 @@ class FileTreeModel : public QAbstractItemModel {
     void processSignedTree();
     /// @brief process files that were added/deleted while context was busy
     void processOperationData();
-    /// @brief process singature check result
+    /// @brief process signature check result
     void processSignResult();
     /// @brief add files into UI while context busy
     void addFilesUI(const QStringList &file_list);
@@ -155,9 +154,10 @@ class FileTreeModel : public QAbstractItemModel {
     void parseChecksResults(int node_id);
 
     /// @brief parse results data of Mrpa node
-    static void parseMrpaCheckResults(std::shared_ptr<TreeItem> &item);
+    static void parseMrpaCheckResults(const std::shared_ptr<TreeItem> &item);
     /// @brief parse results data of Sig/Asig node
-    static void parseSignatureCheckResults(std::shared_ptr<TreeItem> &item);
+    static void parseSignatureCheckResults(
+        const std::shared_ptr<TreeItem> &item);
     /// @brief parse results data of File/Zip node
     void parseFileCheckResults(std::shared_ptr<TreeItem> &item);
 
@@ -182,7 +182,7 @@ class FileTreeModel : public QAbstractItemModel {
     std::unordered_map<QString, OperationData> operation_data_;
 
     std::map<int, std::weak_ptr<TreeItem>> item_map;
-    std::shared_ptr<TreeItem> root_item;
+    std::shared_ptr<TreeItem> root_item_;
     QHash<int, QByteArray> role_names_;
 
     State state_ = Done;

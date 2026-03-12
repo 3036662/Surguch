@@ -42,18 +42,6 @@ class PdfPageRender : public QQuickItem {
     PdfPageRender &operator=(const PdfPageRender &) = delete;
     PdfPageRender &operator=(PdfPageRender &&) = delete;
 
-    /**
-     * @brief Handle the geometry change
-     * @details Makes a decision if we need to rerender the whole page.
-     */
-    void geometryChange(const QRectF &newGeometry,
-                        const QRectF &oldGeometry) override;
-
-    /// @brief perform the render
-    QSGNode *updatePaintNode(
-        QSGNode *oldNode,
-        QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;
-
     /// setters to connect with the low-level MuPdf from pdf_doc_model
     Q_INVOKABLE void setDoc(fz_document *fzdoc);
     Q_INVOKABLE void setCtx(fz_context *fzctx);
@@ -92,6 +80,18 @@ class PdfPageRender : public QQuickItem {
     void zoomLastChanged();
     void zoomGoalChanged();
     void widthGoalChanged();
+
+   protected:
+    /**
+     * @brief Handle the geometry change
+     * @details Makes a decision if we need to rerender the whole page.
+     */
+    void geometryChange(const QRectF &newGeometry,
+                        const QRectF &oldGeometry) override;
+
+    /// @brief perform the render
+    QSGNode *updatePaintNode(QSGNode *node,
+                             UpdatePaintNodeData *updatePaintNodeData) override;
 
    private:
     /// @brief render rubber stamps on top of page

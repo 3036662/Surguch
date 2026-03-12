@@ -1,6 +1,6 @@
 Name: surguch
-Version: 0.4.5
-Release: alt2
+Version: 0.4.6
+Release: alt1
 Summary: Verification and creation of digitally signed pdf documents
 
 Source:  %name-%version.tar
@@ -76,6 +76,13 @@ An extension that allows you to add files for signing from file manager.
 %files mate-extension
 
 %changelog
+* Thu Mar 12 2026 Oleg Proskurin <proskur@altlinux.org> 0.4.6-alt1
+- Minor fixes (closes #58139, #58129):
+    * Custom error message dialog.
+    * Handle filenames containing quote marks.
+    * Animate the unchosen user certificate validation
+      error when creating a profile.
+
 * Mon Mar 02 2026 Daniil-Viktor Ratkin <krf10@altlinux.org> 0.4.5-alt2
 - add subpackage with requires for mate file actions (closes #58061).
 

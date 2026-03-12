@@ -34,7 +34,7 @@ void HistoryManager::addAction(std::unique_ptr<RubberStamp> action) {
 }
 
 std::vector<HistoryManager::EditActions> HistoryManager::getActionsOnPage(
-    size_t page_index) const {
+    const size_t page_index) const {
     const std::shared_lock lock(mutex_);
     if (!undo_actions_.empty()) {
         std::vector<EditActions> actions_on_page;
@@ -78,7 +78,7 @@ void HistoryManager::redoAction() {
 /// @brief get annotations(rubber stamps) params for embedding them into pdf
 std::vector<pdfcsp::pdf::CAnnotParams> HistoryManager::getAnnotsParams() {
     const std::shared_lock lock(mutex_);
-    c_annot_params_ = core::gui::createAnnotParams(undo_actions_);
+    c_annot_params_ = createAnnotParams(undo_actions_);
     return c_annot_params_;
 }
 

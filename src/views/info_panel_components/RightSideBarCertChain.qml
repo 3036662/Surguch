@@ -30,9 +30,9 @@ Column {
                 width: childrenRect.width
                 height: childrenRect.height
                 onClicked: {
-                    infoDialogContentContainer.source = "CertInfo.qml"
-                    if (infoDialogContentContainer.item) {
-                        infoDialogContentContainer.item.cert = cert_clickable_area.modelData
+                    infoDialog.content.source = "CertInfo.qml"
+                    if ( infoDialog.content.item) {
+                         infoDialog.content.item.cert = cert_clickable_area.modelData
                     }
                     infoDialog.open()
                 }

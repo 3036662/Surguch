@@ -23,7 +23,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "core/raw_signature.hpp"
 #include "core/text_extractor.hpp"
-#include "gui_core/gui_utils.hpp"
 #include "gui_core/history_manager.hpp"
 #include "mupdf/fitz.h"
 #include "mupdf/pdf.h"
@@ -55,7 +54,7 @@ class PdfDocModel : public QAbstractListModel {
     [[nodiscard]] QVariant data(const QModelIndex &index,
                                 int role) const override;
 
-    /// @brief setSource open new pdf file
+    /// @brief setSource open new PDF file
     Q_INVOKABLE void setSource(const QString &path);
 
     /// @brief get current source path
@@ -65,7 +64,7 @@ class PdfDocModel : public QAbstractListModel {
     Q_INVOKABLE void redrawAll();
 
     /// @brief the 'save file as' implementation
-    Q_INVOKABLE bool saveCurrSourceTo(const QString &curr_source,
+    Q_INVOKABLE bool saveCurrSourceTo(const QString &curr_path,
                                       const QString &path,
                                       bool delete_curr_source);
 
@@ -73,11 +72,11 @@ class PdfDocModel : public QAbstractListModel {
     Q_INVOKABLE void deleteFileLater(QString path);
 
     /// @brief Open a folder that contains the current file in the file browser.
-    Q_INVOKABLE void showInFolder();
+    Q_INVOKABLE void showInFolder() const;
 
     /**
      *  @details There is no need to read signatures when the model is utilized
-     * to render pdf previews.
+     * to render PDF previews.
      */
     Q_PROPERTY(bool mustProcessSignatures MEMBER process_signatures_);
 
@@ -128,15 +127,16 @@ class PdfDocModel : public QAbstractListModel {
 
     /// @brief returns a vector of rectangles to highlight
     [[nodiscard]] Q_INVOKABLE NeedleRectsOnPage
-    getNeedlesForPage(size_t page_index);
+    getNeedlesForPage(size_t page_index) const;
 
     /// @brief search for text
-    Q_INVOKABLE void performSearch(const QString &needle);
+    Q_INVOKABLE void performSearch(const QString &needle) const;
 
     Q_INVOKABLE void jumpToNeedle(int needle_index);
 
-    Q_INVOKABLE std::shared_ptr<core::TextExtractor::RectToHighlightCurrent>
-    getCurrentNeedleRect(size_t page_index);
+    Q_INVOKABLE [[nodiscard]] std::shared_ptr<
+        core::TextExtractor::RectToHighlightCurrent>
+    getCurrentNeedleRect(size_t page_index) const;
 
     /// @brief returns the uri under the cursor
     [[nodiscard]] Q_INVOKABLE PageUriInfoList getUriByPos(size_t page_index,

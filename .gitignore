@@ -4,6 +4,8 @@ build_manual
 build
 build_mate
 build_edu
+build_p11
+.idea
 .cache
 *~
 *.autosave

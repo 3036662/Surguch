@@ -111,7 +111,7 @@ void SignWorker::estimateStampSize(SignParams sign_params) {
         uselocale(locale_);
     }
     params_ = std::move(sign_params);
-    auto params_wrapper = createParams();
+    const auto params_wrapper = createParams();
     auto *p_resize_factor =
         pdfcsp::pdf::GetStampResultingSizeFactor(params_wrapper->pod_params);
     if (p_resize_factor != nullptr) {
@@ -126,11 +126,11 @@ void SignWorker::estimateStampSize(SignParams sign_params) {
 }
 
 /// @brief Go to library, execute pdfcsp::pdf::PrepareDoc
-SignWorker::SignResult SignWorker::preparePdf() {
+SignWorker::SignResult SignWorker::preparePdf() const {
     if (locale_ != nullptr) {
         uselocale(locale_);
     }
-    auto params_wrapper = createParams();
+    const auto params_wrapper = createParams();
     auto *result = pdfcsp::pdf::PrepareDoc(params_wrapper->pod_params);
     SignResult res{};
     if (result != nullptr) {

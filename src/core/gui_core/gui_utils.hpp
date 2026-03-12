@@ -15,9 +15,9 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#ifndef GUI_UTILS_HPP
+#define GUI_UTILS_HPP
 
-#include "QUrl"
 #include "QVariant"
 #include "rubber_structs.hpp"
 
@@ -48,3 +48,5 @@ std::vector<pdfcsp::pdf::CAnnotParams> createAnnotParams(
     const std::vector<std::shared_ptr<RubberStamp>>& params);
 
 }  // namespace core::gui
+
+#endif

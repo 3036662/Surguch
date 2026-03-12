@@ -112,11 +112,12 @@ class ProfilesModel : public QAbstractListModel {
      * @param old_logo_path old logo to delete
      * @return QString full path to saved logo on success
      */
-    QString saveLogoImage(const QString &path, const QString &dest_name,
-                          const QString &old_logo_path);
+    [[nodiscard]] QString saveLogoImage(const QString &path,
+                                        const QString &dest_name,
+                                        const QString &old_logo_path) const;
 
     /// @brief delete the given file
-    bool deleteLogoImage(const QString &path);
+    [[nodiscard]] bool deleteLogoImage(const QString &path) const;
 
     const QString create_profile_title_;
     const QString create_stamp_title_;

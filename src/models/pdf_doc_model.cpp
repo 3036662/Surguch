@@ -18,22 +18,16 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "pdf_doc_model.hpp"
 
 #include <QDesktopServices>
-#include <QDir>
-#include <QFile>
-#include <QFileInfo>
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QGuiApplication>
-#include <QImage>
-#include <QMimeDatabase>
 #include <QScreen>
-#include <QThread>
 #include <QUrl>
 #include <QWindow>
 #include <QtConcurrent>
 
+#include "core/gui_core/gui_utils.hpp"
 #include "core/signature_processor.hpp"
-#include "core/utils.hpp"
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-do-while,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
 
@@ -51,21 +45,22 @@ PdfDocModel::PdfDocModel(QObject *parent)
     fz_catch(fzctx_) { fz_report_error(fzctx_); }
     // ---------------------------
     // watch for current screen dpi
-    QWindow *p_window = nullptr;
-    QScreen *p_screen = nullptr;
-    const QWindowList window_list = QGuiApplication::topLevelWindows();
+    const QWindow *p_window = nullptr;
+    const QScreen *p_screen = nullptr;
     // NOLINTNEXTLINE
-    if (!window_list.isEmpty() && (p_window = window_list.at(0)) != nullptr &&
+    if (const QWindowList window_list = QGuiApplication::topLevelWindows();
+        !window_list.isEmpty() && (p_window = window_list.at(0)) != nullptr &&
         (p_screen = p_window->screen()) != nullptr) {
         physical_screen_dpi_ = p_screen->physicalDotsPerInch();
         screenDpiChanged();
         // catch change dpi event
-        connect(p_window, &QWindow::screenChanged, [this](QScreen *screen) {
-            if (screen != nullptr && process_signatures_) {  // if main view
-                physical_screen_dpi_ = screen->physicalDotsPerInch();
-                screenDpiChanged();
-            }
-        });
+        connect(
+            p_window, &QWindow::screenChanged, [this](const QScreen *screen) {
+                if (screen != nullptr && process_signatures_) {  // if main view
+                    physical_screen_dpi_ = screen->physicalDotsPerInch();
+                    screenDpiChanged();
+                }
+            });
     }
     // qWarning()<<"Model created"<< QThread::currentThreadId();
 }
@@ -104,7 +99,7 @@ int PdfDocModel::rowCount(const QModelIndex &parent) const {
     return page_count_;
 }
 
-QVariant PdfDocModel::data(const QModelIndex &index, int role) const {
+QVariant PdfDocModel::data(const QModelIndex &index, const int role) const {
     if (!index.isValid()) {
         return {};
     }
@@ -118,28 +113,27 @@ QVariant PdfDocModel::data(const QModelIndex &index, int role) const {
     return {};
 }
 
-/// @brief setSource open new pdf file
+/// @brief setSource open new PDF file
 void PdfDocModel::setSource(const QString &path) {
     fz_drop_document(fzctx_, fzdoc_);
     fz_drop_context(fzctx_);
+    fzctx_ = nullptr;
+    fzdoc_ = nullptr;
     file_source_.clear();
     if (history_manager_ != nullptr) {
         history_manager_->clearHistory();
     }
     // qWarning() << "path = " << path;
     processFileDelete();
-    fzctx_ = fz_new_context(nullptr, nullptr, 500000000);
-    fz_try(fzctx_) {
-        fz_set_aa_level(fzctx_, 8);
-        fz_register_document_handlers(fzctx_);
+    if (path.isEmpty()) {
+        return;
     }
-    fz_catch(fzctx_) { fz_report_error(fzctx_); }
 
-    const QString file_path = QUrl(path).toString(QUrl::PreferLocalFile);
-    const QFile finfo(file_path);
+    const QString file_path = QUrl{path}.path();
+    const QFile finfo(QUrl{path}.path());
     const QMimeDatabase mime_database;
     const QMimeType mime_type = mime_database.mimeTypeForFile(file_path);
-    const std::string local_path_std = file_path.toStdString();
+    const std::string local_path_std = finfo.filesystemFileName().string();
     if (!finfo.exists()) {
         qWarning() << "[PdfDocModel::setSource] file does not exist"
                    << file_path;
@@ -151,10 +145,17 @@ void PdfDocModel::setSource(const QString &path) {
         return;
     }
 
+    fzctx_ = fz_new_context(nullptr, nullptr, 500000000);
+    fz_try(fzctx_) {
+        fz_set_aa_level(fzctx_, 8);
+        fz_register_document_handlers(fzctx_);
+    }
+    fz_catch(fzctx_) { fz_report_error(fzctx_); }
+
     bool mu_exception_caught = false;
     bool was_repaired = false;
     fz_try(fzctx_) {
-        // open the pdf file
+        // open the PDF file
         fzdoc_ = fz_open_document(fzctx_, local_path_std.c_str());
         if (fzdoc_ == nullptr) {
             qWarning("Can't open file");
@@ -168,7 +169,7 @@ void PdfDocModel::setSource(const QString &path) {
         }
         emit beginResetModel();
         page_count_ = fz_count_pages(fzctx_, fzdoc_);
-        // if not a valid pdf
+        // if not a valid PDF
         if (fzdoc_ == nullptr || pdfdoc_ == nullptr || page_count_ <= 0) {
             file_source_ = "";
             emit errorOpenFile(tr("Can not open file"));
@@ -219,9 +220,9 @@ void PdfDocModel::setSource(const QString &path) {
             text_extractor_ =
                 std::make_unique<core::TextExtractor>(fzctx_text_, fzdoc_text_);
             text_extractor_->updateCache();
-            QObject::connect(text_extractor_.get(),
-                             &core::TextExtractor::searchCompleted, this,
-                             &PdfDocModel::handleSearchCompleted);
+            connect(text_extractor_.get(),
+                    &core::TextExtractor::searchCompleted, this,
+                    &PdfDocModel::handleSearchCompleted);
         };
     }
 }
@@ -269,7 +270,7 @@ void PdfDocModel::processFileDelete() {
     }
 
     std::vector<QString> resulting_queue;
-    auto it_last =
+    const auto it_last =
         std::unique(tmp_files_to_delete_.begin(), tmp_files_to_delete_.end());
     tmp_files_to_delete_.erase(it_last, tmp_files_to_delete_.end());
 
@@ -303,7 +304,7 @@ Q_INVOKABLE void PdfDocModel::deleteFileLater(QString path) {
 /// @brief the 'save file as' implementation
 Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(const QString &curr_path,
                                                const QString &path,
-                                               bool delete_curr_source) {
+                                               const bool delete_curr_source) {
     const QString dest_path = QUrl(path).toString(QUrl::PreferLocalFile);
     QFile src_file(curr_path);
     if (!src_file.exists()) {
@@ -316,8 +317,7 @@ Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(const QString &curr_path,
         return true;
     }
 
-    QFile dest_file(dest_path);
-    if (dest_file.exists()) {
+    if (QFile dest_file(dest_path); dest_file.exists()) {
         std::ignore = dest_file.remove();
     }
     if (!src_file.copy(dest_path)) {
@@ -332,7 +332,7 @@ Q_INVOKABLE bool PdfDocModel::saveCurrSourceTo(const QString &curr_path,
 }
 
 /// @brief Open a folder that contains the current file in the file browser.
-void PdfDocModel::showInFolder() {
+void PdfDocModel::showInFolder() const {
     const QUrl folder_url = QUrl::fromLocalFile(
         QFileInfo(file_source_).absoluteDir().absolutePath());
     QDesktopServices::openUrl(folder_url);
@@ -340,7 +340,7 @@ void PdfDocModel::showInFolder() {
 
 /// @brief returns a vector of rectangles to highlight
 PdfDocModel::NeedleRectsOnPage PdfDocModel::getNeedlesForPage(
-    size_t page_index) {
+    const size_t page_index) const {
     // qWarning() << "getNeedlesForPage" << page_index;
     if (!text_extractor_) {
         return nullptr;
@@ -349,7 +349,7 @@ PdfDocModel::NeedleRectsOnPage PdfDocModel::getNeedlesForPage(
 }
 
 /// @brief search for text
-void PdfDocModel::performSearch(const QString &needle) {
+void PdfDocModel::performSearch(const QString &needle) const {
     qWarning() << "search for " << needle;
     if (text_extractor_) {
         text_extractor_->performSearch(needle, false);
@@ -375,7 +375,7 @@ void PdfDocModel::handleSearchCompleted() {
                          needle.second.second);
 }
 
-void PdfDocModel::jumpToNeedle(int needle_index) {
+void PdfDocModel::jumpToNeedle(const int needle_index) {
     if (needle_index < 0 || !text_extractor_) {
         return;
     }
@@ -390,14 +390,14 @@ void PdfDocModel::jumpToNeedle(int needle_index) {
 }
 
 std::shared_ptr<core::TextExtractor::RectToHighlightCurrent>
-PdfDocModel::getCurrentNeedleRect(size_t page_index) {
+PdfDocModel::getCurrentNeedleRect(const size_t page_index) const {
     if (!text_extractor_) {
         return nullptr;
     }
     return text_extractor_->getCurrentNeedleRect(page_index);
 }
 
-PdfDocModel::PageUriInfoList PdfDocModel::getUriByPos(size_t page_index,
+PdfDocModel::PageUriInfoList PdfDocModel::getUriByPos(const size_t page_index,
                                                       float mouseX,
                                                       float mouseY) const {
     if (!text_extractor_) {
@@ -407,7 +407,7 @@ PdfDocModel::PageUriInfoList PdfDocModel::getUriByPos(size_t page_index,
     mouseX *= 72 / static_cast<float>(physical_screen_dpi_);
     mouseY *= 72 / static_cast<float>(physical_screen_dpi_);
 
-    auto result =
+    const auto result =
         text_extractor_->getTargetAllUriPage(page_index, {mouseX, mouseY});
     if (!result) {
         return {};
@@ -429,11 +429,10 @@ void PdfDocModel::placeRubberStamp(const QVariantMap &qvparams) {
     params = core::gui::prepareParams(qvparams);
     auto params_wrapper = core::gui::createParams(params);
     image_watcher_ = std::make_unique<ImageFutureWatcher>();
-    QObject::connect(image_watcher_.get(), &ImageFutureWatcher::finished,
-                     [this]() {
-                         // qWarning() << "finished";
-                         saveImage();
-                     });
+    connect(image_watcher_.get(), &ImageFutureWatcher::finished, [this] {
+        // qWarning() << "finished";
+        saveImage();
+    });
     image_future_ = std::make_unique<ImageFuture>(
         QtConcurrent::run(core::gui::prepareImage, params_wrapper));
     image_watcher_->setFuture(*image_future_);
@@ -443,11 +442,10 @@ void PdfDocModel::prepareImage(const QVariantMap &qvparams) {
     params = core::gui::prepareParams(qvparams);
     auto params_wrapper = core::gui::createParams(params);
     image_watcher_ = std::make_unique<ImageFutureWatcher>();
-    QObject::connect(image_watcher_.get(), &ImageFutureWatcher::finished,
-                     [this]() {
-                         // qWarning() << "finished";
-                         estimateTagHeight();
-                     });
+    connect(image_watcher_.get(), &ImageFutureWatcher::finished, [this] {
+        // qWarning() << "finished";
+        estimateTagHeight();
+    });
     image_future_ = std::make_unique<ImageFuture>(
         QtConcurrent::run(core::gui::prepareImage, params_wrapper));
     image_watcher_->setFuture(*image_future_);
@@ -455,10 +453,11 @@ void PdfDocModel::prepareImage(const QVariantMap &qvparams) {
 
 void PdfDocModel::estimateTagHeight() {
     if (image_future_ && image_future_->isValid()) {
-        auto result = image_future_->takeResult();
-        if (result != nullptr && result->data_ != nullptr) {
-            auto ratio = static_cast<double>(result->data_->resolution_x) /
-                         static_cast<double>(result->data_->resolution_y);
+        if (const auto result = image_future_->takeResult();
+            result != nullptr && result->data_ != nullptr) {
+            const auto ratio =
+                static_cast<double>(result->data_->resolution_x) /
+                static_cast<double>(result->data_->resolution_y);
             // qWarning() << "[EstimateTagHeight]" << ratio;
             emit sizeReady(ratio);
         }
@@ -466,7 +465,7 @@ void PdfDocModel::estimateTagHeight() {
 }
 
 std::vector<std::shared_ptr<core::gui::RubberStamp>>
-PdfDocModel::getRubberStampForPage(size_t page_index) const {
+PdfDocModel::getRubberStampForPage(const size_t page_index) const {
     if (!history_manager_) {
         return {};
     }
@@ -540,7 +539,7 @@ void PdfDocModel::saveImage() {
     emit updateDoc();
 }
 
-bool PdfDocModel::mouseOverUri(size_t page_index, float mouseX,
+bool PdfDocModel::mouseOverUri(const size_t page_index, float mouseX,
                                float mouseY) const {
     mouseX *= 72 / static_cast<float>(physical_screen_dpi_);
     mouseY *= 72 / static_cast<float>(physical_screen_dpi_);

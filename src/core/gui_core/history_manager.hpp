@@ -18,10 +18,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef HISTORY_MANAGER_HPP
 #define HISTORY_MANAGER_HPP
 
-#include <QFuture>
 #include <QFutureWatcher>
-#include <QImage>
-#include <QList>
 #include <QObject>
 #include <memory>
 #include <shared_mutex>

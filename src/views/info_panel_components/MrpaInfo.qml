@@ -14,25 +14,31 @@ Item {
     function isObj(x) {
         return x && typeof x === "object" && !Array.isArray(x)
     }
+
     function isArr(x) {
         return Array.isArray(x)
     }
+
     function attrKeys(o) {
         return isObj(o) ? Object.keys(o).filter(k => k.startsWith("@")
                                                 || k === "text") : []
     }
+
     function secKeys(o) {
         return isObj(o) ? Object.keys(o).filter(k => !k.startsWith("@")
                                                 && k !== "text") : []
     }
+
     function mrpaTr(str) {
         return surguchTranslator.surguchTranslate(str)
     }
+
     function lastTitle(path) {
         if (!path || path.length === 0)
             return qsTr("About MRPA")
         return path[path.length - 1]
     }
+
     function buildSections(node, path, out) {
         if (!isObj(node) && !isArr(node))
             return
@@ -62,6 +68,7 @@ Item {
             buildSections(node[j], nextPath, out)
         }
     }
+
     function computeSections() {
         const res = []
         if (mrpa)
@@ -137,8 +144,7 @@ Item {
                         font.family: "Noto Sans"
                         font.pixelSize: 12
                         color: StyleSheet.font_color_extra
-                        visible: String(modelData.title).trim(
-                                     ) === "ПодпИзобр" ? false : true
+                        visible: String(modelData.title).trim() !== "ПодпИзобр"
                     }
 
                     Repeater {

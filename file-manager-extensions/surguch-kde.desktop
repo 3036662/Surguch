@@ -5,8 +5,8 @@ MimeType=application/octet-stream;
 Actions=gostSign
 
 [Desktop Action gostSign]
-TryExec=surguch -f
-Exec=surguch -f %F
+TryExec=surguch
+Exec=surguch -f %U
 Icon=SealWax-1_32
 
 Name=Sign documents

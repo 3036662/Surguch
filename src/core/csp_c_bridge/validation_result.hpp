@@ -29,8 +29,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 namespace core {
 
 struct ValidationResult {
-   public:
-    ValidationResult(const core::RawSignature &raw_signature,
+    ValidationResult(const RawSignature &raw_signature,
                      const std::string &path);
     ValidationResult() = default;
 
@@ -71,7 +70,8 @@ struct ValidationResult {
     QString file_path;
 };
 
-void createCSPResponse(ValidationResult &res, pdfcsp::c_bridge::CPodResult const* pod);
+void createCSPResponse(ValidationResult &res,
+                       pdfcsp::c_bridge::CPodResult const *pod);
 
 }  // namespace core
 

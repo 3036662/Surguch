@@ -75,8 +75,9 @@ class RubberStampModel : public QAbstractListModel {
      * @param old_logo_path old logo to delete
      * @return QString full path to saved logo on success
      */
-    QString saveLogoImage(const QString& path, const QString& dest_name,
-                          const QString& old_logo_path);
+    [[nodiscard]] QString saveLogoImage(const QString& path,
+                                        const QString& dest_name,
+                                        const QString& old_logo_path) const;
 
     const QString approve_stamp_title_;
     const QString decline_stamp_title_;

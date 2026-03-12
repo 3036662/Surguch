@@ -90,5 +90,6 @@
         <file>icons/dark/folder_simple.svg</file>
         <file>icons/dark/file_simple_tree.svg</file>
         <file>icons/light/file_simple_tree.svg</file>
+        <file>basealt.svg</file>
     </qresource>
 </RCC>

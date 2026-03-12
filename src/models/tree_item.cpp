@@ -17,14 +17,14 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "tree_item.hpp"
 
-TreeItem::TreeItem(FileData data, QUuid uid, TreeItem *parent)
-    : file_data_(std::move(data)), uid_(uid), parent_item_(parent) {}
+TreeItem::TreeItem(FileData data, const QUuid uid, TreeItem *parent)
+    : file_data_(std::move(data)), parent_item_(parent), uid_(uid) {}
 
 void TreeItem::appendChild(std::shared_ptr<TreeItem> &&child) {
     child_items_.push_back(std::move(child));
 }
 
-TreeItem *TreeItem::child(int row) {
+TreeItem *TreeItem::child(const int row) const {
     return row >= 0 && row < childCount() ? child_items_.at(row).get()
                                           : nullptr;
 }

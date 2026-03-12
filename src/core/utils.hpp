@@ -18,7 +18,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #ifndef UTILS_HPP
 #define UTILS_HPP
 #include <QString>
-#include <cstddef>
 #include <vector>
 
 #include "mupdf/fitz.h"

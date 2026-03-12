@@ -29,17 +29,15 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <memory>
 
 PreviewRender::PreviewRender() {
-    setFlag(QQuickItem::ItemHasContents, true);
+    setFlag(ItemHasContents, true);
     setClip(true);
-    const qreal pix_rat = QWindow().devicePixelRatio();
-    if (pix_rat > 2) {
+    if (const qreal pix_rat = QWindow().devicePixelRatio(); pix_rat > 2) {
         dev_pix_ratio_ = static_cast<float>(pix_rat);
     }
 }
 
 QSGNode *PreviewRender::updatePaintNode(
-    QSGNode *node,
-    [[maybe_unused]] QQuickItem::UpdatePaintNodeData *updatePaintNodeData) {
+    QSGNode *node, [[maybe_unused]] UpdatePaintNodeData *updatePaintNodeData) {
     QSGSimpleTextureNode *rectNode = nullptr;
     if (node != nullptr) {
         rectNode = dynamic_cast<QSGSimpleTextureNode *>(node);
@@ -110,11 +108,10 @@ void PreviewRender::createImage(const QVariantMap &qvparams) {
     params_ = core::gui::preparePreviewParams(qvparams);
     auto params_wrapper = core::gui::createParams(params_);
     image_watcher_ = std::make_unique<ImageFutureWatcher>();
-    QObject::connect(image_watcher_.get(), &ImageFutureWatcher::finished,
-                     [this]() {
-                         // qWarning() << "finished";
-                         saveImage();
-                     });
+    connect(image_watcher_.get(), &ImageFutureWatcher::finished, [this] {
+        // qWarning() << "finished";
+        saveImage();
+    });
     image_future_ = std::make_unique<ImageFuture>(
         QtConcurrent::run(core::gui::prepareStampImage, params_wrapper));
     image_watcher_->setFuture(*image_future_);

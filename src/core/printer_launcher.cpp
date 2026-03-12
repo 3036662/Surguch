@@ -17,7 +17,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "printer_launcher.hpp"
 
-#include <QFile>
 #include <QFileInfo>
 #include <QMargins>
 #include <QPrintDialog>
@@ -37,12 +36,12 @@ PrinterLauncher::PrinterLauncher(QObject *parent) : QObject{parent} {}
  * \param page_count - total pages in file
  * \param landscape - true if orientation is landscape
  */
-void PrinterLauncher::print(const QString &src_file, int page_count,
-                            bool landscape) {
+void PrinterLauncher::print(const QString &src_file, const int page_count,
+                            const bool landscape) {
     QPrinter printer;
     QPrintDialog print_dialog(&printer, nullptr);
-    const QSize size_hint = print_dialog.minimumSizeHint();
-    if (size_hint.isValid()) {
+    if (const QSize size_hint = print_dialog.minimumSizeHint();
+        size_hint.isValid()) {
         print_dialog.resize(size_hint);
     }
     print_dialog.setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -54,16 +53,16 @@ void PrinterLauncher::print(const QString &src_file, int page_count,
         printer.setPageOrientation(QPageLayout::Landscape);
     }
     if (print_dialog.exec() == QDialog::Accepted) {
-        auto options = createPrintCommand(printer, src_file);
-        if (!options.empty()) {
+        if (const auto options = createPrintCommand(printer, src_file);
+            !options.empty()) {
             // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
-            auto *process = new QProcess();
+            auto *process = new QProcess(this);
             // finished
             connect(process, &QProcess::finished,
                     [process] { process->deleteLater(); });
             //  error
             connect(process, &QProcess::errorOccurred,
-                    [process](QProcess::ProcessError err) {
+                    [process](const QProcess::ProcessError err) {
                         if (err == QProcess::FailedToStart) {
                             qWarning()
                                 << "Cups executable failed to start:"
@@ -88,28 +87,23 @@ QStringList PrinterLauncher::createPrintCommand(const QPrinter &printer,
     const QString local_file_path = QUrl(file).toString(QUrl::PreferLocalFile);
     res.append(local_file_path);
     // printer name
-    {
-        const QString printer_name = printer.printerName();
-        if (!printer_name.isEmpty()) {
-            res.append("-d");
-            res.append(printer_name);
-        }
+    if (const QString printer_name = printer.printerName();
+        !printer_name.isEmpty()) {
+        res.append("-d");
+        res.append(printer_name);
     }
     // copies
     const int copies = printer.copyCount();
     res.append("-n");
     res.append(QString::number(copies));
     // job name
-    {
-        const QString job_name = printer.docName();
-        if (!job_name.isEmpty()) {
-            res.append("-t");
-            res.append(job_name);
-        } else {
-            const QString doc_name = QFileInfo(file).fileName();
-            res.append("-t");
-            res.append(doc_name);
-        }
+    if (const QString job_name = printer.docName(); !job_name.isEmpty()) {
+        res.append("-t");
+        res.append(job_name);
+    } else {
+        const QString doc_name = QFileInfo(file).fileName();
+        res.append("-t");
+        res.append(doc_name);
     }
     /* page ranges
      * The page numbers used by page-ranges refer to the output pages and not
@@ -127,9 +121,9 @@ QStringList PrinterLauncher::createPrintCommand(const QPrinter &printer,
     // page layout
     {
         const QPageLayout layout = printer.pageLayout();
-        const QPageSize page_size = layout.pageSize();
         // media
-        if (page_size.isValid()) {
+        if (const QPageSize page_size = layout.pageSize();
+            page_size.isValid()) {
             res.append(kKeyO);
             res.append("media=" + page_size.name());
         }
