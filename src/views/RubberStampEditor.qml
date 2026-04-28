@@ -151,9 +151,9 @@ Dialog {
                         if (stamp_id < 0 && !rubber_model.uniqueStampName(
                                     previewColumn.stampNameText)) {
                             previewColumn.focusOnName()
-                            errorMessageDialog.text = qsTr(
-                                        "Stamp with this name already exists")
-                            errorMessageDialog.open()
+                            errorMessageDialog.addError(qsTr(
+                                        "Stamp with this name already exists"))
+                            errorMessageDialog.show()
                             return
                         }
                         private_data.stamp_json = rightSubColumn.getParams()

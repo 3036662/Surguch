@@ -50,9 +50,9 @@ Item {
                                                   return curr_profile.cert_serial === cert.serial
                                               })
         if (cert_index === -1) {
-            errorMessageDialog.text = qsTr(
-                        "Certificate not found, looks like it was deleted.﻿")
-            errorMessageDialog.open()
+            errorMessageDialog.addError (qsTr(
+                        "Certificate not found, looks like it was deleted.﻿"))
+            errorMessageDialog.show()
             throw new Error('Certificate data not found')
         }
         let stamps_json
@@ -159,21 +159,26 @@ Item {
         function handleSigResult(result) {
             console.warn(result.status)
             if (!result.status) {
+                console.warn("SIGN error: "+result.err_string);
                 if (result.err_string === "CERT_EXPIRED") {
-                    errorMessageDialog.text = qsTr(
-                                "Your certificate is expired.")
-                } else if (result.err_string === "MAYBE_TSP_URL_INVALID") {
-                    errorMessageDialog.text = qsTr(
-                                "Common error. It looks like the TSP URL is not valid.")
+                    errorMessageDialog.addError(qsTr(
+                                "Your certificate is expired."));
+                } else if (result.err_string === "MAYBE_TSP_URL_INVALID") {                    
+                    errorMessageDialog.addError(qsTr(
+                                "Common error. It looks like the TSP URL is not valid."))
                 } else if (result.err_string === "CERT_CHAINING_ERR") {
-                    errorMessageDialog.text = qsTr(
-                                "Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list.")
+                    errorMessageDialog.addError(qsTr(
+                                "Certificate chain error happened, it looks like one of root certificates is missing or is not in trusted list."))
                 } else if (result.err_string === "TIMEOUT") {
-                    errorMessageDialog.text = qsTr("Error.Timeout exceeded.")
-                } else {
-                    errorMessageDialog.text = qsTr("Common error")
+                    errorMessageDialog.addError(qsTr("Error.Timeout exceeded."))
+                } else if (result.err_string ==="Csp::SignData failed to find the user's certificate"){
+                    errorMessageDialog.addError (qsTr(
+                                            "Certificate not found, looks like it was deleted.﻿"));
                 }
-                errorMessageDialog.open()
+                else {
+                    errorMessageDialog.addError(qsTr("Common error"))
+                }
+                errorMessageDialog.show()
             } // if successfully signed
             else {
                 if (result.tmp_file_path !== undefined) {
@@ -182,7 +187,7 @@ Item {
                     leftSideBar.source = result.tmp_file_path
                     rightSideBar.showState = RightSideBar.ShowState.Invisible
                 }
-            }
+            }              
             header.enableSignMode()
         }
     }

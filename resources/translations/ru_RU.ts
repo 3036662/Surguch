@@ -481,9 +481,9 @@
 <context>
     <name>ErrorMessage</name>
     <message>
-        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/ErrorMessage.qml" line="+28"/>
-        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/ErrorMessage.qml" line="+28"/>
-        <location filename="../../src/views/ErrorMessage.qml" line="+28"/>
+        <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/ErrorMessage.qml" line="+49"/>
+        <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/ErrorMessage.qml" line="+47"/>
+        <location filename="../../src/views/ErrorMessage.qml" line="+49"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -1885,17 +1885,19 @@ Drag&amp;Drop</translation>
     <name>SigCreatorWrapper</name>
     <message>
         <location filename="../../build/Desktop-Debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+53"/>
+        <location line="+122"/>
         <location filename="../../build_p11/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+53"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+53"/>
         <location filename="../../src/views/SigCreatorWrapper.qml" line="+53"/>
+        <location line="+122"/>
         <source>Certificate not found, looks like it was deleted.﻿</source>
         <translation>Сертификат не найден, возможно он был удален</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="-89"/>
         <location filename="../../build_p11/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+33"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+33"/>
-        <location filename="../../src/views/SigCreatorWrapper.qml" line="+33"/>
+        <location filename="../../src/views/SigCreatorWrapper.qml" line="-89"/>
         <source>Certificate: </source>
         <translation>Сертификат: </translation>
     </message>
@@ -1936,10 +1938,10 @@ Drag&amp;Drop</translation>
         <translation>ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ</translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+72"/>
         <location filename="../../build_p11/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+71"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+71"/>
-        <location filename="../../src/views/SigCreatorWrapper.qml" line="+71"/>
+        <location filename="../../src/views/SigCreatorWrapper.qml" line="+72"/>
         <source>Your certificate is expired.</source>
         <translation>Истек срок действия сертификата.</translation>
     </message>
@@ -1968,10 +1970,10 @@ Drag&amp;Drop</translation>
         <translation>Ошибка: превышен максимальный интервал ожидания.</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+6"/>
         <location filename="../../build_p11/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+2"/>
         <location filename="../../cmake-build-debug/src/gui_pdf_csp/views/SigCreatorWrapper.qml" line="+2"/>
-        <location filename="../../src/views/SigCreatorWrapper.qml" line="+2"/>
+        <location filename="../../src/views/SigCreatorWrapper.qml" line="+6"/>
         <source>Common error</source>
         <translation>Общая ошибка</translation>
     </message>

@@ -8,7 +8,6 @@ import "stamp_editor_components" as StampComponents
 Dialog {
     id: root
 
-
     // these fields are set from EditProfile.qml
     property var profiles_model // reference to a cpp model
     property var profile_data // string(JSON) profile data
@@ -16,63 +15,60 @@ Dialog {
     property int stamp_id: -1
     property bool editState: false
 
-    signal stampSaved();
+    signal stampSaved
 
     // private properties
-    Item{
-     id: private_data
-     visible:false
+    Item {
+        id: private_data
+        visible: false
 
-
-     // prevents multiple event triggers when many settings are changed simultaneously in one step.
-     property bool ignore_changes : false
+        // prevents multiple event triggers when many settings are changed simultaneously in one step.
+        property bool ignore_changes: false
     }
-
 
     // fill the form from stamp_data JSON
     function updateStampForm() {
         if (stamp_json) {
-            private_data.ignore_changes=true;
+            private_data.ignore_changes = true;
             try {
-                editState = true
-                stamp_id =stamp_json.id
-                stampName.text =stamp_json.title
-                transparencySwitch.checked =stamp_json.transparent
-                borderSettings.border_width =stamp_json.border_width
-                borderSettings.radius =stamp_json.border_radius
-                rgbColorPicker.r =stamp_json.R
-                rgbColorPicker.g =stamp_json.G
-                rgbColorPicker.b =stamp_json.B
-
+                editState = true;
+                stamp_id = stamp_json.id;
+                stampName.text = stamp_json.title;
+                transparencySwitch.checked = stamp_json.transparent;
+                borderSettings.border_width = stamp_json.border_width;
+                borderSettings.radius = stamp_json.border_radius;
+                rgbColorPicker.r = stamp_json.R;
+                rgbColorPicker.g = stamp_json.G;
+                rgbColorPicker.b = stamp_json.B;
             } catch (e) {
-                console.error("Error parsing JSON " + e.message)
+                console.error("Error parsing JSON " + e.message);
             }
-            private_data.ignore_changes=false;
+            private_data.ignore_changes = false;
         } else {
-            resetData()
+            resetData();
         }
-        stampPreview.profile_data = profile_data      
+        stampPreview.profile_data = profile_data;
         updatePreview();
     }
 
     function resetData(skip_update) {
-        private_data.ignore_changes=true;
-        editState = false
-        stamp_id = -1
-        stampName.text = ""
-        transparencySwitch.state = false
-        borderSettings.border_width = 7
-        borderSettings.radius = 50
-        rgbColorPicker.r = 50
-        rgbColorPicker.g = 62
-        rgbColorPicker.b = 168
-        private_data.ignore_changes=false;
-        if(!skip_update){
+        private_data.ignore_changes = true;
+        editState = false;
+        stamp_id = -1;
+        stampName.text = "";
+        transparencySwitch.state = false;
+        borderSettings.border_width = 7;
+        borderSettings.radius = 50;
+        rgbColorPicker.r = 50;
+        rgbColorPicker.g = 62;
+        rgbColorPicker.b = 168;
+        private_data.ignore_changes = false;
+        if (!skip_update) {
             updatePreview();
         }
     }
 
-    function updatePreview() {        
+    function updatePreview() {
         let stamp_params = {
             "stamp_name": stampName.text,
             "text_color_red": rgbColorPicker.r,
@@ -84,8 +80,8 @@ Dialog {
             "border_width": borderSettings.border_width,
             "border_radius": borderSettings.radius,
             "bg_transparent": transparencySwitch.checked ? 1 : 0
-        }
-        stampPreview.stamp_json = stamp_params
+        };
+        stampPreview.stamp_json = stamp_params;
     }
 
     implicitWidth: 460
@@ -103,7 +99,6 @@ Dialog {
 
         property bool scrollBarVisible: ScrollBar.vertical.visible
         property int scrollBarWidth: scrollBarVisible ? ScrollBar.vertical.width : 0
-
 
         clip: true
         ScrollBar.vertical.policy: ScrollBar.AsNeeded
@@ -129,16 +124,16 @@ Dialog {
                 labelText: qsTr("Stamp editor")
 
                 onCloseClicked: {
-                    stampEditor.visible = false
-                    resetData(true)
+                    stampEditor.visible = false;
+                    resetData(true);
                 }
             }
 
             // stamp name
-            StampComponents.StampNameInput{
+            StampComponents.StampNameInput {
                 id: stampName
 
-                labelText:  qsTr("Stamp name")
+                labelText: qsTr("Stamp name")
                 placeholderText: qsTr("Enter stamp name")
             }
 
@@ -154,7 +149,7 @@ Dialog {
                 id: stampPreview
 
                 Layout.fillWidth: true
-                Layout.preferredHeight:  175
+                Layout.preferredHeight: 175
             }
 
             // border settings
@@ -162,19 +157,17 @@ Dialog {
                 id: borderSettings
 
                 onValueChanged: {
-                    if(!private_data.ignore_changes){
-                        updatePreview()
+                    if (!private_data.ignore_changes) {
+                        updatePreview();
                     }
                 }
             }
-
 
             Text {
                 text: qsTr("Stamp's color")
                 font.family: "Noto Sans"
                 color: StyleSheet.font_color_extra
             }
-
 
             // color settings
             StampComponents.RGBColorPicker {
@@ -183,22 +176,22 @@ Dialog {
                 Layout.fillHeight: true
 
                 onValueChanged: {
-                    if(!private_data.ignore_changes){
-                    updatePreview()
+                    if (!private_data.ignore_changes) {
+                        updatePreview();
                     }
                 }
             }
 
             // transparency switch with label
-            StampComponents.TransparencySwitch{
+            StampComponents.TransparencySwitch {
                 id: transparencySwitch
 
                 Layout.fillWidth: true
                 labelText: qsTr("Transparency")
 
                 onToggled: {
-                    if(!private_data.ignore_changes){
-                    updatePreview()
+                    if (!private_data.ignore_changes) {
+                        updatePreview();
                     }
                 }
             }
@@ -218,32 +211,30 @@ Dialog {
 
                 onClicked: {
                     if (stampName.text === "") {
-                        stampName.forceActiveFocus()
-                        return
+                        stampName.forceActiveFocus();
+                        return;
                     }
-                    if (stamp_id < 0 && !profiles_model.uniqueStampName(
-                                stampName.text)) {
-                        stampName.forceActiveFocus()
-                        errorMessageDialog.text = qsTr(
-                                    "Stamp with this name already exists")
-                        errorMessageDialog.open()
-                        return
+                    if (stamp_id < 0 && !profiles_model.uniqueStampName(stampName.text)) {
+                        stampName.forceActiveFocus();
+                        errorMessageDialog.addError(qsTr("Stamp with this name already exists"));
+                        errorMessageDialog.show();
+                        return;
                     }
-                   stamp_json = {}
-                   stamp_json["id"] = stamp_id
-                   stamp_json["title"] = stampName.text
-                   stamp_json["border_width"] = borderSettings.border_width
-                   stamp_json["border_radius"] = borderSettings.radius
-                   stamp_json["R"] = rgbColorPicker.r
-                   stamp_json["G"] = rgbColorPicker.g
-                   stamp_json["B"] = rgbColorPicker.b
-                   stamp_json["transparent"] = transparencySwitch.checked ? 1 : 0
-                    const new_stamp_data = JSON.stringify(stamp_json)
-                    if(profiles_model.saveStamp(new_stamp_data)){
+                    stamp_json = {};
+                    stamp_json["id"] = stamp_id;
+                    stamp_json["title"] = stampName.text;
+                    stamp_json["border_width"] = borderSettings.border_width;
+                    stamp_json["border_radius"] = borderSettings.radius;
+                    stamp_json["R"] = rgbColorPicker.r;
+                    stamp_json["G"] = rgbColorPicker.g;
+                    stamp_json["B"] = rgbColorPicker.b;
+                    stamp_json["transparent"] = transparencySwitch.checked ? 1 : 0;
+                    const new_stamp_data = JSON.stringify(stamp_json);
+                    if (profiles_model.saveStamp(new_stamp_data)) {
                         stampSaved();
                     }
-                    stampEditor.visible = false
-                    stamp_json = null
+                    stampEditor.visible = false;
+                    stamp_json = null;
                 }
             }
 
@@ -261,9 +252,9 @@ Dialog {
 
                 onClicked: {
                     if (profiles_model.deleteStamp(root.stamp_id)) {
-                        profiles_model.updateProfiles(private_data.stamp_json.title)
-                        stampEditor.visible = false
-                        stamp_json = null
+                        profiles_model.updateProfiles(private_data.stamp_json.title);
+                        stampEditor.visible = false;
+                        stamp_json = null;
                     }
                 }
             }

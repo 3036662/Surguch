@@ -28,22 +28,21 @@ TreeView {
     property var state_val: []
 
     function gatherParamsTree(path) {
-        let curr_profile = {}
-        let cert_array = {}
-        curr_profile = JSON.parse(header.getCurrentProfileValue())
-        cert_array = JSON.parse(profilesModel.getUserCertsJSON())
+        let curr_profile = {};
+        let cert_array = {};
+        curr_profile = JSON.parse(header.getCurrentProfileValue());
+        cert_array = JSON.parse(profilesModel.getUserCertsJSON());
         let cert_index = cert_array.findIndex(cert => {
-                                                  return curr_profile.cert_serial === cert.serial
-                                              })
+            return curr_profile.cert_serial === cert.serial;
+        });
         if (cert_index === -1) {
-            errorMessageDialog.text = qsTr(
-                        "Certificate not found, looks like it was deleted.﻿")
+            errorMessageDialog.addError(qsTr("Certificate not found, looks like it was deleted.﻿"));
             Qt.callLater(function () {
-                enableSignButton()
-                treeSignResultDialog.close()
-                errorMessageDialog.open()
-            })
-            throw new Error('Certificate data not found')
+                enableSignButton();
+                treeSignResultDialog.close();
+                errorMessageDialog.show();
+            });
+            throw new Error('Certificate data not found');
         }
 
         let params = {
@@ -57,8 +56,8 @@ TreeView {
             "create_base_64_encoded": curr_profile.create_base_64_encoded,
             "pack_to_zip": curr_profile.pack_to_zip,
             "pack_separate_zips": curr_profile.pack_separate_zips
-        }
-        fileTreeModel.signTree(params)
+        };
+        fileTreeModel.signTree(params);
     }
 
     delegate: Item {
@@ -79,95 +78,95 @@ TreeView {
         function getImageForNode(type) {
             switch (type) {
             case 0:
-                return StyleSheet.box_icon
+                return StyleSheet.box_icon;
             case 1:
-                return StyleSheet.folder_plus_icon
+                return StyleSheet.folder_plus_icon;
             case 2:
-                return StyleSheet.file_simple_tree
+                return StyleSheet.file_simple_tree;
             case 3:
-                return StyleSheet.medal_icon
+                return StyleSheet.medal_icon;
             case 4:
-                return StyleSheet.box_icon
+                return StyleSheet.box_icon;
             case 5:
-                return StyleSheet.file_simple_tree
+                return StyleSheet.file_simple_tree;
             default:
-                return ""
+                return "";
             }
         }
 
         function convertSizes(bytes) {
             if (bytes < 1024)
-                return bytes + qsTr(" B")
+                return bytes + qsTr(" B");
             else if (bytes < 1024 * 1024)
-                return (bytes / 1024).toFixed(1) + qsTr(" KB")
+                return (bytes / 1024).toFixed(1) + qsTr(" KB");
             else if (bytes < 1024 * 1024 * 1024)
-                return (bytes / (1024 * 1024)).toFixed(1) + qsTr(" MB")
+                return (bytes / (1024 * 1024)).toFixed(1) + qsTr(" MB");
         }
 
         function getSignIcon(color) {
             switch (color) {
             case "sig_green":
-                return StyleSheet.green_sign_icon
+                return StyleSheet.green_sign_icon;
             case "sig_red":
-                return StyleSheet.red_sign_icon
+                return StyleSheet.red_sign_icon;
             case "sig_mixed":
-                return StyleSheet.medal_icon
+                return StyleSheet.medal_icon;
             case "file_green":
-                return StyleSheet.cell_icon_green
+                return StyleSheet.cell_icon_green;
             case "file_red":
-                return StyleSheet.cell_icon_red
+                return StyleSheet.cell_icon_red;
             case "file_mixed":
-                return StyleSheet.cell_icon_empty
+                return StyleSheet.cell_icon_empty;
             default:
-                return ""
+                return "";
             }
         }
 
         function getMrpaIcon(color) {
             switch (color) {
             case "warning":
-                return StyleSheet.warning_icon
+                return StyleSheet.warning_icon;
             case "valid":
-                return StyleSheet.file_text_green
+                return StyleSheet.file_text_green;
             case "old":
-                return StyleSheet.file_text_red
+                return StyleSheet.file_text_red;
             case "invalid":
-                return StyleSheet.file_text_icon
+                return StyleSheet.file_text_icon;
             case "file_green":
-                return StyleSheet.cell_icon_green
+                return StyleSheet.cell_icon_green;
             case "file_red":
-                return StyleSheet.cell_icon_red
+                return StyleSheet.cell_icon_red;
             case "file_mixed":
-                return StyleSheet.cell_icon_empty
+                return StyleSheet.cell_icon_empty;
             default:
-                return ""
+                return "";
             }
         }
 
         function restore() {
             if (!model.id) {
-                return
+                return;
             }
 
-            let index_in_state = treeView.state.indexOf(model.id)
+            let index_in_state = treeView.state.indexOf(model.id);
             if (index_in_state >= 0 && treeView.state_val[index_in_state]) {
                 //console.warn("STATE: expand " + model.id)
-                expand(row)
+                expand(row);
             }
         }
 
         onExpandedChanged: {
             //console.warn("id:" + model.id + "EXPANDED:" + isExpanded())
             if (model.id === undefined) {
-                return
+                return;
             }
 
-            let index_in_state = treeView.state.indexOf(model.id)
+            let index_in_state = treeView.state.indexOf(model.id);
             if (index_in_state >= 0) {
-                treeView.state_val[index_in_state] = expanded
+                treeView.state_val[index_in_state] = expanded;
             } else {
-                treeView.state.push(model.id)
-                treeView.state_val.push(expanded)
+                treeView.state.push(model.id);
+                treeView.state_val.push(expanded);
             }
             // console.warn("STATEX:" + JSON.stringify(treeView.state))
             // console.warn("STATEX:" + JSON.stringify(treeView.state_val))
@@ -181,12 +180,12 @@ TreeView {
 
             onId_modelChanged: {
                 //console.warn("STATEX: call restore from child:" + model.id)
-                parent.restore()
+                parent.restore();
             }
 
             Component.onCompleted: {
                 //console.warn("STATEX: call restore from child:" + model.id)
-                parent.restore()
+                parent.restore();
             }
         }
 
@@ -234,9 +233,9 @@ TreeView {
                     anchors.fill: parent
                     propagateComposedEvents: true
                     onClicked: mouse => {
-                                   treeView.toggleExpanded(row)
-                                   mouse.accepted = false
-                               }
+                        treeView.toggleExpanded(row);
+                        mouse.accepted = false;
+                    }
 
                     HoverHandler {
                         cursorShape: Qt.PointingHandCursor
@@ -315,21 +314,18 @@ TreeView {
                         hoverEnabled: true
 
                         onClicked: mouse => {
-                                       if (mouse.button === Qt.RightButton
-                                           && model.type !== 1) {
-                                           contextMenu.popup()
-                                       }
-                                       mouse.accepted = true
-                                   }
+                            if (mouse.button === Qt.RightButton && model.type !== 1) {
+                                contextMenu.popup();
+                            }
+                            mouse.accepted = true;
+                        }
 
                         Menu {
                             id: contextMenu
                             MenuItem {
-                                text: depth === 0 ? qsTr("Open file") : qsTr(
-                                                        "Open copy")
+                                text: depth === 0 ? qsTr("Open file") : qsTr("Open copy")
                                 onTriggered: {
-                                    Qt.openUrlExternally(
-                                                "file://" + model.full_path)
+                                    Qt.openUrlExternally("file://" + model.full_path);
                                 }
                             }
                         }
@@ -450,15 +446,13 @@ TreeView {
                 clip: true
                 ToolTip.delay: 500
                 ToolTip.text: model.sig_status
-                ToolTip.visible: sigStatusArea.hovered
-                                 && model.sig_status !== ""
+                ToolTip.visible: sigStatusArea.hovered && model.sig_status !== ""
 
                 Image {
                     id: signImage
                     anchors.centerIn: parent
                     source: getSignIcon(model.sig_color)
-                    visible: !fileTreeModel.isDraft
-                             && model.sig_color !== "empty"
+                    visible: !fileTreeModel.isDraft && model.sig_color !== "empty"
                     width: height
                 }
 
@@ -467,10 +461,10 @@ TreeView {
                     enabled: signImage.visible
                     propagateComposedEvents: true
                     onClicked: mouse => {
-                                   rightSideBar.showState = RightSideBar.ShowState.Certs
-                                   fileTreeModel.getCertList(model.id)
-                                   mouse.accepted = false
-                               }
+                        rightSideBar.showState = RightSideBar.ShowState.Certs;
+                        fileTreeModel.getCertList(model.id);
+                        mouse.accepted = false;
+                    }
                     HoverHandler {
                         id: sigStatusArea
                         enabled: signImage.visible
@@ -506,15 +500,13 @@ TreeView {
                 clip: true
                 ToolTip.delay: 500
                 ToolTip.text: model.mrpa_status
-                ToolTip.visible: mrpaStatusArea.hovered
-                                 && model.mrpa_status !== ""
+                ToolTip.visible: mrpaStatusArea.hovered && model.mrpa_status !== ""
 
                 Image {
                     id: mrpaImage
                     anchors.centerIn: parent
                     source: getMrpaIcon(model.mrpa_color)
-                    visible: !fileTreeModel.isDraft
-                             && model.mrpa_color !== "empty"
+                    visible: !fileTreeModel.isDraft && model.mrpa_color !== "empty"
                     width: height
                 }
 
@@ -523,11 +515,10 @@ TreeView {
                     enabled: mrpaImage.visible
                     propagateComposedEvents: true
                     onClicked: mouse => {
-                                   showMrpaList(fileTreeModel.getMrpaData(
-                                                    model.id))
-                                   rightSideBar.showState = RightSideBar.ShowState.Mrpa
-                                   mouse.accepted = false
-                               }
+                        showMrpaList(fileTreeModel.getMrpaData(model.id));
+                        rightSideBar.showState = RightSideBar.ShowState.Mrpa;
+                        mouse.accepted = false;
+                    }
 
                     HoverHandler {
                         id: mrpaStatusArea
@@ -574,10 +565,8 @@ TreeView {
                     leftPadding: 0
                     rightPadding: 0
                     onClicked: {
-                        console.warn("delete node res: " + fileTreeModel.deleteNode(
-                                         model.full_path, row, model.uid,
-                                         model.id))
-                        rightSideBar.showState = RightSideBar.ShowState.Invisible
+                        console.warn("delete node res: " + fileTreeModel.deleteNode(model.full_path, row, model.uid, model.id));
+                        rightSideBar.showState = RightSideBar.ShowState.Invisible;
                     }
                 }
                 Item {
@@ -599,73 +588,66 @@ TreeView {
         anchors.fill: parent
 
         onClicked: mouse => {
-                       let cell = treeView.cellAtPosition(Qt.point(mouse.x,
-                                                                   mouse.y))
-                       let ind
-                       try {
-                           ind = treeView.index(cell.y, cell.x)
-                       } catch (e) {
-                           // The user must have right-clicked an empty area; ignore it.
-                           if (cell.x === -1 && cell.y === -1) {
-                               return
-                           }
-                           ind = treeView.modelIndex(cell.x, cell.y)
-                       }
-                       treeView.selectionModel.setCurrentIndex(
-                           ind, ItemSelectionModel.NoUpdate)
-                       mouse.accepted = false
-                   }
+            let cell = treeView.cellAtPosition(Qt.point(mouse.x, mouse.y));
+            let ind;
+            try {
+                ind = treeView.index(cell.y, cell.x);
+            } catch (e) {
+                // The user must have right-clicked an empty area; ignore it.
+                if (cell.x === -1 && cell.y === -1) {
+                    return;
+                }
+                ind = treeView.modelIndex(cell.x, cell.y);
+            }
+            treeView.selectionModel.setCurrentIndex(ind, ItemSelectionModel.NoUpdate);
+            mouse.accepted = false;
+        }
 
         onDoubleClicked: mouse => {
-                             let cell = treeView.cellAtPosition(
-                                 Qt.point(mouse.x, mouse.y))
-                             let ind
-                             try {
-                                 ind = treeView.index(cell.y, cell.x)
-                             } catch (e) {
-                                 // The user must have right-clicked an empty area; ignore it.
-                                 if (cell.x === -1 && cell.y === -1) {
-                                     return
-                                 }
-                                 ind = treeView.modelIndex(cell.x, cell.y)
-                             }
-                             treeView.selectionModel.setCurrentIndex(
-                                 ind, ItemSelectionModel.NoUpdate)
-                             treeView.toggleExpanded(cell.y)
-                             mouse.accepted = false
-                         }
+            let cell = treeView.cellAtPosition(Qt.point(mouse.x, mouse.y));
+            let ind;
+            try {
+                ind = treeView.index(cell.y, cell.x);
+            } catch (e) {
+                // The user must have right-clicked an empty area; ignore it.
+                if (cell.x === -1 && cell.y === -1) {
+                    return;
+                }
+                ind = treeView.modelIndex(cell.x, cell.y);
+            }
+            treeView.selectionModel.setCurrentIndex(ind, ItemSelectionModel.NoUpdate);
+            treeView.toggleExpanded(cell.y);
+            mouse.accepted = false;
+        }
     }
 
     Connections {
         target: treeView.model
 
         function onSignDone(sign_result, sign_done) {
-            enableSignButton()
-            let res = JSON.parse(sign_result)
-            const hasWarnings = (Array.isArray(res.warnings)
-                                 && res.warnings.length > 0)
+            enableSignButton();
+            let res = JSON.parse(sign_result);
+            const hasWarnings = (Array.isArray(res.warnings) && res.warnings.length > 0);
 
             if (hasWarnings) {
-                const msg = Array.isArray(res.warnings) ? res.warnings.join(
-                                                              "\n") : String(
-                                                              res.warnings)
-                errorOnSign(msg)
+                const msg = Array.isArray(res.warnings) ? res.warnings.join("\n") : String(res.warnings);
+                errorOnSign(msg);
             }
-            treeSignResultDialog.sign_result = res
-            treeSignResultDialog.sign_done = true
+            treeSignResultDialog.sign_result = res;
+            treeSignResultDialog.sign_done = true;
             if (sign_done) {
-                fileTreeModel.deleteTree()
-                cleanWindow()
+                fileTreeModel.deleteTree();
+                cleanWindow();
             }
         }
 
         function onDropState() {
-            state = []
-            state_val = []
+            state = [];
+            state_val = [];
         }
 
         function onTreeIsEmpty() {
-            disableSignButton()
+            disableSignButton();
         }
     }
 }

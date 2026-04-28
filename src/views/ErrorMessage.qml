@@ -10,17 +10,17 @@ Dialog {
     property var errorList: []
 
     function addError(err_str) {
-        errorList.push(err_str)
-        errRepeater.model=errorList
+        if (errorList.indexOf(err_str) === -1) {
+            errorList.push(err_str);
+        }
+        errRepeater.model = errorList;
     }
 
     function show() {
-        if (!opened && errorList.length>0) {
-            open()
+        if (!opened && errorList.length > 0) {
+            open();
         }
     }
-
-
 
     modal: true
 
@@ -40,10 +40,10 @@ Dialog {
 
     property string text: ""
 
-    header:Label{
+    header: Label {
+        id: titleLabel
         topPadding: StyleSheet.defaultPaddingV
         leftPadding: StyleSheet.defaultPaddingH
-        id:titleLabel
         text: qsTr("Error")
         font.bold: true
     }
@@ -51,29 +51,28 @@ Dialog {
     contentItem: Column {
         id: contentColumn
 
-        signal widthCorrection;
+        signal widthCorrection
 
         // the width of the widest text element
-        property int maxErrWidth : 0
+        property int maxErrWidth: 0
 
         // update the widest element width
-        function textAdded(w){
-            if (w>maxErrWidth){
-                maxErrWidth=w;
+        function textAdded(w) {
+            if (w > maxErrWidth) {
+                maxErrWidth = w;
                 widthCorrection();
             }
-            //console.warn("TEXT add , width:"+w," maxErrWidth="+maxErrWidth +" max windows size: "+errorMessageDialog.maxWidth);
+        //console.warn("TEXT add , width:"+w," maxErrWidth="+maxErrWidth +" max windows size: "+errorMessageDialog.maxWidth);
         }
 
         Repeater {
             id: errRepeater
             model: []
 
-
-            delegate:Text {                
+            delegate: Text {
                 required property string modelData
 
-                topPadding:10;
+                topPadding: 10
                 color: StyleSheet.font_color_extra
 
                 text: modelData
@@ -83,26 +82,25 @@ Dialog {
 
                 Component.onCompleted: {
                     // register the current width, make sure it is not wider then the dialog's maxWidth
-                    width=Math.min(errorMessageDialog.maxWidth-errorMessageDialog.leftPadding-errorMessageDialog.rightPadding,width)
+                    width = Math.min(errorMessageDialog.maxWidth - errorMessageDialog.leftPadding - errorMessageDialog.rightPadding, width);
                     contentColumn.textAdded(width);
                 }
 
                 Connections {
                     target: contentColumn
 
-                    function onWidthCorrection(){
-                        width=Math.min(errorMessageDialog.maxWidth,contentColumn.maxErrWidth)
+                    function onWidthCorrection() {
+                        width = Math.min(errorMessageDialog.maxWidth, contentColumn.maxErrWidth);
                         contentColumn.textAdded(width);
                     }
-
                 }
             }
         }
     }
 
     onClosed: {
-      contentColumn.maxErrWidth=0;
-      errorList=[];
-      errRepeater.model=errorList
+        contentColumn.maxErrWidth = 0;
+        errorList = [];
+        errRepeater.model = errorList;
     }
 }
