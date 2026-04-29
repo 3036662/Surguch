@@ -76,7 +76,8 @@ ColumnLayout {
     Text {
         text: qsTr("Preview")
         bottomPadding: 5
-        font.family: "Noto Sans"
+        font.family: StyleSheet.defaultFontFamily
+        font.pointSize: StyleSheet.defaultTextPointSize
         color: StyleSheet.font_color_extra
     }
 
@@ -95,7 +96,8 @@ ColumnLayout {
     Text {
         text: qsTr("Link")
         bottomPadding: 5
-        font.family: "Noto Sans"
+        font.family: StyleSheet.defaultFontFamily
+        font.pointSize: StyleSheet.defaultTextPointSize
         color: StyleSheet.font_color_extra
     }
 
@@ -105,7 +107,8 @@ ColumnLayout {
         Layout.fillWidth: true
         placeholderText: qsTr("Enter link here")
         placeholderTextColor: "grey"
-        font.family: "Noto Sans"
+        font.family: StyleSheet.defaultFontFamily
+        font.pointSize: StyleSheet.defaultTextPointSize
         color: StyleSheet.font_color_extra
 
         onTextChanged: {
@@ -121,7 +124,8 @@ ColumnLayout {
 
         Text {
             text: qsTr("Default mark width, % from A4 ")
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
         }
 
@@ -132,7 +136,8 @@ ColumnLayout {
         Text {
             id: tagWidthText
             text: tagWidth.value
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
         }
     }
@@ -152,7 +157,8 @@ ColumnLayout {
 
         Layout.fillWidth: true
         text: qsTr("Save")
-        font.family: "Noto Sans"
+        font.family: StyleSheet.defaultFontFamily
+        font.pointSize: StyleSheet.defaultTextPointSize
         display: AbstractButton.TextBesideIcon
         icon.source: StyleSheet.save_icon
         icon.width: 20
@@ -167,7 +173,8 @@ ColumnLayout {
 
         Layout.fillWidth: true
         text: qsTr("Delete")
-        font.family: "Noto Sans"
+        font.family: StyleSheet.defaultFontFamily
+        font.pointSize: StyleSheet.defaultTextPointSize
         display: AbstractButton.TextBesideIcon
         icon.source: StyleSheet.trash_icon
         icon.width: 20

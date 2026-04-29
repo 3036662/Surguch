@@ -100,7 +100,8 @@ ColumnLayout {
             text: qsTr("Create from text")
             Layout.fillWidth: true
             color: StyleSheet.font_color_extra
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
         }
 
         Rectangle {
@@ -124,10 +125,13 @@ ColumnLayout {
 
     // generate from file
     Text {
+        id: filesExtensionsText
         topPadding: 10
         text: qsTr("Generate from file (*.png *.jpg *.jpeg *.bmp)")
         bottomPadding: 5
-        font.family: "Noto Sans"
+        font.family: StyleSheet.defaultFontFamily
+        font.pointSize: StyleSheet.defaultTextPointSize
+
         color: StyleSheet.font_color_extra
         visible: !typeSwitch.checked
     }
@@ -138,7 +142,8 @@ ColumnLayout {
         placeholderText: qsTr("Select a file")
         visible: !typeSwitch.checked
         Layout.fillWidth: true
-        font.family: "Noto Sans"
+        font.family: StyleSheet.defaultFontFamily
+        font.pointSize: StyleSheet.defaultTextPointSize
         color: StyleSheet.font_color_extra
 
         background: Rectangle {
@@ -167,7 +172,8 @@ ColumnLayout {
         text: qsTr("Text")
         bottomPadding: 5
         visible: typeSwitch.checked
-        font.family: "Noto Sans"
+        font.family: StyleSheet.defaultFontFamily
+        font.pointSize: StyleSheet.defaultTextPointSize
         color: StyleSheet.font_color_extra
     }
 
@@ -186,7 +192,8 @@ ColumnLayout {
             selectByMouse: true
             wrapMode: Text.WordWrap
             placeholderTextColor: "grey"
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
 
             background: Rectangle {
@@ -228,7 +235,8 @@ ColumnLayout {
         text: qsTr("Font")
         visible: typeSwitch.checked
         bottomPadding: 5
-        font.family: "Noto Sans"
+        font.family: StyleSheet.defaultFontFamily
+        font.pointSize: StyleSheet.defaultTextPointSize
         color: StyleSheet.font_color_extra
     }
 
@@ -239,6 +247,9 @@ ColumnLayout {
         visible: typeSwitch.checked
         model: fontHelper.cyrillicFamilies() //Qt.fontFamilies()
         wheelEnabled: true
+
+        font.family: StyleSheet.defaultFontFamily
+        font.pointSize: StyleSheet.defaultTextPointSize
 
         onActivated: {
             if (!ignore_changes) {
@@ -287,7 +298,8 @@ ColumnLayout {
     Text {
         text: qsTr("Color")
         visible: typeSwitch.checked
-        font.family: "Noto Sans"
+        font.family: StyleSheet.defaultFontFamily
+        font.pointSize: StyleSheet.defaultTextPointSize
         color: StyleSheet.font_color_extra
     }
 

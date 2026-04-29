@@ -11,6 +11,10 @@ Item {
     property real defaultMarginH: 10
     property real defaultMarginV: 10
 
+    property string defaultFontFamily: "Noto Sans"
+    property real defaultTextPointSize: 9
+
+
     property color font_color
     property color font_color_extra
     property string arrow_back_icon

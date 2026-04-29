@@ -16,7 +16,8 @@ RowLayout {
         font.weight: Font.DemiBold
         topPadding: 5
         bottomPadding: 5
-        font.family: "Noto Sans"
+        font.family: StyleSheet.defaultFontFamily
+        font.pointSize: StyleSheet.defaultTextPointSize
     }
 
     Rectangle {
@@ -32,7 +33,8 @@ RowLayout {
         rightPadding: 10
         topPadding: 10
         bottomPadding: 10
-        font.family: "Noto Sans"
+        font.family: StyleSheet.defaultFontFamily
+        font.pointSize: StyleSheet.defaultTextPointSize
         icon.source: StyleSheet.close_icon
 
         onClicked: {

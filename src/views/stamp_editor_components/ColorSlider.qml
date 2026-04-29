@@ -27,7 +27,8 @@ RowLayout {
     Text {
         text: root.labelText + " " + color.value
         Layout.preferredWidth:  40
-        font.family: "Noto Sans"
+        font.family: StyleSheet.defaultFontFamily
+        font.pointSize: StyleSheet.defaultTextPointSize
         color: StyleSheet.font_color_extra
         Layout.leftMargin: 5
     }

@@ -141,7 +141,8 @@ Dialog {
             Text {
                 text: qsTr("Preview")
                 bottomPadding: 5
-                font.family: "Noto Sans"
+                font.family: StyleSheet.defaultFontFamily
+                font.pointSize: StyleSheet.defaultTextPointSize
                 color: StyleSheet.font_color_extra
             }
 
@@ -165,7 +166,8 @@ Dialog {
 
             Text {
                 text: qsTr("Stamp's color")
-                font.family: "Noto Sans"
+                font.family: StyleSheet.defaultFontFamily
+                font.pointSize: StyleSheet.defaultTextPointSize
                 color: StyleSheet.font_color_extra
             }
 
@@ -203,7 +205,8 @@ Dialog {
             Button {
                 Layout.fillWidth: true
                 text: qsTr("Save")
-                font.family: "Noto Sans"
+                font.family: StyleSheet.defaultFontFamily
+                font.pointSize: StyleSheet.defaultTextPointSize
                 display: AbstractButton.TextBesideIcon
                 icon.source: StyleSheet.save_icon
                 icon.width: 20
@@ -243,7 +246,8 @@ Dialog {
 
                 Layout.fillWidth: true
                 text: qsTr("Delete")
-                font.family: "Noto Sans"
+                font.family: StyleSheet.defaultFontFamily
+                font.pointSize: StyleSheet.defaultTextPointSize
                 display: AbstractButton.TextBesideIcon
                 icon.source: StyleSheet.trash_icon
                 icon.width: 20

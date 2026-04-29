@@ -39,15 +39,15 @@ Dialog {
 
             Text {
                 text: qsTr("Surguch - application for work with digital signature")
-                font.family: "Noto Sans"
-                font.pointSize: 10
+                font.family: StyleSheet.defaultFontFamily
+                font.pointSize: StyleSheet.defaultTextPointSize
                 color: StyleSheet.font_color_extra
             }
 
             Text {
                 text: qsTr("Version ") + root.version
-                font.family: "Noto Sans"
-                font.pointSize: 10
+                font.family: StyleSheet.defaultFontFamily
+                font.pointSize: StyleSheet.defaultTextPointSize
                 color: StyleSheet.font_color_extra
             }
 
@@ -55,8 +55,8 @@ Dialog {
                 text: qsTr("Help ") + ("<a href='https://www.altlinux.org/%D0%A1%D1%83%D1%80%D0%B3%D1%83%D1%87'>%1</a>".arg(
                                            "https://www.altlinux.org/Сургуч"))
                 textFormat: Text.RichText
-                font.family: "Noto Sans"
-                font.pointSize: 10
+                font.family: StyleSheet.defaultFontFamily
+                font.pointSize: StyleSheet.defaultTextPointSize
                 color: StyleSheet.font_color_extra
 
                 linkColor: "#1a73e8"

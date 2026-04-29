@@ -76,7 +76,8 @@ Dialog {
                 color: StyleSheet.font_color_extra
 
                 text: modelData
-                font.family: "Noto Sans"
+                font.family: StyleSheet.defaultFontFamily
+                font.pointSize: StyleSheet.defaultTextPointSize
                 wrapMode: Text.WordWrap
                 maximumLineCount: 10
 

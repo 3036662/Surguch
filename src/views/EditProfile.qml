@@ -52,7 +52,8 @@ Flickable {
             font.weight: Font.DemiBold
             topPadding: 10
             bottomPadding: 10
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
         }
 
@@ -66,7 +67,8 @@ Flickable {
         Text {
             text: qsTr("Profile name")
             bottomPadding: 5
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
         }
 
@@ -90,7 +92,8 @@ Flickable {
             text: qsTr("Certificate")
             topPadding: 10
             bottomPadding: 10
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
         }
 
@@ -143,7 +146,8 @@ Flickable {
             font.weight: Font.DemiBold
             topPadding: 10
             bottomPadding: 10
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
         }
 
@@ -152,7 +156,8 @@ Flickable {
             topPadding: 5
             text: qsTr("Cades type")
             bottomPadding: 5
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
         }
 
@@ -183,7 +188,8 @@ Flickable {
                 topPadding: 10
                 text: qsTr("TSP server URL")
                 bottomPadding: 5
-                font.family: "Noto Sans"
+                font.family: StyleSheet.defaultFontFamily
+                font.pointSize: StyleSheet.defaultTextPointSize
                 color: StyleSheet.font_color_extra
             }
 
@@ -218,7 +224,8 @@ Flickable {
             font.weight: Font.DemiBold
             topPadding: 10
             bottomPadding: 10
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
         }
 
@@ -230,7 +237,8 @@ Flickable {
                 topPadding: 10
                 text: qsTr("Stamp appearance")
                 bottomPadding: 5
-                font.family: "Noto Sans"
+                font.family: StyleSheet.defaultFontFamily
+                font.pointSize: StyleSheet.defaultTextPointSize
                 color: StyleSheet.font_color_extra
             }
 
@@ -248,7 +256,8 @@ Flickable {
                 rightPadding: 5
                 topPadding: 5
                 bottomPadding: 5
-                font.family: "Noto Sans"
+                font.family: StyleSheet.defaultFontFamily
+                font.pointSize: StyleSheet.defaultTextPointSize
                 icon.source: StyleSheet.wrench_icon
                 enabled: selectStampTypeCombo.currentText !== "ГОСТ"
 
@@ -308,7 +317,8 @@ Flickable {
                 topPadding: 10
                 text: qsTr("Company logo")
                 bottomPadding: 5
-                font.family: "Noto Sans"
+                font.family: StyleSheet.defaultFontFamily
+                font.pointSize: StyleSheet.defaultTextPointSize
                 color: StyleSheet.font_color_extra
             }
             Rectangle {
@@ -359,7 +369,8 @@ Flickable {
             font.weight: Font.DemiBold
             topPadding: 10
             bottomPadding: 10
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
         }
 
@@ -367,7 +378,8 @@ Flickable {
             topPadding: 5
             text: qsTr("Sign type")
             bottomPadding: 5
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
         }
 
@@ -389,7 +401,8 @@ Flickable {
             topPadding: 5
             text: qsTr("Certificate file encoding")
             bottomPadding: 5
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
         }
 
@@ -411,7 +424,8 @@ Flickable {
             topPadding: 5
             text: qsTr("Signature file extension")
             bottomPadding: 5
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
         }
 
@@ -439,7 +453,8 @@ Flickable {
             topPadding: 5
             text: qsTr("Create an archive after signing")
             bottomPadding: 5
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
         }
 
@@ -476,7 +491,8 @@ Flickable {
                 text: qsTr("Save profile")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
-                font.family: "Noto Sans"
+                font.family: StyleSheet.defaultFontFamily
+                font.pointSize: StyleSheet.defaultTextPointSize
 
                 onClicked: EpJS.saveButtonClicked()
             }
@@ -497,7 +513,8 @@ Flickable {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
                 width: logoPath.width
-                font.family: "Noto Sans"
+                font.family: StyleSheet.defaultFontFamily
+                font.pointSize: StyleSheet.defaultTextPointSize
 
                 onClicked: {
                     deleteProfileButton.enabled = false
