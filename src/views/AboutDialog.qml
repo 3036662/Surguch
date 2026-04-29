@@ -6,7 +6,7 @@ import StyleSheet
 Dialog {
     id: root
 
-    property string version: "0.4.6"
+    property string version: "0.4.7"
 
     width: 510
     height: 130
