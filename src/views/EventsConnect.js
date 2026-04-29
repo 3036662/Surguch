@@ -154,40 +154,40 @@ function initEvents() {
     fileTreeView.errorOnSign.connect(function (err) {
         switch (err) {
         case "INVALID_PARAMETERS":
-            errorMessageDialog.text = qsTr("Invalid parameters")
+            errorMessageDialog.addError(qsTr("Invalid parameters"))
             errorMessageDialog.show()
             treeSignResultDialog.close()
             break
         case "INVALID_DESTINATION":
-            errorMessageDialog.text = qsTr("Invalid destination path")
+            errorMessageDialog.addError(qsTr("Invalid destination path"))
             errorMessageDialog.show()
             treeSignResultDialog.close()
             break
         case "SIGN_ALL_FILES_FAILED":
-            errorMessageDialog.text = qsTr(
-                        "Failed to sign files: check the certificate in the profile and CryptoPro (availability and expiration date).")
+            errorMessageDialog.addError(qsTr(
+                        "Failed to sign files: check the certificate in the profile and CryptoPro (availability and expiration date)."))
             errorMessageDialog.show()
             treeSignResultDialog.close()
             break
         case "CREATE_ZIP_FAILED":
-            errorMessageDialog.text = qsTr("Failed to create archive")
+            errorMessageDialog.addError(qsTr("Failed to create archive"))
             errorMessageDialog.show()
             treeSignResultDialog.close()
             break
         case "COPY_SRC_FILES_FAILED":
-            errorMessageDialog.text = qsTr(
-                        "You trying to create files which already exist")
+            errorMessageDialog.addError(qsTr(
+                        "You trying to create files which already exist"))
             errorMessageDialog.show()
             treeSignResultDialog.close()
             break
         case "COPY_SRC_MRPA_FILES_FAILED":
-            errorMessageDialog.text = qsTr(
-                        "You trying to create files which already exist")
+            errorMessageDialog.addError(qsTr(
+                        "You trying to create files which already exist"))
             errorMessageDialog.show()
             treeSignResultDialog.close()
             break
         case "SOME_FILES_WHERE_RENAMED":
-            errorMessageDialog.text = qsTr("Some files were renamed")
+            errorMessageDialog.addError(qsTr("Some files were renamed"))
             errorMessageDialog.show()
             break
         }
@@ -263,7 +263,7 @@ function initEvents() {
         showType = Main.ShowType.Files
         fileTreeModel.addNode(openFiles)
     } else // open document on start
-        if (openOnStart !== "") {
+        if (openOnStart !== "") {            
             header.enableSignMode()
             pdfListView.openFile(openOnStart)
             leftSideBar.source = openOnStart

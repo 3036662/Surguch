@@ -152,9 +152,9 @@ function saveButtonClicked(){
                 profileName.text)) {
         profileName.forceActiveFocus()
         root.contentY = 10
-        errorMessageDialog.text = qsTr(
-                    "Profile with this name already exists")
-        errorMessageDialog.open()
+        errorMessageDialog.addError(qsTr(
+                    "Profile with this name already exists"))
+        errorMessageDialog.show()
         return
     }
     if (profileName.text === "") {

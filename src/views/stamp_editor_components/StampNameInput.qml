@@ -18,7 +18,8 @@ ColumnLayout {
         text: labelText
         topPadding: 5
         bottomPadding: 5
-        font.family: "Noto Sans"
+        font.family: StyleSheet.defaultFontFamily
+        font.pointSize: StyleSheet.defaultTextPointSize
         color: StyleSheet.font_color_extra
     }
 
@@ -28,7 +29,8 @@ ColumnLayout {
         selectByMouse: true
         wrapMode: Text.WordWrap
         placeholderTextColor: "grey"
-        font.family: "Noto Sans"
+        font.family: StyleSheet.defaultFontFamily
+        font.pointSize: StyleSheet.defaultTextPointSize
         color: StyleSheet.font_color_extra
         topPadding: 5
         bottomPadding: 5

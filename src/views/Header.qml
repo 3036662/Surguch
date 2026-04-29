@@ -339,13 +339,13 @@ RowLayout {
         nameFilters: [qsTr("PDF files (*.pdf)"), qsTr("Any file (* *.*)")]
         currentFolder: StandardPaths.writableLocation(
                            StandardPaths.DocumentsLocation)
-        onAccepted: {
+        onAccepted: {              
             enableSignMode()
             // source is chosen by user, not a temporary file
+            changeShowType(1)
             pdfListView.openFile(currentFile)
             leftSideBar.source = currentFile
             rightSideBar.showState = RightSideBar.ShowState.Invisible
-            changeShowType(1)
         }
     }
 

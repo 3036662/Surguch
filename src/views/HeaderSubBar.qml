@@ -29,74 +29,74 @@ ColumnLayout {
     signal quitApp
 
     function changePageCount(newCount) {
-        page_number.pageCount = newCount
-        pageNumberInputValidator.top = newCount + 1
+        page_number.pageCount = newCount;
+        pageNumberInputValidator.top = newCount + 1;
     }
 
     function changedCurrPage(newIndex) {
-        page_number.currPage = newIndex
-        pageNumberInput.text = newIndex
+        page_number.currPage = newIndex;
+        pageNumberInput.text = newIndex;
     }
 
     function updateZoomValue(zoom) {
         if (zoom === -1) {
-            comboBoxZoom.currentIndex = -1
-            comboBoxZoom.displayText = comboBoxZoom.model[0]
-            return
+            comboBoxZoom.currentIndex = -1;
+            comboBoxZoom.displayText = comboBoxZoom.model[0];
+            return;
         }
-        comboBoxZoom.displayText = Math.round(zoom * 100) + "%"
-        comboBoxZoom.currentIndex = -1
+        comboBoxZoom.displayText = Math.round(zoom * 100) + "%";
+        comboBoxZoom.currentIndex = -1;
     }
 
     function disableZoom() {
-        zoomButton.enabled = false
+        zoomButton.enabled = false;
     }
 
     function enableZoom() {
-        zoomButton.enabled = true
+        zoomButton.enabled = true;
     }
 
     function enableZoomOut() {
-        zoomOutButton.enabled = true
+        zoomOutButton.enabled = true;
     }
 
     function disableZoomOut() {
-        zoomOutButton.enabled = false
+        zoomOutButton.enabled = false;
     }
 
     function setTagData(value) {
-        rubberStampPutButton.tag_data = value
+        rubberStampPutButton.tag_data = value;
     }
 
     function enableTagButton() {
-        console.debug("enabling tag button")
-        rubberStampPutButton.down = false
-        rubberStampPutButton.enabled = true
+        console.debug("enabling tag button");
+        rubberStampPutButton.down = false;
+        rubberStampPutButton.enabled = true;
     }
 
     function clickTagButton() {
-        rubberStampPutButton.enabled = true
-        pdfListView.tagMode = !pdfListView.tagMode
-        pdfListView.tagData = rubberStampPutButton.tag_data
-        pdfModel.prepareImage(JSON.parse(rubberStampPutButton.tag_data))
+        rubberStampPutButton.enabled = true;
+        pdfListView.tagMode = !pdfListView.tagMode;
+        pdfListView.tagData = rubberStampPutButton.tag_data;
+        pdfModel.prepareImage(JSON.parse(rubberStampPutButton.tag_data));
         if (!rubberStampPutButton.down) {
-            pdfListView.resetRotation()
+            pdfListView.resetRotation();
         }
-        rubberStampPutButton.down = !rubberStampPutButton.down
+        rubberStampPutButton.down = !rubberStampPutButton.down;
     }
 
     function updateHistory(undo, redo) {
         if (undo) {
-            undoCount = undo
+            undoCount = undo;
         }
         if (redo) {
-            redoCount = redo
+            redoCount = redo;
         }
     }
 
     function disableTagMode() {
-        pdfListView.tagMode = false
-        rubberStampPutButton.down = false
+        pdfListView.tagMode = false;
+        rubberStampPutButton.down = false;
     }
 
     spacing: 1
@@ -118,7 +118,7 @@ ColumnLayout {
             text: qsTr("Miniatures")
 
             onClicked: {
-                showPreviews()
+                showPreviews();
             }
         }
 
@@ -131,7 +131,7 @@ ColumnLayout {
             text: qsTr("Signatures")
 
             onClicked: {
-                showCerts()
+                showCerts();
             }
         }
 
@@ -142,8 +142,7 @@ ColumnLayout {
             text: qsTr("Print")
 
             onClicked: {
-                printer.print(pdfListView.source, pdfListView.count,
-                              pdfListView.landscape)
+                printer.print(pdfListView.source, pdfListView.count, pdfListView.landscape);
             }
         }
 
@@ -155,7 +154,7 @@ ColumnLayout {
 
             onClicked: {
                 if (page_number.currPage < pageNumberInputValidator.top) {
-                    scrollToPage(page_number.currPage + 1)
+                    scrollToPage(page_number.currPage + 1);
                 }
             }
         }
@@ -166,7 +165,7 @@ ColumnLayout {
 
             onClicked: {
                 if (page_number.currPage > pageNumberInputValidator.bottom) {
-                    scrollToPage(page_number.currPage - 1)
+                    scrollToPage(page_number.currPage - 1);
                 }
             }
         }
@@ -186,9 +185,9 @@ ColumnLayout {
             }
 
             onAccepted: {
-                let newIndex = Number(text)
+                let newIndex = Number(text);
                 if (newIndex > 0) {
-                    scrollToPage(newIndex)
+                    scrollToPage(newIndex);
                 }
             }
         }
@@ -210,7 +209,7 @@ ColumnLayout {
             text: qsTr("Rotate left")
 
             onClicked: {
-                rotateCounterClockWise()
+                rotateCounterClockWise();
             }
         }
 
@@ -219,7 +218,7 @@ ColumnLayout {
             text: qsTr("Rotate right")
 
             onClicked: {
-                rotateClockwise()
+                rotateClockwise();
             }
         }
 
@@ -228,7 +227,7 @@ ColumnLayout {
         HeaderBarComponents.SubBarButton {
             id: zoomOutButton
             onClicked: {
-                zoomOutClicked()
+                zoomOutClicked();
             }
             icon.source: StyleSheet.minus_circle_icon
             text: qsTr("Zoom out")
@@ -237,7 +236,7 @@ ColumnLayout {
         HeaderBarComponents.SubBarButton {
             id: zoomButton
             onClicked: {
-                zoomInClicked()
+                zoomInClicked();
             }
             icon.source: StyleSheet.plus_circle_icon
             text: qsTr("Zoom in")
@@ -252,26 +251,26 @@ ColumnLayout {
                 id: comboBoxZoom
 
                 onCurrentIndexChanged: {
-                    let newZoom = 0
+                    let newZoom = 0;
                     switch (currentIndex) {
                     case 0:
-                        newZoom = -1 //auto
-                        break
+                        newZoom = -1; //auto
+                        break;
                     case 1:
-                        newZoom = 75
-                        break
+                        newZoom = 75;
+                        break;
                     case 2:
-                        newZoom = 100
-                        break
+                        newZoom = 100;
+                        break;
                     case 3:
-                        newZoom = 125
-                        break
+                        newZoom = 125;
+                        break;
                     case 4:
-                        newZoom = 150
-                        break
+                        newZoom = 150;
+                        break;
                     }
                     if (newZoom != 0) {
-                        zoomSelected(newZoom)
+                        zoomSelected(newZoom);
                     }
                 }
 
@@ -305,28 +304,27 @@ ColumnLayout {
 
             onClicked: {
                 //console.debug("create tag")
-                header.quitSignMode()
-                pdfListView.tagMode = !pdfListView.tagMode
-                pdfListView.tagData = tag_data
-                pdfModel.prepareImage(JSON.parse(tag_data))
+                header.quitSignMode();
+                pdfListView.tagMode = !pdfListView.tagMode;
+                pdfListView.tagData = tag_data;
+                pdfModel.prepareImage(JSON.parse(tag_data));
                 if (!down) {
-                    pdfListView.resetRotation()
+                    pdfListView.resetRotation();
                 }
-                down = !down
+                down = !down;
             }
         }
 
         Keys.onPressed: event => {
-                            if (event.key === Qt.Key_Escape
-                                && pdfListView.tagMode) {
-                                header.enableSignMode()
-                                pdfListView.tagMode = false
-                                rubberStampPutButton.down = false
-                                event.accepted = true
-                                return
-                            }
-                            event.accepted = false
-                        }
+            if (event.key === Qt.Key_Escape && pdfListView.tagMode) {
+                header.enableSignMode();
+                pdfListView.tagMode = false;
+                rubberStampPutButton.down = false;
+                event.accepted = true;
+                return;
+            }
+            event.accepted = false;
+        }
 
         HeaderBarComponents.SubBarButton {
             id: rubberStampDialogButton
@@ -340,11 +338,11 @@ ColumnLayout {
             text: qsTr("Choose mark")
 
             onClicked: {
-                header.quitSignMode()
+                header.quitSignMode();
                 if (rubberStampDialog.visible) {
-                    rubberStampDialog.close()
+                    rubberStampDialog.close();
                 } else {
-                    rubberStampDialog.open()
+                    rubberStampDialog.open();
                 }
             }
         }
@@ -357,7 +355,7 @@ ColumnLayout {
             icon.source: StyleSheet.search_icon
             text: qsTr("Search")
             onClicked: {
-                searchDialog.open()
+                searchDialog.open();
             }
         }
 
@@ -397,8 +395,8 @@ ColumnLayout {
         sequence: "Ctrl+F"
         enabled: showType === Main.ShowType.Pdf
         onActivated: {
-            searchDialog.open()
-            searchDialog.focus = true
+            searchDialog.open();
+            searchDialog.focus = true;
         }
     }
 
@@ -408,8 +406,8 @@ ColumnLayout {
         enabled: undoCount > 0 && showType === Main.ShowType.Pdf
         sequence: "Ctrl+Z"
         onActivated: {
-            undoAction()
-            updateHistory()
+            undoAction();
+            updateHistory();
         }
     }
 
@@ -419,7 +417,7 @@ ColumnLayout {
         enabled: redoCount > 0 && showType === Main.ShowType.Pdf
         sequence: "Ctrl+Y"
         onActivated: {
-            redoAction()
+            redoAction();
         }
     }
 
@@ -429,7 +427,7 @@ ColumnLayout {
         enabled: showType === Main.ShowType.Pdf
         sequence: "Ctrl+Q"
         onActivated: {
-            quitApp()
+            quitApp();
         }
     }
 
@@ -439,7 +437,7 @@ ColumnLayout {
         enabled: showType === Main.ShowType.Pdf
         sequence: "Ctrl+S"
         onActivated: {
-            header.openSavePdfDialog()
+            header.openSavePdfDialog();
         }
     }
 
@@ -449,7 +447,7 @@ ColumnLayout {
         enabled: showType === Main.ShowType.Pdf
         sequence: "Ctrl+O"
         onActivated: {
-            header.openPdfDialog()
+            header.openPdfDialog();
         }
     }
 
@@ -459,8 +457,7 @@ ColumnLayout {
         enabled: showType === Main.ShowType.Pdf
         sequence: "Ctrl+P"
         onActivated: {
-            printer.print(pdfListView.source, pdfListView.count,
-                          pdfListView.landscape)
+            printer.print(pdfListView.source, pdfListView.count, pdfListView.landscape);
         }
     }
 }

@@ -16,7 +16,8 @@ ColumnLayout {
 
         Text {
             text: qsTr("Stamp border width: ")
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
         }
 
@@ -27,7 +28,8 @@ ColumnLayout {
         Text {
             id: borderWidthText
             text: borderWidth.value
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
         }
     }
@@ -51,7 +53,8 @@ ColumnLayout {
 
         Text {
             text: qsTr("Stamp border radius: ")
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
         }
 
@@ -62,7 +65,8 @@ ColumnLayout {
         Text {
             id: borderRadiusText
             text: borderRadius.value
-            font.family: "Noto Sans"
+            font.family: StyleSheet.defaultFontFamily
+            font.pointSize: StyleSheet.defaultTextPointSize
             color: StyleSheet.font_color_extra
         }
     }

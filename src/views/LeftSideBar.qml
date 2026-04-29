@@ -71,7 +71,8 @@ Item {
                 anchors.top: parent.top
                 topPadding: 20
                 text: qsTr("No signatures")
-                font.family: "Noto Sans"
+                font.family: StyleSheet.defaultFontFamily
+                font.pointSize: StyleSheet.defaultTextPointSize
                 color: StyleSheet.font_color_extra
             }
         }

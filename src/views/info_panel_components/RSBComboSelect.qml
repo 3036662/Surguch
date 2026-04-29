@@ -11,7 +11,8 @@ ComboBox {
     textRole: ""
     valueRole: ""
     wheelEnabled: false
-    font.family: "Noto Sans"
+    font.family: StyleSheet.defaultFontFamily
+    font.pointSize: StyleSheet.defaultTextPointSize
 
     popup.y: control.height
 
@@ -53,7 +54,8 @@ ComboBox {
             }
             contentItem: Text {
                 text: tooltip_obj.text
-                font.family: "Noto Sans"
+                font.family: StyleSheet.defaultFontFamily
+                font.pointSize: StyleSheet.defaultTextPointSize
                 color: StyleSheet.font_color_extra
             }
             visible: control.highlightedIndex === index && text !== ""

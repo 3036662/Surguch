@@ -8,7 +8,8 @@ Switch {
     property int size_w: 35
     property int size_h: 20
 
-    font.family: "Noto Sans"
+    font.family: StyleSheet.defaultFontFamily
+    font.pointSize: StyleSheet.defaultTextPointSize
 
     width: parent.width
 

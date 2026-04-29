@@ -17,7 +17,8 @@ RowLayout {
         Layout.fillWidth: true
 
         color: StyleSheet.font_color_extra
-        font.family: "Noto Sans"
+        font.family: StyleSheet.defaultFontFamily
+        font.pointSize: StyleSheet.defaultTextPointSize
         topPadding: 10
         bottomPadding: 10
     }

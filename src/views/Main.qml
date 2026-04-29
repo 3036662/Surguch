@@ -56,7 +56,7 @@ ApplicationWindow {
                                           pdfDropArea.enabled = true
                                           fileDropArea.enabled = false
                                           pdfDropArea.width = parent.width
-                                          fileTreeModel.deleteTree()
+                                          fileTreeModel.deleteTree()                                            
                                           header.enableSignMode()
                                       }
                                       if (showType === Main.ShowType.Files) {
@@ -321,8 +321,9 @@ ApplicationWindow {
         onIsDraftChanged: {
             if (fileTreeModel.isDraft)
                 header.disableSignMode()
-            else
+            else{
                 header.enableSignMode()
+            }
         }
     }
 
